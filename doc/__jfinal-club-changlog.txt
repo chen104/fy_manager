@@ -1,0 +1,63 @@
+jfinal club 1.4 相对 1.3 版本的变化：
+
+1：升级到 jfinal 3.4
+
+2：后台管理功能全部重写，添加内容管理、账户管理、角色管理、权限管理等功能
+
+3：后台管理界面全部重写，手写骨架，右下角内容区域使用 bootstrap 3，方便进行二次开发
+   二次开发基本只需要照猫画虎，添加右下角内容区域代码
+
+4：添加 #role #permission 指令，用于在界面控制权限
+
+5：其它一些细节变化将在直播中讲解，会有更深刻的了解
+
+
+注意：后台管理功能看似简单，其实里头很多细节，采用极简设计，尽可能消除学习成本和二次开发成本
+      后台管理源代码与功能将会在直播中详细讲解
+
+
+---------------------------------------------------
+
+
+jfinal club 1.3 相对 1.2 版本的变化：
+
+1：升级到 jfinal 3.3
+
+2：JFinalClubConfig 中加载配置文件由 try catch 改为使用 PropKit.appendIfExists(...)
+
+3：ShareController、FeedbackController、MessageController、NewsFeedController
+    中的 renderToString(...) 的模板去掉路径
+
+4：sql 管理功能使用 ClassPathSourceFactory 来做，从类路径里头加载
+
+5：mysql 驱动升级到 5.1.44 版本
+
+注意：jf club 1.2 已经处理过 Ret 类的升级，从 1.2 升级到 1.3 只需要关注上述五条
+    doc 目录下面的三个 png 图片文件，仅用于指导更老的版本升级到 1.2 或 1.3
+
+---------------------------------------------------
+
+
+jfinal club 1.2 相对 1.1 版本的变化：
+1：jfinal 升级到 3.2 版本
+2：文件上传组件 cos 升级到 2017.5 版本
+3：UploadController 捕获 ExceededSizeException 异常，更好处理上传文件长度超出范围
+4："/upload" 路由改为 "/common/upload"，修改 ueditor 相关配置指向新路由。此改进主要为了 nginx 配置方便
+       避免与 "webapp/upload" 的配置产生影响，减少 nginx 配置量
+5：查找替换 html 文件中的 22 处 ret.isOk 为 ret.state == "ok"
+6：查找替换 html 文件中的 4 处 ret.isFail 为 ret.state == "fail"
+7：查找替换 js 文件中的 11 处 ret.isOk 为 ret.state == "ok"
+
+
+建议大家升级自己项目 Ret 的方式为：
+1：利用查找替换功能将 html 与 js 中的 ret.isOk 替换为 ret.state == "ok"
+2：利用查找替换功能将 html 与 js 中的 ret.isFail 替换为 ret.state == "fail"
+
+
+如果项目未涉及到 Ret 生成的 json 数据则不需要处理，java 代码中的
+ret.isOk() ret.isFail() 行为并无变化，不需要处理
+
+
+如果觉得上述升级方式比较麻烦，可以在项目启动时调用一次 Ret.setToOldWorkMode()
+可以继续沿用老版本的工作模式，这种升级方式比较适合不需要怎么改动的老项目
+
