@@ -1,0 +1,65 @@
+#@myLayout()
+
+#define main()
+     
+          
+ <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">用户管理</h3>
+				
+                    <a href="/fy/admin/account/add"><button type="submit" class="btn btn-primary">添加用户</button></a>
+                    	
+         
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-bordered">
+                <tr>
+                  <th>ID</th>
+                  <th>昵称</th>
+                  <th>登录账号</th>
+                  <th>是否锁定</th>
+                  <th>操作</th>
+                </tr>
+              
+                #for(x : accountPage.getList())
+                <tr>
+                  <td>#(x.id)</td>
+                  <td>#(x.userName)</td>
+                  <td>#(x.nickName)</td>
+                  <td>
+					 
+					
+					</td>
+                   <td> <a class="btn   btn-warning" href="/fy/admin/account/edit?id=#(x.id)">修改</a>  <a class="btn btn-primary">查看 </a>  <a class="btn   btn-danger">删除 </a> </td>
+                </tr>
+               	#end
+              </table>
+            </div>
+            <!-- /.box-body -->
+
+
+
+            <div class="box-footer clearfix">
+             	#@myadminPaginate(accountPage.pageNumber, accountPage.totalPage, "/fy/admin/account?p=")
+             	
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+      </div>
+     
+        
+      
+#end

@@ -17,6 +17,9 @@ package com.jfinal.club.common;
 import java.sql.Connection;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
+import com.chen.fy.IndexController;
+import com.chen.fy.controller.AccountController;
+import com.chen.fy.controller.role.RoleAdminController;
 import com.jfinal.club._admin.permission.PermissionDirective;
 import com.jfinal.club._admin.role.RoleDirective;
 import com.jfinal.config.*;
@@ -85,6 +88,10 @@ public class JFinalClubConfig extends JFinalConfig {
     public void configRoute(Routes me) {
 	    me.add(new FrontRoutes());
 	    me.add(new AdminRoutes());
+	    me.add("fy", IndexController.class,"/_view");
+	    me.add("fy/admin/account", AccountController.class,"/_view/atladmin/account");
+	    me.add("fy/admin/role",RoleAdminController.class,"/_view/atladmin/role");
+	    
     }
     
     /**
@@ -102,6 +109,9 @@ public class JFinalClubConfig extends JFinalConfig {
 
 	    me.addSharedFunction("/_view/_admin/common/__admin_layout.html");
 		me.addSharedFunction("/_view/_admin/common/_admin_paginate.html");
+		
+		me.addSharedFunction("/_view/atladmin/common/layout.html");
+		me.addSharedFunction("/_view/atladmin/common/admin_paginate.html");
     }
     
     /**

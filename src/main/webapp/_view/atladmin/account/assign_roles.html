@@ -1,0 +1,101 @@
+#@myLayout() #define main()
+
+<div class="row">
+
+ <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">用户/角色管理</h3>
+				
+              <div class="box-tools">
+                
+              </div>
+              
+              
+            </div>
+            
+           	<div></div>
+            
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-bordered">
+              		<thead>
+              			<tr>
+              				<td>拥有角色</td>
+              				<td>角色名称</td>
+              			</tr>
+					</thead>
+						<tbody>
+
+							#for(x : roleList)
+							<tr>
+								<td style="width: 100px; text-align: center;"><input
+									data-account-id="#(account.id)" data-role-id="#(x.id)"
+									#if(x.assigned) checked #end type="checkbox" class="switch" onclick="onclickCheck(this)">
+								</td>
+
+								<td>#(x.name)</td>
+							</tr>
+							#end
+						</tbody>
+						
+              </table>
+            </div>
+            <!-- /.box-body -->
+
+
+
+            <div class="box-footer clearfix">
+             	
+            </div>
+          </div>
+          <!-- /.box -->
+        </div>
+	
+</div>
+
+
+
+
+<script type="text/javascript">
+	
+
+	function prepareAction($this, state) {
+		return {
+			url: state ? "/admin/account/addRole" : "/admin/account/deleteRole",
+			data : {
+				accountId: $this.data("account-id"),
+				roleId: $this.data("role-id")
+			}
+		}
+	}
+
+	function onclickCheck(input){
+		var state =input.checked
+
+		 console.info( "check : " + state +"  "+$(input).data("account-id")+"  "+ $(input).data("role-id"));
+	
+		$.ajax({
+			   type: "POST",
+			   url: state ? "/fy/admin/account/addRole" : "/fy/admin/account/deleteRole",
+			   data: "accountId="+$(input).data("account-id")+"&roleId="+$(input).data("role-id"),
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					} else {
+						input.checked = !state;
+					}
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   input.checked = !state
+				}
+			});
+	
+		}
+</script>
+
+#end
+
