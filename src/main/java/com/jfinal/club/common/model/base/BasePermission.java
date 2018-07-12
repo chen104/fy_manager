@@ -41,4 +41,20 @@ public abstract class BasePermission<M extends BasePermission<M>> extends Model<
 		return getStr("remark");
 	}
 
+	public void setParentId(java.lang.Integer parentId) {
+		set("parentId", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parentId");
+	}
+
+	public void setIsfy(java.lang.Boolean isfy) {
+		set("isfy", isfy);
+	}
+	
+	public java.lang.Boolean getIsfy() {
+		return get("isfy");
+	}
+
 }

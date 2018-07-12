@@ -4,7 +4,14 @@
  
  <div class="box box-info" style="wwidth: 300ps">
             <div class="box-header with-border">
-              <h3 class="box-title">权限分配</h3>
+              <h3 class="box-title">
+				<div>
+				正在为
+				<span style="color: red;">#(role.name) #(role.id)</span>
+				分配权限
+				</div>
+
+			</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -14,37 +21,79 @@
               <div class="box-body">
                <div class="row">
                		<div class="col-md-4">
-               			<ul class="list-group">
-						  <li class="list-group-item">Cras justo odio</li>
-						  <li class="list-group-item active">Dapibus ac facilisis in</li>
-						  <li class="list-group-item">Morbi leo risus</li>
-						  <li class="list-group-item">Porta ac consectetur ac</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						</ul>
+               			
+
+								 <ul class="list-group">
+							
+								#set(n = 0)
+								#for(mapItem : permissionMap1)
+									#for(x : mapItem.value)
+											<li class="list-group-item">#(x.remark)
+											 <span class="pull-right">
+												<input type="checkbox" onclick="onclickCheck(this)" data-role-id="#(role.id)"
+												   data-permission-id="#(x.id)"
+												   #if(x.assigned) checked #end>  
+												</span> 
+											 </li>
+									#end
+								#end
+							  <!-- List group 
+								
+									  <li class="list-group-item">用户管理 <span class="pull-right"><input type="checkbox">  </span></li>
+									  <li class="list-group-item active">用户首页 <span class="pull-right"><input type="checkbox">  </span></li>
+									  <li class="list-group-item">添加用户 <span class="pull-right"><input type="checkbox">  </span></li>
+									  <li class="list-group-item">修改用户 <span class="pull-right"><input type="checkbox">  </span></li>
+									  <li class="list-group-item">删除用户 <span class="pull-right"><input type="checkbox">  </span></li>
+									  <li class="list-group-item">分配角色 <span class="pull-right"><input type="checkbox">  </span></li>
+								-->
+								</ul>
+
                		
                		</div>
                
                		<div class="col-md-4">
                		
-               			<ul class="list-group">
-						  <li class="list-group-item">Cras justo odio</li>
-						  <li class="list-group-item active">Dapibus ac facilisis in</li>
-						  <li class="list-group-item">Morbi leo risus</li>
-						  <li class="list-group-item">Porta ac consectetur ac</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
-						</ul>
+							  <ul class="list-group">
+							
+								#set(n = 0)
+								#for(mapItem : permissionMap2)
+									#for(x : mapItem.value)
+											<li class="list-group-item">#(x.remark) 
+												<span class="pull-right">
+												<input type="checkbox" onclick="onclickCheck(this)" data-role-id="#(role.id)"
+												   data-permission-id="#(x.id)"
+												   #if(x.assigned) checked #end>  
+												</span>  </li>
+									#end
+								#end
+								</ul>
+								
+						
                		</div>
                		
                		
                		<div class="col-md-4">
+               			<ul class="list-group">
+							
+								#set(n = 0)
+								#for(mapItem : permissionMap3)
+									#for(x : mapItem.value)
+											<li class="list-group-item">#(x.remark)
+											 <span class="pull-right">
+												<input type="checkbox" onclick="onclickCheck(this)" data-role-id="#(role.id)"
+												   data-permission-id="#(x.id)"
+												   #if(x.assigned) checked #end>  
+												</span> 
+											 </li>
+									#end
+								#end
+								</ul>
+               		 		
+               		
                		</div>
                
                </div>
            		
-           
-           
-               
-                
               </div>
               <!-- /.box-body -->
               <div class="box-footer text-center">
@@ -53,5 +102,31 @@
               </div>
             
           </div>
+<script>
+	function onclickCheck(input){
+		var state =input.checked
 
+		 console.info( "check : " + state +"  "+$(input).data("account-id")+"  "+ $(input).data("role-id"));
+	
+		$.ajax({
+			   type: "POST",
+			   url: state ? "/fy/admin/role/addPermission" : "/fy/admin/role/deletePermission",
+			   data: "permissionId="+$(input).data("permission-id")+"&roleId="+$(input).data("role-id"),
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					} else {
+						input.checked = !state;
+					}
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   input.checked = !state
+				}
+			});
+	
+		}
+</script>
 #end

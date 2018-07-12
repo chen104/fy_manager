@@ -1,0 +1,181 @@
+<style type="text/css">
+		.myinput {
+		    border-radius: 0;
+		    box-shadow: none;
+		    border-color: #d2d6de;
+		  -webkit-appearance: none;
+		    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		    height: 34px;
+		    padding: 6px 12px;
+		    font-size: 14px;
+		    line-height: 1.42857143;
+		    color: #555;
+		    background-color: #fff;
+		    background-image: none;
+		    border: 1px solid #ccc;
+			}  
+			
+			
+		.text-center{
+			text-align: center;
+		}
+</style>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="personModel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">人员选择</h4>
+			</div>
+			<div class="modal-body">
+				<div style="padding-bottom:5px"> 
+					<input class="myinput" id="pmodelKeyWord" > <button class="btn" onclick="getPersonFromServer()">查找</button>
+				</div>
+				<div style="overflow-y:scroll">
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th></th>
+								<th>姓名</th>
+								<th>性别</th>
+								<th>籍贯</th>
+							</tr>
+						</thead>
+						<tbody id="ptbody">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="width: 100%; text-align:center" >
+				<nav aria-label="Page navigation">
+					<ul class="pagination" id="pageUl">
+						<li ><a href="#" aria-label="Previous"> <span
+								aria-hidden="true">&laquo;</span>
+						</a></li>
+						<li onclick="console.debug(1)"><a href="#">1</a></li>
+						<li class="active"><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#" aria-label="Next"> <span
+								aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary"
+					onclick="onselectPerson()">确定</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript">
+	var personId,personName;
+  	function showChooesPerson(personI,personN){
+  		personId = personI;
+  		personName = personN;
+  		
+  		$('#personModel').modal("show");
+  		getPersonFromServer(1);	
+  	  	}
+
+  	function onselectPerson(){
+  	  	var inp = $("input[name='selectPerson']:checked");
+  	  	console.info(inp);
+  		 var a = $("input[name='selectPerson']:checked").val();
+  		 if(a!=null){
+  			 var idName = 	a.split("_");
+  	  		 personId.val(idName[0]);
+  	  		 personName.val(idName[1]);
+  	  	}else{
+			alert("没有选择人员");
+			return;
+  	    }
+  	
+  		 console.debug(idName);
+  		$('#personModel').modal("hide");
+  	  	}
+
+
+  	function getPersonFromServer(pageNumer){
+  		
+  		$.get("/fy/admin/base/person/searchPersonJson", { keyWord: $("#pmodelKeyWord").val(), p : pageNumer},
+  			  function(data){
+  				plist = 	data.list;
+  				var	ptbody = $("#ptbody");
+  				ptbody.empty();
+				for(x in plist){
+						console.debug(plist[x].name);
+						var sex =plist[x].sex ? '男':'女';
+						var tr='<tr><td class="text-center"><input type="radio" name="selectPerson" value="'+plist[x].id+'_'+plist[x].name+'"></td>'+
+						'<td>'+plist[x].name+'</td>'+
+						'<td>'+sex+'</td>'+
+						'<td>'+plist[x].nativePlace+'</td></tr>';
+						ptbody.append(tr);
+					}
+
+				
+				var pageUl =$("#pageUl");
+				pageUl.empty();
+				if(data.totalPage < 2 ){
+					return;
+				}
+				else{
+					
+					if(data.firstPage){
+						var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+							pageUl.append(li);
+					}else{
+						var li = '<li onclick="getPersonFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+							pageUl.append(li);
+					}
+
+					if(data.totalPage>5){
+							for(var i = 1;i<6;i++){
+								if(data.pageNumber==i){
+										var li = '<li class="active"><a href="#">'+i+'</a></li>'
+										pageUl.append(li);
+									}
+									else{
+										var li = '<li onclick="getPersonFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+										pageUl.append(li);
+									}
+							}	
+					}else{
+						for(var i = 1;i<(data.totalPage+1);i++){
+							if(data.pageNumber==i){
+									var li = '<li class="active"><a href="#">'+i+'</a></li>'
+									pageUl.append(li);
+								}
+								else{
+									var li = '<li onclick="getPersonFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+									pageUl.append(li);
+								}
+						}	
+
+					}
+					if(data.lastPage){
+						var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+							pageUl.append(li);
+					}else{
+						var  li = '<li onclick="getPersonFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+						pageUl.append(li);
+					}
+
+					
+					}
+  			  },'json');
+  	  	}
+  </script>

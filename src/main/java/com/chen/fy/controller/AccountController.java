@@ -22,6 +22,7 @@ public class AccountController extends BaseController {
 	}
 	
 	public void list() {
+//		String keyword = getPara("keyword");
 		Page<Account> accountPage = srv.paginate(getParaToInt("p", 1));
 		setAttr("accountPage", accountPage);
 		render("list.html");

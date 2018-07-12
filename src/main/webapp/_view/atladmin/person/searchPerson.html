@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>人员选择</title>
+</head>
+<body>
+	<div>
+		<div class="box">
+			<div class="box-header">
+			
+				<div class="box-tools">
+					<form action="/fy/admin/base/person">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="keyWord" class="form-control pull-right"
+								placeholder="Search" value="#(keyWord)">
+
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			
+			</div>
+			<div class="box-body table-responsive no-padding">
+			
+			<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+								<th>姓名</th>
+								<th>部门</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								<td>#(x.name)</td>
+								<td>#(x.nativePlace)</td>
+								
+							</tr>
+							#end
+						</tbody>
+					</table>
+			
+			
+			</div>
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/base/person?p=")
+			</div>
+			
+			
+		</div>
+		
+	</div>
+</body>
+</html>

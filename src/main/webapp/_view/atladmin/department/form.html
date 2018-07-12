@@ -1,0 +1,46 @@
+
+<input hidden="" value="#(model.id??)" name="model.id">
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label for="inputPassword3" class="col-sm-3 control-label">部门名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" name="model.partName" value="#(model.partName??)" placeholder="部门名称">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label for="inputPassword3" class="col-sm-3 control-label">负责人</label>
+
+			<div class="col-sm-9">
+				<input id="personId" hidden="hidden" name="model.dutyPerson" value="#(model.dutyPerson??)">
+				<div class="input-group">
+	                <input type="text" readonly="readonly"  class="form-control" id="personName" placeholder="负责人"  value="#(dutyPerson.name??)" onclick="showChooesPerson($('#personId'),$('#personName'))">
+	                <span onclick="showChooesPerson($('#personId'),$('#personName'))" class="input-group-addon" style="cursor:pointer;"><i class="fa fa-bars"></i></span>
+	              </div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+	
+			
+		<div class="form-group">
+		
+		
+			 <label  class="col-sm-3 control-label" >描述</label>
+			 <div class="col-sm-9">
+			 <textarea class="form-control" rows="3" name="model.desc" placeholder="描述">#(model.desc??)</textarea>
+			 </div>
+             
+		</div>
+	</div>
+</div>
+

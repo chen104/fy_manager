@@ -18,6 +18,7 @@ public class _MappingKit {
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("auth_code", "id", AuthCode.class);
+	
 		// Composite Primary Key order: mainMenu,subMenu
 		arp.addMapping("document", "mainMenu,subMenu", Document.class);
 		arp.addMapping("download", "id", Download.class);
@@ -36,7 +37,6 @@ public class _MappingKit {
 		arp.addMapping("share", "id", Share.class);
 		arp.addMapping("share_reply", "id", ShareReply.class);
 		arp.addMapping("task_list", "id", TaskList.class);
-		
 	}
 }
 

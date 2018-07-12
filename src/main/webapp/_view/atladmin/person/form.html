@@ -1,0 +1,281 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">姓名</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="姓名" value="#(model.name??)" name="model.name" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">籍贯</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="籍贯"  value="#(model.nativePlace??)" name="model.nativePlace">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">性别</label>
+
+			<div class="col-sm-9">
+				<select class="form-control select2" name="model.sex">
+					<option  value="1" #if(model.sex??) selected="selected"  #end >男 </option>
+					<option value="0" #if(!model.sex??) selected="selected"  #end >女</option>
+				</select>
+			
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">出生日期</label>
+
+			<div class="col-sm-9">
+				<div class="input-group date">
+					<input type="text" class="form-control pull-right"  date-type="datepicker" value="#(model.birthDate??)" name="model.birthDate">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">入职日期</label>
+
+			<div class="col-sm-9">
+				<div class="input-group date">
+					<input type="text" class="form-control pull-right"  date-type="datepicker" value="#(model.entryDate??)" name="model.entryDate" >
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">离职日期</label>
+
+			<div class="col-sm-9">
+				<div class="input-group date">
+					<input type="text" class="form-control pull-right"  date-type="datepicker"  value="#(model.quitDate??)" name="model.quitDate">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">联系方式</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="联系方式" value="#(model.contactType??)" name="model.contactType">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">学历</label>
+
+			<div class="col-sm-9">
+				<select class="form-control select2" name="model.education">
+					<option #if(model.education?? == "小学") selected="selected"  #end>小学</option>
+					<option #if(model.education?? == "初中") selected="selected"  #end >初中</option>
+					<option #if(model.education?? == "高中") selected="selected"  #end >高中</option>
+					<option #if(model.education?? == "大专") selected="selected"  #end >大专</option>
+					<option #if(model.education?? == "本科") selected="selected"  #end >本科</option>
+					<option #if(model.education?? == "硕士") selected="selected"  #end >硕士</option>
+					<option #if(model.education?? == "博士") selected="selected"  #end >博士</option>
+					<option #if(model.education?? == "其他") selected="selected"  #end>其他</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">政治面貌</label>
+
+			<div class="col-sm-9">
+				<select class="form-control select2"   name="model.politicalStatus">
+					<option #if(model.politicalStatus?? == "群众") selected="selected"  #end >群众</option>
+					<option #if(model.politicalStatus?? == "团员") selected="selected"  #end  >团员</option>
+					<option #if(model.politicalStatus?? == "党员") selected="selected"  #end >党员</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">住宿</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="住宿" value="#(model.accommodation??)" name="model.accommodation">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label" >岗位</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" value="#(model.post??)" name="model.post"
+					placeholder="岗位">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">部门</label>
+
+			<div class="col-sm-9">
+				<input id="departId" hidden="hidden" name="model.departmentId" value="#(model.departmentId??)">
+				<div class="input-group">
+	                <input type="text" readonly="readonly"  class="form-control" id="departName" placeholder="负责人"  value="#(department.partName??)" onclick="showChooesDepart($('#departId'),$('#departName'))">
+	                <span onclick="showChooesDepart($('#departId'),$('#departName'))" class="input-group-addon" style="cursor:pointer;"><i class="fa fa-bars"></i></span>
+	              </div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">
+				工作状态</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"   value="#(model.jobStatus??)" name="model.jobStatus"
+					placeholder="工作状态">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">执行底薪</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  value="#(model.execBaseSalary??)" name="model.execBaseSalary"
+					placeholder="执行底薪">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">
+				调整底薪1 </label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  value="#(model.adjustBaseSalary1??)" name="model.adjustBaseSalary1"
+					placeholder="调整底薪1">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">调整底薪2
+			</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="调整底薪2" value="#(model.adjustBaseSalary2??)" name="model.adjustBaseSalary2">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">
+				调整底薪3 </label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" value="#(model.adjustBaseSalary3??)" name="model.adjustBaseSalary3"
+					placeholder="调整底薪3">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">调整底薪4
+			</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  value="#(model.adjustBaseSalary4??)" name="model.adjustBaseSalary4"
+					placeholder="调整底薪4">
+			</div>
+		</div>
+	</div>
+
+</div>

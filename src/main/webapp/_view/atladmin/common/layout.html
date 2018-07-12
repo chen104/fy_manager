@@ -88,12 +88,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Version 2.0</small>
+        <small>Version 1.0</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">#(currentTitle??)</li>
       </ol>
       
       
@@ -141,9 +140,10 @@
 </script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/assets/atl/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <!-- Morris.js charts -->
 <script src="/assets/atl/bower_components/raphael/raphael.min.js"></script>
-<script src="/assets/atl/bower_components/morris.js/morris.min.js"></script>
+<!--<script src="/assets/atl/bower_components/morris.js/morris.min.js"></script>-->
 <!-- Sparkline -->
 <script src="/assets/atl/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->
@@ -165,13 +165,18 @@
 <!-- AdminLTE App -->
 <script src="/assets/atl/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/assets/atl/dist/js/pages/dashboard.js"></script>
+<!--<script src="/assets/atl/dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="/assets/atl/dist/js/demo.js"></script>
 <!-- switch -->
 <script src="/assets/atl/switch/js/bootstrap-switch.min.js"></script>
  <script type="text/javascript">
       			$("[class='myswitch']").bootstrapSwitch();
+      		    //Date picker
+      		    $("input[date-type='datepicker']").datepicker({
+      		      autoclose: true,
+      		      format:'yyyy-mm-dd'
+      		    })
 </script>
 </body>
 </html>

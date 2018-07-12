@@ -21,8 +21,11 @@ import com.jfinal.club.common.model.Role;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
+
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 角色管理控制器
@@ -83,6 +86,46 @@ public class RoleAdminController extends BaseController {
 		render("assign_permissions.html");
 	}
 
+	
+	/**
+	 * 分配权限
+	 */
+	public void myassignPermissions() {
+		Role role = srv.findById(getParaToInt("id"));
+		Permission dao = new Permission().dao();
+		List<Permission> permissionList =  dao.find("select * from permission where isfy = 1  order by controller asc");
+		srv.markAssignedPermissions(role, permissionList);
+		LinkedHashMap<String, List<Permission>> permissionMap = srv.groupByController(permissionList);
+		LinkedHashMap<String, List<Permission>> permissionMap1 = new LinkedHashMap<String, List<Permission>>();
+		LinkedHashMap<String, List<Permission>> permissionMap2 = new LinkedHashMap<String, List<Permission>>();
+		LinkedHashMap<String, List<Permission>> permissionMap3 = new LinkedHashMap<String, List<Permission>>();
+		
+		Set<String> kes = permissionMap.keySet();
+		Iterator<String>  iterator = kes.iterator();
+		int i =0 ;
+		while(iterator.hasNext()) {
+			String k = iterator.next(); 
+			
+			if(i%3==0) {
+				permissionMap1.put(k, permissionMap.get(k));
+			}else if(i%3==1){
+				permissionMap2.put(k, permissionMap.get(k));
+			}else if(i%3==2) {
+				permissionMap3.put(k, permissionMap.get(k));
+			}
+			i++;
+		}
+	
+		
+		setAttr("role", role);
+		setAttr("permissionMap", permissionMap);
+		setAttr("permissionMap1", permissionMap1);
+		setAttr("permissionMap2", permissionMap2);
+		setAttr("permissionMap3", permissionMap3);
+		
+		render("assign_permissions.html");
+	}
+	
 	/**
 	 * 添加权限
 	 */
