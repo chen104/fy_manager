@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseTaxRate;
  */
 @SuppressWarnings("serial")
 public class TaxRate extends BaseTaxRate<TaxRate> {
-	
+	public final static TaxRate dao = new TaxRate().dao();
 }

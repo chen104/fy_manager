@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseUnit;
  */
 @SuppressWarnings("serial")
 public class Unit extends BaseUnit<Unit> {
-	
+	public static final Unit dao = new Unit().dao();
 }

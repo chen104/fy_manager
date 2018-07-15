@@ -49,20 +49,28 @@ public abstract class BaseSupplier<M extends BaseSupplier<M>> extends Model<M> i
 		return getStr("phone");
 	}
 
-	public void setBackNo(java.lang.String backNo) {
-		set("back_no", backNo);
+	public void setBankAccount(java.lang.String bankAccount) {
+		set("bank_account", bankAccount);
 	}
 	
-	public java.lang.String getBackNo() {
-		return getStr("back_no");
+	public java.lang.String getBankAccount() {
+		return getStr("bank_account");
 	}
 
-	public void setSettlement(java.lang.String settlement) {
-		set("settlement", settlement);
+	public void setBankNo(java.lang.String bankNo) {
+		set("bank_no", bankNo);
 	}
 	
-	public java.lang.String getSettlement() {
-		return getStr("settlement");
+	public java.lang.String getBankNo() {
+		return getStr("bank_no");
+	}
+
+	public void setSettlementType(java.lang.String settlementType) {
+		set("settlement_type", settlementType);
+	}
+	
+	public java.lang.String getSettlementType() {
+		return getStr("settlement_type");
 	}
 
 	public void setSettlementCycle(java.lang.String settlementCycle) {

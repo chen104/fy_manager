@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseSupplier;
  */
 @SuppressWarnings("serial")
 public class Supplier extends BaseSupplier<Supplier> {
-	
+	public final static Supplier dao = new Supplier().dao();
 }

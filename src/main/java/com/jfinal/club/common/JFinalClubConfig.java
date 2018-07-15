@@ -23,6 +23,9 @@ import com.chen.fy.controller.AccountController;
 import com.chen.fy.controller.base.CustomerController;
 import com.chen.fy.controller.base.DepartmentController;
 import com.chen.fy.controller.base.PersonController;
+import com.chen.fy.controller.base.SupplierController;
+import com.chen.fy.controller.base.TaxRateController;
+import com.chen.fy.controller.base.UnitController;
 import com.chen.fy.controller.role.RoleAdminController;
 import com.jfinal.club._admin.common.AdminRoutes;
 import com.jfinal.club._admin.permission.PermissionDirective;
@@ -99,7 +102,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/base/person", PersonController.class, "/_view/atladmin/person");
 		me.add("fy/admin/base/department", DepartmentController.class, "/_view/atladmin/department");
 		me.add("fy/admin/base/customer", CustomerController.class, "/_view/atladmin/customer");
-
+		me.add("fy/admin/base/supplier", SupplierController.class, "/_view/atladmin/supplier");
+		me.add("fy/admin/base/taxRate", TaxRateController.class, "/_view/atladmin/taxrate");
+		me.add("fy/admin/base/unit", UnitController.class, "/_view/atladmin/unit");
 	}
 
 	/**
