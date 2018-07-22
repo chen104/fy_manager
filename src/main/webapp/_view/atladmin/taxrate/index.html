@@ -1,0 +1,65 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">税率</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              <div class="box-body">
+                
+					<input hidden="hidden" value="#(model.id??)" name="model.id"></input
+					<div class="row">
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label  class="col-sm-3 control-label">当前税率</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="税率" value="#(model.taxRate??)" name="model.taxRate" readonly="readonly">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button onclick="" class="btn btn-info">修改</button> <!-- 靠右 class  pull-right  -->
+						</div>
+					
+					
+					</div>
+
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	
+             
+              </div>
+              <!-- /.box-footer -->
+       
+          </div>
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/base/taxRate"
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+</script>
+#include("../department/departModel.html")
+#end

@@ -18,16 +18,25 @@ import java.sql.Connection;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
+import com.chen.fy.FyLoginSessionInterceptor;
+import com.chen.fy.FyPermissionDirective;
 import com.chen.fy.IndexController;
 import com.chen.fy.controller.AccountController;
+import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
 import com.chen.fy.controller.base.DepartmentController;
+import com.chen.fy.controller.base.FileController;
 import com.chen.fy.controller.base.PersonController;
 import com.chen.fy.controller.base.SupplierController;
 import com.chen.fy.controller.base.TaxRateController;
 import com.chen.fy.controller.base.UnitController;
+import com.chen.fy.controller.business.CommissionController;
+import com.chen.fy.controller.business.ComplaintController;
+import com.chen.fy.controller.business.FinanceController;
+import com.chen.fy.controller.business.OrderController;
+import com.chen.fy.controller.business.ProduceController;
+import com.chen.fy.controller.business.WarehouseController;
 import com.chen.fy.controller.role.RoleAdminController;
-import com.jfinal.club._admin.common.AdminRoutes;
 import com.jfinal.club._admin.permission.PermissionDirective;
 import com.jfinal.club._admin.role.RoleDirective;
 import com.jfinal.club.common.handler.UrlSeoHandler;
@@ -61,6 +70,7 @@ public class JFinalClubConfig extends JFinalConfig {
 
 	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置
 	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").appendIfExists("jfinal_club_config_pro.txt");
+	// .append("tx_dev.txt");
 
 	private WallFilter wallFilter;
 
@@ -94,8 +104,8 @@ public class JFinalClubConfig extends JFinalConfig {
 	 * 2：避免多人协同开发时，频繁修改此文件带来的版本冲突 3：避免本文件中内容过多，拆分后可读性增强 4：便于分模块管理路由
 	 */
 	public void configRoute(Routes me) {
-		me.add(new FrontRoutes());
-		me.add(new AdminRoutes());
+		// me.add(new FrontRoutes());
+		// me.add(new AdminRoutes());
 		me.add("fy", IndexController.class, "/_view");
 		me.add("fy/admin/account", AccountController.class, "/_view/atladmin/account");
 		me.add("fy/admin/role", RoleAdminController.class, "/_view/atladmin/role");
@@ -105,6 +115,20 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/base/supplier", SupplierController.class, "/_view/atladmin/supplier");
 		me.add("fy/admin/base/taxRate", TaxRateController.class, "/_view/atladmin/taxrate");
 		me.add("fy/admin/base/unit", UnitController.class, "/_view/atladmin/unit");
+		me.add("fy/admin/base/file", FileController.class, "/_view/atladmin/file");
+
+		me.add("fy/admin/base/category", CategoryController.class, "/_view/atladmin/category");
+
+		// business
+
+		me.add("fy/admin/biz/fyorder", OrderController.class, "/_view/atladmin/business/fyorder");
+		me.add("fy/admin/biz/produce", ProduceController.class, "/_view/atladmin/business/produce");
+		me.add("fy/admin/biz/whouse", WarehouseController.class, "/_view/atladmin/business/warehouse");
+
+		me.add("fy/admin/biz/finance", FinanceController.class, "/_view/atladmin/business/finance");
+		me.add("fy/admin/biz/aftersale/complaint", ComplaintController.class, "/_view/atladmin/business/aftersale");
+		me.add("fy/admin/biz/commission", CommissionController.class, "/_view/atladmin/business/commission");
+
 	}
 
 	/**
@@ -116,6 +140,8 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.addDirective("role", RoleDirective.class);
 		me.addDirective("permission", PermissionDirective.class);
 		me.addDirective("perm", PermissionDirective.class); // 配置一个别名指令
+
+		me.addDirective("fypermession", FyPermissionDirective.class); // 配置一个别名指令
 
 		me.addSharedFunction("/_view/common/__layout.html");
 		me.addSharedFunction("/_view/common/_paginate.html");
@@ -160,6 +186,8 @@ public class JFinalClubConfig extends JFinalConfig {
 
 	public void configInterceptor(Interceptors me) {
 		me.add(new LoginSessionInterceptor());
+		me.add(new FyLoginSessionInterceptor());
+		// me.add(new FyAuthInterceptor());
 	}
 
 	public void configHandler(Handlers me) {

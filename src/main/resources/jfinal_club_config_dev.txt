@@ -1,4 +1,6 @@
 #主要配置
+
+
 jdbcUrl=jdbc:mysql://localhost/club?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 user=root
 password=root

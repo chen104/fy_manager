@@ -1,0 +1,101 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">类别管理</h3>
+
+				<a href="/fy/admin/base/category/add"><button type="submit"
+						class="btn btn-primary">添加类别</button></a>
+
+
+				<div class="box-tools">
+				<!--  
+					<form action="/fy/admin/base/taxRate">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="keyWord" class="form-control pull-right"
+								placeholder="Search" value="#(keyWord)">
+
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+
+					</form>
+					-->
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+								<th>单位</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								<td>#(x.get(name))</td>
+								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
+								<i class="fa fa-pencil" title="修改"></i>
+								</a> <a data-delete data-title="#escape(x.name)"
+									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+										class="fa fa-trash" title="删除"></i>
+								</a></td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/base/unit?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function deleteperson(a){
+	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+    </script>
+
+#end

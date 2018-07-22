@@ -3,25 +3,13 @@ package com.chen.fy.controller.base;
 import com.chen.fy.model.TaxRate;
 import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
-import com.jfinal.plugin.activerecord.Page;
 
 public class TaxRateController extends BaseController {
 	public void index() {
-		String key = getPara("keyWord");
-		Page<TaxRate> personPage = null;
-		setAttr("keyWord", key);
-		// if (StringUtils.isEmpty(key)) {
-		personPage = TaxRate.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from fy_base_tax_rate order by id desc");
-		// }
-		// else {
-		// personPage = Customer.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-		// "from fy_base_tax_rate where name like ? order by id desc", "%" + key + "%");
-		// setAttr("append", "keyWord=" + key);
-		// }
+		TaxRate model = TaxRate.dao.findFirst("select * from fy_base_tax_rate");
 
-		setAttr("modelPage", personPage);
-		render("list.html");
+		setAttr("model", model);
+		render("index.html");
 	}
 
 	public void save() {

@@ -1,0 +1,163 @@
+#@myLayout() 
+#define main()
+
+<script src="/assets/atl/jqueryUpload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/assets/atl/jqueryUpload/js/jquery.iframe-transport.js"></script>
+<script src="/assets/atl/jqueryUpload/js/jquery.fileupload.js"></script>
+<style type="text/css">
+  
+  	.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+
+.mybt {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+
+.mydelete {
+    position: relative;
+    display: inline-block;
+    background: red;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color:  #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+
+
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+
+	.marginbt{
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	
+	 table{word-break: keep-all;white-space:nowrap;}
+  </style>
+  
+ <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+          			<h1>上传文件</h1>
+          		
+          			<a href="javascript:;" class="file"   >选择文件
+					  <input id="fileupload"  type="file" name="files[]" data-url="/fy/admin/base/file/uploadFile" multiple="multiple" >
+					</a>
+          			
+            </div>
+            <!-- /.box-header -->
+
+              <div class="box-body " style="">
+                
+                	<div class="row">
+                			<div class="col-xs-6  "> 
+                				<table class="table">
+								  <tbody id="tbody">
+								  
+								  </tbody>
+								</table>
+                			</div>
+                			
+                	</div>
+                
+				
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	
+             		<button class="file" onclick="uploadAll()">全部上传</button>
+              </div>
+              <!-- /.box-footer -->
+        
+          </div>
+          
+#end
+<script type="text/javascript">
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        add: function (e, data) {
+			var tr = $('<tr></tr>');
+			var titletd =  $('<td></td>');
+			 titletd.text(123);
+			var bttd =  $('<td/>');
+			var btupload =  $('<button/>');
+			btupload.text("上传").addClass(" btn btn-info marginbt btn-sm").attr("isuploadbt",true);
+			var btcancel =  $('<button/>');
+			btcancel.text("删除").addClass("btn btn-danger marginbt btn-sm");
+			var name = data.files[0].name;
+			titletd.text(name);
+			bttd.append(btupload).append(btcancel);
+            console.info(e);
+		
+           tr.append(titletd).append(bttd);
+            $("#tbody").append(tr);
+            /*
+            data.context = $('<button/>').text('Upload')
+                .appendTo($("#contain"))
+                .click(function () {
+                    data.context = $('<p/>').text('Uploading...').replaceAll($(this));
+                    data.submit();
+                });
+            */
+            btcancel. click(function(){
+            	$(this).parent().parent().remove();
+            });
+            
+            btupload.click(function () {
+                data.context = $('<p/>').text('Uploading...').replaceAll($(this));
+                data.submit();
+            });
+           
+        },
+        done: function (e, data) {
+            data.context.text('Upload finished.');
+            data.context.next().remove(); 
+            
+        }
+    });
+});
+	function  uploadAll(){
+			var upbts = $("button[isuploadbt = true]");
+			console.debug(upbts);
+			for(var i=0;i < upbts.length  ; i++){
+					upbts[i].click();
+				}
+		}
+
+</script>

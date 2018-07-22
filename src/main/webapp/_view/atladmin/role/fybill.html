@@ -1,0 +1,244 @@
+
+<ul class="list-group">
+	<li class="list-group-item">类别 <span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="category_id" data-table="fy_business_bill"
+			#if(bill.category_id??) checked #end>
+	</span></li>
+
+	<li class="list-group-item">计划员<span class="pull-right">  <input
+			type="checkbox" onclick="onclickCheckCol(this)" 
+			data-role-id="#(role.id??)" data-col="planer_id" data-table="fy_business_bill"
+			#if(bill.planer_id??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item"> 执行状态<span class="pull-right">
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="execu_status" data-table="fy_business_bill"
+			#if(bill.execu_status??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">紧急状态 <span class="pull-right"><input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="urgent_status" data-table="fy_business_bill"
+			#if(bill.urgent_status??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item"> 订单日期<span class="pull-right"><input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="bill_date" data-table="fy_business_bill"
+			#if(bill.bill_date??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">交货日期<span class="pull-right"> 
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="delivery_date" data-table="fy_business_bill"
+			#if(bill.delivery_date??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">工作订单号<span class="pull-right"> 
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="work_bill_no" data-table="fy_business_bill"
+			#if(bill.work_bill_no??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">送货单号<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="delivery_no" data-table="fy_business_bill"
+			#if(bill.delivery_no??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">商品名称<span class="pull-right"> 
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="commodity_name" data-table="fy_business_bill"
+			#if(bill.commodity_name??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">商品规格<span class="pull-right"> 
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="commodity_spec" data-table="fy_business_bill"
+			#if(bill.commoditySpec??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">总图号<span class="pull-right">  <input
+			type="checkbox" onclick="map_no"
+			data-role-id="#(role.id??)" data-col="map_no" data-table="fy_business_bill"
+			#if(bill.map_no??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">技术条件<span class="pull-right"> 
+			<input type="checkbox" onclick="technology"
+			data-role-id="#(role.id??)" data-col="technology" data-table="fy_business_bill"
+			#if(bill.technology??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">加工要求<span class="pull-right"> 
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="machining_require" data-table="fy_business_bill"
+			#if(bill.machining_require??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">数量 <span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="quantity" data-table="fy_business_bill"
+			#if(bill.quantity??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">单位<span class="pull-right">  <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="unit" data-table="fy_business_bill"
+			#if(bill.unit??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">未税单价<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="untaxed_amount" data-table="fy_business_bill"
+			#if(bill.untaxed_amount??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">金额<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="amount" data-table="fy_business_bill"
+			#if(bill.amount??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">税率<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="tax" data-table="fy_business_bill"
+			#if(bill.tax??) checked #end>
+	</span></li>
+	
+	<li class="list-group-item">税额<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="tax_amount" data-table="fy_business_bill"
+			#if(bill.tax_amount??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">含税金额<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="tatol_amount" data-table="fy_business_bill"
+			#if(bill.tatol_amount??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">导入时间<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="inport_time" data-table="fy_business_bill"
+			#if(bill.inport_time??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">接收时间<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="receive_time" data-table="fy_business_bill"
+			#if(bill.receive_time??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">订单分配时间<span class="pull-right">
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="distribute_time" data-table="fy_business_bill"
+			#if(bill.distribute_time??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">分配预警时间<span class="pull-right">
+			<input type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-permission-id="warn_time" data-table="fy_business_bill"
+			#if(bill.warn_time??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">备注<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="remark" data-table="fy_business_bill"
+			#if(bill.remark??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">图纸<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="draw" data-table="fy_business_bill"
+			#if(bill.draw??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">挂账时间<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="hang_time" data-table="fy_business_bill"
+			#if(bill.hang_time??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">挂账状态<span class="pull-right"><input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="hang_status" data-table="fy_business_bill"
+			#if(bill.hang_status??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">挂账数量<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="hang_quantity" data-table="fy_business_bill"
+			#if(bill.hang_quantity??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">挂账金额<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="hang_amount" data-table="fy_business_bill"
+			#if(bill.hang_amount??) checked #end>
+	</span></li>
+
+
+
+	<li class="list-group-item">未挂账数量<span class="pull-right"> <input
+			type="checkbox" onclick="onclickCheckCol(this)"
+			data-role-id="#(role.id??)" data-col="unhang_quantity" data-table="fy_business_bill"
+			#if(bill.unhang_quantity??) checked #end>
+	</span></li>
+</ul>

@@ -1,0 +1,58 @@
+
+<script src="/assets/atl/jqueryUpload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/assets/atl/jqueryUpload/js/jquery.iframe-transport.js"></script>
+<script src="/assets/atl/jqueryUpload/js/jquery.fileupload.js"></script>
+<style type="text/css">
+
+	.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+	}
+  	.file input{
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+</style>
+  
+<a href="javascript:;" class="file" >选择文件
+		<input id="fileupload" class="inputFile"   type="file" name="orders" data-url="/fy/admin/biz/fyorder/importFile" >
+</a>
+<script type="text/javascript">
+$(function () {
+    $('#fileupload').fileupload({
+        dataType: 'json',
+        add: function (e, data) {
+                data.submit();
+        
+        },
+        done: function (e, data) {
+           // data.context.text('Upload finished.');
+         //   data.context.next().remove(); 
+        	console.info(data);
+        	var ret = data.result;
+        	  if (ret.state == "ok") {
+      			
+				   location.reload();
+				}
+			   alert(ret.msg);
+        	
+        },
+        error:function (jqXHR, textStatus, errorThrown) {
+            console.info(textStatus);
+            }
+    });
+});
+  </script>
+  

@@ -34,13 +34,13 @@
   <div class="login-box-body">
     <p class="login-box-msg">发亦生产管理系统</p>
 
-    <form action="../../index2.html" method="post">
+    <form id="myForm" action="/fy/doLogin" method="post">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="text" name="userName" class="form-control" placeholder="用户名">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+        <input type="password" name="password" class="form-control" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -79,6 +79,29 @@
       increaseArea: '20%' /* optional */
     });
   });
+
+  
+</script>
+
+<script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/base/person";
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
 </script>
 </body>
 </html>

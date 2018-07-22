@@ -4,14 +4,31 @@
 <!-- Horizontal Form -->
           <div class="box box-info" style="wwidth: 300ps">
             <div class="box-header with-border">
-              <h3 class="box-title">新建客户</h3>
+              <h3 class="box-title">税率</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="myForm" action="/fy/admin/base/taxRate/#(action)" method="post">         
+            
               <div class="box-body">
                 
-					#include("form.html")
+					<input hidden="hidden" value="#(model.id??)" name="model.id"></input
+					<div class="row">
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label  class="col-sm-3 control-label">当前税率</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="税率" value="#(model.taxRate??)" name="model.taxRate" >
+								</div>
+							</div>
+						</div>
+					
+						
+					
+					</div>
+
                 
               </div>
               <!-- /.box-body -->
@@ -23,7 +40,7 @@
              
               </div>
               <!-- /.box-footer -->
-            </form>
+       
           </div>
  <script src="/assets/atl/dist/js/jquery.form.js"></script>
 <script type="text/javascript">

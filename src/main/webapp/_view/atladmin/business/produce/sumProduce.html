@@ -1,0 +1,125 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">生产汇总表</h3>
+				<div class="box-tools">
+				<!--  
+					<form action="/fy/admin/base/taxRate">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="keyWord" class="form-control pull-right"
+								placeholder="Search" value="#(keyWord)">
+
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+
+					</form>
+					-->
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>紧急状态</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>加工要求</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>分配时间</th>
+								<th>处理状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execuStatus)</td>
+								<td>#(x.urgentStatus)</td>
+								<td>#(x.orderDate)</td>
+								<td>#(x.deliveryDate)</td>
+								<td>#(x.workOrderNo)</td>
+								<td>#(x.deliveryNo)</td>
+								<td>#(x.commodityName)</td>
+								<td>#(x.commoditySpec)</td>
+								<td>#(x.mapNo)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machiningRequire)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit)</td>
+								<td>#(x.distributeTime)</td>
+								<td>#(x.handleStatus)</td>
+								<td class="jfa-operation-button"><a href="" style="margin-left: 14px;"> 
+								<i class="glyphicon glyphicon-share-alt" title=""></i>
+								</a> </td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/fybill?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function deleteperson(a){
+	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+    </script>
+
+#end
