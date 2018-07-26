@@ -20,12 +20,12 @@
 								<label  class="col-sm-3 control-label">当前税率</label>
 					
 								<div class="col-sm-9">
-									<input type="text" class="form-control" placeholder="税率" value="#(model.taxRate??)" name="model.taxRate" readonly="readonly">
+									<input type="text" class="form-control" placeholder="税率" value="#(model.matchValue??)" name="model.matchValue" readonly="readonly">
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
-							<button onclick="" class="btn btn-info">修改</button> <!-- 靠右 class  pull-right  -->
+							<a href="/fy/admin/base/taxRate/edit?id=#(model.id??)"> <button onclick="" class="btn btn-info">修改</button> </a> <!-- 靠右 class  pull-right  -->
 						</div>
 					
 					

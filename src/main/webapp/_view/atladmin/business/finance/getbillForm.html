@@ -1,0 +1,267 @@
+
+#if(action == "savebill" ) 
+<input hidden="hidden" value="#(model.id??)" name="model.parentId"></input>
+#else
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+<input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
+#end
+
+
+
+<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">类别</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.cate_tmp??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">计划员	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.plan_tmp??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">执行状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.execu_status??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 订单日期	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.order_date??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 交货日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.delivery_date??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 工作订单号	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.work_order_no??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.commodity_name??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 商品规格	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.commodity_spec??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.map_no??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">  技术条件	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.technology??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">加工要求</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.machining_require??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.quantity??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 单位	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.unit_tmp??)"   readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">未税单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.untaxed_cost??)"  >
+			</div>
+		</div>
+	</div>
+
+	
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 挂账状态	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(model.hang_status??)"    name="model.hangStatus">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">挂账数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.hang_quantity??)"   name="model.hangQuantity">
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 挂账金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(model.hang_amount??)"    name="model.hangAmount">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">挂账时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.hang_time??)" data-type='datepicker'   name="model.hangTime">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+<div class="row">
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">未挂账数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.unhang_quantity??)"   name="model.unhangQuantity">
+			</div>
+		</div>
+	</div>
+
+</div>

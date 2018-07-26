@@ -73,4 +73,20 @@ public abstract class BaseFyBusinessGetpaybill<M extends BaseFyBusinessGetpaybil
 		return get("unbill_account");
 	}
 
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
 }

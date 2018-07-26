@@ -7,12 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -319,13 +321,33 @@ public class PIOExcelUtil {
 	public Date getDateValue(int rowNum, int columnNum) {
 		Date cellVal;
 		Cell cell = sheet.getRow(rowNum).getCell(columnNum, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		if (DateUtil.isCellDateFormatted(cell)) {
+		CellType type = cell.getCellTypeEnum();
+		// System.out.println(type);
+		if (type == CellType.STRING) {
+			try {
+				Date date = DateUtils.parseDate(cell.getStringCellValue().trim(), "yyyy-MM-dd hh:mm:ss");
+				return date;
+			} catch (ParseException e) {
 
-			cellVal = cell.getDateCellValue();
-			return cellVal;
-		} else {
-			return null;
+			}
+			try {
+				Date date = DateUtils.parseDate(cell.getStringCellValue().trim(), "yyyy-MM-dd");
+				return date;
+			} catch (ParseException e) {
+
+				return null;
+			}
+		} else if (type == CellType.NUMERIC) {
+			if (DateUtil.isCellDateFormatted(cell)) {
+
+				cellVal = cell.getDateCellValue();
+				return cellVal;
+			} else {
+				return null;
+			}
 		}
+		return null;
+
 	}
 
 	/**

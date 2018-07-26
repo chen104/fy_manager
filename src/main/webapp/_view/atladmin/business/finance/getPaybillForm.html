@@ -1,0 +1,102 @@
+#if(action =="saveGetpaybill")
+<input hidden="hidden" value="#(model.id??)" name="parentId"></input>
+
+#else
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+#end
+<input hidden="hidden" value="#(model.orderId??)" name="model.orderId"></input>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">客户名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.customer_name??)"   name="model.customerName">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">开票期间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(model.invoice_period??)"  name="model.invoicePeriod">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">开票金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.invoice_account??)" name="model.invoiceAccount">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">结算期间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(model.bill_period??)"   name="model.billPeriod">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">结算工具</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.bill_tool??)" name="model.billTool">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">结算金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(model.bill_account??)"    name="model.billAccount">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">未结算金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(model.unbill_account??)"  name="model.unbillAccount">
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+			

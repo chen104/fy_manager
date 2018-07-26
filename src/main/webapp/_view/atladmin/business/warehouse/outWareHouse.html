@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding text-center">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -33,37 +33,30 @@
 								<th>序号</th>
 								<th>类别</th>
 								<th>计划员</th>
-								<th>执行状态</th>
-								<th>紧急状态</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
+							
+								
 								<th>工作订单号</th>
 								<th>送货单号</th>
 								<th>商品名称</th>
 								<th>商品规格</th>
 								<th>总图号</th>
-								<th>技术条件</th>
-								<th>加工要求</th>
+								
 								<th>数量</th>
 								<th>单位</th>
 								
-								<th>入库时间</th>
-								<th>实际入库数量</th>
-								<th>入库来源</th>
-								<th>检测表生成时间</th>
-								
-															
-								
-								<th>检测时间</th>
-								<th>检测表生成时间</th>
-								<th>检测数量</th>
-								<th>检测结果</th>
-								<th>检测处理</th>
-								<th>是否生成质量处理单据</th>
-								<th>是否生成待出库</th>
-								<th>生成时间</th>
-								<th>是否生成应付明细表	</th>
-								<th>应付明细表生成生成时间	</th>
+								<th>到货地址</th>
+								<th>运输方式</th>
+								<th>运输公司</th>
+								<th>运输费用</th>
+								<th>运输重量</th>
+								<th>运输单号</th>
+								<th>是否生成应收明细表</th>
+								<th>出库时间</th>
+								<th>出库数量	</th>
+								<th>是否撤回应收明细单</th>
+								<th>撤回原因</th>
+								<th>是否生成售后处理表</th>
+								<th>售后处理表生成时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -71,40 +64,41 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+								<td>#(x.category_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
+		
 								<td>#(x.workOrderNo)</td>
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.commodityName)</td>
 								<td>#(x.commoditySpec)</td>
 								<td>#(x.mapNo)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
-								<th>#(x.in_time)</th>
-								<th>#(x.real_in_quantity)</th>
-								<th>#(x.in_from)</th>
-								<th>#(x.check_create_time)</th>
 								
-								<th>#(x.check_time)</th>
-								<th>#(x.check_quantity)</th>
-								<th>#(x.check_result)</th>
-								<th>#(x.check_handle)</th>
-								<th>#(x.is_create_quality)</th>
-								<th>#(x.is_create_can_out)</th>
-								<th>#(x.create_out_time)</th>
-								<th>#(x.is_create_pay)</th>
-								<th>#(x.pay_create_time)</th>
-
-								<td class="jfa-operation-button"><a href="#"> 
-								<i class="fa fa-pencil" title="生成检测表"></i>
-								</a> 
+								<td>#(x.receive_address)</td>
+								<td>#(x.transport_type)</td>
+								<td>#(x.transport_company)</td>
+								<td>#(x.transport_fee)</td>
+								<td>#(x.transport_weight)</td>
+								<td>#(x.transport_no)</td>
+								<td>#(x.is_create_get_pay)</td>
+								<td>#(x.out_time)</td>
+								<td>#(x.out_quantity)</td>
+								<td>#(x.is_back_pay)</td>
+								<td>#(x.back_reson)</td>
+								<td>#(x.is_create_after_sale)</td>
+								<td>#(x.after_sale_create_time)</td>
+								<td class="jfa-operation-button">
+								
+									#if(!x.is_create_get_pay) 
+										
+										<a href="#" onclick="createGetPay(this)" data-id="#(x.id)" > 
+											<i class="fa fa-pencil" title="生应付明细单"></i>
+										</a> 
+										
+									#end
 								</td>
 							</tr>
 							#end
@@ -117,7 +111,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/whouse/outWhouse?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -151,6 +145,31 @@ function deleteperson(a){
 	
 		}
 	}
+
+
+function createGetPay(a){
+
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/whouse/toGetPay',
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   $(a).parent().empty();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+}
+
+
     </script>
 
 #end

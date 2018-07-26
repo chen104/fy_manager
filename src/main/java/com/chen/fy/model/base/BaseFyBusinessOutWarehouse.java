@@ -33,12 +33,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getInt("planer_id");
 	}
 
-	public void setWorkBillNo(java.lang.String workBillNo) {
-		set("work_bill_no", workBillNo);
+	public void setWorkOrderNo(java.lang.String workOrderNo) {
+		set("work_order_no", workOrderNo);
 	}
 	
-	public java.lang.String getWorkBillNo() {
-		return getStr("work_bill_no");
+	public java.lang.String getWorkOrderNo() {
+		return getStr("work_order_no");
 	}
 
 	public void setDeliveryNo(java.lang.String deliveryNo) {
@@ -65,20 +65,20 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getStr("commodity_spec");
 	}
 
-	public void setMapNo(java.lang.Integer mapNo) {
+	public void setMapNo(java.lang.String mapNo) {
 		set("map_no", mapNo);
 	}
 	
-	public java.lang.Integer getMapNo() {
-		return getInt("map_no");
+	public java.lang.String getMapNo() {
+		return getStr("map_no");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {
@@ -153,12 +153,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("out_time");
 	}
 
-	public void setOutQuantity(java.lang.Integer outQuantity) {
+	public void setOutQuantity(java.math.BigDecimal outQuantity) {
 		set("out_quantity", outQuantity);
 	}
 	
-	public java.lang.Integer getOutQuantity() {
-		return getInt("out_quantity");
+	public java.math.BigDecimal getOutQuantity() {
+		return get("out_quantity");
 	}
 
 	public void setIsBackPay(java.lang.Boolean isBackPay) {
@@ -191,6 +191,46 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 	
 	public java.util.Date getAfterSaleCreateTime() {
 		return get("after_sale_create_time");
+	}
+
+	public void setCategoryTmp(java.lang.String categoryTmp) {
+		set("category_tmp", categoryTmp);
+	}
+	
+	public java.lang.String getCategoryTmp() {
+		return getStr("category_tmp");
+	}
+
+	public void setPlanTmp(java.lang.String planTmp) {
+		set("plan_tmp", planTmp);
+	}
+	
+	public java.lang.String getPlanTmp() {
+		return getStr("plan_tmp");
+	}
+
+	public void setUnitTmp(java.lang.String unitTmp) {
+		set("unit_tmp", unitTmp);
+	}
+	
+	public java.lang.String getUnitTmp() {
+		return getStr("unit_tmp");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
 	}
 
 }

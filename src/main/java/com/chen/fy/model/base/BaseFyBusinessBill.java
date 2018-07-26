@@ -153,4 +153,44 @@ public abstract class BaseFyBusinessBill<M extends BaseFyBusinessBill<M>> extend
 		return get("paybill_create_time");
 	}
 
+	public void setCategoryTmp(java.lang.String categoryTmp) {
+		set("category_tmp", categoryTmp);
+	}
+	
+	public java.lang.String getCategoryTmp() {
+		return getStr("category_tmp");
+	}
+
+	public void setPlanTmp(java.lang.String planTmp) {
+		set("plan_tmp", planTmp);
+	}
+	
+	public java.lang.String getPlanTmp() {
+		return getStr("plan_tmp");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
+	public void setFyBizWwReceive(java.lang.String fyBizWwReceive) {
+		set("fy_biz_ww_receive", fyBizWwReceive);
+	}
+	
+	public java.lang.String getFyBizWwReceive() {
+		return getStr("fy_biz_ww_receive");
+	}
+
 }

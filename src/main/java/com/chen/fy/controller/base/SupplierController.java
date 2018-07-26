@@ -74,4 +74,19 @@ public class SupplierController extends BaseController {
 		setAttr("action", "save");
 		render("edit.html");
 	}
+
+	public void searchSupplierJson() {
+		String key = getPara("keyWord");
+		Page<Supplier> personPage = null;
+		setAttr("keyWord", key);
+		if (StringUtils.isEmpty(key)) {
+			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_supplier order by id desc");
+		} else {
+			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_supplier  where name like ? order by id desc", "%" + key + "%");
+			setAttr("append", "keyWord=" + key);
+		}
+		renderJson(personPage);
+	}
 }

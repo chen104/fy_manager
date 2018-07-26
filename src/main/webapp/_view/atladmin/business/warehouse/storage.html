@@ -51,7 +51,7 @@
 								<th>检测时间	</th>
 								<th>是否生成出库单</th>
 								<th>出库生成时间</th>
-								<th>操作</th>
+								<th>出库</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -76,12 +76,23 @@
 								
 								<th>#(x.check_result)</th>
 								<th>#(x.check_time)	</th>
-								<th>#(x.is_create_can_out)	</th>
-								<th>#(x.create_out_time)	</th>
+								<th>
+									#if(x.is_create_can_out)	
+									#else
+         								已生成	
+         							#end
+								</th>
+								<th>#(x.create_out_time)</th>
 							
-								<td class="jfa-operation-button"><a href="#"> 
-								<i class="fa fa-pencil" title="生成检测表"></i>
-								</a> 
+								<td class="jfa-operation-button">
+								  #if(!x.create_out_time)
+									<a href="/fy/admin/biz/whouse/toAddOut?id=#(x.id)" > 
+									<i class="fa fa-pencil" title="生成检测表"></i>
+									</a> 
+									
+         
+									#end
+								
 								</td>
 							</tr>
 							#end

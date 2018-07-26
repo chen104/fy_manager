@@ -54,13 +54,13 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_id)</td>
-								<td>#(x.planerId)</td>
+								<td>#(x.category_tmp)</td>
+								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
-								<td>#(x.billDate)</td>
+								<td>#(x.order_date)</td>
 								<td>#(x.deliveryDate)</td>
-								<td>#(x.workBillNo)</td>
+								<td>#(x.work_order_no)</td>
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.commodityName)</td>
 								<td>#(x.commoditySpec)</td>
@@ -68,7 +68,7 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								<td>#(x.receive_time)</td>
 								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
@@ -95,32 +95,29 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-	else{
+function reveive(a){
 	
-		}
-	}
+	$.ajax({
+		   type: "POST",
+		   url:"/fy/admin/biz/commission/receive" ,
+		   data:{id:$(a).data("id")},
+		   success: function(ret){
+			   if (ret.state == "ok") {
+		
+				   $(a).parent().empty();
+				}
+			   alert(ret.msg);
+		   },
+		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+			    // 通常 textStatus 和 errorThrown 之中
+			    // 只有一个会包含信息
+			 //   this; // 调用本次AJAX请求时传递的options参数
+			   alert('网络异常');
+			}
+		});
+
+
+}
     </script>
 
 #end

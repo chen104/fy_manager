@@ -51,7 +51,7 @@
 								<th>实际入库数量</th>
 								<th>入库来源</th>
 								<th>检测表生成时间</th>
-								<th>操作</th>
+								<th>操作 生成检测表</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -78,9 +78,13 @@
 								<th>#(x.real_in_quantity)</th>
 								<th>#(x.in_from)</th>
 								<th>#(x.check_create_time)</th>
-								<td class="jfa-operation-button"><a href="#"> 
+								
+								<td class="jfa-operation-button">
+								#if(!x.is_create_check)
+								<a href="#" data-action="/fy/admin/biz/whouse/toCheck" data-id="#(x.id)" onclick="toCheck(this)"> 
 								<i class="fa fa-pencil" title="生成检测表"></i>
 								</a> 
+								#end
 								</td>
 							</tr>
 							#end
@@ -93,7 +97,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/whouse?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -101,17 +105,16 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
+function toCheck(a){
 
 		$.ajax({
 			   type: "POST",
 			   url:$(a).data("action") ,
+			   data:{id:$(a).data("id")},
 			   success: function(ret){
 				   if (ret.state == "ok") {
-			
-					   location.reload();
+				
+					   $(a).parent().empty();
 					}
 				   alert(ret.msg);
 			   },
@@ -122,10 +125,7 @@ function deleteperson(a){
 				   alert('网络异常');
 				}
 			});
-		}
-	else{
-	
-		}
+
 	}
     </script>
 

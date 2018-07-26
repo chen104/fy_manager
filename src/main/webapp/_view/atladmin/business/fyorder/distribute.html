@@ -27,9 +27,9 @@
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
 	
-					<table class="table table-bordered"  style="white-space:nowrap">
+					<table class="table table-bordered text-center"  style="white-space:nowrap">
 						<thead>
-							<tr>
+							<tr >
 								<th style="">序号</th>
 								<th>类别</th>
 								<th>计划员</th>
@@ -46,9 +46,7 @@
 								<th>加工要求</th>
 								<th>数量</th>
 								<th>单位</th>
-								<th>接收时间</th>
-								
-							
+								<th>生产委外接收时间</th>
 								<th>分配流向</th>
 								<th>分配属性</th>
 								<th>分配时间</th>
@@ -59,7 +57,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+								<td>#(x.category_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -75,16 +73,20 @@
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
-								<td>#(x.receiveTime)</td>
+								<td>#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
 								
 								<td>#(x.distribute_to)</td>
 								<td>#(x.distribute_attr)</td>
 								<td>#(x.distribute_time)</td>
 								
 								
-								<td class="jfa-operation-button"><a href="#" > 
-								<i class="glyphicon glyphicon-share-alt" title="分配"></i>
-								</a> </td>
+								<td class="jfa-operation-button"> 
+								#if(!x.distribute_time)
+								<a href="#" data-id="#(x.id)" onclick="showModel(this)" >
+									<i class="glyphicon glyphicon-share-alt" title="分配"></i>
+								</a>
+								#end
+								 </td>
 							</tr>
 							#end
 						</tbody>
@@ -96,40 +98,12 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/fyorder/distribute?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 
 
-<script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-	else{
-	
-		}
-	}
-    </script>
-
 #end
+#include("disModel.html")

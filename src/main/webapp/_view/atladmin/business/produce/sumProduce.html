@@ -55,7 +55,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+								<td>#(x.category_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -69,11 +69,11 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								<td>#(x.distributeTime)</td>
 								<td>#(x.handleStatus)</td>
-								<td class="jfa-operation-button"><a href="" style="margin-left: 14px;"> 
-								<i class="glyphicon glyphicon-share-alt" title=""></i>
+								<td class="jfa-operation-button"><a href="#" onclick="showModel('#(x.id)')"> 
+										<i class="glyphicon glyphicon-share-alt" title="生成生产计划单"></i>
 								</a> </td>
 							</tr>
 							#end
@@ -86,7 +86,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/produce/sumprod?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -94,32 +94,9 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-	else{
 	
-		}
-	}
-    </script>
-
+	
+ </script>
+#include("planModel.html")
 #end
+

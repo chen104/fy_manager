@@ -46,7 +46,6 @@
 								<th>加工要求</th>
 								<th>数量</th>
 								<th>单位</th>
-								<th>接收时间</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -54,7 +53,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+								<td>#(x.category_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -68,14 +67,15 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
-								<td>接收时间</td>
-								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="glyphicon glyphicon-share-alt" title="删除"></i>
-								</a></td>
+								<td>#(x.unit_tmp)</td>
+								
+								<td class="jfa-operation-button">
+								#if(!is_revecive)
+								<a href="#" data-id="#(x.id)" onclick="reveive(this)"> 
+								<i class="glyphicon glyphicon-hand-up" title="接收"></i>
+								</a> 
+								#end
+								</td>
 							</tr>
 							#end
 						</tbody>
@@ -95,17 +95,16 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
+function reveive(a){
+	
 		$.ajax({
 			   type: "POST",
-			   url:$(a).data("action") ,
+			   url:"/fy/admin/biz/produce/receive" ,
+			   data:{id:$(a).data("id")},
 			   success: function(ret){
 				   if (ret.state == "ok") {
 			
-					   location.reload();
+					   $(a).parent().empty();
 					}
 				   alert(ret.msg);
 			   },
@@ -116,10 +115,8 @@ function deleteperson(a){
 				   alert('网络异常');
 				}
 			});
-		}
-	else{
 	
-		}
+	
 	}
     </script>
 

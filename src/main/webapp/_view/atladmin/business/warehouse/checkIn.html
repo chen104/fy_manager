@@ -51,9 +51,6 @@
 								<th>实际入库数量</th>
 								<th>入库来源</th>
 								<th>检测表生成时间</th>
-								
-															
-								
 								<th>检测时间</th>
 								<th>检测数量</th>
 								<th>检测结果</th>
@@ -63,7 +60,7 @@
 								<th>生成时间</th>
 								<th>是否生成应付明细表	</th>
 								<th>应付明细表生成生成时间	</th>
-								<th>操作</th>
+								<th>输入检测结果</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -86,24 +83,26 @@
 								<td>#(x.quantity)</td>
 								<td>#(x.unit)</td>
 								
-								<th>#(x.in_time)</th>
-								<th>#(x.real_in_quantity)</th>
-								<th>#(x.in_from)</th>
-								<th>#(x.check_create_time)</th>
+								<td>#(x.in_time)</td>
+								<td>#(x.real_in_quantity)</td>
+								<td>#(x.in_from)</td>
+								<td>#(x.check_create_time)</td>
 								
-								<th>#(x.check_time)</th>
-								<th>#(x.check_quantity)</th>
-								<th>#(x.check_result)</th>
-								<th>#(x.check_handle)</th>
-								<th>#(x.is_create_quality)</th>
-								<th>#(x.is_create_can_out)</th>
-								<th>#(x.create_out_time)</th>
-								<th>#(x.is_create_pay)</th>
-								<th>#(x.pay_create_time)</th>
-
-								<td class="jfa-operation-button"><a href="#"> 
-								<i class="fa fa-pencil" title="生成检测表"></i>
-								</a> 
+								<td>#(x.check_time)</td>
+								<td>#(x.check_quantity)</td>
+								<td>#(x.check_result)</td>
+								<td>#(x.check_handle)</td>
+								<td>#(x.is_create_quality)</td>
+								<td>#(x.is_create_can_out)</td>
+								<td>#(x.create_out_time)</td>
+								<td>#(x.is_create_pay)</td>
+								<td>#(x.pay_create_time)</td>
+								<td class="jfa-operation-button">
+								 	#if(!x.check_result)
+										<a href="/fy/admin/biz/whouse/editCheck?id=#(x.id)"> 
+										<i class="fa fa-pencil" title="检测入库"  ></i>
+										</a> 
+									#end
 								</td>
 							</tr>
 							#end

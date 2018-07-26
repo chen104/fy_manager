@@ -61,13 +61,13 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_id)</td>
-								<td>#(x.planerId)</td>
+								<td>#(x.category_tmp)</td>
+								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
-								<td>#(x.billDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workBillNo)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.commodityName)</td>
 								<td>#(x.commoditySpec)</td>
@@ -75,19 +75,16 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.reveive_time)</td>
 								<th>#(x.distribute_time)</th>
 								<th>#(x.supplier)</th>
 								<th>#(x.purchase_time)</th>
 								<th>#(x.handle_status)</th>
-								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								<td class="jfa-operation-button"><a href="#"  onclick="showChooesSupplier()"> 
+								<i class="fa fa-pencil" title="生成采购单"></i>
+								</a> </td>
 							</tr>
 							#end
 						</tbody>
@@ -134,5 +131,5 @@ function deleteperson(a){
 		}
 	}
     </script>
-
+#include("searchSupplier.html")
 #end

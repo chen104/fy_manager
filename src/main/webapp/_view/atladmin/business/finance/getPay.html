@@ -45,8 +45,7 @@
 								<th>加工要求</th>
 								<th>数量</th>
 								<th>单位</th>
-								
-														
+												
 								<th>未税单价</th>
 								<th>单位</th>
 								<th>出库时间</th>
@@ -63,10 +62,10 @@
 								<td>#(for.index+1)</td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
+								
+							
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
 								<td>#(x.workOrderNo)</td>
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.commodityName)</td>
@@ -75,19 +74,25 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.untax_cost)</td>
 								<td>#(x.pay_unit)</td>
-								<td> #(x.out_store_time)</td>
-								<td> #(x.out_aquantity)</td>
+								
+								<td> #(x.out_time)</td>
+								<td> #(x.out_quantity) </td>
+								
 								<td> #(x.is_create_bill)</td>
 								<td>#(x.bill_quantity)</td>
-								<td> #(x.bill_create_time)</td>
-								<td>操作</td>
-								<td class="jfa-operation-button"><a href="#"> 
-								<i class="fa fa-pencil" title="生成检测表"></i>
-								</a> 
+								<td> #(x.bill_create_time) 1</td>
+							
+									
+								<td class="jfa-operation-button">
+									
+										<a href="/fy/admin/biz/finance/addbill?id=#(x.getpay_id)"> 
+										<i class="fa fa-pencil" title="生成检测表"></i>
+										</a> 
+									#if(!x.is_create_bill)#end
 								</td>
 							</tr>
 							#end
@@ -100,7 +105,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/finance/getPay?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

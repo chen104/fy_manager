@@ -47,7 +47,7 @@
 							<td class="jfa-operation-button"><a href="#"
 								style="margin-left: 14px;"> <i class="glyphicon glyphicon-download-alt" title="下载"></i></a> 
 							<a data-delete data-title="#escape(x.partName)" onclick="deletepart(this)"
-								data-role-id="#(x.id)"  data-action="/fy/admin/base/department/delete?id=#(x.id)"
+								data-id="#(x.id)"  data-action="/fy/admin/base/file/delete"
 								style="margin-left: 14px; color: red;cursor:pointer"> <i class="fa fa-trash" title="删除"></i>
 							</a> </td>
 						</tr>
@@ -73,6 +73,7 @@
 
     			$.ajax({
     				   type: "POST",
+    				   data:{id:$(a).data("id")},
     				   url:$(a).data("action") ,
     				   success: function(ret){
     					   if (ret.state == "ok") {
@@ -96,3 +97,5 @@
     </script>
 
 #end
+
+

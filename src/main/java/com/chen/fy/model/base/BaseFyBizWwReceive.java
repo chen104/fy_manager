@@ -121,12 +121,12 @@ public abstract class BaseFyBizWwReceive<M extends BaseFyBizWwReceive<M>> extend
 		return getStr("machining_require");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {
@@ -151,6 +151,54 @@ public abstract class BaseFyBizWwReceive<M extends BaseFyBizWwReceive<M>> extend
 	
 	public java.lang.String getHandlStatus() {
 		return getStr("handl_status");
+	}
+
+	public void setCategoryTmp(java.lang.String categoryTmp) {
+		set("category_tmp", categoryTmp);
+	}
+	
+	public java.lang.String getCategoryTmp() {
+		return getStr("category_tmp");
+	}
+
+	public void setPlanTmp(java.lang.String planTmp) {
+		set("plan_tmp", planTmp);
+	}
+	
+	public java.lang.String getPlanTmp() {
+		return getStr("plan_tmp");
+	}
+
+	public void setUnitTmp(java.lang.String unitTmp) {
+		set("unit_tmp", unitTmp);
+	}
+	
+	public java.lang.String getUnitTmp() {
+		return getStr("unit_tmp");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
+	public void setIsReceive(java.lang.Boolean isReceive) {
+		set("is_receive", isReceive);
+	}
+	
+	public java.lang.Boolean getIsReceive() {
+		return get("is_receive");
 	}
 
 }

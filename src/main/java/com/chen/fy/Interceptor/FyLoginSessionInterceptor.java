@@ -12,8 +12,9 @@
  * 首次的尝试扼杀在了摇篮之中
  */
 
-package com.chen.fy;
+package com.chen.fy.Interceptor;
 
+import com.chen.fy.Constant;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.club.common.kit.IpKit;

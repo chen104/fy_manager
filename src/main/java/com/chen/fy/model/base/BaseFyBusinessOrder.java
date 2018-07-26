@@ -121,12 +121,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("machining_require");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {
@@ -153,12 +153,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("amount");
 	}
 
-	public void setTax(java.lang.Integer tax) {
-		set("tax", tax);
+	public void setTaxRate(java.math.BigDecimal taxRate) {
+		set("taxRate", taxRate);
 	}
 	
-	public java.lang.Integer getTax() {
-		return getInt("tax");
+	public java.math.BigDecimal getTaxRate() {
+		return get("taxRate");
 	}
 
 	public void setTaxAmount(java.math.BigDecimal taxAmount) {
@@ -311,6 +311,14 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	
 	public java.lang.String getDistributeAttr() {
 		return getStr("distribute_attr");
+	}
+
+	public void setIsDistribute(java.lang.Boolean isDistribute) {
+		set("is_distribute", isDistribute);
+	}
+	
+	public java.lang.Boolean getIsDistribute() {
+		return get("is_distribute");
 	}
 
 }

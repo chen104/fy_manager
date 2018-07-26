@@ -69,9 +69,10 @@
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
-								<td>#(x.receiveTime)</td>
-								<td class="jfa-operation-button"><a href="#" > 
+								<td>#(x.unit_tmp)</td>
+								<td>#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
+								<td class="jfa-operation-button">
+								<a href="#" onclick="toDistribute(this)"  data-action="/fy/admin/biz/fyorder/toDistribute" data-id="#(x.id)" > 
 								<i class="glyphicon glyphicon-share-alt"  title="生成分配表"></i>
 								</a></td>
 							</tr>
@@ -85,7 +86,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/fyorder/receive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -93,32 +94,30 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
 
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
+function  toDistribute(a){
+ 	action = 	$(a).data("action");
+	id = $(a).data("id");
+	$.ajax({
+		   type: "POST",
+		   url:$(a).data("action") ,
+		   data:{id:$(a).data("id")},
+		   success: function(ret){
+			   if (ret.state == "ok") {
+				
 				}
-			});
-		}
-	else{
-	
-		}
-	}
+			   alert(ret.msg);
+			   $(a).parent().parent().remove();
+		   },
+		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+			    // 通常 textStatus 和 errorThrown 之中
+			    // 只有一个会包含信息
+			 //   this; // 调用本次AJAX请求时传递的options参数
+			   alert('网络异常');
+			}
+		});
+}
+
     </script>
 
 #end

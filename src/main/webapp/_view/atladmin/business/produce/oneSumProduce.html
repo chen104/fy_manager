@@ -27,7 +27,7 @@
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
 	
-					<table class="table table-bordered"  style="white-space:nowrap">
+					<table class="table table-bordered text-center"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th style="">序号</th>
@@ -49,14 +49,14 @@
 								<th>预计投产时间</th>
 								<th>预计完工时间</th>
 								<th>入库时间</th>
-								<th>操作</th>
+								<th>生成入库单</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+								<td>#(x.category_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -74,10 +74,14 @@
 								<td>#(x.plan_time)</td>
 								<td>#(x.plan_finsh_time)</td>
 								<td>#(x.in_warehouse_time)</td>
-								<td class="jfa-operation-button"><a 
-									data-action="#"> <i
-										class="glyphicon glyphicon-share-alt"  title="删除"></i>
-								</a></td>
+								<td class="jfa-operation-button">
+								#if(!x.is_create_in_house)
+									<a onclick="showModel(this)" data-id="#(x.id)"
+										data-action="#"> <i
+											class="glyphicon glyphicon-share-alt"  title="删除"></i>
+									</a>
+								#end
+								</td>
 							</tr>
 							#end
 						</tbody>
@@ -89,7 +93,8 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/produce/oneSumPro?p=")
+				</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -97,32 +102,26 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
+function createInWareHouse(a){
+	$.ajax({
+		   type: "POST",
+		   url:'/fy/admin/biz/produce/toInWareHouse' ,
+		   data:{id:$(a).data("id")},
+		   success: function(ret){
+			   if (ret.state == "ok") {
+		
+				   
 				}
-			});
-		}
-	else{
-	
-		}
+			   alert(ret.msg);
+		   },
+		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+			    // 通常 textStatus 和 errorThrown 之中
+			    // 只有一个会包含信息
+			 //   this; // 调用本次AJAX请求时传递的options参数
+			   alert('网络异常');
+			}
+		});
 	}
     </script>
-
+#include("inHouseModel.html")
 #end

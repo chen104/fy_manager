@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseFyBusinessProduce;
  */
 @SuppressWarnings("serial")
 public class FyBusinessProduce extends BaseFyBusinessProduce<FyBusinessProduce> {
-	
+	public final static FyBusinessProduce dao = new FyBusinessProduce().dao();
 }

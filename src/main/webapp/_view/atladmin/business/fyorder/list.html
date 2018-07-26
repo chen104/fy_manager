@@ -94,21 +94,28 @@
 								<td>#(x.tax_amount)</td>
 								<td>#(x.tatolAmount)</td>
 								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
-								<td>#(x.receiveTime)</td>
+								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
 								<td>#(x.distributeTime)</td>
 								<td>#(x.warnTime)</td>
 								<td>#(x.remark)</td>
-								<td>#(x.draw)<a href="#"> 
-								<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
-								</a> </td>
+								<td  data-id="#(x.id)">
+								#if(x.filename) #(x.filename) #else
+									<a href="#" onclick="showChooesFile(this)"> 
+										<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
+									</a>
+                               #end
+								 </td>
 								<td>#(x.hangTime)</td>
 								<td>#(x.hangStatus)</td>
 								<td>#(x.hangQuantity)</td>
 								<td>#(x.hangAmount)</td>
 								<td>#(x.unhangAuantity)</td>
-								<td class="jfa-operation-button"><a href="#"> 
-								<i class="glyphicon glyphicon-share-alt" title="生成接收表"></i>
+								<td class="jfa-operation-button">
+								#if(!x.receiveTime) 
+								<a href="#" onclick="receive(this)" data-action="/fy/admin/biz/fyorder/toRecieve" data-id="#(x.id)"> 
+									<i class="glyphicon glyphicon-share-alt" title="生成接收表"></i>
 								</a> 
+								#end
 								</td>
 								
 							</tr>
@@ -130,19 +137,20 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
+function receive(a){
+
 
 		$.ajax({
 			   type: "POST",
 			   url:$(a).data("action") ,
+			   data:{id:$(a).data("id")},
 			   success: function(ret){
 				   if (ret.state == "ok") {
-			
-					   location.reload();
+					 var td=  $(a).parent().parent().children("[name=receiveTime]");
+					 td.text(ret.date)
 					}
 				   alert(ret.msg);
+				   $(a).empty();
 			   },
 			   error:function (XMLHttpRequest, textStatus, errorThrown) {
 				    // 通常 textStatus 和 errorThrown 之中
@@ -151,11 +159,12 @@ function deleteperson(a){
 				   alert('网络异常');
 				}
 			});
-		}
-	else{
-	
-		}
-	}
+}
+
+
+
+
     </script>
 
 #end
+#include("../../file/listFileModel.html")

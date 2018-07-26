@@ -18,9 +18,10 @@ import java.sql.Connection;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
-import com.chen.fy.FyLoginSessionInterceptor;
 import com.chen.fy.FyPermissionDirective;
 import com.chen.fy.IndexController;
+import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
+import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
 import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
@@ -187,6 +188,7 @@ public class JFinalClubConfig extends JFinalConfig {
 	public void configInterceptor(Interceptors me) {
 		me.add(new LoginSessionInterceptor());
 		me.add(new FyLoginSessionInterceptor());
+		me.add(new MenuActiveInterceptor());
 		// me.add(new FyAuthInterceptor());
 	}
 
@@ -206,5 +208,6 @@ public class JFinalClubConfig extends JFinalConfig {
 		// 让 druid 允许在 sql 中使用 union
 		// https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE-wallfilter
 		wallFilter.getConfig().setSelectUnionCheck(false);
+
 	}
 }
