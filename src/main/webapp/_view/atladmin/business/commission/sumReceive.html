@@ -6,6 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">委外汇总接收表</h3>
+
+ 				
+					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button>
 				<div class="box-tools">
 				<!--  
 					<form action="/fy/admin/base/taxRate">
@@ -31,6 +34,7 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
+								<th style="">多选</th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -57,11 +61,14 @@
 								<th>操作</th>
 							</tr>
 						</thead>
+					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/toCreatePurchase" method="post">     
+					
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td> <input type="checkbox" name = "selectId"  value="#(x.id)"> </td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -82,12 +89,14 @@
 								<th>#(x.supplier)</th>
 								<th>#(x.purchase_time)</th>
 								<th>#(x.handle_status)</th>
-								<td class="jfa-operation-button"><a href="#"  onclick="showChooesSupplier()"> 
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/toAddPurchase?id=#(x.id)"  onclick=""> 
 								<i class="fa fa-pencil" title="生成采购单"></i>
 								</a> </td>
 							</tr>
 							#end
 						</tbody>
+						
+					</form>
 					</table>
 		
 
@@ -104,32 +113,20 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
 
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-	else{
-	
-		}
+function submit(){
+	var selectIds = $("input[name=selectId]:checked");
+	if(selectIds==null||selectIds.length ==0){
+		alert("没有选择供应商");
+		return;
 	}
+
+	 $("#myForm").submit();
+	 
+
+	
+}
+ 
     </script>
 #include("searchSupplier.html")
 #end

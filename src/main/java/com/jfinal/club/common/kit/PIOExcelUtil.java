@@ -171,6 +171,41 @@ public class PIOExcelUtil {
 		}
 	}
 
+	public PIOExcelUtil(InputStream input, int sheetIndex) throws Exception {
+		InputStream in = null;
+		try {
+			in = input;
+			wb = WorkbookFactory.create(in);
+
+			sheet = wb.getSheetAt(sheetIndex);
+
+			rowNum = sheet.getLastRowNum();
+
+			if (sheet.getRow(0) != null) {
+				/*
+				 * 此处并不能代表整个工作表的总列数！！！
+				 */
+				columnNum = sheet.getRow(0).getLastCellNum();
+			}
+
+			System.out.println("第" + sheetIndex + "个工作薄；总行数：" + rowNum + "；总列数：" + columnNum);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != in)
+					in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public PIOExcelUtil() {
 
 	}
@@ -365,6 +400,72 @@ public class PIOExcelUtil {
 		Cell cell = row.getCell(column);
 		if (null == cell) {
 			cell = row.createCell(column);
+		}
+		cell.setCellValue(value);
+	}
+
+	/**
+	 * 设置单元格数据 下标从0开使
+	 * 
+	 * @param rownum
+	 * @param column
+	 * @param value
+	 */
+	public void setCellVal(int rownum, int column, Double value) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (null == cell) {
+			cell = row.createCell(column);
+		}
+		if (value == null) {
+			return;
+		}
+		cell.setCellValue(value);
+	}
+
+	/**
+	 * 设置单元格数据 下标从0开使
+	 * 
+	 * @param rownum
+	 * @param column
+	 * @param value
+	 */
+	public void setCellVal(int rownum, int column, Boolean value) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (null == cell) {
+			cell = row.createCell(column);
+		}
+		if (value == null) {
+			return;
+		}
+		cell.setCellValue(value);
+	}
+
+	/**
+	 * 设置单元格数据 下标从0开使
+	 * 
+	 * @param rownum
+	 * @param column
+	 * @param value
+	 */
+	public void setCellVal(int rownum, int column, Date value) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (null == cell) {
+			cell = row.createCell(column);
+		}
+		if (value == null) {
+			return;
 		}
 		cell.setCellValue(value);
 	}

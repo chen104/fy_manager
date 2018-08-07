@@ -5,10 +5,21 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<h3 class="box-title">入库汇总表</h3>
+				<h3 class="box-title">检测汇总表</h3> <button class="btn btn-primary" data-p="#(p)" onclick="createPay()">生成应付明细</button>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+			<form action="fy/admin/biz/finance/pay"  class="form-inline" >
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no">送货单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,16 +32,16 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding text-center">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th>序号</th>
+								<th><input id="selectAll" type="checkbox" data-select="selectAll"> </th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -55,33 +66,39 @@
 								<th>检测数量</th>
 								<th>检测结果</th>
 								<th>检测处理</th>
+								<th>挂账期间</th>
+								<th>应付期间</th>
+								
 								<th>是否生成质量处理单据</th>
-								<th>是否生成待出库</th>
 								<th>生成时间</th>
 								<th>是否生成应付明细表	</th>
 								<th>应付明细表生成生成时间	</th>
 								<th>输入检测结果</th>
 							</tr>
 						</thead>
+						<form action="/fy/admin/biz/finance/pay/inhouseAddPay" method="post" id="myForm" >
+						<input name="p" value="#(p)" hidden="hidden">
+						<input id="shoupaypireod" name="shoupaypireod" value="#(p)" hidden="hidden">
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
+								<td> #if(!x.is_create_pay&&x.in_from=="委外") <input name="inhouseId" value="#(x.wid)" type="checkbox" data-select='select' > #end </td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.in_time)</td>
 								<td>#(x.real_in_quantity)</td>
@@ -92,14 +109,35 @@
 								<td>#(x.check_quantity)</td>
 								<td>#(x.check_result)</td>
 								<td>#(x.check_handle)</td>
-								<td>#(x.is_create_quality)</td>
-								<td>#(x.is_create_can_out)</td>
+								
+								
+								<td>#(x.create_month)月</td><!-- 挂账期间 -->
+								<td>#(x.pay_month)月</td><!-- 付款期间 -->
+								
+								<td>#(x.is_create_quality)
+									
+									<a href=""> 
+										<i class="glyphicon glyphicon-share-alt " style="color: red" title="检测入库"  ></i>
+									</a> 
+								
+								
+								</td>
+								
+			
 								<td>#(x.create_out_time)</td>
-								<td>#(x.is_create_pay)</td>
+								<td>
+									#if(!x.is_create_pay)
+									<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
+										<i class="glyphicon glyphicon-share-alt" title="检测入库"  ></i>
+									</a> 
+									#else
+									 已生成应付明细
+									#end 
+								</td>
 								<td>#(x.pay_create_time)</td>
 								<td class="jfa-operation-button">
 								 	#if(!x.check_result)
-										<a href="/fy/admin/biz/whouse/editCheck?id=#(x.id)"> 
+										<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
 										<i class="fa fa-pencil" title="检测入库"  ></i>
 										</a> 
 									#end
@@ -107,6 +145,8 @@
 							</tr>
 							#end
 						</tbody>
+					
+						</form>
 					</table>
 		
 
@@ -123,32 +163,126 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-	else{
 	
-		}
-	}
-    </script>
 
+	$(function(){
+		$("#selectAll").click(function(){
+			var isChecked = $("#selectAll").is(":checked");
+			if( isChecked ){
+				$('input[data-select=select]').each(function() {
+					//$(this).attr('checked', true);
+					this.checked= true;
+					});
+			}else{
+				$('input[data-select=select]').each(function() {
+					//$(this).attr('checked', false);
+					this.checked= false;
+				});
+			}
+			console.info('this');
+			
+		});
+		
+		
+	});
+	
+
+
+
+    </script>
+<script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+
+function createPay(){
+	if($('input[data-select=select]:checked').length ==0){
+		alert("没有选择检测单");
+		return ;
+		}
+	
+	$("#create_pay").modal("show");
+	
+}
+
+function sure(){
+	
+	
+	$("#create_pay").modal("hide");
+	var paytime = $("#should_pay_period").val();
+	$("#shoupaypireod").val(paytime);
+	
+	$("#myForm").submit();
+}
+
+
+
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/biz/whouse/checkIn?p=#(p)";
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+</script>
 #end
+
+<!-- Modal -->
+<div class="modal fade" id="create_pay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">生成应付明细</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      	<div class="col-md-4"></div>
+      		<div class="col-md-6">
+      		
+      			 <div class="form-group">
+		              <label>应付期间</label>
+		                <div class="input-group ">
+		                	<select class="form-control" id="should_pay_period" name="should_pay_period"  >
+		                		<option value="1">1 月 </option>
+		                		<option value="2">2 月 </option>
+		                		<option value="3">3 月 </option>
+		                		<option value="4">4 月 </option>
+		                		<option value="5">5月 </option>
+		                		<option value="6">6 月 </option>
+		                		<option value="7">7 月 </option>
+		                		<option value="8">8 月 </option>
+		                		<option value="9">9 月 </option>
+		                		<option value="10">10 月 </option>
+		                		<option value="11">11月 </option>
+		                		<option value="12">12月 </option>
+		                	</select>
+			               
+		                </div>
+		                <!-- /.input group -->
+		              </div>
+      		
+      		
+      		</div>
+	      		
+            
+			
+      	</div>
+      	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="sure()">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+							

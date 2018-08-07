@@ -30,6 +30,7 @@
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
+								<th></th>
 								<th>序号</th>
 								<th>客户名称</th>
 								<th>开票期间</th>
@@ -45,6 +46,7 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
+								<td></td>
 								<td>#(for.index+1)</td>
 								<td>#(x.customer_name)</td>
 								<td>#(x.invoice_period)</td>

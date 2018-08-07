@@ -25,70 +25,6 @@ public abstract class BaseFyBusinessAssist<M extends BaseFyBusinessAssist<M>> ex
 		return get("assist_date");
 	}
 
-	public void setWorkBillNo(java.lang.String workBillNo) {
-		set("work_bill_no", workBillNo);
-	}
-	
-	public java.lang.String getWorkBillNo() {
-		return getStr("work_bill_no");
-	}
-
-	public void setSupplierId(java.lang.Integer supplierId) {
-		set("supplier_id", supplierId);
-	}
-	
-	public java.lang.Integer getSupplierId() {
-		return getInt("supplier_id");
-	}
-
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setCommoditySpec(java.lang.String commoditySpec) {
-		set("commodity_spec", commoditySpec);
-	}
-	
-	public java.lang.String getCommoditySpec() {
-		return getStr("commodity_spec");
-	}
-
-	public void setMapNo(java.lang.Integer mapNo) {
-		set("map_no", mapNo);
-	}
-	
-	public java.lang.Integer getMapNo() {
-		return getInt("map_no");
-	}
-
-	public void setMachiningRequire(java.lang.String machiningRequire) {
-		set("machining_require", machiningRequire);
-	}
-	
-	public java.lang.String getMachiningRequire() {
-		return getStr("machining_require");
-	}
-
-	public void setQuantity(java.lang.Integer quantity) {
-		set("quantity", quantity);
-	}
-	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
-	}
-
-	public void setUnit(java.lang.Integer unit) {
-		set("unit", unit);
-	}
-	
-	public java.lang.Integer getUnit() {
-		return getInt("unit");
-	}
-
 	public void setSingle(java.lang.Integer single) {
 		set("single", single);
 	}
@@ -113,12 +49,12 @@ public abstract class BaseFyBusinessAssist<M extends BaseFyBusinessAssist<M>> ex
 		return get("assist_account");
 	}
 
-	public void setTax(java.lang.Integer tax) {
-		set("tax", tax);
+	public void setTaxRate(java.math.BigDecimal taxRate) {
+		set("tax_rate", taxRate);
 	}
 	
-	public java.lang.Integer getTax() {
-		return getInt("tax");
+	public java.math.BigDecimal getTaxRate() {
+		return get("tax_rate");
 	}
 
 	public void setTaxAmount(java.math.BigDecimal taxAmount) {
@@ -191,6 +127,30 @@ public abstract class BaseFyBusinessAssist<M extends BaseFyBusinessAssist<M>> ex
 	
 	public java.util.Date getCreateTime() {
 		return get("create_time");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setAssistNo(java.lang.String assistNo) {
+		set("assist_no", assistNo);
+	}
+	
+	public java.lang.String getAssistNo() {
+		return getStr("assist_no");
 	}
 
 }

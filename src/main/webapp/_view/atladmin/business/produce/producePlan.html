@@ -49,17 +49,17 @@
 								<th>预计投产时间</th>
 								<th>预计完工时间</th>
 								<th>备注</th>
-								<th>操作</th>
+								<th>修改计划时间</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp) </td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
 								<td>#(x.orderDate)</td>
 								<td>#(x.deliveryDate)</td>
 								<td>#(x.workOrderNo)</td>
@@ -74,10 +74,12 @@
 								<td>#(x.plan_time)</td>
 								<td>#(x.plan_finsh_time)</td>
 								<td>#(x.plan_remark)</td>
+							
 								<td class="jfa-operation-button"><a 
 									data-action="#"> <i
-										class="glyphicon glyphicon-share-alt"  title="删除"></i>
+										class="glyphicon glyphicon-pencil"  title="修改计划时间"></i>
 								</a></td>
+								
 							</tr>
 							#end
 						</tbody>
@@ -124,5 +126,5 @@ function deleteperson(a){
 		}
 	}
     </script>
-
+#include("planModel.html")
 #end

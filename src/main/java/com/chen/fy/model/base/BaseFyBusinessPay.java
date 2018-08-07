@@ -17,78 +17,6 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getInt("id");
 	}
 
-	public void setCategoryId(java.lang.Integer categoryId) {
-		set("category_id", categoryId);
-	}
-	
-	public java.lang.Integer getCategoryId() {
-		return getInt("category_id");
-	}
-
-	public void setPlanerId(java.lang.Integer planerId) {
-		set("planer_id", planerId);
-	}
-	
-	public java.lang.Integer getPlanerId() {
-		return getInt("planer_id");
-	}
-
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("work_order_no", workOrderNo);
-	}
-	
-	public java.lang.String getWorkOrderNo() {
-		return getStr("work_order_no");
-	}
-
-	public void setDeliveryNo(java.lang.String deliveryNo) {
-		set("delivery_no", deliveryNo);
-	}
-	
-	public java.lang.String getDeliveryNo() {
-		return getStr("delivery_no");
-	}
-
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setCommoditySpec(java.lang.String commoditySpec) {
-		set("commodity_spec", commoditySpec);
-	}
-	
-	public java.lang.String getCommoditySpec() {
-		return getStr("commodity_spec");
-	}
-
-	public void setMapNo(java.lang.Integer mapNo) {
-		set("map_no", mapNo);
-	}
-	
-	public java.lang.Integer getMapNo() {
-		return getInt("map_no");
-	}
-
-	public void setQuantity(java.lang.Integer quantity) {
-		set("quantity", quantity);
-	}
-	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
-	}
-
-	public void setUnit(java.lang.Integer unit) {
-		set("unit", unit);
-	}
-	
-	public java.lang.Integer getUnit() {
-		return getInt("unit");
-	}
-
 	public void setCheckResult(java.lang.String checkResult) {
 		set("check_result", checkResult);
 	}
@@ -113,12 +41,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("order_no");
 	}
 
-	public void setWeiwaiQuantity(java.lang.Integer weiwaiQuantity) {
+	public void setWeiwaiQuantity(java.math.BigDecimal weiwaiQuantity) {
 		set("weiwai_quantity", weiwaiQuantity);
 	}
 	
-	public java.lang.Integer getWeiwaiQuantity() {
-		return getInt("weiwai_quantity");
+	public java.math.BigDecimal getWeiwaiQuantity() {
+		return get("weiwai_quantity");
 	}
 
 	public void setWeiwaiCost(java.math.BigDecimal weiwaiCost) {
@@ -137,12 +65,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("weiwai_account");
 	}
 
-	public void setTax(java.lang.Integer tax) {
-		set("tax", tax);
+	public void setTaxRate(java.math.BigDecimal taxRate) {
+		set("tax_rate", taxRate);
 	}
 	
-	public java.lang.Integer getTax() {
-		return getInt("tax");
+	public java.math.BigDecimal getTaxRate() {
+		return get("tax_rate");
 	}
 
 	public void setTatolAmount(java.math.BigDecimal tatolAmount) {
@@ -185,12 +113,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("in_from");
 	}
 
-	public void setRealInQuantity(java.lang.Integer realInQuantity) {
+	public void setRealInQuantity(java.math.BigDecimal realInQuantity) {
 		set("real_in_quantity", realInQuantity);
 	}
 	
-	public java.lang.Integer getRealInQuantity() {
-		return getInt("real_in_quantity");
+	public java.math.BigDecimal getRealInQuantity() {
+		return get("real_in_quantity");
 	}
 
 	public void setCheckTime(java.util.Date checkTime) {
@@ -199,22 +127,6 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 	
 	public java.util.Date getCheckTime() {
 		return get("check_time");
-	}
-
-	public void setHangNo(java.lang.String hangNo) {
-		set("hang_no", hangNo);
-	}
-	
-	public java.lang.String getHangNo() {
-		return getStr("hang_no");
-	}
-
-	public void setShoudPayPeriod(java.lang.String shoudPayPeriod) {
-		set("shoud_pay_period", shoudPayPeriod);
-	}
-	
-	public java.lang.String getShoudPayPeriod() {
-		return getStr("shoud_pay_period");
 	}
 
 	public void setIsCreateBill(java.lang.Boolean isCreateBill) {
@@ -231,6 +143,86 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 	
 	public java.util.Date getBillCreateTime() {
 		return get("bill_create_time");
+	}
+
+	public void setSupplierName(java.lang.String supplierName) {
+		set("supplier_name", supplierName);
+	}
+	
+	public java.lang.String getSupplierName() {
+		return getStr("supplier_name");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setCreateMonth(java.lang.Integer createMonth) {
+		set("create_month", createMonth);
+	}
+	
+	public java.lang.Integer getCreateMonth() {
+		return getInt("create_month");
+	}
+
+	public void setPayMonth(java.lang.Integer payMonth) {
+		set("pay_month", payMonth);
+	}
+	
+	public java.lang.Integer getPayMonth() {
+		return getInt("pay_month");
+	}
+
+	public void setCanDownload(java.lang.Boolean canDownload) {
+		set("can_download", canDownload);
+	}
+	
+	public java.lang.Boolean getCanDownload() {
+		return get("can_download");
+	}
+
+	public void setIsWw(java.lang.Boolean isWw) {
+		set("is_ww", isWw);
+	}
+	
+	public java.lang.Boolean getIsWw() {
+		return get("is_ww");
+	}
+
+	public void setInHouseId(java.lang.Integer inHouseId) {
+		set("in_house_id", inHouseId);
+	}
+	
+	public java.lang.Integer getInHouseId() {
+		return getInt("in_house_id");
+	}
+
+	public void setShouldPay(java.math.BigDecimal shouldPay) {
+		set("should_pay", shouldPay);
+	}
+	
+	public java.math.BigDecimal getShouldPay() {
+		return get("should_pay");
+	}
+
+	public void setRealAccount(java.math.BigDecimal realAccount) {
+		set("real_account", realAccount);
+	}
+	
+	public java.math.BigDecimal getRealAccount() {
+		return get("real_account");
 	}
 
 }

@@ -1,0 +1,475 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+#if(action == "save")
+	<input hidden="hidden" value="#(assist.id??)" name="model.parentId"></input>
+#else
+	<input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
+#end
+<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">类别</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.cate_tmp??)"   readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">计划员	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.plan_tmp??)"  readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">执行状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.execuStatus??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">紧急状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   value="#(order.urgentStatus??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">订单日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.orderDate??)"   readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">交货日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.deliveryDate??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">工作订单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.workOrderNo??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">送货单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.delivery_no??)"  readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.commodityName??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    value="#(order.commoditySpec??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.mapNo??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">技术条件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    value="#(order.technology??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">加工要求</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.machiningRequire??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    value="#(order.quantity??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.unitTmp??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label"> 检测结果</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.check_result??)"  readonly="readonly"   name="model.checkResult" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">委外厂商</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.supplier_name??)" readonly="readonly"    >
+				<input type="text"  hidden="hidden" value="#(assist.assist_supplier_id??)"  name="model.supplierId" >
+				
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">订单编码</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value=""   name="model.orderNo" readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">委外数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.quantity??)"  name="model.weiwaiQuantity" readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(order.unitTmp??)" readonly="readonly"    >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.assist_cost??)" name="model.weiwaiCost"   readonly="readonly"    >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.assist_account??)"  name="model.weiwaiAccount"    readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">税率</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#taxRate(assist.tax_rate??)" readonly="readonly"   >
+				<input type="text" hidden=""  value="#(assist.tax_rate??)"   name="model.taxRate"  >
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">含税金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.tatol_amount??)" name="model.tatol_amount"    readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">折扣</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   name="model.discount" >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">质量扣款</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"     name="model.qualityDeduction"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">入库时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(assist.backtime)" name="model.inWarehouseTime"  >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">实际入库数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.quantity)" name="model.realInQuantity"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">入库来源</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="外协" name="inFrom" >
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">检测时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.backtime??)"  name="model.checkTime" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">挂账期间</label>
+
+			<div class="col-sm-9">
+				<select class="form-control" name="model.createMonth"  >
+					<option value="1">1月</option>
+					<option value="2">2月</option>
+					<option value="3">3月</option>
+					<option value="4">4月</option>
+					<option value="5">5月</option>
+					<option value="6">6月</option>
+					<option value="7">7月</option>
+					<option value="8">8月</option>
+					<option value="9">9月</option>
+					<option value="10">10月</option>
+					<option value="11">11月</option>
+					<option value="12">12月</option>
+				</select>
+				 
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">应付期间</label>
+
+			<div class="col-sm-9">
+				<select class="form-control" name="model.payMonth"  >
+					<option value="1">1月</option>
+					<option value="2">2月</option>
+					<option value="3">3月</option>
+					<option value="4">4月</option>
+					<option value="5">5月</option>
+					<option value="6">6月</option>
+					<option value="7">7月</option>
+					<option value="8">8月</option>
+					<option value="9">9月</option>
+					<option value="10">10月</option>
+					<option value="11">11月</option>
+					<option value="12">12月</option>
+				</select>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+											

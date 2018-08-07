@@ -20,6 +20,8 @@ import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
 import com.chen.fy.FyPermissionDirective;
 import com.chen.fy.IndexController;
+import com.chen.fy.TaxRateDirective;
+import com.chen.fy.TestDirective;
 import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
@@ -34,7 +36,9 @@ import com.chen.fy.controller.base.UnitController;
 import com.chen.fy.controller.business.CommissionController;
 import com.chen.fy.controller.business.ComplaintController;
 import com.chen.fy.controller.business.FinanceController;
+import com.chen.fy.controller.business.GetPayController;
 import com.chen.fy.controller.business.OrderController;
+import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProduceController;
 import com.chen.fy.controller.business.WarehouseController;
 import com.chen.fy.controller.role.RoleAdminController;
@@ -98,6 +102,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.setDevMode(p.getBoolean("devMode", false));
 		// me.setJsonFactory(MixedJsonFactory.me());
 		me.setJsonFactory(new FastJsonFactory());
+
+		me.setErrorView(404, "/_view/atladmin/error/404.html");
+		me.setErrorView(500, "/_view/atladmin/error/500.html");
 	}
 
 	/**
@@ -130,6 +137,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/aftersale/complaint", ComplaintController.class, "/_view/atladmin/business/aftersale");
 		me.add("fy/admin/biz/commission", CommissionController.class, "/_view/atladmin/business/commission");
 
+		me.add("fy/admin/biz/finance/pay", PayController.class, "/_view/atladmin/business/finance/pay");
+
+		me.add("fy/admin/biz/finance/getPay", GetPayController.class, "/_view/atladmin/business/finance/getpay");
 	}
 
 	/**
@@ -143,6 +153,8 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.addDirective("perm", PermissionDirective.class); // 配置一个别名指令
 
 		me.addDirective("fypermession", FyPermissionDirective.class); // 配置一个别名指令
+		me.addDirective("taxRate", TaxRateDirective.class);
+		me.addDirective("test", TestDirective.class);
 
 		me.addSharedFunction("/_view/common/__layout.html");
 		me.addSharedFunction("/_view/common/_paginate.html");

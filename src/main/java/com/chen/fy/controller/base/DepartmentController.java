@@ -30,7 +30,7 @@ public class DepartmentController extends BaseController {
 	}
 
 	public void add() {
-
+		setAttr("title", "新建部门");
 	}
 
 	public void save() {
@@ -66,6 +66,7 @@ public class DepartmentController extends BaseController {
 		}
 
 		setAttr("model", depart);
+		setAttr("title", "修改部门");
 
 	}
 

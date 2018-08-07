@@ -46,36 +46,29 @@
 								<th>加工要求</th>
 								<th>数量</th>
 								<th>单位</th>
-								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
 								
-								<td class="jfa-operation-button">
-								#if(!is_revecive)
-								<a href="#" data-id="#(x.id)" onclick="reveive(this)"> 
-								<i class="glyphicon glyphicon-hand-up" title="接收"></i>
-								</a> 
-								#end
-								</td>
+								
 							</tr>
 							#end
 						</tbody>
@@ -87,7 +80,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/produce?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

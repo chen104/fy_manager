@@ -54,6 +54,7 @@ public class SupplierController extends BaseController {
 		Supplier person = Supplier.dao.findById(getParaToInt("id"));
 		setAttr("model", person);
 		setAttr("action", "update");
+		setAttr("title", "修改厂商");
 		render("edit.html");
 	}
 
@@ -72,6 +73,7 @@ public class SupplierController extends BaseController {
 
 	public void add() {
 		setAttr("action", "save");
+		setAttr("title", "新建厂商");
 		render("edit.html");
 	}
 

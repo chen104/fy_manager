@@ -1,0 +1,11 @@
+cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp
+
+
+
+cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date
+
+入库
+
+in_time，real_in_quantity
+
+ data-type='datepicker'

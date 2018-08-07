@@ -81,36 +81,36 @@ public abstract class BaseFyComplaint<M extends BaseFyComplaint<M>> extends Mode
 		return getStr("solution");
 	}
 
-	public void setDutyPart(java.lang.Integer dutyPart) {
+	public void setDutyPart(java.lang.String dutyPart) {
 		set("duty_part", dutyPart);
 	}
 	
-	public java.lang.Integer getDutyPart() {
-		return getInt("duty_part");
+	public java.lang.String getDutyPart() {
+		return getStr("duty_part");
 	}
 
-	public void setDutyPerson(java.lang.Integer dutyPerson) {
+	public void setDutyPerson(java.lang.String dutyPerson) {
 		set("duty_person", dutyPerson);
 	}
 	
-	public java.lang.Integer getDutyPerson() {
-		return getInt("duty_person");
+	public java.lang.String getDutyPerson() {
+		return getStr("duty_person");
 	}
 
-	public void setRecordPart(java.lang.Integer recordPart) {
+	public void setRecordPart(java.lang.String recordPart) {
 		set("record_part", recordPart);
 	}
 	
-	public java.lang.Integer getRecordPart() {
-		return getInt("record_part");
+	public java.lang.String getRecordPart() {
+		return getStr("record_part");
 	}
 
-	public void setRecordPerson(java.lang.Integer recordPerson) {
+	public void setRecordPerson(java.lang.String recordPerson) {
 		set("record_person", recordPerson);
 	}
 	
-	public java.lang.Integer getRecordPerson() {
-		return getInt("record_person");
+	public java.lang.String getRecordPerson() {
+		return getStr("record_person");
 	}
 
 	public void setHandleNo(java.lang.String handleNo) {
@@ -119,6 +119,22 @@ public abstract class BaseFyComplaint<M extends BaseFyComplaint<M>> extends Mode
 	
 	public java.lang.String getHandleNo() {
 		return getStr("handle_no");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
 	}
 
 }

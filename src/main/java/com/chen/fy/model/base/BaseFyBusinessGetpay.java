@@ -185,4 +185,28 @@ public abstract class BaseFyBusinessGetpay<M extends BaseFyBusinessGetpay<M>> ex
 		return getInt("parent_id");
 	}
 
+	public void setCreateMonth(java.lang.Integer createMonth) {
+		set("create_month", createMonth);
+	}
+	
+	public java.lang.Integer getCreateMonth() {
+		return getInt("create_month");
+	}
+
+	public void setGetpayMonth(java.lang.Integer getpayMonth) {
+		set("getpay_month", getpayMonth);
+	}
+	
+	public java.lang.Integer getGetpayMonth() {
+		return getInt("getpay_month");
+	}
+
+	public void setCanDownload(java.lang.Boolean canDownload) {
+		set("can_download", canDownload);
+	}
+	
+	public java.lang.Boolean getCanDownload() {
+		return get("can_download");
+	}
+
 }

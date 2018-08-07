@@ -46,9 +46,9 @@
 								<th>加工要求</th>
 								<th>数量</th>
 								<th>单位</th>
-								<th>接收时间</th>
+								<th>导入时间</th>
 							
-								<th>操作</th>
+						
 							</tr>
 						</thead>
 						<tbody>
@@ -70,11 +70,8 @@
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
-								<td>#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
-								<td class="jfa-operation-button">
-								<a href="#" onclick="toDistribute(this)"  data-action="/fy/admin/biz/fyorder/toDistribute" data-id="#(x.id)" > 
-								<i class="glyphicon glyphicon-share-alt"  title="生成分配表"></i>
-								</a></td>
+								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
+								
 							</tr>
 							#end
 						</tbody>
@@ -86,7 +83,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/fyorder/receive?p=")</div>
+				"/fy/admin/biz/fyorder/receive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

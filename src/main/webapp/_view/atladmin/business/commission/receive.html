@@ -47,14 +47,14 @@
 								<th>数量</th>
 								<th>单位</th>
 								<th>接收时间</th>
-								<th>操作</th>
+
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -70,12 +70,7 @@
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
 								<td>#(x.receive_time)</td>
-								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								
 							</tr>
 							#end
 						</tbody>

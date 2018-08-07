@@ -1,13 +1,7 @@
 
-#if(action == "savebill" ) 
-<input hidden="hidden" value="#(model.id??)" name="model.parentId"></input>
-#else
+
 <input hidden="hidden" value="#(model.id??)" name="model.id"></input>
 <input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
-#end
-
-
-
 <input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
 <div class="row">
 
@@ -195,17 +189,42 @@
 
 <div class="row">
 
+	<div class="col-md-6">
+		<div class="form-group">
+					<label  class="col-sm-3 control-label">结算数量</label>
+		
+					<div class="col-sm-9">
+						<input type="text" class="form-control"   value="#(model.bill_quantity??)"    name="model.billQuantity">
+					</div>
+		</div>
+	</div>
+		
+
+
+
 <div class="col-md-6">
 		<div class="form-group">
 			<label  class="col-sm-3 control-label"> 挂账状态	</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"   value="#(model.hang_status??)"    name="model.hangStatus">
+				 <select class="form-control"  name="model.hangStatus">
+				 	<option></option>
+                    <option #if(model.hang_status=="已挂账") selected #end >已挂账  </option>
+                    <option  #if(model.hang_status=="未挂账") selected #end >未挂账  </option>
+                    <option #if(model.hang_status=="部分挂账") selected #end >部分挂账</option>
+                    <option #if(model.hang_status=="不予挂账") selected #end >不予挂账</option>
+                  </select>
+				
 			</div>
 		</div>
 	</div>
 
 
+
+</div>
+
+
+<div class="row">
 
 	<div class="col-md-6">
 
@@ -218,13 +237,7 @@
 		</div>
 	</div>
 
-
-
-</div>
-
-
-<div class="row">
-
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label  class="col-sm-3 control-label"> 挂账金额</label>
@@ -236,6 +249,12 @@
 	</div>
 
 
+
+</div>
+
+<div class="row">
+	
+
 	<div class="col-md-6">
 
 		<div class="form-group">
@@ -246,12 +265,6 @@
 			</div>
 		</div>
 	</div>
-
-
-</div>
-
-<div class="row">
-	
 
 	<div class="col-md-6">
 

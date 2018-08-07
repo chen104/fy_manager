@@ -105,4 +105,12 @@ public abstract class BaseSupplier<M extends BaseSupplier<M>> extends Model<M> i
 		return getStr("annex");
 	}
 
+	public void setBasePhone(java.lang.String basePhone) {
+		set("base_phone", basePhone);
+	}
+	
+	public java.lang.String getBasePhone() {
+		return getStr("base_phone");
+	}
+
 }

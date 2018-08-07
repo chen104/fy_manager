@@ -241,20 +241,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("hang_status");
 	}
 
-	public void setHangQuantity(java.lang.Integer hangQuantity) {
+	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.lang.Integer getHangQuantity() {
-		return getInt("hang_quantity");
+	public java.math.BigDecimal getHangQuantity() {
+		return get("hang_quantity");
 	}
 
-	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
+	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
 		set("unhang_quantity", unhangQuantity);
 	}
 	
-	public java.lang.Integer getUnhangQuantity() {
-		return getInt("unhang_quantity");
+	public java.math.BigDecimal getUnhangQuantity() {
+		return get("unhang_quantity");
 	}
 
 	public void setCateTmp(java.lang.String cateTmp) {
@@ -319,6 +319,142 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	
 	public java.lang.Boolean getIsDistribute() {
 		return get("is_distribute");
+	}
+
+	public void setOrderby(java.lang.Integer orderby) {
+		set("orderby", orderby);
+	}
+	
+	public java.lang.Integer getOrderby() {
+		return getInt("orderby");
+	}
+
+	public void setIsCreateNext(java.lang.Boolean isCreateNext) {
+		set("is_create_next", isCreateNext);
+	}
+	
+	public java.lang.Boolean getIsCreateNext() {
+		return get("is_create_next");
+	}
+
+	public void setIsCreatePlan(java.lang.Boolean isCreatePlan) {
+		set("is_create_plan", isCreatePlan);
+	}
+	
+	public java.lang.Boolean getIsCreatePlan() {
+		return get("is_create_plan");
+	}
+
+	public void setPlanTime(java.util.Date planTime) {
+		set("plan_time", planTime);
+	}
+	
+	public java.util.Date getPlanTime() {
+		return get("plan_time");
+	}
+
+	public void setPlanFinshTime(java.util.Date planFinshTime) {
+		set("plan_finsh_time", planFinshTime);
+	}
+	
+	public java.util.Date getPlanFinshTime() {
+		return get("plan_finsh_time");
+	}
+
+	public void setPlanRemark(java.lang.String planRemark) {
+		set("plan_remark", planRemark);
+	}
+	
+	public java.lang.String getPlanRemark() {
+		return getStr("plan_remark");
+	}
+
+	public void setInWarehouseTime(java.util.Date inWarehouseTime) {
+		set("in_warehouse_time", inWarehouseTime);
+	}
+	
+	public java.util.Date getInWarehouseTime() {
+		return get("in_warehouse_time");
+	}
+
+	public void setFinishTime(java.util.Date finishTime) {
+		set("finish_time", finishTime);
+	}
+	
+	public java.util.Date getFinishTime() {
+		return get("finish_time");
+	}
+
+	public void setIsCreateInHouse(java.lang.Boolean isCreateInHouse) {
+		set("is_create_in_house", isCreateInHouse);
+	}
+	
+	public java.lang.Boolean getIsCreateInHouse() {
+		return get("is_create_in_house");
+	}
+
+	public void setDisTo(java.lang.Boolean disTo) {
+		set("dis_to", disTo);
+	}
+	
+	public java.lang.Boolean getDisTo() {
+		return get("dis_to");
+	}
+
+	public void setHandleStatus(java.lang.String handleStatus) {
+		set("handle_status", handleStatus);
+	}
+	
+	public java.lang.String getHandleStatus() {
+		return getStr("handle_status");
+	}
+
+	public void setIsFinishPurchase(java.lang.Boolean isFinishPurchase) {
+		set("is_finish_purchase", isFinishPurchase);
+	}
+	
+	public java.lang.Boolean getIsFinishPurchase() {
+		return get("is_finish_purchase");
+	}
+
+	public void setStorageQuantity(java.math.BigDecimal storageQuantity) {
+		set("storage_quantity", storageQuantity);
+	}
+	
+	public java.math.BigDecimal getStorageQuantity() {
+		return get("storage_quantity");
+	}
+
+	public void setOutQuantity(java.math.BigDecimal outQuantity) {
+		set("out_quantity", outQuantity);
+	}
+	
+	public java.math.BigDecimal getOutQuantity() {
+		return get("out_quantity");
+	}
+
+	public void setCustomer(java.lang.Integer customer) {
+		set("customer", customer);
+	}
+	
+	public java.lang.Integer getCustomer() {
+		return getInt("customer");
+	}
+
+	public void setHasInQuantity(java.math.BigDecimal hasInQuantity) {
+		set("has_in_quantity", hasInQuantity);
+	}
+	
+	public java.math.BigDecimal getHasInQuantity() {
+		return get("has_in_quantity");
+	}
+
+	public void setHangAccount(java.math.BigDecimal hangAccount) {
+		set("hang_account", hangAccount);
+	}
+	
+	public java.math.BigDecimal getHangAccount() {
+		return get("hang_account");
 	}
 
 }

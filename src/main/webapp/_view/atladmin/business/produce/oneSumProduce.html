@@ -7,8 +7,18 @@
 			<div class="box-header">
 				<h3 class="box-title">生产一览表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+				<form action="/fy/admin/biz/produce/oneSumPro"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +31,6 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -50,13 +59,14 @@
 								<th>预计完工时间</th>
 								<th>入库时间</th>
 								<th>生成入库单</th>
+								<th>生成外协加工单</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -75,12 +85,22 @@
 								<td>#(x.plan_finsh_time)</td>
 								<td>#(x.in_warehouse_time)</td>
 								<td class="jfa-operation-button">
-								#if(!x.is_create_in_house)
+								
 									<a onclick="showModel(this)" data-id="#(x.id)"
 										data-action="#"> <i
-											class="glyphicon glyphicon-share-alt"  title="删除"></i>
+											class="glyphicon glyphicon-share-alt"  title="生成入库单"></i>
 									</a>
-								#end
+								
+								</td>
+								
+								
+								<td class="jfa-operation-button">
+								
+									<a href="/fy/admin/biz/commission/toAddassist?id=#(x.id)" data-id="#(x.id)" 
+										data-action="#"> <i
+											class="glyphicon glyphicon-share-alt"  title="生成外协加工单"></i>
+									</a>
+								
 								</td>
 							</tr>
 							#end

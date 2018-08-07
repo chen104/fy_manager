@@ -17,78 +17,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getInt("id");
 	}
 
-	public void setCategoryId(java.lang.Integer categoryId) {
-		set("category_id", categoryId);
-	}
-	
-	public java.lang.Integer getCategoryId() {
-		return getInt("category_id");
-	}
-
-	public void setPlanerId(java.lang.Integer planerId) {
-		set("planer_id", planerId);
-	}
-	
-	public java.lang.Integer getPlanerId() {
-		return getInt("planer_id");
-	}
-
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("work_order_no", workOrderNo);
-	}
-	
-	public java.lang.String getWorkOrderNo() {
-		return getStr("work_order_no");
-	}
-
-	public void setDeliveryNo(java.lang.String deliveryNo) {
-		set("delivery_no", deliveryNo);
-	}
-	
-	public java.lang.String getDeliveryNo() {
-		return getStr("delivery_no");
-	}
-
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setCommoditySpec(java.lang.String commoditySpec) {
-		set("commodity_spec", commoditySpec);
-	}
-	
-	public java.lang.String getCommoditySpec() {
-		return getStr("commodity_spec");
-	}
-
-	public void setMapNo(java.lang.String mapNo) {
-		set("map_no", mapNo);
-	}
-	
-	public java.lang.String getMapNo() {
-		return getStr("map_no");
-	}
-
-	public void setQuantity(java.math.BigDecimal quantity) {
-		set("quantity", quantity);
-	}
-	
-	public java.math.BigDecimal getQuantity() {
-		return get("quantity");
-	}
-
-	public void setUnit(java.lang.Integer unit) {
-		set("unit", unit);
-	}
-	
-	public java.lang.Integer getUnit() {
-		return getInt("unit");
-	}
-
 	public void setReceiveAddress(java.lang.String receiveAddress) {
 		set("receive_address", receiveAddress);
 	}
@@ -193,30 +121,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("after_sale_create_time");
 	}
 
-	public void setCategoryTmp(java.lang.String categoryTmp) {
-		set("category_tmp", categoryTmp);
-	}
-	
-	public java.lang.String getCategoryTmp() {
-		return getStr("category_tmp");
-	}
-
-	public void setPlanTmp(java.lang.String planTmp) {
-		set("plan_tmp", planTmp);
-	}
-	
-	public java.lang.String getPlanTmp() {
-		return getStr("plan_tmp");
-	}
-
-	public void setUnitTmp(java.lang.String unitTmp) {
-		set("unit_tmp", unitTmp);
-	}
-	
-	public java.lang.String getUnitTmp() {
-		return getStr("unit_tmp");
-	}
-
 	public void setOrderId(java.lang.Integer orderId) {
 		set("order_id", orderId);
 	}
@@ -231,6 +135,142 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 	
 	public java.lang.Integer getParentId() {
 		return getInt("parent_id");
+	}
+
+	public void setIsCreateBill(java.lang.Boolean isCreateBill) {
+		set("is_create_bill", isCreateBill);
+	}
+	
+	public java.lang.Boolean getIsCreateBill() {
+		return get("is_create_bill");
+	}
+
+	public void setBillQuantity(java.lang.Integer billQuantity) {
+		set("bill_quantity", billQuantity);
+	}
+	
+	public java.lang.Integer getBillQuantity() {
+		return getInt("bill_quantity");
+	}
+
+	public void setBillCreateTime(java.util.Date billCreateTime) {
+		set("bill_create_time", billCreateTime);
+	}
+	
+	public java.util.Date getBillCreateTime() {
+		return get("bill_create_time");
+	}
+
+	public void setHangTime(java.util.Date hangTime) {
+		set("hang_time", hangTime);
+	}
+	
+	public java.util.Date getHangTime() {
+		return get("hang_time");
+	}
+
+	public void setHangStatus(java.lang.String hangStatus) {
+		set("hang_status", hangStatus);
+	}
+	
+	public java.lang.String getHangStatus() {
+		return getStr("hang_status");
+	}
+
+	public void setHangQuantity(java.lang.Integer hangQuantity) {
+		set("hang_quantity", hangQuantity);
+	}
+	
+	public java.lang.Integer getHangQuantity() {
+		return getInt("hang_quantity");
+	}
+
+	public void setHangAmount(java.math.BigDecimal hangAmount) {
+		set("hang_amount", hangAmount);
+	}
+	
+	public java.math.BigDecimal getHangAmount() {
+		return get("hang_amount");
+	}
+
+	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
+		set("unhang_quantity", unhangQuantity);
+	}
+	
+	public java.lang.Integer getUnhangQuantity() {
+		return getInt("unhang_quantity");
+	}
+
+	public void setIsCreatePaybill(java.lang.Boolean isCreatePaybill) {
+		set("is_create_paybill", isCreatePaybill);
+	}
+	
+	public java.lang.Boolean getIsCreatePaybill() {
+		return get("is_create_paybill");
+	}
+
+	public void setPaybillCreateTime(java.util.Date paybillCreateTime) {
+		set("paybill_create_time", paybillCreateTime);
+	}
+	
+	public java.util.Date getPaybillCreateTime() {
+		return get("paybill_create_time");
+	}
+
+	public void setGetpayAccount(java.math.BigDecimal getpayAccount) {
+		set("getpay_account", getpayAccount);
+	}
+	
+	public java.math.BigDecimal getGetpayAccount() {
+		return get("getpay_account");
+	}
+
+	public void setCreateMonth(java.lang.Integer createMonth) {
+		set("create_month", createMonth);
+	}
+	
+	public java.lang.Integer getCreateMonth() {
+		return getInt("create_month");
+	}
+
+	public void setGetpayMonth(java.lang.Integer getpayMonth) {
+		set("getpay_month", getpayMonth);
+	}
+	
+	public java.lang.Integer getGetpayMonth() {
+		return getInt("getpay_month");
+	}
+
+	public void setCanDownload(java.lang.Boolean canDownload) {
+		set("can_download", canDownload);
+	}
+	
+	public java.lang.Boolean getCanDownload() {
+		return get("can_download");
+	}
+
+	public void setCreateGetpayTime(java.util.Date createGetpayTime) {
+		set("create_getpay_time", createGetpayTime);
+	}
+	
+	public java.util.Date getCreateGetpayTime() {
+		return get("create_getpay_time");
+	}
+
+	public void setTax(java.math.BigDecimal tax) {
+		set("tax", tax);
+	}
+	
+	public java.math.BigDecimal getTax() {
+		return get("tax");
+	}
+
+	public void setUntaxGetpay(java.math.BigDecimal untaxGetpay) {
+		set("untax_getpay", untaxGetpay);
+	}
+	
+	public java.math.BigDecimal getUntaxGetpay() {
+		return get("untax_getpay");
 	}
 
 }

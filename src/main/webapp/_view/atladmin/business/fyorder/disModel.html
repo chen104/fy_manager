@@ -18,12 +18,13 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="selectDis()">分配</button>
+        <button type="button" class="btn btn-primary" onclick="doDistributBatch()">分配</button>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
+
   var tmpa;
   function showModel(a){
 	 		var model =  $("#myModal");
@@ -54,6 +55,47 @@ function selectDis(){
 			}
 		});
 }
- 
+
+function showDisToModel(){
+		var model =  $("#myModal");
+		 model.modal("show");
+		
+}
+
+function doDistributBatch(){
+	
+	
+	var selectIds = $("input[name=selectId]:checked");
+	var ids =  new Array();
+	if(selectIds==null||selectIds.length == 0){
+		alert("没有选择订单");
+		return ; 
+	}
+	for(var i = 0 ; i < selectIds.length ; i++){
+		ids[i] =  selectIds[i].value;
+	}
+	console.info(selectIds);
+
+	$.ajax({
+		   type: "POST",
+		   url:'/fy/admin/biz/fyorder/distrubiteBatch' ,
+		   data:{ids:ids,disTo:$("#disTo").val()},
+		   success: function(ret){
+			   if (ret.state == "ok") {
+					
+				
+				   window.location.reload();
+				}
+			   alert(ret.msg);
+		   },
+		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+			    // 通常 textStatus 和 errorThrown 之中
+			    // 只有一个会包含信息
+			 //   this; // 调用本次AJAX请求时传递的options参数
+			   alert('网络异常');
+			}
+		});
+
+}
 </script>
   

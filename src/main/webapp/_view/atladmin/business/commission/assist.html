@@ -7,8 +7,18 @@
 			<div class="box-header">
 				<h3 class="box-title">外协加工单</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+					<form action="/fy/admin/biz/commission/assist"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="name") selected="selected" #end value="commodity_spec">厂商名称</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +31,6 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -30,10 +39,9 @@
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
-								<th style="">序号</th>
+								<th>序号</th>
 								<th>外协日期</th>
 								<th>工作订单号</th>
-								<th>厂商</th>
 								<th>商品名称</th>
 								<th>商品规格</th>
 								<th>总图号</th>
@@ -58,33 +66,42 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
-								
+								<td>#(for.index+1))</td>
 								<td>#(x.assist_date)</td>
 								<td>#(x.work_order_no)</td>
-								<td>#(x.supplier_id)</td>
 								<td>#(x.commodity_name)</td>
 								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_tmp)</td>
 								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
+								
+								
+								<td>#(x.unit_tmp)</td>
 								<td>#(x.assist_cost)</td>
 								<td>#(x.assist_account)</td>
-								<td>#(x.tax)</td>
+								<td>#taxRate(x.tax_rate)</td>
 								<td>#(x.tax_amount)</td>
+								
 								<td>#(x.tatol_amount)</td>
-								<td>#(x.assist_supplier_id)</td>
+								<td> #(x.supplier)</td>
 								<td>#(x.assist_process)</td>
 								<td>#(x.run_time)</td>
 								<td>#(x.backtime)</td>
 								<td>#(x.check_result)</td>
-								<td>#(x.is_create_pay)</td>
+								<td>#if(x.is_create_pay)
+									已生成结算单
+									#else
+									<a href="/fy/admin/biz/finance/pay/addpay?id=#(x.id)" > 
+										<i class="fa fa-pencil" title="生成应付明细表"></i>
+										</a>
+									#end
+								</td>
 								<td>#(x.pay_create_time)</td>
 								
-								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								</a>
+								</td>
 							</tr>
 							#end
 						</tbody>
@@ -96,7 +113,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/commission/assist?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

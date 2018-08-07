@@ -44,8 +44,10 @@
 							<td>#(x.originalFileName)</td>
 							<td>#date(x.createTime,"yyyy-MM-dd hh:mm:ss")</td>
 							<td>#(x.nickName)</td>
-							<td class="jfa-operation-button"><a href="#"
-								style="margin-left: 14px;"> <i class="glyphicon glyphicon-download-alt" title="下载"></i></a> 
+							<td class="jfa-operation-button">
+							<a href="/fy/admin/base/file/download?fileId=#(x.id)"
+								style="margin-left: 14px;"> <i class="glyphicon glyphicon-download-alt" title="下载"></i></a>
+								 
 							<a data-delete data-title="#escape(x.partName)" onclick="deletepart(this)"
 								data-id="#(x.id)"  data-action="/fy/admin/base/file/delete"
 								style="margin-left: 14px; color: red;cursor:pointer"> <i class="fa fa-trash" title="删除"></i>

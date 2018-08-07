@@ -7,8 +7,19 @@
 			<div class="box-header">
 				<h3 class="box-title">入库汇总表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+				<form action="/fy/admin/biz/whouse"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no">送货单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +32,6 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -60,28 +70,28 @@
 								<td>#(for.index+1)</td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
-								<th>#(x.in_time)</th>
-								<th>#(x.real_in_quantity)</th>
-								<th>#(x.in_from)</th>
-								<th>#(x.check_create_time)</th>
+								<td>#(x.in_time)</td>
+								<td>#(x.real_in_quantity)</td>
+								<td>#(x.in_from)</td>
+								<td >#(x.check_create_time) </td>
 								
 								<td class="jfa-operation-button">
 								#if(!x.is_create_check)
-								<a href="#" data-action="/fy/admin/biz/whouse/toCheck" data-id="#(x.id)" onclick="toCheck(this)"> 
+								<a href="#" data-action="/fy/admin/biz/whouse/toCheck" data-id="#(x.wid)" onclick="toCheck(this)"> 
 								<i class="fa fa-pencil" title="生成检测表"></i>
 								</a> 
 								#end
@@ -114,7 +124,8 @@ function toCheck(a){
 			   success: function(ret){
 				   if (ret.state == "ok") {
 				
-					   $(a).parent().empty();
+					   //$(a).parent().empty();
+					   location.reload();
 					}
 				   alert(ret.msg);
 			   },

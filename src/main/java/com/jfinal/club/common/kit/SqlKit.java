@@ -37,5 +37,21 @@ public class SqlKit {
 		}
 		ret.append(")");
 	}
-}
 
+	/**
+	 * 将 id 列表 join 起来，用逗号分隔，并且用小括号括起来
+	 */
+	public static void joinIds(String[] idList, StringBuilder ret) {
+		ret.append("(");
+		boolean isFirst = true;
+		for (String id : idList) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				ret.append(", ");
+			}
+			ret.append(id.toString());
+		}
+		ret.append(")");
+	}
+}

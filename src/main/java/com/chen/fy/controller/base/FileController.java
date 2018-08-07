@@ -69,7 +69,11 @@ public class FileController extends BaseController {
 
 	public void delete() {
 		Integer id = getParaToInt("id");
-
+		Fyfile fyfile = Fyfile.dao.findById(id);
+		File file = new File(fyfile.getFilepath(), fyfile.getFilename());
+		if (file.exists()) {
+			file.delete();
+		}
 		boolean re = Fyfile.dao.deleteById(id);
 
 		Ret ret = null;
@@ -105,14 +109,14 @@ public class FileController extends BaseController {
 	}
 
 	public void download() {
-		Integer integer = getParaToInt("id");
+		Integer integer = getParaToInt("fileId");
 		Fyfile fyfile = Fyfile.dao.findById(integer);
 		if (fyfile == null) {
 			renderText("没有找到文件");
 
 		} else {
 			File file = new File(fyfile.getFilepath(), fyfile.getFilename());
-			renderFile(file);
+			renderFile(file, fyfile.getOriginalFileName());
 		}
 	}
 

@@ -1,0 +1,94 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">修改应付明细表</h3>
+              
+              #if(model.can_download) 
+	              
+					#else
+						<div class="box-tools">
+	              			<label>是否可下载</label>
+						    <span id="can_download"  ><input type="checkbox" id="switch" class="js-switch" onclick="updateDownloadState()"  name="model.canDownload"  /> </span>
+						</div>
+					
+				 #end
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/finance/getPay/#(action)" method="post">         
+           
+              <div class="box-body">
+                
+					#include("form.html")
+					
+					
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+                	<button onclick="" class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/biz/finance/getPay"
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+		
+		$(function(){
+			var can = $("#can_download");
+			can.click(function(){
+				updateDownloadState();
+			});
+		});
+		
+function updateDownloadState(){
+	console.debug("test");
+			$.ajax({
+				   type: "POST",
+				   url:'/fy/admin/biz/finance/getPay/updateDownload' ,
+				   data:{id:'#(model.id)'},
+				   success: function(ret){
+					   if (ret.state == "ok") {
+							
+						   
+						}else{
+							$("#switch").attr("checked",'false');
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
+					   $("#switch").attr("checked",'false');
+					}
+				});
+		
+}
+</script>
+#end

@@ -1,0 +1,371 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+<input hidden="hidden" value="#(order.id??)" name="model.parentId"></input>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">工作订单号</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  readonly="readonly"   placeholder="工作订单号"  value="#(order.work_order_no??)" >
+				</div>
+			</div>
+		</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="商品名称"  value="#(order.commodity_name??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  readonly="readonly"  placeholder="商品规格" value="#(order.commodity_spec??)"   readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="总图号"  value="#(order.map_tmp??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">加工要求</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="加工要求" value="#(order.machining_require??)"   readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="数量"  value="#(order.quantity??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单位" value="#(order.unit_tmp??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+<div class="row">
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="外协日期" value="#(model.assist_date??)" name="model.assistDate"  data-type='datepicker' >
+			</div>
+		</div>
+	</div>
+	
+		<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off"  placeholder="外协工序"  value="#(model.assist_cost??)" name="model.assistCost">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  autocomplete="off" placeholder="外协工序"  value="#(model.assist_account??)" name="model.assistAccount">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">税率</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="taxStr" class="form-control" onclick="selectTax()"  placeholder="税率" autocomplete="off"  name="model.taxStr">
+				<input type="text" id ="taxRate" hidden="hidden" value="#(model.taxRate??)" name="model.taxRate">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">税额	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off" placeholder="税额" value="#(model.tax_amount??)" name="model.taxAmount" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">含税金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="含税金额"   autocomplete="off" value="#(model.tatol_amount??)" name="model.tatolAmount">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协厂商</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="外协厂商" autocomplete="off" value="#(model.supplier_name??)"  id="supplier_name" onclick="showChooesSupplier()" >
+				<input type="text"  hidden="hidden"  value="#(model.supplier_id??)" name="model.assistSupplierId" id="supplier_id" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off" placeholder="外协工序"  autocomplete="off"  value="#(model.assist_process??)" name="model.assistProcess">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协加工耗时</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off" placeholder="外协加工耗时"  autocomplete="off" value="#(model.run_time??)" name="model.runTime" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协回厂时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off"  data-type='datepicker'  autocomplete="off" placeholder="外协回厂时间"  value="#(model.backtime??)" name="model.backtime">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协回厂检测结果</label>
+
+			<div  class="col-sm-9">
+				<select  class="form-control" name="model.checkResult" >
+					<option></option>
+					<option value="合格">合格</option>
+					<option value="不合格"  >不合格</option>
+				</select>
+	
+				
+			</div>
+		</div>
+	</div>
+
+
+</div>
+														
+<script>
+
+
+
+function showChooesSupplier(){
+	
+	$('#myModel').modal("show");
+	getSupplierFromServer(1);	
+  	}
+
+function onselectSupplier(){
+	
+	
+  	
+	 var a = $("input[name='selectSupplier']:checked").val();
+	 console.debug(a);
+	 if(a!=null){
+		 var idName = 	a.split("_");
+  		 $("#supplier_id").val(idName[0]);
+  		$("#supplier_name").val(idName[1]);
+  	}else{
+		alert("没有选择人员");
+		return;
+    }
+    
+
+	$('#myModel').modal("hide");
+  	}
+
+
+function getSupplierFromServer(pageNumer){
+	
+	$.get("/fy/admin/base/supplier/searchSupplierJson", { keyWord: $("#pmodelKeyWord").val(), p : pageNumer},
+		  function(data){
+			plist = 	data.list;
+			var	ptbody = $("#ptbody");
+			ptbody.empty();
+		for(x in plist){
+				console.debug(plist[x].name);
+				
+				var tr='<tr><td class="text-center"><input type="radio" name="selectSupplier" value="'+plist[x].id+'_'+plist[x].name+'"></td>'+
+				'<td>'+plist[x].name+'</td>'+
+				'<td>'+plist[x].address+'</td>'+
+				'<td>'+plist[x].phone+'</td></tr>';
+				ptbody.append(tr);
+			}
+
+		
+		var pageUl =$("#pageUl");
+		pageUl.empty();
+		if(data.totalPage < 2 ){
+			return;
+		}
+		else{
+			
+			if(data.firstPage){
+				var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					pageUl.append(li);
+			}else{
+				var li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					pageUl.append(li);
+			}
+
+			if(data.totalPage>5){
+					for(var i = 1;i<6;i++){
+						if(data.pageNumber==i){
+								var li = '<li class="active"><a href="#">'+i+'</a></li>'
+								pageUl.append(li);
+							}
+							else{
+								var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+								pageUl.append(li);
+							}
+					}	
+			}else{
+				for(var i = 1;i<(data.totalPage+1);i++){
+					if(data.pageNumber==i){
+							var li = '<li class="active"><a href="#">'+i+'</a></li>'
+							pageUl.append(li);
+						}
+						else{
+							var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+							pageUl.append(li);
+						}
+				}	
+
+			}
+			if(data.lastPage){
+				var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+					pageUl.append(li);
+			}else{
+				var  li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+				pageUl.append(li);
+			}
+
+			
+			}
+		  },'json');
+  	}
+
+</script>
+#include("taxSelectModel.html")
+<script>
+
+function selectTax(){
+	var callback = function (isSelectUnit,unitId,unitStr,unitMath){
+		 console.debug(isSelectUnit+" "+ unitId);
+		if(isSelectUnit){
+			$("#taxStr").val(unitStr);
+			$("#taxRate").val(unitMath);
+		}
+	}
+	var selecTaxRateModal  = new SelecTaxRateModal( callback );
+	selecTaxRateModal.show();
+}
+</script>

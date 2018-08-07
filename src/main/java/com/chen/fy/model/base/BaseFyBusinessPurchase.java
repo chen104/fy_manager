@@ -17,212 +17,52 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getInt("id");
 	}
 
-	public void setCategoryId(java.lang.Integer categoryId) {
-		set("category_id", categoryId);
+	public void setPurchaseNo(java.lang.String purchaseNo) {
+		set("purchase_no", purchaseNo);
 	}
 	
-	public java.lang.Integer getCategoryId() {
-		return getInt("category_id");
+	public java.lang.String getPurchaseNo() {
+		return getStr("purchase_no");
 	}
 
-	public void setPlanerId(java.lang.Integer planerId) {
-		set("planer_id", planerId);
+	public void setPurchaseDate(java.util.Date purchaseDate) {
+		set("purchase_date", purchaseDate);
 	}
 	
-	public java.lang.Integer getPlanerId() {
-		return getInt("planer_id");
+	public java.util.Date getPurchaseDate() {
+		return get("purchase_date");
 	}
 
-	public void setExecuStatus(java.lang.String execuStatus) {
-		set("execu_status", execuStatus);
+	public void setPurchaseSingleWeight(java.math.BigDecimal purchaseSingleWeight) {
+		set("purchase_single_weight", purchaseSingleWeight);
 	}
 	
-	public java.lang.String getExecuStatus() {
-		return getStr("execu_status");
+	public java.math.BigDecimal getPurchaseSingleWeight() {
+		return get("purchase_single_weight");
 	}
 
-	public void setUrgentStatus(java.lang.String urgentStatus) {
-		set("urgent_status", urgentStatus);
+	public void setPurchaseWeight(java.math.BigDecimal purchaseWeight) {
+		set("purchase_weight", purchaseWeight);
 	}
 	
-	public java.lang.String getUrgentStatus() {
-		return getStr("urgent_status");
+	public java.math.BigDecimal getPurchaseWeight() {
+		return get("purchase_weight");
 	}
 
-	public void setOrderDate(java.util.Date orderDate) {
-		set("order_date", orderDate);
+	public void setPurchaseCost(java.math.BigDecimal purchaseCost) {
+		set("purchase_cost", purchaseCost);
 	}
 	
-	public java.util.Date getOrderDate() {
-		return get("order_date");
+	public java.math.BigDecimal getPurchaseCost() {
+		return get("purchase_cost");
 	}
 
-	public void setDeliveryDate(java.util.Date deliveryDate) {
-		set("delivery_date", deliveryDate);
+	public void setPurchaseAccount(java.math.BigDecimal purchaseAccount) {
+		set("purchase_account", purchaseAccount);
 	}
 	
-	public java.util.Date getDeliveryDate() {
-		return get("delivery_date");
-	}
-
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("work_order_no", workOrderNo);
-	}
-	
-	public java.lang.String getWorkOrderNo() {
-		return getStr("work_order_no");
-	}
-
-	public void setDeliveryNo(java.lang.String deliveryNo) {
-		set("delivery_no", deliveryNo);
-	}
-	
-	public java.lang.String getDeliveryNo() {
-		return getStr("delivery_no");
-	}
-
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setCommoditySpec(java.lang.String commoditySpec) {
-		set("commodity_spec", commoditySpec);
-	}
-	
-	public java.lang.String getCommoditySpec() {
-		return getStr("commodity_spec");
-	}
-
-	public void setMapNo(java.lang.Integer mapNo) {
-		set("map_no", mapNo);
-	}
-	
-	public java.lang.Integer getMapNo() {
-		return getInt("map_no");
-	}
-
-	public void setTechnology(java.lang.String technology) {
-		set("technology", technology);
-	}
-	
-	public java.lang.String getTechnology() {
-		return getStr("technology");
-	}
-
-	public void setMachiningRequire(java.lang.String machiningRequire) {
-		set("machining_require", machiningRequire);
-	}
-	
-	public java.lang.String getMachiningRequire() {
-		return getStr("machining_require");
-	}
-
-	public void setQuantity(java.math.BigDecimal quantity) {
-		set("quantity", quantity);
-	}
-	
-	public java.math.BigDecimal getQuantity() {
-		return get("quantity");
-	}
-
-	public void setUnit(java.lang.Integer unit) {
-		set("unit", unit);
-	}
-	
-	public java.lang.Integer getUnit() {
-		return getInt("unit");
-	}
-
-	public void setIsCreatePlan(java.lang.Boolean isCreatePlan) {
-		set("is_create_plan", isCreatePlan);
-	}
-	
-	public java.lang.Boolean getIsCreatePlan() {
-		return get("is_create_plan");
-	}
-
-	public void setDistributeTime(java.util.Date distributeTime) {
-		set("distribute_time", distributeTime);
-	}
-	
-	public java.util.Date getDistributeTime() {
-		return get("distribute_time");
-	}
-
-	public void setHandleStatus(java.lang.String handleStatus) {
-		set("handle_status", handleStatus);
-	}
-	
-	public java.lang.String getHandleStatus() {
-		return getStr("handle_status");
-	}
-
-	public void setPlanTime(java.util.Date planTime) {
-		set("plan_time", planTime);
-	}
-	
-	public java.util.Date getPlanTime() {
-		return get("plan_time");
-	}
-
-	public void setPlanFinshTime(java.util.Date planFinshTime) {
-		set("plan_finsh_time", planFinshTime);
-	}
-	
-	public java.util.Date getPlanFinshTime() {
-		return get("plan_finsh_time");
-	}
-
-	public void setPlanRemark(java.lang.String planRemark) {
-		set("plan_remark", planRemark);
-	}
-	
-	public java.lang.String getPlanRemark() {
-		return getStr("plan_remark");
-	}
-
-	public void setInWarehouseTime(java.util.Date inWarehouseTime) {
-		set("in_warehouse_time", inWarehouseTime);
-	}
-	
-	public java.util.Date getInWarehouseTime() {
-		return get("in_warehouse_time");
-	}
-
-	public void setCategoryTmp(java.lang.String categoryTmp) {
-		set("category_tmp", categoryTmp);
-	}
-	
-	public java.lang.String getCategoryTmp() {
-		return getStr("category_tmp");
-	}
-
-	public void setPlanTmp(java.lang.String planTmp) {
-		set("plan_tmp", planTmp);
-	}
-	
-	public java.lang.String getPlanTmp() {
-		return getStr("plan_tmp");
-	}
-
-	public void setUnitTmp(java.lang.String unitTmp) {
-		set("unit_tmp", unitTmp);
-	}
-	
-	public java.lang.String getUnitTmp() {
-		return getStr("unit_tmp");
-	}
-
-	public void setIsReceive(java.lang.Boolean isReceive) {
-		set("is_receive", isReceive);
-	}
-	
-	public java.lang.Boolean getIsReceive() {
-		return get("is_receive");
+	public java.math.BigDecimal getPurchaseAccount() {
+		return get("purchase_account");
 	}
 
 	public void setParentId(java.lang.Integer parentId) {
@@ -239,6 +79,70 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 	
 	public java.lang.Integer getOrderId() {
 		return getInt("order_id");
+	}
+
+	public void setSupplierId(java.lang.Integer supplierId) {
+		set("supplier_id", supplierId);
+	}
+	
+	public java.lang.Integer getSupplierId() {
+		return getInt("supplier_id");
+	}
+
+	public void setDiscount(java.math.BigDecimal discount) {
+		set("discount", discount);
+	}
+	
+	public java.math.BigDecimal getDiscount() {
+		return get("discount");
+	}
+
+	public void setDiscountAccount(java.math.BigDecimal discountAccount) {
+		set("discount_account", discountAccount);
+	}
+	
+	public java.math.BigDecimal getDiscountAccount() {
+		return get("discount_account");
+	}
+
+	public void setPurchaseRemark(java.lang.String purchaseRemark) {
+		set("purchase_remark", purchaseRemark);
+	}
+	
+	public java.lang.String getPurchaseRemark() {
+		return getStr("purchase_remark");
+	}
+
+	public void setCanDownload(java.lang.Boolean canDownload) {
+		set("can_download", canDownload);
+	}
+	
+	public java.lang.Boolean getCanDownload() {
+		return get("can_download");
+	}
+
+	public void setHangStatus(java.lang.String hangStatus) {
+		set("hang_status", hangStatus);
+	}
+	
+	public java.lang.String getHangStatus() {
+		return getStr("hang_status");
+	}
+
+	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
+		set("unhang_quantity", unhangQuantity);
+	}
+	
+	public java.math.BigDecimal getUnhangQuantity() {
+		return get("unhang_quantity");
+	}
+
+	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
+		set("hang_quantity", hangQuantity);
+	}
+	
+	public java.math.BigDecimal getHangQuantity() {
+		return get("hang_quantity");
 	}
 
 }

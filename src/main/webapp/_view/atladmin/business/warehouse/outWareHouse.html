@@ -6,9 +6,24 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">出库表</h3>
+				<form  id="form_download" method="post" action="/fy/admin/biz/whouse/downloadOutWhouse">
+						
+				<button class="btn btn-primary">下载</button>
+				</form>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+				<form action="/fy/admin/biz/whouse/outWhouse"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no">送货单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +36,6 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -57,21 +71,22 @@
 								<th>撤回原因</th>
 								<th>是否生成售后处理表</th>
 								<th>售后处理表生成时间</th>
-								<th>操作</th>
+								<th>生成应收明细单</th>
 							</tr>
 						</thead>
+						
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 		
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
@@ -88,13 +103,20 @@
 								<td>#(x.out_quantity)</td>
 								<td>#(x.is_back_pay)</td>
 								<td>#(x.back_reson)</td>
-								<td>#(x.is_create_after_sale)</td>
+								<td>#if(!x.is_create_after_sale)
+										<a href="/fy/admin/biz/aftersale/complaint/add?id=#(x.id)" data-id="#(x.id)" > 
+											<i class="fa fa-pencil" title="售后投诉表"></i>
+										</a> 
+									#else
+										已生成投诉单
+									#end
+								</td>
 								<td>#(x.after_sale_create_time)</td>
 								<td class="jfa-operation-button">
 								
 									#if(!x.is_create_get_pay) 
 										
-										<a href="#" onclick="createGetPay(this)" data-id="#(x.id)" > 
+										<a href="/fy/admin/biz/finance/getPay/add?id=#(x.id)"  data-id="#(x.id)" > 
 											<i class="fa fa-pencil" title="生应付明细单"></i>
 										</a> 
 										
@@ -103,6 +125,7 @@
 							</tr>
 							#end
 						</tbody>
+						
 					</table>
 		
 

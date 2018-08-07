@@ -6,8 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">结算单</h3>
+				<span> <button class="btn">生成汇总结算单 </button> </span>
 				<div class="box-tools">
-				<!--  
+			
 					<form action="/fy/admin/base/taxRate">
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
@@ -21,7 +22,7 @@
 						</div>
 
 					</form>
-					-->
+					
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -30,6 +31,7 @@
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
+								<th></th>
 								<th>序号</th>
 								<th>类别</th>
 								<th>计划员</th>
@@ -61,6 +63,7 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
+								<td>#if(!x.is_create_paybill) <input value="#(x.id)"  type="checkbox"> #end</td>
 								<td>#(for.index+1)</td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
@@ -73,20 +76,20 @@
 								<td>#(x.commoditySpec)</td>
 								<td>#(x.mapNo)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
 								
-								<td> #(x.untax_cost)</td>	
-								<td> #(x.bhang_time)</td>
-								<td>#(x.bhang_status)</td>
-								<td> #(x.bhang_quantity)</td>
-								<td> #(x.bhang_amount)</td>
-								<td>#(x.bunhang_quantity)</td>
+								<td> #(x.untaxed_cost)</td>	
+								<td> #(x.hang_time)</td>
+								<td>#(x.hang_status)</td>
+								<td> #(x.hang_quantity)</td>
+								<td> #(x.hang_amount)</td>
+								<td>#(x.unhang_quantity)</td>
 								<td> #(x.is_create_paybill)</td>
 								<td> #(x.paybill_create_time)</td>
 				
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/finance/addgetpaybill?id=#(x.bid)"> 
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/finance/addgetpaybill?id=#(x.id)"> 
 								<i class="fa fa-pencil" title="生成检测表"></i>
 								</a> 
 								</td>

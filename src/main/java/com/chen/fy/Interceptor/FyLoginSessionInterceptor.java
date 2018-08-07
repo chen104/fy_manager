@@ -54,6 +54,7 @@ public class FyLoginSessionInterceptor implements Interceptor {
 				inv.invoke();
 			} else {
 				inv.getController().redirect("/fy");
+
 			}
 		} else {
 			inv.invoke();

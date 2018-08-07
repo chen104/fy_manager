@@ -7,8 +7,19 @@
 			<div class="box-header">
 				<h3 class="box-title">库存一览表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+				<form action="/fy/admin/biz/whouse/storage"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no">送货单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +32,6 @@
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -44,13 +54,11 @@
 								<th>总图号</th>
 								<th>技术条件</th>
 								<th>加工要求</th>
-								<th>数量</th>
+								<th>订单数量</th>
 								<th>单位</th>
 
-								<th>检测结果</th>
-								<th>检测时间	</th>
-								<th>是否生成出库单</th>
-								<th>出库生成时间</th>
+								<th>库存数量</th>
+								<th>已出库数量</th>
 								<th>出库</th>
 							</tr>
 						</thead>
@@ -58,36 +66,32 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
+									<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
-								<th>#(x.check_result)</th>
-								<th>#(x.check_time)	</th>
-								<th>
-									#if(x.is_create_can_out)	
-									#else
-         								已生成	
-         							#end
-								</th>
-								<th>#(x.create_out_time)</th>
+								
+								
+								<td>#(x.storage_quantity)</td>
+								<td>#(x.out_quantity)	</td>
+
 							
 								<td class="jfa-operation-button">
 								  #if(!x.create_out_time)
 									<a href="/fy/admin/biz/whouse/toAddOut?id=#(x.id)" > 
-									<i class="fa fa-pencil" title="生成检测表"></i>
+									<i class="fa fa-pencil" title="生成出库表"></i>
 									</a> 
 									
          

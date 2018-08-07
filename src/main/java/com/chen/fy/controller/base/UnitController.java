@@ -1,5 +1,7 @@
 package com.chen.fy.controller.base;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.chen.fy.model.Unit;
 import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
@@ -52,6 +54,7 @@ public class UnitController extends BaseController {
 		Unit model = Unit.dao.findById(getParaToInt("id"));
 		setAttr("model", model);
 		setAttr("action", "update");
+		setAttr("title", "修改单位");
 		render("edit.html");
 	}
 
@@ -70,6 +73,22 @@ public class UnitController extends BaseController {
 
 	public void add() {
 		setAttr("action", "save");
+		setAttr("title", "新建单位");
 		render("edit.html");
+	}
+
+	public void searchUnitJson() {
+		String key = getPara("keyWord");
+		Page<Unit> modelPage = null;
+		setAttr("keyWord", key);
+		if (StringUtils.isEmpty(key)) {
+			modelPage = Unit.dao.paginate(getParaToInt("p", 1), 10, "select * ", "from fy_base_unit order by id desc");
+		} else {
+			modelPage = Unit.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_unit where name like ? order by id desc", "%" + key + "%");
+			setAttr("append", "keyWord=" + key);
+		}
+
+		renderJson(modelPage);
 	}
 }

@@ -8,7 +8,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-             <form id="myForm" action="/fy/admin/base/taxRate/update"  method="post">
+             <form id="myForm" action="/fy/admin/base/taxRate/#(action)"  method="post">
               <div class="box-body">
                
 					<input hidden="hidden" value="#(model.id??)" name="model.id"></input
@@ -17,10 +17,10 @@
 						<div class="col-md-6">
 					
 							<div class="form-group">
-								<label  class="col-sm-3 control-label">当前税率</label>
+								<label  class="col-sm-3 control-label">#(title)</label>
 					
 								<div class="col-sm-9">
-									<input type="text" class="form-control" placeholder="税率" value="#(model.matchValue??)" name="model.matchValue" >
+									<input type="text" class="form-control" placeholder="税率" value="#(model.taxRate??)" name="model.taxRate" >
 								</div>
 							</div>
 						</div>

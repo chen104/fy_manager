@@ -5,10 +5,11 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.chen.fy.model.FyBusinessAssist;
 import com.chen.fy.model.FyBusinessBill;
-import com.chen.fy.model.FyBusinessGetpay;
 import com.chen.fy.model.FyBusinessGetpaybill;
 import com.chen.fy.model.FyBusinessOrder;
+import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.chen.fy.model.FyBusinessPay;
 import com.chen.fy.model.FyBusinessPaybill;
 import com.chen.fy.model.FyBusinessSumPaybill;
@@ -32,16 +33,27 @@ public class FinanceController extends BaseController {
 	/**
 	 * 应收明细表
 	 */
-	public void getPay() {
+	public void getPayTest() {
 		String key = getPara("keyWord");
-		Page<FyBusinessGetpay> modelPage = null;
-		setAttr("keyWord", key);
+		Page<FyBusinessOutWarehouse> modelPage = null;
+		keepPara("keyWord", "condition");
 
-		modelPage = FyBusinessGetpay.dao.paginate(getParaToInt("p", 1), 10,
-				"select o.*  ,g.out_time , g.out_quantity,g.id getpay_id,g.out_time out_time,g.out_quantity out_quantity,g.is_create_bill is_create_bill,"
-						+ "g.bill_create_time bill_create_time",
-				"from  fy_business_getpay g left join fy_business_order o on g.order_id = o.id  order by id desc");
+		if (StringUtils.isEmpty(key)) {
 
+			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
+					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date",
+					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id   order by w.id desc");
+
+		} else {
+			StringBuilder sb = new StringBuilder();
+			String condition = getPara("condition");
+			sb.append(" where o.").append(condition).append(" like '%").append(key).append("%' ");
+			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
+					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date",
+					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id "
+							+ sb.toString() + "  order by w.id desc");
+
+		}
 		setAttr("modelPage", modelPage);
 		render("getPay.html");
 	}
@@ -53,7 +65,10 @@ public class FinanceController extends BaseController {
 
 		setAttr("action", "savebill");
 		Integer id = getParaToInt("id");
-		FyBusinessGetpay model = FyBusinessGetpay.dao.findById(id);
+		// FyBusinessGetpay model = FyBusinessGetpay.dao.findById(id);
+		// FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+
+		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(id);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		setAttr("model", model);
 		setAttr("order", order);
@@ -62,17 +77,21 @@ public class FinanceController extends BaseController {
 	}
 
 	public void savebill() {
-		FyBusinessBill model = getBean(FyBusinessBill.class, "model");
-		Integer parentId = model.getParentId();
-		FyBusinessGetpay parent = FyBusinessGetpay.dao.findById(parentId);
+		FyBusinessOutWarehouse tmp = getBean(FyBusinessOutWarehouse.class, "model");
+		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(tmp.getId());
+		model.setBillCreateTime(new Date());
+		model.setIsCreateBill(true);
+		model.setBillQuantity(tmp.getBillQuantity());
+		model.setHangStatus(tmp.getHangStatus());
+		model.setHangAmount(tmp.getHangAmount());
+		model.setHangTime(tmp.getHangTime());
+		model.setUnhangQuantity(tmp.getUnhangQuantity());
+		model.setHangQuantity(tmp.getHangQuantity());
 
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
-				parent.setBillCreateTime(new Date());
-				parent.setIsCreateBill(true);
-				boolean b1 = parent.update();
-				boolean b2 = model.save();
-				return (b1 & b2);
+
+				return model.update();
 			}
 		});
 		Ret ret = null;
@@ -88,12 +107,13 @@ public class FinanceController extends BaseController {
 	 * 应收结算单
 	 */
 	public void getbill() {
-		Page<FyBusinessBill> modelPage = null;
-		String sql = ",b.hang_time  bhang_time, b.hang_status bhang_status , b.hang_quantity  bhang_quantity,b.hang_amount bhang_amount,"
-				+ "b.unhang_quantity bunhang_quantity ,  b.is_create_paybill, b.paybill_create_time,b.id bid";
+		Page<FyBusinessOutWarehouse> modelPage = null;
+		String sql = "cate_tmp,plan_tmp,execu_status,urgent_status,order_date,delivery_date,work_order_no,"
+				+ "delivery_no,commodity_name,commodity_spec,map_no,technology,machining_require,"
+				+ "quantity,unit_tmp,untaxed_cost,amount,taxRate,tax_amount,tatol_amount";
 
-		modelPage = FyBusinessBill.dao.paginate(getParaToInt("p", 1), 10, "select o.* " + sql,
-				"from  fy_business_bill b left join fy_business_order  o  on b.order_id = o.id  order by id desc");
+		modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10, "select w.* ," + sql,
+				"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id  where w.is_create_bill = 1  order by w.id desc");
 
 		setAttr("modelPage", modelPage);
 		render("getbill.html");
@@ -102,7 +122,7 @@ public class FinanceController extends BaseController {
 	public void addgetpaybill() {
 		Integer id = getParaToInt("id");
 		setAttr("action", "saveGetpaybill");
-		FyBusinessBill model = FyBusinessBill.dao.findById(id);
+		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(id);
 		setAttr("model", model);
 		render("addGetpaybill.html");
 
@@ -157,14 +177,9 @@ public class FinanceController extends BaseController {
 		String key = getPara("keyWord");
 		Page<FyBusinessPay> modelPage = null;
 		setAttr("keyWord", key);
-		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_pay order by id desc");
-		} else {
-			modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_business_pay where commodity_name like ? order by id desc", "%" + key + "%");
-			setAttr("append", "keyWord=" + key);
-		}
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), 10, "select p.*, " + sql,
+				"from  fy_business_pay p left join fy_business_order o on o.id= p.order_id order by id desc");
 
 		setAttr("modelPage", modelPage);
 		render("pay.html");
@@ -176,11 +191,15 @@ public class FinanceController extends BaseController {
 	public void paybill() {
 		String key = getPara("keyWord");
 		Page<FyBusinessPaybill> modelPage = null;
-		setAttr("keyWord", key);
+		keepPara("keyWord", "condition");
+
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
 					"from  fy_business_paybill order by id desc");
 		} else {
+			StringBuilder sb = new StringBuilder();
+			String condition = getPara("condition");
+			sb.append(" where o.").append(condition).append(" like '%").append(key).append("%' ");
 			modelPage = FyBusinessPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
 					"from fy_business_paybill where commodity_name like ? order by id desc", "%" + key + "%");
 			setAttr("append", "keyWord=" + key);
@@ -197,16 +216,31 @@ public class FinanceController extends BaseController {
 		String key = getPara("keyWord");
 		Page<FyBusinessSumPaybill> modelPage = null;
 		setAttr("keyWord", key);
-		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessSumPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_paybill order by id desc");
-		} else {
-			modelPage = FyBusinessSumPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_business_paybill where commodity_name like ? order by id desc", "%" + key + "%");
-			setAttr("append", "keyWord=" + key);
-		}
 
-		setAttr("sumPaybill", modelPage);
+		modelPage = FyBusinessSumPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+				"from  fy_business_paybill order by id desc");
+
+		setAttr("modelPage", modelPage);
 		render("sumpay.html");
 	}
+
+	/**
+	 * 外协添加pay
+	 */
+	public void addpay() {
+		Integer id = getParaToInt("id");
+		FyBusinessAssist assist = FyBusinessAssist.dao.findFirst(
+				"select a,*,s.name supplier_name from fy_business_assist a left join fy_base_supplier s on s.id = a.assist_supplier_id where a.id= ? ",
+				id);
+
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(assist.getOrderId());
+
+		setAttr("assist", assist);
+		setAttr("order", order);
+		render("");
+	}
+
+	/**
+	 * 外协pay
+	 */
 }

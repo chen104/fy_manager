@@ -7,21 +7,31 @@
 			<div class="box-header">
 				<h3 class="box-title">委外一览表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+				  
+					<form action="/fy/admin/biz/commission/oneSumCommission" class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+						
 						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
+							<input type="text" name="keyWord" class="form-control pull-right" autocomplete="off"
 								placeholder="Search" value="#(keyWord)">
 
 							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
+								<button type="submit" class="btn btn-default" >
 									<i class="fa fa-search"></i>
 								</button>
 							</div>
 						</div>
 
 					</form>
-					-->
+					
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -48,13 +58,17 @@
 								<th>单位</th>
 								
 								
-								<th>接收时间</th>								
-								<th>分配时间</th>
-								<th>生成采购订单	</th>
-								<th>供应商</th>
-								<th>采购生成时间</th>
-								<th>处理状态 </th>
+								<th>厂商</th>								
+								<th>订单编码</th>
+								<th>数量	</th>
+								<th>单价</th>
+								<th>金额</th>
+								<th>折扣</th>
+								<th>折扣后金额</th>		
+													
+								<th>入库时间</th>	
 								
+								<th>入库数量</th>	
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -62,34 +76,36 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_id)</td>
-								<td>#(x.planerId)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.billDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workBillNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit)</td>
+								<td>#(x.unit_tmp)</td>
 								
-								<td>#(x.receive_time)</td>								
-								<td>#(name)</td>
-								<td>#(name)</td>
-								<td>#(name)</td>
-								<td>#(name)</td>
-								<td>#(name) </td>
-								<td class="jfa-operation-button"><a href="/fy/admin/base/category/edit?id=#(x.id)" style="margin-left: 14px;"> 
+								<td>#(x.supplier_name)</td>								
+								<td>#(x.purchase_no)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_account)</td>
+								<td>#(x.discount) </td>
+								<td>#(x.discount_account) </td>
+								
+							
+								<td>#(x.in_time) </td>
+								<td>#(x.real_in_quantity) </td>
+								<td class="jfa-operation-button"><a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
 								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								</a> </td>
 							</tr>
 							#end
 						</tbody>
@@ -101,7 +117,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/commission/oneSumCommission?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -136,5 +152,5 @@ function deleteperson(a){
 		}
 	}
     </script>
-
+#include("inHouseModel.html")
 #end

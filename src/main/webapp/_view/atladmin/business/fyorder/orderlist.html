@@ -9,31 +9,63 @@
 					#include("upload.html")
 
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
-						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
-								placeholder="Search" value="#(keyWord)">
+			
+					<form action="/fy/admin/biz/fyorder"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition" onselect="" onchange="onselectCondition()">
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+						  
+						 <div id="order_date_div" class="form-group  input-group-sm" #if(condition!="order_date") style="display:none;" #end  >
 
-							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
+							<input id="order_date" type="text" name="order_date" value="#(order_date)"  autocomplete="off" class="form-control"  data-type='datepicker' >
+						  
+						  </div>
+						  
+						
+						   <div id="keyword_div" class="form-group  input-group-sm"  #if(condition=="order_date") style="display:none;" #end  >
+
+							<input id="order_date" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+						  
+						  </div>
+						  
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
 									<i class="fa fa-search"></i>
 								</button>
-							</div>
-						</div>
-
+						  </div>
+						
+  <script type="text/javascript">
+	  function onselectCondition(){
+	  		var val = $("#condition").val();
+	  		if("order_date"==val){
+	  			
+	  			$("#order_date_div").css('display','inline');//visible
+	  			$("#keyword_div").css('display','none');//visible
+	  		}else{
+	  			$("#keyword_div").css('display','inline');//visible
+	  			$("#order_date_div").css('display','none');//visible
+	  		}
+	  }
+						  	
+</script>
 					</form>
-					-->
+					
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding text-center">
 	
 					<table class="table table-bordered"  style="white-space:nowrap;margin-right: 5px;margin-left:5px;text-align:center" >
 						<thead>
 							<tr>
 								<th>序号</th>
-								<th><input name="selectAll" type="checkbox" ></th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -72,7 +104,6 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1) </td>
-								<td><input name="select" type="checkbox" data-model-id="#(x.id)"></td>
 								<td>#(x.cate_tmp)</td>  
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
@@ -110,12 +141,18 @@
 								<td>#(x.hangQuantity)</td>
 								<td>#(x.hangAmount)</td>
 								<td>#(x.unhangAuantity)</td>
+						
 								<td class="jfa-operation-button">
-								#if(!x.receiveTime) 
-								<a href="#" onclick="receive(this)" data-action="/fy/admin/biz/fyorder/toRecieve" data-id="#(x.id)"> 
-									<i class="glyphicon glyphicon-share-alt" title="生成接收表"></i>
+								
+								<a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
+									<i class="glyphicon glyphicon-pencil" title="修改"></i>
 								</a> 
-								#end
+								
+								
+								<a href="#" onclick="deleteOrder(this)" data-id="#(x.id)" data-order-id="#(x.workOrderNo)"  style="color: red;margin-left: 10px"> 
+									<i class="glyphicon glyphicon-trash" title="删除"></i>
+								</a> 
+								
 								</td>
 								
 							</tr>
@@ -139,10 +176,10 @@
 <script type="text/javascript">
 function receive(a){
 
-
+		
 		$.ajax({
 			   type: "POST",
-			   url:$(a).data("action") ,
+			   url:$(a).data("action"),
 			   data:{id:$(a).data("id")},
 			   success: function(ret){
 				   if (ret.state == "ok") {
@@ -161,6 +198,31 @@ function receive(a){
 			});
 }
 
+function deleteOrder(a){
+	var obj = $(a);
+	var re = confirm("是否要删除订单 "+obj.data('order-id'));
+	if(re){
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/fyorder/deleteOrder' ,
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						location.reload();
+					
+					}
+				   alert(ret.msg);
+				   $(a).empty();
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	}
+}
 
 
 
@@ -168,3 +230,4 @@ function receive(a){
 
 #end
 #include("../../file/listFileModel.html")
+#include("editOrderModel.html")

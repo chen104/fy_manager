@@ -7,8 +7,19 @@
 			<div class="box-header">
 				<h3 class="box-title">生产汇总表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+		
+					<form action="/fy/admin/biz/produce/oneSumPro"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+					
+					
 						<div class="input-group input-group-sm" style="width: 150px;">
 							<input type="text" name="keyWord" class="form-control pull-right"
 								placeholder="Search" value="#(keyWord)">
@@ -21,7 +32,7 @@
 						</div>
 
 					</form>
-					-->
+			
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -55,12 +66,12 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#(x.cate_tmp) </td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
 								<td>#(x.workOrderNo)</td>
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.commodityName)</td>
@@ -72,9 +83,17 @@
 								<td>#(x.unit_tmp)</td>
 								<td>#(x.distributeTime)</td>
 								<td>#(x.handleStatus)</td>
-								<td class="jfa-operation-button"><a href="#" onclick="showModel('#(x.id)')"> 
-										<i class="glyphicon glyphicon-share-alt" title="生成生产计划单"></i>
-								</a> </td>
+								<td class="jfa-operation-button">
+						
+								#if(x.is_create_plan)
+									已生成生产计划表
+								
+								#else
+									<a href="#" onclick="showModel('#(x.id)')"> 
+											<i class="glyphicon glyphicon-share-alt" title="生成生产计划单"></i>
+									</a> 
+								#end
+								</td>
 							</tr>
 							#end
 						</tbody>

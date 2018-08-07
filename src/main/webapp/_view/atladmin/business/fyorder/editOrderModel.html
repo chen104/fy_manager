@@ -1,0 +1,102 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">订单修改</h4>
+      </div>
+      <div class="modal-body text-center">
+      	<div class="row">
+      		<div class="col-md-12">
+	      		 <div class="form-group">
+	                <label>数量</label>
+	                <div class="input-group date">
+	                 
+	                  <input  type="text" class="form-control pull-right" id="new_quanity" >
+	                </div>
+	                 <!-- /.input group -->
+	             </div>
+             </div>
+      	
+      
+		</div>
+      	<div class="row">
+      			<div class="col-md-12">
+		      	 	<div class="form-group">
+		                <label>单位</label>
+		                <div class="input-group date">
+		                
+		                  <input  onclick="onclickSelectUnit()" type="text" class="form-control pull-right"  id="new_unit" >
+		                </div>
+		                <!-- /.input group -->
+		              </div>
+	      		</div>
+      	</div>
+    
+   			  
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="doCancel()">取消</button>
+        <button type="button" class="btn btn-primary" onclick="onSure()">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+#include("../../unit/unitSelectModel.html")
+<script type="text/javascript">
+function  doCancel(){
+	console.debug("取消了");
+}
+
+  function showModel(a){
+	  	var modar = $("#myModal");
+	 	 modar.modal("show");
+	 	 modar.data("id",$(a).data('id'));
+	 	
+	  }
+
+ function onclickSelectUnit(){
+	 $("#myModal").modal("hide");
+
+	 var callback = function (isSelectUnit,unitId,unitname,){
+		 $("#myModal").modal("show");
+		 console.debug(isSelectUnit+" "+ unitId);
+		if(isSelectUnit){
+			$("#new_unit").val(unitname);
+		}
+	 }
+	 var selecUnitModal  = new SelecUnitModal( callback );
+	 selecUnitModal.show();
+ }
+  
+
+ 
+  function onSure(){
+
+	  var model = $("#myModal");
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/fyorder/updateOrder',
+			   data:{id:model.data("id"),quantity:$("#new_quanity").val(),unit:$("#new_unit").val()},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					   model.modal("hide"); 
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	  
+  }
+
+
+
+</script>

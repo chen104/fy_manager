@@ -59,7 +59,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.name)</td>
+								<td>#(x.name) </td>
 								<td>#(x.nativePlace)</td>
 								<td>#if(x.sex) 男 #else 女 #end</td>
 								<td>#date(x.birtdDate,"yyyy-MM-dd")</td>
@@ -76,7 +76,7 @@
 								<td>#(x.adjustBaseSalary1)</td>
 								<td>#(x.adjustBaseSalary2)</td>
 								<td>#(x.adjustBaseSalary3)</td>
-								<td>#(x.adjustBaseSalary4)</td>
+								<td>#(x.adjustBaseSalary4) </td>
 								<td class="jfa-operation-button"><a href="/fy/admin/base/person/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
 								</a> <a data-delete data-title="#escape(x.name)"

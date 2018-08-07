@@ -1,6 +1,12 @@
+#if(action == "addOut")
+<input hidden="hidden" value="#(order.id??)" name="out.parentId"></input>
+#else
+<input hidden="hidden" value="#(model.id??)" name="out.id"></input>
+<input hidden="hidden" value="#(model.parent_id??)" name="out.parentId"></input>
+#end
 
-<input hidden="hidden" value="#(model.id??)" name="out.parentId"></input>
-<input hidden="hidden" value="#(model.orderId??)" name="out.orderId"></input>
+
+<input hidden="hidden" value="#(order.id??)" name="out.orderId"></input>
 <div class="row">
 
 	<div class="col-md-6">
@@ -10,7 +16,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control"
-					value="#(model.category_tmp??)" readonly="readonly" name="out.categoryTmp">
+					value="#(order.cate_tmp??)" readonly="readonly" >
 			</div>
 		</div>
 	</div>
@@ -20,7 +26,7 @@
 			<label class="col-sm-3 control-label">计划员 </label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.plan_tmp??)"  name="out.planTmp"
+				<input type="text" class="form-control" value="#(order.plan_tmp??)"  
 					readonly="readonly">
 			</div>
 		</div>
@@ -37,8 +43,8 @@
 			<label class="col-sm-3 control-label">工作订单号</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  name="out.workOrderNo"
-					value="#(model.workOrderNo??)" readonly="readonly">
+				<input type="text" class="form-control"  
+					value="#(order.workOrderNo??)" readonly="readonly">
 			</div>
 		</div>
 	</div>
@@ -48,7 +54,7 @@
 			<label class="col-sm-3 control-label">送货单号</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.deliveryNo??)" name = "out.deliveryNo"
+				<input type="text" class="form-control" value="#(order.deliveryNo??)" 
 					readonly="readonly">
 			</div>
 		</div>
@@ -66,8 +72,8 @@
 			<label class="col-sm-3 control-label">商品名称</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" name = "out.commodityName"
-					value="#(model.commodityName??)" readonly="readonly">
+				<input type="text" class="form-control" 
+					value="#(order.commodityName??)" readonly="readonly">
 			</div>
 		</div>
 	</div>
@@ -77,8 +83,8 @@
 			<label class="col-sm-3 control-label">商品规格</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  name = "out.commoditySpec"
-					value="#(model.commoditySpec??)" readonly="readonly">
+				<input type="text" class="form-control"  
+					value="#(order.commoditySpec??)" readonly="readonly">
 			</div>
 		</div>
 	</div>
@@ -94,7 +100,7 @@
 			<label class="col-sm-3 control-label">总图号</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.mapNo??)" name="out.mapNo"
+				<input type="text" class="form-control" value="#(order.mapNo??)" 
 					readonly="readonly">
 			</div>
 		</div>
@@ -104,10 +110,10 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">数量</label>
+			<label class="col-sm-3 control-label">订单数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.quantity??)" name="out.quantity"
+				<input type="text" class="form-control" value="#(order.quantity??)" 
 					readonly="readonly">
 			</div>
 		</div>
@@ -124,11 +130,10 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">出库数量</label>
+			<label class="col-sm-3 control-label">库存数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.quantity??)"
-					name="out.outQuantity">
+				<input type="text" class="form-control" value="#(order.storage_quantity??)" readonly="readonly">
 			</div>
 		</div>
 	</div>
@@ -140,7 +145,7 @@
 			<label class="col-sm-3 control-label">单位</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.unitTmp??)" name="out.unitTmp"
+				<input type="text" class="form-control" value="#(order.unitTmp??)" 
 					readonly="readonly">
 			</div>
 		</div>
@@ -150,6 +155,31 @@
 
 </div>
 
+<div  class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.storage_quantity??)"
+					name="out.outQuantity">
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间</label>
+			<div class="col-sm-9">
+				<input type="text" data-type="datepicker" name="out.outTime"
+					class="form-control" placeholder="出库时间">
+			</div>
+		</div>
+	</div>
+	
+</div>
 
 <div class="row">
 
@@ -239,18 +269,4 @@
 
 
 </div>
-
-<div class="row">
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="col-sm-3 control-label">出库时间</label>
-			<div class="col-sm-9">
-				<input type="text" data-type="datepicker" name="out.outTime"
-					class="form-control" placeholder="出库时间">
-			</div>
-		</div>
-	</div>
-
-</div>
-
 

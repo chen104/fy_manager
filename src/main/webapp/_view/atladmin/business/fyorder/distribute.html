@@ -6,6 +6,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">PCM分配表</h3>
+				<button  class="btn btn-primary" onclick="showDisToModel()">分配</button>
 				<div class="box-tools">
 				<!--  
 					<form action="/fy/admin/base/taxRate">
@@ -31,6 +32,9 @@
 						<thead>
 							<tr >
 								<th style="">序号</th>
+								<th style="">
+									多选
+								</th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -49,15 +53,16 @@
 								<th>生产委外接收时间</th>
 								<th>分配流向</th>
 								<th>分配属性</th>
-								<th>分配时间</th>
-								<th>操作</th>
+								<th>分配时间</th><!--  
+								<th>操作</th>-->
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.category_tmp)</td>
+								<td>#if(!x.distribute_time) <input name="selectId" type="checkbox"  value="#(x.id)"> #end </td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
@@ -79,14 +84,14 @@
 								<td>#(x.distribute_attr)</td>
 								<td>#(x.distribute_time)</td>
 								
-								
+								<!-- 
 								<td class="jfa-operation-button"> 
 								#if(!x.distribute_time)
 								<a href="#" data-id="#(x.id)" onclick="showModel(this)" >
 									<i class="glyphicon glyphicon-share-alt" title="分配"></i>
 								</a>
 								#end
-								 </td>
+								 </td> -->
 							</tr>
 							#end
 						</tbody>
@@ -103,6 +108,12 @@
 		<!-- /.box -->
 	</div>
 </div>
+<script type="text/javascript">
+/**
+ * 多个分配
+ */
+
+</script>
 
 
 #end

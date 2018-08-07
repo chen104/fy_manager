@@ -2,6 +2,7 @@ package com.chen.fy.controller.business;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +10,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.chen.fy.model.FyBizWwReceive;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessOrder;
-import com.chen.fy.model.FyBusinessProduce;
 import com.chen.fy.model.OrderUploadLog;
 import com.jfinal.aop.Before;
 import com.jfinal.club.common.controller.BaseController;
@@ -20,6 +19,7 @@ import com.jfinal.club.common.kit.ContextKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -28,20 +28,39 @@ import com.jfinal.upload.UploadFile;
 public class OrderController extends BaseController {
 	public void index() {
 		String key = getPara("keyWord");
+
 		Page<FyBusinessOrder> modelPage = null;
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date");
+
 		setAttr("keyWord", key);
+		StringBuilder conditionSb = new StringBuilder();
+		if ("order_date".equals(condition)) {
+			String orderDate = getPara("order_date");
+			if (StringUtils.isNotEmpty(orderDate)) {
+				conditionSb.append(String.format("where order_date = '%s'", orderDate));
+			}
+
+		} else if (StringUtils.isNotEmpty(condition)) {
+
+			conditionSb.append(String.format("where %s like  ", condition, key));
+			conditionSb.append("'%").append(key).append("%'");
+		}
+
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
 					"select o.*,f.originalFileName filename ",
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  order by id desc");
 		} else {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_business_order where commodity_name like ? order by id desc", "%" + key + "%");
+					String.format("from fy_business_order %s order by id desc", conditionSb.toString()));
+
 			setAttr("append", "keyWord=" + key);
 		}
 
 		setAttr("modelPage", modelPage);
-		render("list.html");
+		render("orderlist.html");
 	}
 
 	public void importFile() {
@@ -126,6 +145,9 @@ public class OrderController extends BaseController {
 					item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
 
 					item.setImportTime(new Date());
+					item.setDistributeAttr("首次");
+					item.setHandleStatus("未处理");
+					item.setHangStatus("未挂账");
 					list.add(new Record().setColumns(item));
 
 				}
@@ -149,13 +171,44 @@ public class OrderController extends BaseController {
 
 	}
 
+	public void updateOrder() {
+		Integer id = getParaToInt("id");
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+		String quantity = getPara("quantity");
+		String unit = getPara("unit");
+		order.setQuantity(new BigDecimal(quantity));
+		order.setUnitTmp(unit);
+		boolean re = order.update();
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok("msg", "修改数量成功成功");
+		} else {
+			ret = Ret.ok("msg", "修改失败");
+		}
+		renderJson(ret);
+
+	}
+
+	public void deleteOrder() {
+		Integer id = getParaToInt("id");
+
+		boolean re = FyBusinessOrder.dao.deleteById(id);
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok("msg", "删除成功");
+		} else {
+			ret = Ret.ok("msg", "删除失败");
+		}
+		renderJson(ret);
+	}
+
 	public void receive() {
 		String key = getPara("keyWord");
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
 
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select o.*,f.originalFileName filename ",
-				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id where o.receive_time is not null and o.distribute_time is null and is_distribute = 0 order by id desc");
+				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  order by id desc,is_distribute desc");
 
 		setAttr("modelPage", modelPage);
 		render("receive.html");
@@ -166,7 +219,7 @@ public class OrderController extends BaseController {
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_distribute   order by id desc");
+				"from  fy_business_order   order by orderby asc  , id asc");
 
 		setAttr("modelPage", modelPage);
 		render("distribute.html");
@@ -311,91 +364,69 @@ public class OrderController extends BaseController {
 		renderJson(ret);
 	}
 
-	@Before(Tx.class)
 	public void distrubite() {
 		Integer id = getParaToInt("id");
 		String disTo = getPara("disTo");
-		boolean up1 = false, up2 = false, save = false;
-		FyBusinessDistribute model = FyBusinessDistribute.dao.findById(id);
-		FyBusinessProduce produce = new FyBusinessProduce();
-		FyBizWwReceive ww = new FyBizWwReceive();
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+		order.setDistributeTo(disTo);
+		order.setIsDistribute(true);
+		order.setDistributeTime(new Date());
 		if ("自产".equals(disTo)) {
-			produce.setCategoryId(model.getCategoryId());
-			produce.setCategoryId(model.getCategoryId());
-			produce.setCategoryTmp(model.getCategoryTmp());
-			produce.setPlanerId(model.getPlanerId());
-			produce.setPlanTmp(model.getPlanTmp());
-			produce.setExecuStatus(model.getExecuStatus());
-			produce.setUrgentStatus(model.getUrgentStatus());
-			produce.setOrderDate(model.getOrderDate());
-
-			produce.setDeliveryDate(model.getDeliveryDate());
-			produce.setWorkOrderNo(model.getWorkOrderNo());
-			produce.setDeliveryNo(model.getDeliveryNo());
-			produce.setCommodityName(model.getCommodityName());
-			produce.setCommoditySpec(model.getCommoditySpec());
-			produce.setMapNo(model.getMapNo());
-			produce.setTechnology(model.getTechnology());
-			produce.setMachiningRequire(model.getMachiningRequire());
-			produce.setQuantity(model.getQuantity());
-			produce.setUnit(model.getUnit());
-			produce.setUnitTmp(model.getUnitTmp());
-			produce.setOrderId(model.getOrderId());
-			produce.setParentId(model.getId());
-
-			// model.setReceiveTime(new Date());
-			if (model != null && StringUtils.isNotEmpty(disTo)) {
-				FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-				model.setDistributeTo(disTo);
-				model.setDistributeTime(new Date());
-				order.setDistributeTo(disTo);
-				order.setDistributeTime(model.getDistributeTime());
-				produce.setDistributeTime(model.getDistributeTime());
-				up1 = model.update();
-				up2 = order.update();
-				save = produce.save();
-			}
+			order.setDisTo(false);
 		} else {
-
-			ww.setCategoryId(model.getCategoryId());
-			ww.setCategoryTmp(model.getCategoryTmp());
-			ww.setPlanerId(model.getPlanerId());
-			ww.setPlanTmp(model.getPlanTmp());
-			ww.setExecuStatus(model.getExecuStatus());
-			ww.setUrgentStatus(model.getUrgentStatus());
-			ww.setOrderDate(model.getOrderDate());
-
-			ww.setDeliveryDate(model.getDeliveryDate());
-			ww.setWorkOrderNo(model.getWorkOrderNo());
-			ww.setDeliveryNo(model.getDeliveryNo());
-			ww.setCommodityName(model.getCommodityName());
-			ww.setCommoditySpec(model.getCommoditySpec());
-			ww.setMapNo(model.getMapNo());
-			ww.setTechnology(model.getTechnology());
-			ww.setMachiningRequire(model.getMachiningRequire());
-			ww.setQuantity(model.getQuantity());
-			ww.setUnit(model.getUnit());
-			ww.setUnitTmp(model.getUnitTmp());
-			ww.setOrderId(model.getOrderId());
-			ww.setParentId(model.getId());
-
-			// model.setReceiveTime(new Date());
-			if (model != null && StringUtils.isNotEmpty(disTo)) {
-				FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-				model.setDistributeTo(disTo);
-				model.setDistributeTime(new Date());
-				order.setDistributeTo(disTo);
-				order.setDistributeTime(model.getDistributeTime());
-				ww.setDistributeTime(model.getDistributeTime());
-				up1 = model.update();
-				up2 = order.update();
-				save = ww.save();
-			}
-
+			order.setDisTo(true);
 		}
 
+		order.setOrderby(1);
+		// order.setHandleStatus("处理中");
+		boolean save = false;
+		save = Db.tx(new IAtom() {
+			public boolean run() throws SQLException {
+
+				return order.update();
+			}
+		});
 		Ret ret = null;
-		if (up1 && up2 & save) {
+		if (save) {
+			ret = Ret.ok("msg", "分配成功");
+
+		} else {
+			ret = Ret.ok("msg", "分配失败");
+		}
+		renderJson(ret);
+	}
+
+	public void distrubiteBatch() {
+		String[] ids = getParaValues("ids[]");
+		String disTo = getPara("disTo");
+		// FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+		// order.setDistributeTo(disTo);
+		// order.setIsDistribute(true);
+		// order.setDistributeTime(new Date());
+		StringBuilder sql = new StringBuilder();
+		if ("自产".equals(disTo)) {
+			// order.setDisTo(false);
+			sql.append("update Fy_Business_Order set dis_to = 0 ,distribute_to = '" + disTo
+					+ "' ,is_distribute = 1, distribute_time = now() , orderby = 1  where id in ");
+			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
+		} else {
+			// order.setDisTo(true);
+			sql.append("update Fy_Business_Order set dis_to = 1 ,distribute_to = '" + disTo
+					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
+			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
+		}
+
+		// order.setOrderby(1);
+		// order.setHandleStatus("处理中");
+		boolean save = false;
+		save = Db.tx(new IAtom() {
+			public boolean run() throws SQLException {
+				int update = Db.update(sql.toString());
+				return update == ids.length;
+			}
+		});
+		Ret ret = null;
+		if (save) {
 			ret = Ret.ok("msg", "分配成功");
 
 		} else {
