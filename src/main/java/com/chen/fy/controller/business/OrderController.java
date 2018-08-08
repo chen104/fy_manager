@@ -10,11 +10,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.OrderUploadLog;
 import com.jfinal.aop.Before;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.club.common.kit.ContextKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.kit.Ret;
@@ -148,6 +148,7 @@ public class OrderController extends BaseController {
 					item.setDistributeAttr("首次");
 					item.setHandleStatus("未处理");
 					item.setHangStatus("未挂账");
+					item.setUnhangQuantity(item.getQuantity());
 					list.add(new Record().setColumns(item));
 
 				}

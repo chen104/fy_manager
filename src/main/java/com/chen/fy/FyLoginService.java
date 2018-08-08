@@ -2,9 +2,9 @@ package com.chen.fy;
 
 import java.util.Date;
 
-import com.jfinal.club.common.controller.BaseController;
-import com.jfinal.club.common.model.Account;
-import com.jfinal.club.common.model.Session;
+import com.chen.fy.controller.BaseController;
+import com.chen.fy.model.Account;
+import com.chen.fy.model.Session;
 import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.kit.StrKit;
@@ -32,9 +32,9 @@ public class FyLoginService {
 		if (loginAccount == null) {
 			return Ret.fail("msg", "用户名或密码不正确");
 		}
-		if (loginAccount.isStatusLockId()) {
-			return Ret.fail("msg", "账号已被锁定");
-		}
+		// if (loginAccount.isStatusLockId()) {
+		// return Ret.fail("msg", "账号已被锁定");
+		// }
 		// if (loginAccount.isStatusReg()) {
 		// return Ret.fail("msg", "账号未激活，请先激活账号");
 		// }

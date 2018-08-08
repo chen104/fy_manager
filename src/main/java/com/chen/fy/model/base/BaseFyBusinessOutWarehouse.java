@@ -177,12 +177,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getStr("hang_status");
 	}
 
-	public void setHangQuantity(java.lang.Integer hangQuantity) {
+	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.lang.Integer getHangQuantity() {
-		return getInt("hang_quantity");
+	public java.math.BigDecimal getHangQuantity() {
+		return get("hang_quantity");
 	}
 
 	public void setHangAmount(java.math.BigDecimal hangAmount) {
@@ -215,14 +215,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 	
 	public java.util.Date getPaybillCreateTime() {
 		return get("paybill_create_time");
-	}
-
-	public void setGetpayAccount(java.math.BigDecimal getpayAccount) {
-		set("getpay_account", getpayAccount);
-	}
-	
-	public java.math.BigDecimal getGetpayAccount() {
-		return get("getpay_account");
 	}
 
 	public void setCreateMonth(java.lang.Integer createMonth) {

@@ -118,9 +118,9 @@
 								
 								<td> #(x.tax) </td><!-- 未税金额 -->
 								<td> #(x.untax_getpay) </td>
-								<td> #(x.getpay_account)</td> <!--应收金额 -->
-								<td> #(x.create_month)</td>
-								<td> #(x.getpay_month)</td>
+								<td> #(x.hang_amount)</td> <!--应收金额 -->
+								<td> #if(x.create_month) #(x.create_month) 月 #end </td>
+								<td> #if(x.getpay_month)  #(x.getpay_month) 月 #end</td>
 								<td> #(x.create_getpay_time)</td>	
 								<td class="jfa-operation-button">
 									

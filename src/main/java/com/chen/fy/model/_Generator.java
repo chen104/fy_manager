@@ -14,12 +14,13 @@
 
 package com.chen.fy.model;
 
+import javax.sql.DataSource;
+
+import com.jfinal.club.common.JFinalClubConfig;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.activerecord.generator.Generator;
 import com.jfinal.plugin.druid.DruidPlugin;
-import com.jfinal.club.common.JFinalClubConfig;
-import javax.sql.DataSource;
 
 /**
  * Model、BaseModel、_MappingKit 生成器
@@ -30,42 +31,14 @@ public class _Generator {
 	 * 部分功能使用 Db + Record 模式实现，无需生成 model 的 table 在此配置
 	 */
 	private static String[] excludedTable = {
-			"account",
-			 "account_role",
-			 "auth_code",
-			 "base_customer",
-			 "document",
-			 "download",
-			 "download_log",
-			 "favorite",
-			 "feedback",
-			 "feedback_like",
-			 "feedback_page_view",
-			 "feedback_reply",
-			 "friend",
-			 "like_message_log",
-			 "login_log",
-			 "message",
-			 "news_feed",
-			 "news_feed_reply",  // 暂不实现该功能
-			 "permission",
-			 "project",
-			 "project_like",
-			 "project_page_view", 
-			 "refer_me",
-			 "remind",
-			 "role",
-			 "role_permission",
-			 "sensitive_words",
-			 "session",
-			 "share",
-			 "share_like",
-			 "share_page_view",
-			 "share_reply",
-			 "task_list",
-			 "share_run_log",
-			 "upload_counter",
-          
+			// "account", "auth_code",
+			"account_role", "base_customer", "document", "download", "download_log", "favorite", "feedback",
+			"feedback_like", "feedback_page_view", "feedback_reply", "friend", "like_message_log", "login_log",
+			"message", "news_feed", "news_feed_reply", // 暂不实现该功能
+			"project", "project_like", "project_page_view", "refer_me", "remind", "sensitive_words",
+			// "session","role","role_permission", "permission",
+			"share", "share_like", "share_page_view", "share_reply", "task_list", "share_run_log", "upload_counter",
+
 	};
 
 	/**
@@ -81,10 +54,9 @@ public class _Generator {
 		// base model 所使用的包名
 		String baseModelPackageName = "com.chen.fy.model.base";
 		// base model 文件保存路径
-		String baseModelOutputDir = PathKit.getWebRootPath()
-				+ "/src/main/java/com/chen/fy/model/base";
+		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/chen/fy/model/base";
 
-		System.out.println("输出路径："+ baseModelOutputDir);
+		System.out.println("输出路径：" + baseModelOutputDir);
 
 		// model 所使用的包名 (MappingKit 默认使用的包名)
 		String modelPackageName = "com.chen.fy.model";
@@ -92,7 +64,8 @@ public class _Generator {
 		String modelOutputDir = baseModelOutputDir + "/..";
 
 		// 创建生成器
-		Generator gen = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir, modelPackageName, modelOutputDir);
+		Generator gen = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir, modelPackageName,
+				modelOutputDir);
 		// 设置数据库方言
 		gen.setDialect(new MysqlDialect());
 		// 添加不需要生成的表名
@@ -103,8 +76,9 @@ public class _Generator {
 		gen.setGenerateDaoInModel(false);
 		// 设置是否生成字典文件
 		gen.setGenerateDataDictionary(false);
-		// 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非 OscUser
-		 gen.setRemovedTableNamePrefixes("fy_base");
+		// 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非
+		// OscUser
+		gen.setRemovedTableNamePrefixes("fy_base");
 		// 生成
 		gen.generate();
 	}

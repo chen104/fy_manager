@@ -15,13 +15,11 @@
 package com.chen.fy.Interceptor;
 
 import com.chen.fy.Constant;
+import com.chen.fy.login.LoginService;
+import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.club.common.kit.IpKit;
-import com.jfinal.club.common.model.Account;
-import com.jfinal.club.common.model.Remind;
-import com.jfinal.club.login.LoginService;
-import com.jfinal.club.my.newsfeed.RemindService;
 import com.jfinal.core.Controller;
 
 /**
@@ -81,14 +79,15 @@ public class FyLoginSessionInterceptor implements Interceptor {
 
 		inv.invoke();
 
-		if (loginAccount != null) {
-			// remind 对象用于生成提醒 tips
-			Remind remind = RemindService.me.getRemind(loginAccount.getId());
-			if (remind != null) {
-				if (remind.getReferMe() > 0 || remind.getMessage() > 0 || remind.getFans() > 0) {
-					c.setAttr(remindKey, remind);
-				}
-			}
-		}
+		// if (loginAccount != null) {
+		// // remind 对象用于生成提醒 tips
+		// Remind remind = RemindService.me.getRemind(loginAccount.getId());
+		// if (remind != null) {
+		// if (remind.getReferMe() > 0 || remind.getMessage() > 0 || remind.getFans() >
+		// 0) {
+		// c.setAttr(remindKey, remind);
+		// }
+		// }
+		// }
 	}
 }

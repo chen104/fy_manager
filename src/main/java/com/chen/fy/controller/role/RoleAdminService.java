@@ -14,18 +14,19 @@
 
 package com.chen.fy.controller.role;
 
-import com.jfinal.club.common.model.Permission;
-import com.jfinal.club.common.model.Role;
-import com.jfinal.kit.Ret;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.IAtom;
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import com.chen.fy.model.Permission;
+import com.chen.fy.model.Role;
+import com.jfinal.kit.Ret;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * 角色管理
@@ -49,8 +50,11 @@ public class RoleAdminService {
 
 	/**
 	 * 判断角色名是否存在
-	 * @param roleId 当前 role 对象的 id 号，如果 role 对象还未创建，提供一个小于 0 的值即可
-	 * @param name 角色名
+	 * 
+	 * @param roleId
+	 *            当前 role 对象的 id 号，如果 role 对象还未创建，提供一个小于 0 的值即可
+	 * @param name
+	 *            角色名
 	 */
 	public boolean exists(int roleId, String name) {
 		name = name.toLowerCase().trim();
@@ -129,8 +133,8 @@ public class RoleAdminService {
 	}
 
 	/**
-	 * 标记出 role 拥有的权限，用于在界面输出 checkbox 的 checked 属性
-	 * 未来用 permission left join role_permission 来优化
+	 * 标记出 role 拥有的权限，用于在界面输出 checkbox 的 checked 属性 未来用 permission left join
+	 * role_permission 来优化
 	 */
 	public void markAssignedPermissions(Role role, List<Permission> permissionList) {
 		// id 为 1 的超级管理员默认拥有所有权限
@@ -138,7 +142,7 @@ public class RoleAdminService {
 			for (Permission permission : permissionList) {
 				permission.put("assigned", true);
 			}
-			return ;
+			return;
 		}
 
 		String sql = "select roleId from role_permission where roleId=? and permissionId=? limit 1";

@@ -14,15 +14,16 @@
 
 package com.chen.fy.service;
 
-import com.jfinal.club.common.model.Account;
-import com.jfinal.club.common.model.Role;
-import com.jfinal.club.common.model.Session;
-import com.jfinal.club.login.LoginService;
+import java.util.List;
+
+import com.chen.fy.login.LoginService;
+import com.chen.fy.model.Account;
+import com.chen.fy.model.Role;
+import com.chen.fy.model.Session;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import java.util.List;
 
 /**
  * 账户管理
@@ -77,8 +78,8 @@ public class AccountAdminService {
 		// 锁定后，强制退出登录，避免继续搞破坏
 		List<Session> sessionList = Session.dao.find("select * from session where accountId = ?", lockedAccountId);
 		if (sessionList != null) {
-			for (Session session : sessionList) {			// 处理多客户端同时登录后的多 session 记录
-				LoginService.me.logout(session.getId());    // 清除登录 cache，强制退出
+			for (Session session : sessionList) { // 处理多客户端同时登录后的多 session 记录
+				LoginService.me.logout(session.getId()); // 清除登录 cache，强制退出
 			}
 		}
 
@@ -94,7 +95,8 @@ public class AccountAdminService {
 	 */
 	public Ret unlock(int accountId) {
 		// 如果账户未激活，则不能被解锁
-		int n = Db.update("update account set status = ? where status != ? and id = ?", Account.STATUS_OK , Account.STATUS_REG , accountId);
+		int n = Db.update("update account set status = ? where status != ? and id = ?", Account.STATUS_OK,
+				Account.STATUS_REG, accountId);
 		Db.update("delete from session where accountId = ?", accountId);
 		if (n > 0) {
 			return Ret.ok("msg", "解锁成功");
@@ -121,8 +123,7 @@ public class AccountAdminService {
 	}
 
 	/**
-	 * 标记出 account 拥有的角色
-	 * 未来用 role left join account_role 来优化
+	 * 标记出 account 拥有的角色 未来用 role left join account_role 来优化
 	 */
 	public void markAssignedRoles(Account account, List<Role> roleList) {
 		String sql = "select accountId from account_role where accountId=? and roleId=? limit 1";

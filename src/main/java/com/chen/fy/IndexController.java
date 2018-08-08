@@ -1,8 +1,8 @@
 package com.chen.fy;
 
+import com.chen.fy.controller.BaseController;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.club.common.kit.IpKit;
 import com.jfinal.core.ActionKey;
 import com.jfinal.kit.Ret;

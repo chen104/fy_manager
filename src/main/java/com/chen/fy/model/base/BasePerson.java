@@ -137,12 +137,28 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return get("adjust_base_salary1");
 	}
 
+	public void setAdjustDate1(java.util.Date adjustDate1) {
+		set("adjust_date1", adjustDate1);
+	}
+	
+	public java.util.Date getAdjustDate1() {
+		return get("adjust_date1");
+	}
+
 	public void setAdjustBaseSalary2(java.math.BigDecimal adjustBaseSalary2) {
 		set("adjust_base_salary2", adjustBaseSalary2);
 	}
 	
 	public java.math.BigDecimal getAdjustBaseSalary2() {
 		return get("adjust_base_salary2");
+	}
+
+	public void setAdjustDate2(java.util.Date adjustDate2) {
+		set("adjust_date2", adjustDate2);
+	}
+	
+	public java.util.Date getAdjustDate2() {
+		return get("adjust_date2");
 	}
 
 	public void setAdjustBaseSalary3(java.math.BigDecimal adjustBaseSalary3) {
@@ -167,6 +183,150 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 	
 	public java.math.BigDecimal getAdjustBaseSalary5() {
 		return get("adjust_base_salary5");
+	}
+
+	public void setAdjustDate3(java.util.Date adjustDate3) {
+		set("adjust_date3", adjustDate3);
+	}
+	
+	public java.util.Date getAdjustDate3() {
+		return get("adjust_date3");
+	}
+
+	public void setAdjustDate4(java.util.Date adjustDate4) {
+		set("adjust_date4", adjustDate4);
+	}
+	
+	public java.util.Date getAdjustDate4() {
+		return get("adjust_date4");
+	}
+
+	public void setAdjustDate5(java.util.Date adjustDate5) {
+		set("adjust_date5", adjustDate5);
+	}
+	
+	public java.util.Date getAdjustDate5() {
+		return get("adjust_date5");
+	}
+
+	public void setAdjustBaseSalary6(java.math.BigDecimal adjustBaseSalary6) {
+		set("adjust_base_salary6", adjustBaseSalary6);
+	}
+	
+	public java.math.BigDecimal getAdjustBaseSalary6() {
+		return get("adjust_base_salary6");
+	}
+
+	public void setAdjustDate6(java.util.Date adjustDate6) {
+		set("adjust_date6", adjustDate6);
+	}
+	
+	public java.util.Date getAdjustDate6() {
+		return get("adjust_date6");
+	}
+
+	public void setAdjustBaseSalary7(java.math.BigDecimal adjustBaseSalary7) {
+		set("adjust_base_salary7", adjustBaseSalary7);
+	}
+	
+	public java.math.BigDecimal getAdjustBaseSalary7() {
+		return get("adjust_base_salary7");
+	}
+
+	public void setAdjustDate7(java.util.Date adjustDate7) {
+		set("adjust_date7", adjustDate7);
+	}
+	
+	public java.util.Date getAdjustDate7() {
+		return get("adjust_date7");
+	}
+
+	public void setAdjustBaseSalary8(java.math.BigDecimal adjustBaseSalary8) {
+		set("adjust_base_salary8", adjustBaseSalary8);
+	}
+	
+	public java.math.BigDecimal getAdjustBaseSalary8() {
+		return get("adjust_base_salary8");
+	}
+
+	public void setAdjustDate8(java.util.Date adjustDate8) {
+		set("adjust_date8", adjustDate8);
+	}
+	
+	public java.util.Date getAdjustDate8() {
+		return get("adjust_date8");
+	}
+
+	public void setEthnicGroup(java.lang.String ethnicGroup) {
+		set("ethnic_group", ethnicGroup);
+	}
+	
+	public java.lang.String getEthnicGroup() {
+		return getStr("ethnic_group");
+	}
+
+	public void setDocNo(java.lang.String docNo) {
+		set("doc_no", docNo);
+	}
+	
+	public java.lang.String getDocNo() {
+		return getStr("doc_no");
+	}
+
+	public void setRemark(java.lang.String remark) {
+		set("remark", remark);
+	}
+	
+	public java.lang.String getRemark() {
+		return getStr("remark");
+	}
+
+	public void setPhone(java.lang.String phone) {
+		set("phone", phone);
+	}
+	
+	public java.lang.String getPhone() {
+		return getStr("phone");
+	}
+
+	public void setQualityCheck(java.lang.String qualityCheck) {
+		set("quality_check", qualityCheck);
+	}
+	
+	public java.lang.String getQualityCheck() {
+		return getStr("quality_check");
+	}
+
+	public void setAdministrativeCheck(java.lang.String administrativeCheck) {
+		set("administrative_check", administrativeCheck);
+	}
+	
+	public java.lang.String getAdministrativeCheck() {
+		return getStr("administrative_check");
+	}
+
+	public void setRoomNo(java.lang.String roomNo) {
+		set("room_no", roomNo);
+	}
+	
+	public java.lang.String getRoomNo() {
+		return getStr("room_no");
+	}
+
+	public void setMarriage(java.lang.String marriage) {
+		set("marriage", marriage);
+	}
+	
+	public java.lang.String getMarriage() {
+		return getStr("marriage");
+	}
+
+	public void setRequstOutDate(java.util.Date requstOutDate) {
+		set("requst_out_date", requstOutDate);
+	}
+	
+	public java.util.Date getRequstOutDate() {
+		return get("requst_out_date");
 	}
 
 }

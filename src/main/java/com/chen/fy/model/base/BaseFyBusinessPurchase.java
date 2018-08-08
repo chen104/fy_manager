@@ -145,4 +145,20 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return get("hang_quantity");
 	}
 
+	public void setPurchaseQuantity(java.math.BigDecimal purchaseQuantity) {
+		set("purchase_quantity", purchaseQuantity);
+	}
+	
+	public java.math.BigDecimal getPurchaseQuantity() {
+		return get("purchase_quantity");
+	}
+
+	public void setPurchaseTitle(java.lang.String purchaseTitle) {
+		set("purchase_title", purchaseTitle);
+	}
+	
+	public java.lang.String getPurchaseTitle() {
+		return getStr("purchase_title");
+	}
+
 }

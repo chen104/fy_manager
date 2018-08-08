@@ -111,28 +111,31 @@
 								<td>#(x.check_handle)</td>
 								
 								
-								<td>#(x.create_month)月</td><!-- 挂账期间 -->
-								<td>#(x.pay_month)月</td><!-- 付款期间 -->
+								<td>#if(x.create_month) #(x.create_month) 月  #end</td><!-- 挂账期间 -->
+								<td>#if(x.pay_month) #(x.pay_month) 月 #end</td><!-- 付款期间 -->
 								
 								<td>#(x.is_create_quality)
+									
 									
 									<a href=""> 
 										<i class="glyphicon glyphicon-share-alt " style="color: red" title="检测入库"  ></i>
 									</a> 
 								
-								
+									
 								</td>
 								
 			
 								<td>#(x.create_out_time)</td>
 								<td>
+								#if(x.in_from=="委外")
 									#if(!x.is_create_pay)
 									<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
 										<i class="glyphicon glyphicon-share-alt" title="检测入库"  ></i>
 									</a> 
 									#else
-									 已生成应付明细
-									#end 
+										已生成应付明细
+									#end
+								#end
 								</td>
 								<td>#(x.pay_create_time)</td>
 								<td class="jfa-operation-button">

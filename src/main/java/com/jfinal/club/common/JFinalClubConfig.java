@@ -40,16 +40,15 @@ import com.chen.fy.controller.business.GetPayController;
 import com.chen.fy.controller.business.OrderController;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProduceController;
+import com.chen.fy.controller.business.PurchaseController;
 import com.chen.fy.controller.business.WarehouseController;
 import com.chen.fy.controller.role.RoleAdminController;
-import com.jfinal.club._admin.permission.PermissionDirective;
-import com.jfinal.club._admin.role.RoleDirective;
+import com.chen.fy.login.LoginService;
+import com.chen.fy.model._MappingKit;
+import com.chen.fy.permission.PermissionDirective;
+import com.chen.fy.role.RoleDirective;
 import com.jfinal.club.common.handler.UrlSeoHandler;
-import com.jfinal.club.common.interceptor.LoginSessionInterceptor;
 import com.jfinal.club.common.kit.DruidKit;
-import com.jfinal.club.common.model._MappingKit;
-import com.jfinal.club.login.LoginService;
-import com.jfinal.club.my.friend.FriendInterceptor;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -140,6 +139,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/finance/pay", PayController.class, "/_view/atladmin/business/finance/pay");
 
 		me.add("fy/admin/biz/finance/getPay", GetPayController.class, "/_view/atladmin/business/finance/getpay");
+		me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
+				"/_view/atladmin/business/commission/purchase");
+
 	}
 
 	/**
@@ -198,7 +200,7 @@ public class JFinalClubConfig extends JFinalConfig {
 	}
 
 	public void configInterceptor(Interceptors me) {
-		me.add(new LoginSessionInterceptor());
+		// me.add(new LoginSessionInterceptor());
 		me.add(new FyLoginSessionInterceptor());
 		me.add(new MenuActiveInterceptor());
 		// me.add(new FyAuthInterceptor());
@@ -214,8 +216,7 @@ public class JFinalClubConfig extends JFinalConfig {
 	 */
 	public void afterJFinalStart() {
 		// 调用不带参的 renderJson() 时，排除对 loginAccount、remind 的 json 转换
-		JsonRender.addExcludedAttrs(LoginService.loginAccountCacheName, LoginSessionInterceptor.remindKey,
-				FriendInterceptor.followNum, FriendInterceptor.fansNum, FriendInterceptor.friendRelation);
+		JsonRender.addExcludedAttrs(LoginService.loginAccountCacheName, FyLoginSessionInterceptor.remindKey);
 
 		// 让 druid 允许在 sql 中使用 union
 		// https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE-wallfilter

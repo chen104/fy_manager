@@ -15,22 +15,21 @@
 package com.chen.fy.service;
 
 import com.jfinal.club.common.kit.SensitiveWordsKit;
-import com.jfinal.club.reg.RegValidator;
+//import com.jfinal.club.reg.RegValidator;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.Ret;
 import com.jfinal.validate.Validator;
 
 /**
  * AccountUpdateValidator 验证账号修改功能表单
  */
 public class AccountUpdateValidator extends Validator {
-	
+
 	protected void validate(Controller c) {
 		setShortCircuit(true);
 
 		/**
 		 * 验证 nickName
- 		 */
+		 */
 		if (SensitiveWordsKit.checkSensitiveWord(c.getPara("account.nickName")) != null) {
 			addError("msg", "昵称不能包含敏感词");
 		}
@@ -44,10 +43,10 @@ public class AccountUpdateValidator extends Validator {
 		if (nickName.contains(" ") || nickName.contains("　")) {
 			addError("msg", "昵称不能包含空格");
 		}
-		Ret ret = RegValidator.validateNickName(nickName);
-		if (ret.isFail()) {
-			addError("msg", ret.getStr("msg"));
-		}
+		// Ret ret = RegValidator.validateNickName(nickName);
+		// if (ret.isFail()) {
+		// addError("msg", ret.getStr("msg"));
+		// }
 
 		/**
 		 * 验证 userName
@@ -61,4 +60,3 @@ public class AccountUpdateValidator extends Validator {
 		c.renderJson();
 	}
 }
-

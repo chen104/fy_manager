@@ -1,9 +1,9 @@
 package com.chen.fy.Interceptor;
 
 import com.chen.fy.Constant;
+import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
-import com.jfinal.club.common.model.Account;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;

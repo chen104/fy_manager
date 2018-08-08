@@ -8,9 +8,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.chen.fy.controller.BaseController;
+import com.chen.fy.model.Account;
 import com.chen.fy.model.Fyfile;
-import com.jfinal.club.common.controller.BaseController;
-import com.jfinal.club.common.model.Account;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;

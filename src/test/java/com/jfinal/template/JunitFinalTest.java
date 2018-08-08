@@ -1,6 +1,6 @@
 package com.jfinal.template;
 
-import com.jfinal.club.common.model.Permission;
+import com.chen.fy.model.Permission;
 import com.jfinal.config.Constants;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;

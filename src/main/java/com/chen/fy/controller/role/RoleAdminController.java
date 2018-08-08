@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.chen.fy.controller.BaseController;
+import com.chen.fy.model.Permission;
+import com.chen.fy.model.Role;
 import com.chen.fy.model.RoleCol;
+import com.chen.fy.permission.PermissionAdminService;
 import com.jfinal.aop.Before;
-import com.jfinal.club._admin.permission.PermissionAdminService;
-import com.jfinal.club.common.controller.BaseController;
-import com.jfinal.club.common.model.Permission;
-import com.jfinal.club.common.model.Role;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;

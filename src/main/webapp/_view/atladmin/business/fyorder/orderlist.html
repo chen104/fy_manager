@@ -121,7 +121,7 @@
 								<td>#(x.unit_tmp)</td>
 								<td>#(x.untaxedCost)</td>
 								<td>#(x.amount)</td>
-								<td>#(x.tax)</td>
+								<td>#taxRate(x.taxRate)</td>
 								<td>#(x.tax_amount)</td>
 								<td>#(x.tatolAmount)</td>
 								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
@@ -129,6 +129,8 @@
 								<td>#(x.distributeTime)</td>
 								<td>#(x.warnTime)</td>
 								<td>#(x.remark)</td>
+					
+								
 								<td  data-id="#(x.id)">
 								#if(x.filename) #(x.filename) #else
 									<a href="#" onclick="showChooesFile(this)"> 
@@ -139,8 +141,8 @@
 								<td>#(x.hangTime)</td>
 								<td>#(x.hangStatus)</td>
 								<td>#(x.hangQuantity)</td>
-								<td>#(x.hangAmount)</td>
-								<td>#(x.unhangAuantity)</td>
+								<td>#(x.hang_account)</td>
+								<td>#(x.unhang_quantity)</td>
 						
 								<td class="jfa-operation-button">
 								

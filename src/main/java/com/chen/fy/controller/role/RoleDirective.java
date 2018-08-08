@@ -1,8 +1,8 @@
 package com.chen.fy.controller.role;
 
+import com.chen.fy.model.Account;
 import com.jfinal.club._admin.auth.AdminAuthInterceptor;
 import com.jfinal.club._admin.auth.AdminAuthService;
-import com.jfinal.club.common.model.Account;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.SqlPara;
@@ -12,13 +12,10 @@ import com.jfinal.template.io.Writer;
 import com.jfinal.template.stat.Scope;
 
 /**
- * 界面上的权限控制功能
- * 用来控制界面上的菜单、按钮等等元素的显示
+ * 界面上的权限控制功能 用来控制界面上的菜单、按钮等等元素的显示
  *
- * 使用示例见模板文件： /_view/_admin/common/_menu.html 或者 /_view/_admin/permission/index.html
- * #role("权限管理员", "CEO", "CTO")
- * 	...
- * #end
+ * 使用示例见模板文件： /_view/_admin/common/_menu.html 或者
+ * /_view/_admin/permission/index.html #role("权限管理员", "CEO", "CTO") ... #end
  */
 public class RoleDirective extends Directive {
 
@@ -56,9 +53,9 @@ public class RoleDirective extends Directive {
 	 */
 	private String[] getRoleNameArray(Object[] values) {
 		String[] roleNameArray = new String[values.length];
-		for (int i=0; i<values.length; i++) {
+		for (int i = 0; i < values.length; i++) {
 			if (values[i] instanceof String) {
-				roleNameArray[i] = ((String)values[i]).trim();
+				roleNameArray[i] = ((String) values[i]).trim();
 			} else {
 				throw new IllegalArgumentException("角色名只能为 String 类型");
 			}

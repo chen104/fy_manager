@@ -117,7 +117,7 @@
 			<label  class="col-sm-3 control-label">外协工序单价</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" autocomplete="off"  placeholder="外协工序"  value="#(model.assist_cost??)" name="model.assistCost">
+				<input type="text" class="form-control" autocomplete="off"  placeholder="外协工序单价"  value="#(model.assist_cost??)" name="model.assistCost">
 			</div>
 		</div>
 	</div>
@@ -131,7 +131,7 @@
 			<label  class="col-sm-3 control-label">外协工序金额</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  autocomplete="off" placeholder="外协工序"  value="#(model.assist_account??)" name="model.assistAccount">
+				<input type="text" class="form-control"  autocomplete="off" placeholder="外协工序金额"  value="#(model.assist_account??)" name="model.assistAccount">
 			</div>
 		</div>
 	</div>
@@ -142,7 +142,7 @@
 			<label  class="col-sm-3 control-label">税率</label>
 
 			<div class="col-sm-9">
-				<input type="text" id="taxStr" class="form-control" onclick="selectTax()"  placeholder="税率" autocomplete="off"  name="model.taxStr">
+				<input type="text" id="taxStr" class="form-control" onclick="selectTax()"  placeholder="税率" autocomplete="off"  name="model.taxStr" value="#taxRate(model.tax_rate??)">
 				<input type="text" id ="taxRate" hidden="hidden" value="#(model.taxRate??)" name="model.taxRate">
 			</div>
 		</div>
@@ -186,7 +186,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control" placeholder="外协厂商" autocomplete="off" value="#(model.supplier_name??)"  id="supplier_name" onclick="showChooesSupplier()" >
-				<input type="text"  hidden="hidden"  value="#(model.supplier_id??)" name="model.assistSupplierId" id="supplier_id" >
+				<input type="text"  hidden="hidden"  value="#(model.assist_supplier_id??)" name="model.assistSupplierId" id="supplier_id" >
 			</div>
 		</div>
 	</div>
@@ -241,8 +241,8 @@
 			<div  class="col-sm-9">
 				<select  class="form-control" name="model.checkResult" >
 					<option></option>
-					<option value="合格">合格</option>
-					<option value="不合格"  >不合格</option>
+					<option #if(model.check_result=="合格") selected="selected" #end value="合格">合格</option>
+					<option #if(model.check_result=="不合格") selected="selected" #end  value="不合格"  >不合格</option>
 				</select>
 	
 				

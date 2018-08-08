@@ -16,6 +16,8 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
+		arp.addMapping("account", "id", Account.class);
+		arp.addMapping("auth_code", "id", AuthCode.class);
 		arp.addMapping("col_permision", "id", ColPermision.class);
 		arp.addMapping("column_permission", "id", ColumnPermission.class);
 		arp.addMapping("fy_base_category", "id", Category.class);
@@ -43,7 +45,12 @@ public class _MappingKit {
 		arp.addMapping("fy_business_warehouse", "id", FyBusinessWarehouse.class);
 		arp.addMapping("fy_complaint", "id", FyComplaint.class);
 		arp.addMapping("order_upload_log", "id", OrderUploadLog.class);
+		arp.addMapping("permission", "id", Permission.class);
+		arp.addMapping("role", "id", Role.class);
 		arp.addMapping("role_col", "id", RoleCol.class);
+		// Composite Primary Key order: permissionId,roleId
+		arp.addMapping("role_permission", "permissionId,roleId", RolePermission.class);
+		arp.addMapping("session", "id", Session.class);
 		arp.addMapping("task_run_log", "id", TaskRunLog.class);
 	}
 }

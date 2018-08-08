@@ -7,12 +7,12 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessProduce;
 import com.jfinal.aop.Before;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -152,6 +152,7 @@ public class ProduceController extends BaseController {
 			return;
 		}
 		model.setRealInQuantity(new BigDecimal(inQuantity));
+		order.setHasInQuantity(order.getHasInQuantity().add(model.getRealInQuantity()));
 		Ret ret = null;
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {

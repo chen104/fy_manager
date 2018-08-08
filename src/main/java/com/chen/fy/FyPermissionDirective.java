@@ -3,7 +3,7 @@ package com.chen.fy;
 import java.util.List;
 
 import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
-import com.jfinal.club.common.model.Account;
+import com.chen.fy.model.Account;
 import com.jfinal.template.Directive;
 import com.jfinal.template.Env;
 import com.jfinal.template.io.Writer;

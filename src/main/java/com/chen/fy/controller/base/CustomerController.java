@@ -2,8 +2,8 @@ package com.chen.fy.controller.base;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Customer;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 

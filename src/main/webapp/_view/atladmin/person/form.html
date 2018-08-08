@@ -5,20 +5,22 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">姓名</label>
+			<label class="col-sm-3 control-label">姓名</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="姓名" value="#(model.name??)" name="model.name" >
+				<input type="text" class="form-control" placeholder="姓名"
+					value="#(model.name??)" name="model.name">
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">籍贯</label>
+			<label class="col-sm-3 control-label">籍贯</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="籍贯"  value="#(model.nativePlace??)" name="model.nativePlace">
+				<input type="text" class="form-control" placeholder="籍贯"
+					value="#(model.nativePlace??)" name="model.nativePlace">
 			</div>
 		</div>
 	</div>
@@ -31,25 +33,28 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">性别</label>
+			<label class="col-sm-3 control-label">性别</label>
 
 			<div class="col-sm-9">
 				<select class="form-control select2" name="model.sex">
-					<option  value="1" #if(model.sex??) selected="selected"  #end >男 </option>
-					<option value="0" #if(!model.sex??) selected="selected"  #end >女</option>
+					<option value="1" #if(model.sex??) selected="selected" #end>男
+					</option>
+					<option value="0" #if(!model.sex??) selected="selected" #end>女</option>
 				</select>
-			
+
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">出生日期</label>
+			<label class="col-sm-3 control-label">出生日期</label>
 
 			<div class="col-sm-9">
-				<div class="input-group date">
-					<input autocomplete="off" type="text" class="form-control pull-right"  data-type="datepicker" value="#(model.birthDate??)" name="model.birthDate">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.birthDate??)" name="model.birthDate">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
@@ -66,11 +71,67 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">入职日期</label>
+			<label class="col-sm-3 control-label">民族</label>
 
 			<div class="col-sm-9">
-				<div class="input-group date">
-					<input autocomplete="off" type="text" class="form-control pull-right"  data-type="datepicker" value="#(model.entryDate??)" name="model.entryDate" >
+
+				<input autocomplete="off" type="text"
+					class="form-control pull-right" value="#(model.ethnicGroup??)"
+					name="model.ethnicGroup">
+
+
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">联系电话</label>
+
+			<div class="col-sm-9">
+
+				<input autocomplete="off" type="text"
+					class="form-control pull-right" value="#(model.phone??)"
+					name="model.phone">
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">婚姻状态</label>
+
+			<div class="col-sm-9">
+
+				<input autocomplete="off" type="text"
+					class="form-control pull-right" value="#(model.marriage??)"
+					name="model.marriage">
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入职日期</label>
+
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.entryDate??)" name="model.entryDate">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
@@ -79,13 +140,42 @@
 		</div>
 	</div>
 
+
+
+</div>
+
+
+<div class="row">
+
+
+
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">离职日期</label>
+			<label class="col-sm-3 control-label">离职申请日期</label>
 
 			<div class="col-sm-9">
-				<div class="input-group date">
-					<input  autocomplete="off" type="text" class="form-control pull-right"  data-type="datepicker"  value="#(model.quitDate??)" name="model.quitDate">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.requst_out_date??)" name="model.requstOutDate">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">离职日期</label>
+
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.quitDate??)" name="model.quitDate">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
@@ -103,28 +193,32 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">联系方式</label>
+			<label class="col-sm-3 control-label">联系方式</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="联系方式" value="#(model.contactType??)" name="model.contactType">
+				<input type="text" class="form-control" placeholder="联系方式"
+					value="#(model.contactType??)" name="model.contactType">
 			</div>
 		</div>
 	</div>
 
+
+
+
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">学历</label>
+			<label class="col-sm-3 control-label">学历</label>
 
 			<div class="col-sm-9">
 				<select class="form-control select2" name="model.education">
-					<option #if(model.education?? == "小学") selected="selected"  #end>小学</option>
-					<option #if(model.education?? == "初中") selected="selected"  #end >初中</option>
-					<option #if(model.education?? == "高中") selected="selected"  #end >高中</option>
-					<option #if(model.education?? == "大专") selected="selected"  #end >大专</option>
-					<option #if(model.education?? == "本科") selected="selected"  #end >本科</option>
-					<option #if(model.education?? == "硕士") selected="selected"  #end >硕士</option>
-					<option #if(model.education?? == "博士") selected="selected"  #end >博士</option>
-					<option #if(model.education?? == "其他") selected="selected"  #end>其他</option>
+					<option #if(model.education?? == "小学") selected="selected" #end>小学</option>
+					<option #if(model.education?? == "初中") selected="selected" #end>初中</option>
+					<option #if(model.education?? == "高中") selected="selected" #end>高中</option>
+					<option #if(model.education?? == "大专") selected="selected" #end>大专</option>
+					<option #if(model.education?? == "本科") selected="selected" #end>本科</option>
+					<option #if(model.education?? == "硕士") selected="selected" #end>硕士</option>
+					<option #if(model.education?? == "博士") selected="selected" #end>博士</option>
+					<option #if(model.education?? == "其他") selected="selected" #end>其他</option>
 				</select>
 			</div>
 		</div>
@@ -140,10 +234,13 @@
 			<label class="col-sm-3 control-label">政治面貌</label>
 
 			<div class="col-sm-9">
-				<select class="form-control select2"   name="model.politicalStatus">
-					<option #if(model.politicalStatus?? == "群众") selected="selected"  #end >群众</option>
-					<option #if(model.politicalStatus?? == "团员") selected="selected"  #end  >团员</option>
-					<option #if(model.politicalStatus?? == "党员") selected="selected"  #end >党员</option>
+				<select class="form-control select2" name="model.politicalStatus">
+					<option #if(model.politicalStatus?? == "群众") selected="selected"
+						#end>群众</option>
+					<option #if(model.politicalStatus?? == "团员") selected="selected"
+						#end>团员</option>
+					<option #if(model.politicalStatus?? == "党员") selected="selected"
+						#end>党员</option>
 				</select>
 			</div>
 		</div>
@@ -151,40 +248,78 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">住宿</label>
+			<label class="col-sm-3 control-label">住宿情况</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="住宿" value="#(model.accommodation??)" name="model.accommodation">
+				<input type="text" class="form-control" placeholder="住宿"
+					value="#(model.accommodation??)" name="model.accommodation">
 			</div>
 		</div>
 	</div>
 
 </div>
 
+
 <div class="row">
 
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label" >岗位</label>
+			<label class="col-sm-3 control-label">档案编号</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control" value="#(model.post??)" name="model.post"
-					placeholder="岗位">
+				<input type="text" class="form-control" value="#(model.doc_no??)"
+					name="model.docNo" placeholder="档案编号">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">寝室号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.room_no??)"
+					name="model.roomNo" placeholder="寝室号">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">岗位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.post??)"
+					name="model.post" placeholder="岗位">
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">部门</label>
+			<label class="col-sm-3 control-label">部门</label>
 
 			<div class="col-sm-9">
-				<input id="departId" hidden="hidden" name="model.departmentId" value="#(model.departmentId??)">
+				<input id="departId" hidden="hidden" name="model.departmentId"
+					value="#(model.departmentId??)">
 				<div class="input-group">
-	                <input type="text" readonly="readonly"  class="form-control" id="departName" placeholder="负责人"  value="#(department.partName??)" onclick="showChooesDepart($('#departId'),$('#departName'))">
-	                <span onclick="showChooesDepart($('#departId'),$('#departName'))" class="input-group-addon" style="cursor:pointer;"><i class="fa fa-bars"></i></span>
-	              </div>
+					<input type="text" readonly="readonly" class="form-control"
+						id="departName" placeholder="负责人" value="#(department.partName??)"
+						onclick="showChooesDepart($('#departId'),$('#departName'))">
+					<span onclick="showChooesDepart($('#departId'),$('#departName'))"
+						class="input-group-addon" style="cursor: pointer;"><i
+						class="fa fa-bars"></i></span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -192,27 +327,63 @@
 </div>
 
 
+
 <div class="row">
 
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">
-				工作状态</label>
+			<label class="col-sm-3 control-label">质量考核</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"   value="#(model.jobStatus??)" name="model.jobStatus"
-					placeholder="工作状态">
+				<input type="text" class="form-control"
+					value="#(model.quality_check??)" name="model.qualityCheck"
+					placeholder="质量考核">
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">执行底薪</label>
+			<label class="col-sm-3 control-label">行政考核</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  value="#(model.execBaseSalary??)" name="model.execBaseSalary"
+				<input type="text" class="form-control"
+					value="#(model.administrative_check??)"
+					name="model.administrativeCheck" placeholder="行政考核">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">工作状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.jobStatus??)"
+					name="model.jobStatus" placeholder="工作状态">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">执行底薪</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.execBaseSalary??)" name="model.execBaseSalary"
 					placeholder="执行底薪">
 			</div>
 		</div>
@@ -227,11 +398,11 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label class="col-sm-3 control-label">
-				调整底薪1 </label>
+			<label class="col-sm-3 control-label"> 调整底薪1 </label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  value="#(model.adjustBaseSalary1??)" name="model.adjustBaseSalary1"
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary1??)" name="model.adjustBaseSalary1"
 					placeholder="调整底薪1">
 			</div>
 		</div>
@@ -239,11 +410,53 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">调整底薪2
-			</label>
+			<label class="col-sm-3 control-label">调整底薪2 </label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="调整底薪2" value="#(model.adjustBaseSalary2??)" name="model.adjustBaseSalary2">
+				<input type="text" class="form-control" placeholder="调整底薪2"
+					value="#(model.adjustBaseSalary2??)" name="model.adjustBaseSalary2">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整1日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date1??)" name="model.adjustDate1">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整2日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date2??)" name="model.adjustDate2">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -256,11 +469,11 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">
-				调整底薪3 </label>
+			<label class="col-sm-3 control-label"> 调整底薪3 </label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control" value="#(model.adjustBaseSalary3??)" name="model.adjustBaseSalary3"
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary3??)" name="model.adjustBaseSalary3"
 					placeholder="调整底薪3">
 			</div>
 		</div>
@@ -268,14 +481,217 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">调整底薪4
-			</label>
+			<label class="col-sm-3 control-label">调整底薪4 </label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  value="#(model.adjustBaseSalary4??)" name="model.adjustBaseSalary4"
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary4??)" name="model.adjustBaseSalary4"
 					placeholder="调整底薪4">
 			</div>
 		</div>
 	</div>
 
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整3日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date3??)" name="model.adjustDate3">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整4日期<br>
+			</label>
+
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date4??)" name="model.adjustDate4">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整底薪5 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary5??)" name="model.adjustBaseSalary5"
+					placeholder="调整底薪5">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整底薪6</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary6??)" name="model.adjustBaseSalary6"
+					placeholder="调整底薪6">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整5日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date5??)" name="model.adjustDate5">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整6日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date6??)" name="model.adjustDate6">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整底薪7 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary7??)" name="model.adjustBaseSalary7"
+					placeholder="调整底薪7">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整底薪8</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.adjustBaseSalary8??)" name="model.adjustBaseSalary8"
+					placeholder="调整底薪8">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整7日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date7??)" name="model.adjustDate7">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">调整8日期<br>
+			</label>
+			<div class="col-sm-9">
+				<div class="input-group ">
+					<input autocomplete="off" type="text"
+						class="form-control pull-right" data-type="datepicker"
+						value="#(model.adjust_date8??)" name="model.adjustDate8">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">备注</label>
+
+			<div class="col-sm-9">
+				<textarea rows="3" class="form-control" name="model.remark">#(model.remark??)</textarea>
+			</div>
+		</div>
+	</div>
 </div>

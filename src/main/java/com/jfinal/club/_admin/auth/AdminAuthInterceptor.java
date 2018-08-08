@@ -14,10 +14,10 @@
 
 package com.jfinal.club._admin.auth;
 
+import com.chen.fy.login.LoginService;
+import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
-import com.jfinal.club.common.model.Account;
-import com.jfinal.club.login.LoginService;
 import com.jfinal.kit.Ret;
 
 /**
@@ -43,10 +43,9 @@ public class AdminAuthInterceptor implements Interceptor {
 			threadLocal.set(loginAccount);
 
 			// 如果是超级管理员或者拥有对当前 action 的访问权限则放行
-			if (	srv.isSuperAdmin(loginAccount.getId()) ||
-					srv.hasPermission(loginAccount.getId(), inv.getActionKey())) {
+			if (srv.isSuperAdmin(loginAccount.getId()) || srv.hasPermission(loginAccount.getId(), inv.getActionKey())) {
 				inv.invoke();
-				return ;
+				return;
 			}
 		}
 
@@ -60,4 +59,3 @@ public class AdminAuthInterceptor implements Interceptor {
 		}
 	}
 }
-

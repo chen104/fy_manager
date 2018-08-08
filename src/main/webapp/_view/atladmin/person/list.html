@@ -12,20 +12,34 @@
 
 
 				<div class="box-tools">
-					<form action="/fy/admin/base/person">
-						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
-								placeholder="Search" value="#(keyWord)">
-
-							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
-									<i class="fa fa-search"></i>
-								</button>
-							</div>
-						</div>
-
-					</form>
+						<form action="/fy/admin/biz/commission/purchase" class="form-inline">
+								 <div class="form-group  input-group-sm">
+								    <label for="condition">条件</label>
+									    <select id="condition" class="form-control" name="condition" >
+									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">状态</option>
+									    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >姓名</option>
+									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">入职天数</option>
+									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">部门</option>
+									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">寝室号</option>
+									    
+									    </select>
+								  
+								  </div>
+								
+								<div class="input-group input-group-sm" style="width: 150px;">
+									<input type="text" name="keyWord" class="form-control pull-right" autocomplete="off"
+										placeholder="Search" value="#(keyWord)">
+		
+									<div class="input-group-btn">
+										<button type="submit" class="btn btn-default" >
+											<i class="fa fa-search"></i>
+										</button>
+									</div>
+								</div>
+		
+							</form>
 				</div>
+				
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
@@ -34,24 +48,61 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
+								<th>工作状态</th>
 								<th>姓名</th>
 								<th>籍贯</th>
 								<th>性别</th>
+								
+								<th>民族</th>
+								<th>联系电话</th>
+								<th>质量考核</th>
+								<th>行政考核</th>
+								
 								<th>出生日期</th>
 								<th>入职日期</th>
+								
+								<th>申请离职日期</th>
+								
 								<th>离职日期</th>
+								
+								<th>当前时间</th>
+								<th>入职天数</th>
+								
 								<th>联系方式</th>
 								<th>学历</th>
 								<th>政治面貌</th>
+								
+								<th>婚姻状态</th>
+								
 								<th>住宿</th>
+								
+								<th>寝室号</th>
+								
 								<th>岗位</th>
 								<th>部门</th>
-								<th>工作状态</th>
+								<th>档案编号</th>
+								
+								
 								<th>执行底薪</th>
 								<th>调整底薪1</th>
+								<th>调整1日期</th>
 								<th>调整底薪2</th>
+								<th>调整2日期</th>
 								<th>调整底薪3</th>
+								<th>调整3日期</th>
 								<th>调整底薪4</th>
+								<th>调整4日期</th>
+								
+								<th>调整底薪5</th>
+								<th>调整5日期</th>
+								<th>调整底薪6</th>
+								<th>调整6日期</th>
+								<th>调整底薪7</th>
+								<th>调整7日期</th>
+								<th>调整底薪8</th>
+								<th>调整8日期</th>
+								<th>备注</th>
+								
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -59,24 +110,62 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
+								<td>#(x.jobStatus)</td>
 								<td>#(x.name) </td>
 								<td>#(x.nativePlace)</td>
 								<td>#if(x.sex) 男 #else 女 #end</td>
-								<td>#date(x.birtdDate,"yyyy-MM-dd")</td>
+								
+								<th>#(x.ethnic_group)</th>
+								<th>#(x.phone)</th>
+								<th>#(x.quality_check)</th>
+								<th>#(x.administrative_check)</th>
+								
+								<td>#date(x.birth_date,"yyyy-MM-dd")</td>
+								
 								<td>#date(x.entryDate,"yyyy-MM-dd")</td>
+								<td>#(x.requst_out_date)</td>
+								
 								<td>#date(x.quitDate,"yyyy-MM-dd")</td>
+								
+								<td>#(x.CURDATE)</td>
+								<td>#(x.dateNumber)</td>
+								
+								
 								<td>#(x.contactType)</td>
 								<td>#(x.education)</td>
 								<td>#(x.politicalStatus)</td>
+								
+								<td>#(x.marriage)</td>
+								
 								<td>#(x.accommodation)</td>
+								
+								<td>#(x.room_no)</td>
+								
 								<td>#(x.post)</td>
 								<td>#(x.department)</td>
-								<td>#(x.jobStatus)</td>
+								
+								<td>#(x.doc_no)</td>
+								
+							
 								<td>#(x.execBaseSalary)</td>
 								<td>#(x.adjustBaseSalary1)</td>
+								<td>#(x.adjust_date1)</td>
 								<td>#(x.adjustBaseSalary2)</td>
+								<td>#(x.adjust_date2)</td>
 								<td>#(x.adjustBaseSalary3)</td>
+								<td>#(x.adjust_date3)</td>
 								<td>#(x.adjustBaseSalary4) </td>
+								<td>#(x.adjust_date4)</td>
+								
+								<td>#(x.adjustBaseSalary5)</td>
+								<td>#(x.adjust_date5)</td>
+								<td>#(x.adjustBaseSalary6)</td>
+								<td>#(x.adjust_date6)</td>
+								<td>#(x.adjustBaseSalary7)</td>
+								<td>#(x.adjust_date7)</td>
+								<td>#(x.adjustBaseSalary8) </td>
+								<td>#(x.adjust_date8)</td>
+								<td>#(x.remark)</td>
 								<td class="jfa-operation-button"><a href="/fy/admin/base/person/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
 								</a> <a data-delete data-title="#escape(x.name)"
@@ -131,3 +220,4 @@ function deleteperson(a){
     </script>
 
 #end
+								

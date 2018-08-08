@@ -61,7 +61,7 @@
 								<th>操作</th>
 							</tr>
 						</thead>
-					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/toCreatePurchase" method="post">     
+					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/toCreatePurchase" method="post">     
 					
 						<tbody>
 							#for(x : modelPage.getList())
@@ -89,7 +89,7 @@
 								<th>#(x.supplier)</th>
 								<th>#(x.purchase_time)</th>
 								<th>#(x.handle_status)</th>
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/toAddPurchase?id=#(x.id)"  onclick=""> 
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick=""> 
 								<i class="fa fa-pencil" title="生成采购单"></i>
 								</a> </td>
 							</tr>

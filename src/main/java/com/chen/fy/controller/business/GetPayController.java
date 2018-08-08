@@ -7,9 +7,9 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -25,15 +25,15 @@ public class GetPayController extends BaseController {
 
 			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
 					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date",
-					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id   order by w.id desc");
+					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id  where is_create_get_pay = 1 order by w.id desc");
 
 		} else {
 			StringBuilder sb = new StringBuilder();
 			String condition = getPara("condition");
-			sb.append(" where o.").append(condition).append(" like '%").append(key).append("%' ");
+			sb.append(" and  o.").append(condition).append(" like '%").append(key).append("%' ");
 			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
 					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date",
-					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id "
+					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id   where is_create_get_pay = 1 "
 							+ sb.toString() + "  order by w.id desc");
 
 		}
@@ -48,12 +48,14 @@ public class GetPayController extends BaseController {
 		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(id);
 
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+
+		// 价格乘以数量，未税金额
 		BigDecimal untax = order.getUntaxedCost().multiply(model.getOutQuantity());
 		model.setUntaxGetpay(untax);
-		BigDecimal tax = untax.multiply(order.getTaxRate());
-		model.setGetpayAccount(model.getOutQuantity().multiply(order.getTaxRate()));
+		BigDecimal tax = untax.multiply(order.getTaxRate());// 税额
+
 		model.setTax(tax);
-		model.setGetpayAccount(untax.add(tax));
+		model.setHangAmount(untax.add(tax));// 挂账金额，应付金额
 		model.setCreateMonth(calendar.get(Calendar.MONTH));
 		calendar.add(Calendar.MONTH, 3);
 		model.setGetpayMonth(calendar.get(Calendar.MONTH));
@@ -77,16 +79,21 @@ public class GetPayController extends BaseController {
 		BigDecimal hangQuantity = order.getHangQuantity();
 
 		BigDecimal newhangQuantity = model.getOutQuantity().add(hangQuantity);
-		order.setHangQuantity(newhangQuantity);
+		order.setHangQuantity(newhangQuantity);// 挂账数量
 
+		// 未挂账数量
 		BigDecimal unhangQuantity = order.getUnhangQuantity();
 
-		BigDecimal newunhangQuantity = unhangQuantity.subtract(model.getOutQuantity());
+		// 未挂账
+		BigDecimal newunhangQuantity = unhangQuantity.subtract(model.getOutQuantity());// 未挂账数量
 		order.setUnhangQuantity(newunhangQuantity);
+
 		if (newunhangQuantity.doubleValue() > 0) {
 			order.setHangStatus("部分挂账");
 		}
-		order.setHangAccount(order.getHangAccount().add(model.getGetpayAccount()));
+		// 挂账数量
+		order.setHangAccount(order.getHangAccount().add(model.getHangAmount()));
+
 		order.setHangTime(new Date());// 最后挂账时间
 
 		boolean re = Db.tx(new IAtom() {

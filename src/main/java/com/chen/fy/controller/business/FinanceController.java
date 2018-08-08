@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessAssist;
 import com.chen.fy.model.FyBusinessBill;
 import com.chen.fy.model.FyBusinessGetpaybill;
@@ -13,7 +14,6 @@ import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.chen.fy.model.FyBusinessPay;
 import com.chen.fy.model.FyBusinessPaybill;
 import com.chen.fy.model.FyBusinessSumPaybill;
-import com.jfinal.club.common.controller.BaseController;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
