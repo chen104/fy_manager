@@ -17,6 +17,22 @@ public abstract class BasePermission<M extends BasePermission<M>> extends Model<
 		return getInt("id");
 	}
 
+	public void setKey(java.lang.String key) {
+		set("key", key);
+	}
+	
+	public java.lang.String getKey() {
+		return getStr("key");
+	}
+
+	public void setRemark(java.lang.String remark) {
+		set("remark", remark);
+	}
+	
+	public java.lang.String getRemark() {
+		return getStr("remark");
+	}
+
 	public void setActionKey(java.lang.String actionKey) {
 		set("actionKey", actionKey);
 	}
@@ -31,14 +47,6 @@ public abstract class BasePermission<M extends BasePermission<M>> extends Model<
 	
 	public java.lang.String getController() {
 		return getStr("controller");
-	}
-
-	public void setRemark(java.lang.String remark) {
-		set("remark", remark);
-	}
-	
-	public java.lang.String getRemark() {
-		return getStr("remark");
 	}
 
 	public void setParentId(java.lang.Integer parentId) {

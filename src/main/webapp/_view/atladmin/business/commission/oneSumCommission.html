@@ -6,6 +6,8 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">委外一览表</h3>
+				
+					<a href="/fy/admin/biz/commission/toDownloadOneSum"><button class="btn btn-primary" >下载</button></a>
 				<div class="box-tools">
 				  
 					<form action="/fy/admin/biz/commission/oneSumCommission" class="form-inline">
@@ -65,11 +67,12 @@
 								<th>金额</th>
 								<th>折扣</th>
 								<th>折扣后金额</th>		
-													
+													<!-- 
 								<th>入库时间</th>	
 								
 								<th>入库数量</th>	
 								<th>操作</th>
+								 -->
 							</tr>
 						</thead>
 						<tbody>
@@ -100,12 +103,13 @@
 								<td>#(x.discount) </td>
 								<td>#(x.discount_account) </td>
 								
-							
+							<!--  
 								<td>#(x.in_time) </td>
 								<td>#(x.real_in_quantity) </td>
 								<td class="jfa-operation-button"><a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
 								<i class="fa fa-pencil" title="修改"></i>
 								</a> </td>
+								-->
 							</tr>
 							#end
 						</tbody>

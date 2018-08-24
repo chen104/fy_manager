@@ -1,0 +1,163 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">外协加工单</h3>
+				<div class="box-tools">
+					<form action="/fy/admin/biz/commission/assist"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="name") selected="selected" #end value="commodity_spec">厂商名称</option>
+							    </select>
+						  
+						  </div>
+					
+					
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="keyWord" class="form-control pull-right"
+								placeholder="Search" value="#(keyWord)">
+
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding text-center">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>外协日期</th>
+								<th>工作订单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>加工要求</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>外协工序单价</th>
+								<th>外协工序金额</th>
+								<th>税率</th>
+								<th>税额</th>
+								<th>含税金额</th>
+								<th>外协厂商</th>
+								<th>外协工序</th>
+								<th>外协加工耗时</th>
+								<th>外协回厂时间</th>
+								<th>外协回厂检测结果</th>
+								<th>是否生成应付明细表</th>
+								<th>生成时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1))</td>
+								<td>#(x.assist_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_tmp)</td>
+								<td>#(x.machining_require)</td>
+								<td>#(x.quantity)</td>
+								
+								
+								<td>#(x.unit_tmp)</td>
+								<td>#(x.assist_cost)</td>
+								<td>#(x.assist_account)</td>
+								<td>#taxRate(x.tax_rate)</td>
+								<td>#(x.tax_amount)</td>
+								
+								<td>#(x.tatol_amount)</td>
+								<td> #(x.supplier_name)</td>
+								<td>#(x.assist_process)</td>
+								<td>#(x.run_time)</td>
+								<td>#(x.backtime)</td>
+								<td>#(x.check_result)</td>
+								<td>#if(x.is_create_pay)
+									已生成应付明细
+									#else
+									#if(x.check_result=="合格")
+									<a href="/fy/admin/biz/finance/pay/addpay?id=#(x.id)" > 
+										<i class="fa fa-pencil" title="生成应付明细表"></i>
+										</a>
+										#end
+									#end
+								</td>
+								<td>#(x.pay_create_time)</td>
+								
+								<td class="jfa-operation-button">
+								
+								<a href="/fy/admin/biz/assist/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
+								<i class="fa fa-pencil" title="修改"></i>
+								</a>
+								
+									<a data-action="/fy/admin/biz/assist/delete?id=#(x.id)" style="margin-left: 14px;color: red" onclick="deleteAssist(this)"> 
+									<i class="fa fa-trash" title="删除"></i>
+								</a>
+								</td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/assist?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+	
+	
+function deleteAssist(a){
+	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+    </script>
+
+#end

@@ -58,7 +58,7 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">银行账户</label>
+			<label  class="col-sm-3 control-label">开户行</label>
 
 			<div class="col-sm-9">
 					<input type="text" class="form-control pull-right"   placeholder="银行账户"  value="#(model.bankAccount??)" name="model.bankAccount" >
@@ -138,10 +138,10 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">资料上传</label>
+			<label  class="col-sm-3 control-label">备注</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="资料上传" value="#(model.annex??)" name="model.annex">
+				<textarea rows="3" class="form-control" name="model.remark" >#(model.remark)</textarea>
 			</div>
 		</div>
 	</div>

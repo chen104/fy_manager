@@ -14,12 +14,14 @@
 
 package com.chen.fy.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.chen.fy.model.Role;
 import com.chen.fy.model.Session;
+import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -58,11 +60,58 @@ public class AccountAdminService {
 		if (id != null) {
 			return Ret.fail("msg", "邮箱已经存在，请输入别的昵称");
 		}
-
+		String password = account.getPassword();
 		// 暂时只允许修改 nickName 与 userName
-		account.keep("id", "nickName", "userName");
+		// account.keep("id", "nickName", "userName");
+
+		if ("****".equals(password)) {
+			account.remove("password");
+		} else {
+			// 密码加盐 hash
+			String salt = HashKit.generateSaltForSha256();
+			password = HashKit.sha256(salt + account.getPassword());
+
+			// 创建账户
+			// Account account = new Account();
+			// account.setUserName(userName);
+			account.setPassword(password);
+			account.setSalt(salt);
+
+		}
+
 		account.update();
 		return Ret.ok("msg", "账户更新成功");
+	}
+
+	public Ret addAccount(Account account) {
+		Ret ret = null;
+		Account list = dao.findFirst("select  1 from account where userName = ?", account.getUserName());
+		if (list != null) {
+			ret = Ret.fail().set("msg", "用户已存在");
+			return ret;
+		}
+		// 密码加盐 hash
+		String salt = HashKit.generateSaltForSha256();
+		String password = HashKit.sha256(salt + account.getPassword());
+
+		// 创建账户
+		// Account account = new Account();
+		// account.setUserName(userName);
+		account.setPassword(password);
+		account.setSalt(salt);
+		// account.setNickName(nickName);
+		account.setStatus(Account.STATUS_REG);
+		account.setCreateAt(new Date());
+		// account.setIp(ip);
+		account.setAvatar(Account.AVATAR_NO_AVATAR); // 注册时设置默认头像
+		boolean re = account.save();
+		if (re) {
+			ret = Ret.fail().set("msg", "用户添加成功");
+		} else {
+			ret = Ret.fail().set("msg", "用户添加失败");
+		}
+
+		return ret;
 	}
 
 	/**
@@ -134,5 +183,26 @@ public class AccountAdminService {
 				role.put("assigned", true);
 			}
 		}
+	}
+
+	public boolean deleteAccount(Integer id) {
+		Db.delete("delete from account_role where accountId = ?", id);
+		return dao.deleteById(id);
+
+	}
+
+	public Ret changPassword(Integer id, String newpass) {
+		Account user = dao.findById(id);
+		String salt = HashKit.generateSaltForSha256();
+		String password = HashKit.sha256(salt + newpass);
+		user.setPassword(password);
+		user.setSalt(salt);
+		boolean re = user.update();
+		if (re) {
+			return Ret.ok().set("msg", "修改密码成功");
+		} else {
+			return Ret.ok().set("msg", "修改密码成功");
+		}
+
 	}
 }

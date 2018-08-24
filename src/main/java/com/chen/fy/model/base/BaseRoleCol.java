@@ -9,12 +9,12 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseRoleCol<M extends BaseRoleCol<M>> extends Model<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
-		set("id", id);
+	public void setColumnId(java.lang.Integer columnId) {
+		set("column_id", columnId);
 	}
 	
-	public java.lang.Integer getId() {
-		return getInt("id");
+	public java.lang.Integer getColumnId() {
+		return getInt("column_id");
 	}
 
 	public void setRoleId(java.lang.Integer roleId) {
@@ -23,22 +23,6 @@ public abstract class BaseRoleCol<M extends BaseRoleCol<M>> extends Model<M> imp
 	
 	public java.lang.Integer getRoleId() {
 		return getInt("roleId");
-	}
-
-	public void setColName(java.lang.String colName) {
-		set("col_name", colName);
-	}
-	
-	public java.lang.String getColName() {
-		return getStr("col_name");
-	}
-
-	public void setTableName(java.lang.String tableName) {
-		set("table_name", tableName);
-	}
-	
-	public java.lang.String getTableName() {
-		return getStr("table_name");
 	}
 
 }

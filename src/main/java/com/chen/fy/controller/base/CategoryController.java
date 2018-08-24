@@ -1,8 +1,9 @@
 package com.chen.fy.controller.base;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Category;
-import com.chen.fy.model.Customer;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -41,7 +42,7 @@ public class CategoryController extends BaseController {
 	public void delete() {
 		Integer id = getParaToInt("id");
 
-		boolean re = Customer.dao.deleteById(id);
+		boolean re = Category.dao.deleteById(id);
 		Ret ret = null;
 		if (re) {
 			ret = Ret.ok("msg", "删除 信息成功");
@@ -74,5 +75,21 @@ public class CategoryController extends BaseController {
 	public void add() {
 		setAttr("action", "save");
 		render("edit.html");
+	}
+
+	public void searchCategoryJson() {
+		String key = getPara("keyWord");
+		Page<Category> modelPage = null;
+		setAttr("keyWord", key);
+		if (StringUtils.isEmpty(key)) {
+
+			modelPage = Category.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_category order by id desc");
+		} else {
+
+			modelPage = Category.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_category  where name like '" + key + "' order by id desc");
+		}
+		renderJson(modelPage);
 	}
 }

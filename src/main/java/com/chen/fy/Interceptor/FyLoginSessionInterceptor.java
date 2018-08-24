@@ -14,13 +14,15 @@
 
 package com.chen.fy.Interceptor;
 
-import com.chen.fy.Constant;
+import org.apache.commons.lang3.StringUtils;
+
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.club.common.kit.IpKit;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.Ret;
 
 /**
  * 从 cookie 中获取 sessionId，如果获取到则根据该值使用 LoginService 得到登录的 Account 对象 --->
@@ -32,24 +34,50 @@ public class FyLoginSessionInterceptor implements Interceptor {
 	/**
 	 * 用于在模板指令中使用
 	 */
-	private static final ThreadLocal<Account> threadLocal = new ThreadLocal<Account>();
-
-	public static Account getThreadLocalAccount() {
-		return threadLocal.get();
-	}
+	// private static final ThreadLocal<Account> threadLocal = new
+	// ThreadLocal<Account>();
+	//
+	// public static Account getThreadLocalAccount() {
+	// return threadLocal.get();
+	// }
 
 	public static final String remindKey = "_remind";
 
 	public void intercept(Invocation inv) {
-		String controllerKey = inv.getControllerKey();
-		if (controllerKey.startsWith("/fy/admin")) {
+		// String controllerKey = inv.getControllerKey();
+
+		// System.out.println(inv.getController().getRequest().getRequestURL());
+		// System.out.println();
+		//
+		// System.out.println(controllerKey);
+		// System.out.println(inv.getMethodName());
+		String uri = inv.getController().getRequest().getRequestURI();
+		if (uri.startsWith("/fy/admin")) {
 			Account account = inv.getController().getSessionAttr("account");
 			if (account != null) {
-				Object o = inv.getController().getSessionAttr(Constant.account);
-				if (o instanceof Account) {
-					threadLocal.set((Account) o);
+				// Object o = inv.getController().getSessionAttr(Constant.account);
+				// if (o instanceof Account) {
+				// threadLocal.set((Account) o);
+				// }
+				if (account.hasUriPermission(uri)) {
+					inv.invoke();
+				} else {
+					String c = inv.getController().getRequest().getHeader("X-Requested-With");
+					// Enumeration<String> enume =
+					// inv.getController().getRequest().getHeaderNames();
+					// while (enume.hasMoreElements()) {
+					// String key = enume.nextElement();
+					// System.out.print(key + " = ");
+					// System.out.println(inv.getController().getRequest().getHeader(key));
+					// }
+					// boolean isPjax = "true".equalsIgnoreCase(c);
+					if (!StringUtils.isEmpty(c)) {
+						inv.getController().renderJson(Ret.fail().set("msg", "没有权限"));
+					} else {
+						inv.getController().redirect("/fy/noAuth");
+					}
 				}
-				inv.invoke();
+
 			} else {
 				inv.getController().redirect("/fy");
 

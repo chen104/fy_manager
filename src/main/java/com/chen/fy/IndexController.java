@@ -52,4 +52,10 @@ public class IndexController extends BaseController {
 		removeSessionAttr(Constant.account);
 		redirect("/fy");
 	}
+
+	@ActionKey("/fy/noAuth")
+	public void noAuth() {
+		render("atladmin/noAuth.html");
+	}
+
 }

@@ -26,6 +26,9 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 public class OrderController extends BaseController {
+	/**
+	 * 订单表
+	 */
 	public void index() {
 		String key = getPara("keyWord");
 
@@ -36,6 +39,40 @@ public class OrderController extends BaseController {
 
 		setAttr("keyWord", key);
 		StringBuilder conditionSb = new StringBuilder();
+
+		if ("dis_warn".equals(condition)) {// 分配预警，三天未分配,导入时间，后还没有分配
+			String sql = " where dis_to is null and DATEDIFF(now() , import_time ) > 3";
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+					"select o.*,f.originalFileName filename ",
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
+							+ " order by id desc");
+			setAttr("modelPage", modelPage);
+			render("orderlist.html");
+			return;
+		}
+
+		if ("delay_warn".equals(condition)) {
+			String sql = " where  DATEDIFF(now() , order_date) > 28 and out_quantity = 1 ";
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+					"select o.*,f.originalFileName filename ",
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
+							+ " order by id desc");
+			setAttr("modelPage", modelPage);
+			render("orderlist.html");
+			return;
+		}
+
+		if ("delay".equals(condition)) {
+			String sql = " where  DATEDIFF(now() , order_date) > 30 and out_quantity = 1 ";
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+					"select o.*,f.originalFileName filename ",
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
+							+ " order by id desc");
+			setAttr("modelPage", modelPage);
+			render("orderlist.html");
+			return;
+		}
+
 		if ("order_date".equals(condition)) {
 			String orderDate = getPara("order_date");
 			if (StringUtils.isNotEmpty(orderDate)) {
@@ -47,7 +84,6 @@ public class OrderController extends BaseController {
 			conditionSb.append(String.format("where %s like  ", condition, key));
 			conditionSb.append("'%").append(key).append("%'");
 		}
-
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
 					"select o.*,f.originalFileName filename ",
@@ -63,6 +99,9 @@ public class OrderController extends BaseController {
 		render("orderlist.html");
 	}
 
+	/**
+	 * 导入订单
+	 */
 	public void importFile() {
 		boolean isnumber = false;
 		UploadFile ufile = getFile();
@@ -70,12 +109,13 @@ public class OrderController extends BaseController {
 		if (ufile != null) {
 			try {
 				File file = ufile.getFile();
-				new FyBusinessOrder();
+
 				PIOExcelUtil excel = new PIOExcelUtil(file, 0);
 				// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
 				// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
 				List<Record> list = new ArrayList<Record>();
-				for (int i = 1; i < excel.getRowNum(); i++) {
+				int rows = excel.getRowNum() + 1;
+				for (int i = 1; i < rows; i++) {
 					FyBusinessOrder item = new FyBusinessOrder();
 					String catgory = excel.getCellVal(i, 0);// 类别
 					item.setCateTmp(catgory);
@@ -149,6 +189,8 @@ public class OrderController extends BaseController {
 					item.setHandleStatus("未处理");
 					item.setHangStatus("未挂账");
 					item.setUnhangQuantity(item.getQuantity());
+
+					item.setWwUnquantity(item.getQuantity());
 					list.add(new Record().setColumns(item));
 
 				}
@@ -172,6 +214,9 @@ public class OrderController extends BaseController {
 
 	}
 
+	/**
+	 * 更新订单
+	 */
 	public void updateOrder() {
 		Integer id = getParaToInt("id");
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
@@ -190,10 +235,31 @@ public class OrderController extends BaseController {
 
 	}
 
+	/**
+	 * 删除订单
+	 */
 	public void deleteOrder() {
 		Integer id = getParaToInt("id");
+		// boolean re =
 
-		boolean re = FyBusinessOrder.dao.deleteById(id);
+		boolean re = Db.tx(new IAtom() {
+			public boolean run() throws SQLException {
+				try {
+					Db.find("select count(1) from  fy_business_purchase where order_id = ?", id);
+					Db.find("select count(1) from  fy_business_in_warehouse where order_id = ?", id);
+
+					Db.find("select count(1) from  fy_business_out_warehouse where order_id = ?", id);
+					Db.delete("delete from fy_business_order where id = ?", id);
+					Db.delete("delete from fy_business_pay where id = ?", id);
+					FyBusinessOrder.dao.deleteById(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}
+		});
+
 		Ret ret = null;
 		if (re) {
 			ret = Ret.ok("msg", "删除成功");
@@ -203,13 +269,16 @@ public class OrderController extends BaseController {
 		renderJson(ret);
 	}
 
+	/**
+	 * 接收表
+	 */
 	public void receive() {
 		String key = getPara("keyWord");
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
 
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select o.*,f.originalFileName filename ",
-				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  order by id desc,is_distribute desc");
+				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  where distribute_to is null order by id desc,is_distribute desc");
 
 		setAttr("modelPage", modelPage);
 		render("receive.html");
@@ -220,7 +289,7 @@ public class OrderController extends BaseController {
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order   order by orderby asc  , id asc");
+				"from  fy_business_order where  distribute_to is null  order by orderby asc  , id asc");
 
 		setAttr("modelPage", modelPage);
 		render("distribute.html");
@@ -407,12 +476,12 @@ public class OrderController extends BaseController {
 		StringBuilder sql = new StringBuilder();
 		if ("自产".equals(disTo)) {
 			// order.setDisTo(false);
-			sql.append("update Fy_Business_Order set dis_to = 0 ,distribute_to = '" + disTo
+			sql.append("update fy_business_order set dis_to = 0 ,distribute_to = '" + disTo
 					+ "' ,is_distribute = 1, distribute_time = now() , orderby = 1  where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		} else {
 			// order.setDisTo(true);
-			sql.append("update Fy_Business_Order set dis_to = 1 ,distribute_to = '" + disTo
+			sql.append("update fy_business_order set dis_to = 1 ,distribute_to = '" + disTo
 					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		}
@@ -434,5 +503,36 @@ public class OrderController extends BaseController {
 			ret = Ret.ok("msg", "分配失败");
 		}
 		renderJson(ret);
+	}
+
+	/**
+	 * 测回分配，修改状态为 dis_to =null , handle_status =‘未处理 ’ distribute_to` ,
+	 * `distribute_attr ，测回,is_distribute =1
+	 */
+	public void rollBackOrder() {
+		Integer id = getParaToInt("id");
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+		order.setDisTo(null);
+		order.setHandleStatus("未处理");
+		order.setDistributeTo(null);
+		order.setDistributeAttr("撤回");
+		order.setIsDistribute(true);
+		order.setIsCreatePlan(false);
+
+		order.setDistributeTime(null);// 分配时间
+		List<Record> list = Db.find("select 1 from fy_business_in_warehouse where order_id = ?", id);
+		if (list.size() > 0) {
+			renderJson(Ret.fail().set("msg", "已生成入库单，不可撤回"));
+		}
+		list = Db.find("select 1 from fy_business_purchase where order_id = ?", id);
+		if (list.size() > 0) {
+			renderJson(Ret.fail().set("msg", "已生采购单，不可撤回"));
+		}
+		boolean re = order.update();
+		if (re) {
+			renderJson(Ret.ok().set("msg", "撤回成功"));
+		} else {
+			renderJson(Ret.fail().set("msg", "撤回失败，请重试"));
+		}
 	}
 }

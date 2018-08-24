@@ -32,7 +32,7 @@
  
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">发亦生产管理系统</p>
+    <p class="login-box-msg">发奕林生产管理系统</p>
 
     <form id="myForm" action="/fy/doLogin" method="post">
       <div class="form-group has-feedback">
@@ -93,7 +93,7 @@
 						}
 					, success: function(ret) {
 						if (ret.state == "ok") {
-							location.href = "/fy/admin/base/person";
+							location.href = "/fy/admin";
 						} else {
 							alert(ret.msg);
 						}

@@ -121,12 +121,12 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 		return getStr("job_status");
 	}
 
-	public void setExecBaseSalary(java.math.BigDecimal execBaseSalary) {
-		set("exec_base_salary", execBaseSalary);
+	public void setCurrentSalary(java.math.BigDecimal currentSalary) {
+		set("current_salary", currentSalary);
 	}
 	
-	public java.math.BigDecimal getExecBaseSalary() {
-		return get("exec_base_salary");
+	public java.math.BigDecimal getCurrentSalary() {
+		return get("current_salary");
 	}
 
 	public void setAdjustBaseSalary1(java.math.BigDecimal adjustBaseSalary1) {
@@ -327,6 +327,14 @@ public abstract class BasePerson<M extends BasePerson<M>> extends Model<M> imple
 	
 	public java.util.Date getRequstOutDate() {
 		return get("requst_out_date");
+	}
+
+	public void setEntrySalary(java.math.BigDecimal entrySalary) {
+		set("entry_salary", entrySalary);
+	}
+	
+	public java.math.BigDecimal getEntrySalary() {
+		return get("entry_salary");
 	}
 
 }

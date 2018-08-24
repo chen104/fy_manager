@@ -6,9 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">采购表</h3>
-					<span class="btn btn-primary" id="download">下载</span>
+					<a href="/fy/admin/biz/commission/purchase/toDownload"><span class="btn btn-primary"   >下载 1</span></a>
 				<div class="box-tools">
-						<form action="/fy/admin/biz/commission/purchase" class="form-inline">
+						<form action="/fy/admin/biz/commission/purchase/" class="form-inline">
 								 <div class="form-group  input-group-sm">
 								    <label for="condition">条件</label>
 									    <select id="condition" class="form-control" name="condition" >
@@ -40,7 +40,7 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
-								<th> <input name="selectAll" id="selectAll" type="checkbox"></th>
+								
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -58,7 +58,7 @@
 								<th>单位</th>
 								
 								<th>采购订单</th>
-								<th>供应商</th>
+								<th><input name="selectAll" id="selectAll" type="checkbox"> 供应商</th>
 								<th>采购时间</th>
 								<th>采购名称</th>
 								<th>采购数量</th>
@@ -68,22 +68,21 @@
 								
 								<th>单价</th>
 								<th>总价</th>
+							
+								<th>已入库数量</th>
+								
 								<th>折扣</th>
 								<th>折后总价</th>
 								
 								<th>操作</th>
 							</tr>
 						</thead>
-						<form  id="form_download" method="post" action="/fy/admin/biz/commission/downloadPurchase">
+						<form  id="form_download" method="post" action="/fy/admin/biz/commission/purchase/downloadPurchase">
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> 
-								#if(x.can_download)
-								<input name="selectPurchase"  type="checkbox" value="#(x.id)" data-supplier="#(x.supplier_id)"> 
-								#end
-								</td>
+								
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
@@ -101,7 +100,10 @@
 								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.purchase_no)</td>
-								<td>#(x.supplier_name)</td>
+								<td>#if(x.can_download)
+										<input name="selectPurchase"  type="checkbox" value="#(x.id)" data-supplier="#(x.supplier_id)"> 
+										#end
+								#(x.supplier_name)</td>
 								<td>#(x.purchase_date)</td>
 								
 								<td>#(x.purchase_title)</td>
@@ -113,13 +115,15 @@
 								<td>#(x.purchase_cost)</td>
 								<td>#(x.purchase_account)</td>
 								
+								<td>#(x.has_in_quantity)</td>
+								
 								<td>#(x.discount)</td>
 								<td>#(x.discount_account)</td>
 								
 								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/purchase/editPurchase?id=#(x.id)&p=#(p)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+								</a> <a data-delete data-title="#escape(x.name)" data-id="#(x.id)"
+									data-action="/fy/admin/biz/commission/purchase/delete?id=#(x.id)" onclick="deletePurchase(this)"  style="margin-left: 14px; color: red;cursor:pointer"> <i
 										class="fa fa-trash" title="删除"></i>
 								</a></td>
 							</tr>
@@ -142,6 +146,37 @@
 
 
 <script type="text/javascript">
+
+
+function deletePurchase(a){
+	var issure = confirm("确定要删除   吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+	
+
+
 	$("#selectAll").click(function(){
 		var isChecked = $("#selectAll").is(":checked");
 		if( isChecked ){
@@ -207,6 +242,21 @@
 	    	return ;
 	    }
 	    
+	    for(var i =0 ; i < select.length ;i++ ){
+	    	 var s = $(select[i]).data('supplier');
+	    	 console.info(s);
+	    	if(! s){
+	    		issame = false;
+	    		break;
+	    	}
+	    }
+	    if(!issame){
+	    	alert("采购没有供应商");
+	    	return ;
+	    }
+	    
+	    
+	    
 	   select.each(function() {
 				var supplier_id = 	$(this).data("supplier_id");
 			});
@@ -217,5 +267,6 @@
 	   
 	});
 </script>
+
 
 #end

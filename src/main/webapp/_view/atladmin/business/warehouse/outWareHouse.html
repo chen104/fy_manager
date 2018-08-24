@@ -64,14 +64,14 @@
 								<th>运输费用</th>
 								<th>运输重量</th>
 								<th>运输单号</th>
-								<th>是否生成应收明细表</th>
+								<th>撤回出库</th>
 								<th>出库时间</th>
 								<th>出库数量	</th>
 								<th>是否撤回应收明细单</th>
 								<th>撤回原因</th>
 								<th>是否生成售后处理表</th>
 								<th>售后处理表生成时间</th>
-								<th>生成应收明细单</th>
+							
 							</tr>
 						</thead>
 						
@@ -101,7 +101,10 @@
 								<td>#(x.is_create_get_pay)</td>
 								<td>#(x.out_time)</td>
 								<td>#(x.out_quantity)</td>
-								<td>#(x.is_back_pay)</td>
+								
+								<td> <a href="#" data-action="/fy/admin/biz/whouse/rollbackOutWarehouse" onclick="rollback(this)" data-id="#(x.id)" data-title="  #(x.commodity_name) #(x.commodity_spec) 数量 : #(x.out_quantity)">
+									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a> </td>
+								
 								<td>#(x.back_reson)</td>
 								<td>#if(!x.is_create_after_sale)
 										<a href="/fy/admin/biz/aftersale/complaint/add?id=#(x.id)" data-id="#(x.id)" > 
@@ -112,6 +115,7 @@
 									#end
 								</td>
 								<td>#(x.after_sale_create_time)</td>
+								<!-- 
 								<td class="jfa-operation-button">
 								
 									#if(!x.is_create_get_pay) 
@@ -121,7 +125,7 @@
 										</a> 
 										
 									#end
-								</td>
+								</td> -->
 							</tr>
 							#end
 						</tbody>
@@ -142,31 +146,30 @@
 
 
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
-		$.ajax({
-			   type: "POST",
-			   url:$(a).data("action") ,
-			   success: function(ret){
-				   if (ret.state == "ok") {
-			
-					   location.reload();
+	function rollback(a){
+		var	input = $(a);
+		var re = confirm("确定要撤回"+input.data('title'));
+		if(re){
+			$.ajax({
+				   type: "POST",
+				   data:{id:input.data('id')},
+				   url:$(a).data("action") ,
+				   success: function(ret){
+					   if (ret.state == "ok") {
+						   alert(ret.msg);
+						   location.reload();
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
 					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
+				});
 		}
-	else{
-	
-		}
+		
 	}
 
 

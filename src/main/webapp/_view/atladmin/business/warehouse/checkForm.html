@@ -252,7 +252,7 @@
 			<label  class="col-sm-3 control-label">检测数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="检测数量"  value="#(model.real_in_quantity??)" name="checkQuantity">
+				<input type="text" class="form-control" readonly="readonly"  placeholder="检测数量"  value="#(model.real_in_quantity??)" name="checkQuantity">
 			</div>
 		</div>
 	</div>
@@ -269,8 +269,8 @@
 			<div class="col-sm-9">
 				 <select  class="form-control"  name="checkResult"  >
 				 	<option value=""></option>
-                    <option value="合格">合格</option>
-                    <option value="不合格">不合格</option>
+                    <option #if(model.checkResult=="合格") selected="selected" #end value="合格">合格</option>
+                    <option #if(model.checkResult=="不合格") selected="selected" #end  value="不合格">不合格</option>
                     
                   </select>
 				
@@ -285,10 +285,10 @@
 			<div class="col-sm-9">
 				 <select  class="form-control"  name="checkHandle"  >
 
-                    <option value="正常">正常</option>
-                    <option value="让步接收">让步接收</option>
-                    <option value="返工">返工</option>
-                    <option value="报废">报废</option>
+                    <option #if(model.checkHandle=="正常") selected="selected" #end value="正常">正常</option>
+                    <option #if(model.checkHandle=="让步接收") selected="selected" #end  value="让步接收">让步接收</option>
+                    <option #if(model.checkHandle=="返工") selected="selected" #end  value="返工">返工</option>
+                    <option #if(model.checkHandle=="报废") selected="selected" #end  value="报废">报废</option>
                   </select>
 				
 			</div>

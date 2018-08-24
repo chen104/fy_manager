@@ -4,23 +4,24 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
+		#include("upload.html")
 			<div class="box-header">
 				<h3 class="box-title">人员管理</h3>
 
 				<a href="/fy/admin/base/person/add"><button type="submit"
 						class="btn btn-primary">添加人员</button></a>
-
-
+					
 				<div class="box-tools">
-						<form action="/fy/admin/biz/commission/purchase" class="form-inline">
+					
+						<form action="/fy/admin/base/person" class="form-inline">
 								 <div class="form-group  input-group-sm">
 								    <label for="condition">条件</label>
 									    <select id="condition" class="form-control" name="condition" >
-									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">状态</option>
-									    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >姓名</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">入职天数</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">部门</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">寝室号</option>
+									    	<option #if(condition=="job_status") selected="selected" #end value="job_status">状态</option>
+									    	<option #if(condition=="name") selected="selected" #end value="name" >姓名</option>
+									    	<option #if(condition=="dateNumber") selected="selected" #end value="dateNumber">入职天数</option>
+									    	<option #if(condition=="part_name") selected="selected" #end value="part_name">部门</option>
+									    	<option #if(condition=="room_no") selected="selected" #end value="room_no">寝室号</option>
 									    
 									    </select>
 								  
@@ -55,12 +56,10 @@
 								
 								<th>民族</th>
 								<th>联系电话</th>
-								<th>质量考核</th>
-								<th>行政考核</th>
 								
 								<th>出生日期</th>
 								<th>入职日期</th>
-								
+
 								<th>申请离职日期</th>
 								
 								<th>离职日期</th>
@@ -68,7 +67,7 @@
 								<th>当前时间</th>
 								<th>入职天数</th>
 								
-								<th>联系方式</th>
+								
 								<th>学历</th>
 								<th>政治面貌</th>
 								
@@ -83,7 +82,9 @@
 								<th>档案编号</th>
 								
 								
-								<th>执行底薪</th>
+								<th>入职底薪</th>
+								<th>当前底薪</th>
+								
 								<th>调整底薪1</th>
 								<th>调整1日期</th>
 								<th>调整底薪2</th>
@@ -101,6 +102,10 @@
 								<th>调整7日期</th>
 								<th>调整底薪8</th>
 								<th>调整8日期</th>
+								
+								<th>质量考核</th>
+								<th>行政考核</th>
+								
 								<th>备注</th>
 								
 								<th>操作</th>
@@ -115,10 +120,9 @@
 								<td>#(x.nativePlace)</td>
 								<td>#if(x.sex) 男 #else 女 #end</td>
 								
-								<th>#(x.ethnic_group)</th>
-								<th>#(x.phone)</th>
-								<th>#(x.quality_check)</th>
-								<th>#(x.administrative_check)</th>
+								<td>#(x.ethnic_group)</td>
+								<td>#(x.contactType)</td>
+								
 								
 								<td>#date(x.birth_date,"yyyy-MM-dd")</td>
 								
@@ -131,7 +135,7 @@
 								<td>#(x.dateNumber)</td>
 								
 								
-								<td>#(x.contactType)</td>
+							
 								<td>#(x.education)</td>
 								<td>#(x.politicalStatus)</td>
 								
@@ -146,8 +150,10 @@
 								
 								<td>#(x.doc_no)</td>
 								
-							
-								<td>#(x.execBaseSalary)</td>
+								<td>#(x.entry_salary)</td>
+								<td>#(x.current_salary)</td>
+								
+								
 								<td>#(x.adjustBaseSalary1)</td>
 								<td>#(x.adjust_date1)</td>
 								<td>#(x.adjustBaseSalary2)</td>
@@ -165,6 +171,10 @@
 								<td>#(x.adjust_date7)</td>
 								<td>#(x.adjustBaseSalary8) </td>
 								<td>#(x.adjust_date8)</td>
+								
+								<th>#(x.quality_check)</th>
+								<th>#(x.administrative_check)</th>
+								
 								<td>#(x.remark)</td>
 								<td class="jfa-operation-button"><a href="/fy/admin/base/person/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>

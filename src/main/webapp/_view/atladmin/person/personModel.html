@@ -1,26 +1,3 @@
-<style type="text/css">
-		.myinput {
-		    border-radius: 0;
-		    box-shadow: none;
-		    border-color: #d2d6de;
-		  -webkit-appearance: none;
-		    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		    height: 34px;
-		    padding: 6px 12px;
-		    font-size: 14px;
-		    line-height: 1.42857143;
-		    color: #555;
-		    background-color: #fff;
-		    background-image: none;
-		    border: 1px solid #ccc;
-			}  
-			
-			
-		.text-center{
-			text-align: center;
-		}
-</style>
-
 
 <div class="modal fade" tabindex="-1" role="dialog" id="personModel">
 	<div class="modal-dialog" role="document">
@@ -54,7 +31,7 @@
 			</div>
 			<div style="width: 100%; text-align:center" >
 				<nav aria-label="Page navigation">
-					<ul class="pagination" id="pageUl">
+					<ul class="pagination" id="pageUl-person">
 						<li ><a href="#" aria-label="Previous"> <span
 								aria-hidden="true">&laquo;</span>
 						</a></li>
@@ -82,6 +59,8 @@
 <!-- /.modal -->
 
 <script type="text/javascript">
+
+
 	var personId,personName;
   	function showChooesPerson(personI,personN){
   		personId = personI;
@@ -127,7 +106,7 @@
 					}
 
 				
-				var pageUl =$("#pageUl");
+				var pageUl =$("#pageUl-person");
 				pageUl.empty();
 				if(data.totalPage < 2 ){
 					return;

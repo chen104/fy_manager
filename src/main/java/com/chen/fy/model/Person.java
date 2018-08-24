@@ -7,5 +7,6 @@ import com.chen.fy.model.base.BasePerson;
  */
 @SuppressWarnings("serial")
 public class Person extends BasePerson<Person> {
-	
+	public final static Person dao = new Person().dao();
+
 }

@@ -11,7 +11,6 @@ import com.chen.fy.model.FyBusinessBill;
 import com.chen.fy.model.FyBusinessGetpaybill;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
-import com.chen.fy.model.FyBusinessPay;
 import com.chen.fy.model.FyBusinessPaybill;
 import com.chen.fy.model.FyBusinessSumPaybill;
 import com.jfinal.kit.Ret;
@@ -168,21 +167,6 @@ public class FinanceController extends BaseController {
 
 		setAttr("modelPage", modelPage);
 		render("getPaybill.html");
-	}
-
-	/**
-	 * 应付明细表
-	 */
-	public void pay() {
-		String key = getPara("keyWord");
-		Page<FyBusinessPay> modelPage = null;
-		setAttr("keyWord", key);
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
-		modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), 10, "select p.*, " + sql,
-				"from  fy_business_pay p left join fy_business_order o on o.id= p.order_id order by id desc");
-
-		setAttr("modelPage", modelPage);
-		render("pay.html");
 	}
 
 	/**

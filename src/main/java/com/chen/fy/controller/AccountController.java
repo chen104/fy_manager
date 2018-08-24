@@ -1,6 +1,5 @@
 package com.chen.fy.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import com.chen.fy.model.Account;
@@ -9,8 +8,9 @@ import com.chen.fy.role.RoleAdminService;
 import com.chen.fy.service.AccountAdminService;
 import com.chen.fy.service.AccountUpdateValidator;
 import com.jfinal.aop.Before;
-import com.jfinal.kit.HashKit;
+import com.jfinal.core.ActionKey;
 import com.jfinal.kit.Ret;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 public class AccountController extends BaseController {
@@ -44,6 +44,7 @@ public class AccountController extends BaseController {
 	@Before(AccountUpdateValidator.class)
 	public void update() {
 		Account account = getBean(Account.class);
+
 		Ret ret = srv.update(account);
 		renderJson(ret);
 	}
@@ -51,27 +52,8 @@ public class AccountController extends BaseController {
 	public void save() {
 
 		Account account = getBean(Account.class);
-		// 密码加盐 hash
-		String salt = HashKit.generateSaltForSha256();
-		String password = HashKit.sha256(salt + account.getPassword());
+		Ret ret = srv.addAccount(account);
 
-		// 创建账户
-		// Account account = new Account();
-		// account.setUserName(userName);
-		account.setPassword(password);
-		account.setSalt(salt);
-		// account.setNickName(nickName);
-		account.setStatus(Account.STATUS_REG);
-		account.setCreateAt(new Date());
-		// account.setIp(ip);
-		account.setAvatar(Account.AVATAR_NO_AVATAR); // 注册时设置默认头像
-		boolean re = account.save();
-		Ret ret = null;
-		if (re) {
-			ret = Ret.ok();
-		} else {
-			ret = Ret.fail("msg", "添加失败");
-		}
 		renderJson(ret);
 	}
 
@@ -120,4 +102,58 @@ public class AccountController extends BaseController {
 		renderJson(ret);
 	}
 
+	public void delete() {
+		Integer id = getParaToInt("accountId");
+		if (id == null) {
+			Ret ret = Ret.fail("msg", "添加失败");
+			renderJson(ret);
+			return;
+		}
+		Boolean re = srv.deleteAccount(id);
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok().set("msg", "删除成功");
+		} else {
+			ret = Ret.fail("msg", "添加失败");
+		}
+		renderJson(ret);
+	}
+
+	public void tochangPassWord() {
+		Account user = getSessionAttr("account");
+		setAttr("id", user.getId());
+		render("changMypassWord.html");
+	}
+
+	/**
+	 * 
+	 */
+	public void changPassword() {
+		Integer id = getParaToInt("id");
+		String password = getPara("password");
+		Ret ret = srv.changPassword(id, password);
+		renderJson(ret);
+	}
+
+	public void toIndex() {
+		render("../index.html");
+
+	}
+
+	@ActionKey("/fy/admin")
+	public void adminIndex() {
+
+		Integer unDistribut = Db.queryInt("select count(1) num from fy_business_order where dis_to is null");
+		setAttr("unDistribut", unDistribut);
+
+		Integer warn_distribut = Db.queryInt(
+				"select  count(1) num  from fy_business_order where dis_to is null  and DATEDIFF(CURDATE(),import_time) > 2");
+		setAttr("unDistribut", warn_distribut);
+
+		Integer delay = Db.queryInt(
+				" select  count(1) num  from fy_business_order where out_quantity =0  and DATEDIFF(CURDATE(),import_time) > 30 ");
+		setAttr("delay", delay);
+		render("../index.html");
+
+	}
 }

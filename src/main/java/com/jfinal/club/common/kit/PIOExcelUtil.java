@@ -308,6 +308,9 @@ public class PIOExcelUtil {
 	public String getCellVal(int rowNum, int columnNum) {
 
 		String cellVal = null;
+		if (sheet.getRow(rowNum) == null) {
+			return null;
+		}
 		Cell cell = sheet.getRow(rowNum).getCell(columnNum, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
 		switch (cell.getCellTypeEnum()) {
@@ -471,6 +474,43 @@ public class PIOExcelUtil {
 	}
 
 	/**
+	 * 日期格式yyyy年x月x日
+	 * @param rownum
+	 * @param column
+	 */
+	public void setDateCellStyle(int rownum, int column) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (cell != null) {
+			cell.setCellStyle(getCellType4Date());
+		}
+
+	}
+
+	/**
+	 * 日期格式yyyy年x月x日
+	 * @param rownum
+	 * @param column
+	 */
+	public void setDateCellStyle(int rownum, int column, String parrent) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (cell != null) {
+			CellStyle cellStyle = wb.createCellStyle();
+			DataFormat format = wb.createDataFormat();
+			cellStyle.setDataFormat(format.getFormat(parrent));
+			cell.setCellStyle(cellStyle);
+		}
+
+	}
+
+	/**
 	 * 设置单元格数据 简单公式 excel 中可以用的这里都可以用
 	 * 
 	 * @param rownum
@@ -607,6 +647,34 @@ public class PIOExcelUtil {
 					newFilePath += ".xls";
 				else
 					newFilePath += ".xlsx";
+
+				out = new FileOutputStream(newFilePath);
+				out.flush();
+				wb.write(out);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != out)
+					out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void save2File(File newFilePath) {
+		FileOutputStream out = null;
+		try {
+			if (null != newFilePath && !"".equals(newFilePath)) {
+				// 校验excel版本
+				// if (this.currentVersion == EXCELVERSION.EXCEL_VERSION_2003)
+				// newFilePath += ".xls";
+				// else
+				// newFilePath += ".xlsx";
 
 				out = new FileOutputStream(newFilePath);
 				out.flush();

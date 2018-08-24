@@ -14,14 +14,14 @@
 
 package com.chen.fy.controller.role;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.model.Account;
 import com.chen.fy.model.Permission;
 import com.chen.fy.model.Role;
 import com.chen.fy.model.RoleCol;
@@ -30,6 +30,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * 角色管理控制器
@@ -95,8 +96,10 @@ public class RoleAdminController extends BaseController {
 	 */
 	public void myassignPermissions() {
 		Role role = srv.findById(getParaToInt("id"));
+
+		Account account = getSessionAttr("account");
 		Permission dao = new Permission().dao();
-		List<Permission> permissionList = dao.find("select * from permission where isfy = 1  order by controller asc");
+		List<Permission> permissionList = dao.find("select * from permission  order by controller asc");
 		srv.markAssignedPermissions(role, permissionList);
 		LinkedHashMap<String, List<Permission>> permissionMap = srv.groupByController(permissionList);
 		LinkedHashMap<String, List<Permission>> permissionMap1 = new LinkedHashMap<String, List<Permission>>();
@@ -118,22 +121,31 @@ public class RoleAdminController extends BaseController {
 			}
 			i++;
 		}
+		String listColPermission = Db.getSql("permission.listRoleColPermission");
+		System.out.println(role.getId());
+		List<Record> list = Db.find(listColPermission, role.getId());
+		List<Record> ctable = Db.find("select ctable from col_permision group by ctable");
+		LinkedHashMap<String, List<Record>> colPermissionMap = new LinkedHashMap<String, List<Record>>();
+		for (Record e : ctable) {
+			String key = e.getStr("ctable");
+			colPermissionMap.put(key, new ArrayList<Record>());
+		}
+		for (Record e : list) {
+			String key = e.getStr("ctable");
+			colPermissionMap.get(key).add(e);
+		}
 
 		setAttr("role", role);
 		setAttr("permissionMap", permissionMap);
+
 		setAttr("permissionMap1", permissionMap1);
 		setAttr("permissionMap2", permissionMap2);
 		setAttr("permissionMap3", permissionMap3);
-
-		List<RoleCol> rlist = RoleCol.dao.find("select * from  role_col where roleId = ? and table_name = ?",
-				getParaToInt("id"), "fy_business_bill");
-		Map<String, String> billMap = new HashMap<String, String>();
-		for (RoleCol e : rlist) {
-			billMap.put(e.getColName(), "1");
-
-		}
-		setAttr("bill", billMap);
+		setAttr("columnMap", colPermissionMap);
+		setAttr("ctable", ctable);
+		// setAttr("bill", billMap);
 		render("assign_permissions.html");
+
 	}
 
 	/**
@@ -153,17 +165,24 @@ public class RoleAdminController extends BaseController {
 	}
 
 	public void addColumn() {
-		Integer roleid = getParaToInt("roleId");
-		String col = getPara("col");
-		String table = getPara("table");
-		RoleCol model = RoleCol.dao.findFirst(
-				"select * from role_col where roleId = ? and col_name = ? and table_name = ?", roleid, col, table);
-		// ColPermision permiss = new ColPermision();
+		// Integer roleid = getParaToInt("roleId");
+		// String col = getPara("col");
+		// String table = getPara("table");
+		// RoleCol model = RoleCol.dao.findFirst(
+		// "select * from role_col where roleId = ? and col_name = ? and table_name =
+		// ?", roleid, col, table);
+		// // ColPermision permiss = new ColPermision();
+
+		Integer col_id = getParaToInt("col_id");
+
+		Integer roleId = getParaToInt("roleId");
+		RoleCol model = RoleCol.dao.findFirst("select * from role_col where roleId = ? and column_id = ?", roleId,
+				col_id);
+
 		if (model == null) {
 			model = new RoleCol();
-			model.setRoleId(roleid);
-			model.setColName(col);
-			model.setTableName(table);
+			model.setRoleId(roleId);
+			model.setColumnId(col_id);
 			model.save();
 		}
 		Ret ret = Ret.ok().set("msg", "添加权限完成");
@@ -172,12 +191,11 @@ public class RoleAdminController extends BaseController {
 	}
 
 	public void deleteColumn() {
-		Integer roleid = getParaToInt("roleId");
-		String col = getPara("col");
-		String table = getPara("table");
+		Integer col_id = getParaToInt("col_id");
 
-		int row = Db.delete("delete from role_col  where roleId = ? and col_name = ? and table_name = ?", roleid, col,
-				table);
+		Integer roleId = getParaToInt("roleId");
+
+		int row = Db.delete("delete from role_col  where roleId = ? and column_id = ? ", roleId, col_id);
 		Ret ret = Ret.ok().set("msg", "更新权限完成");
 		renderJson(ret);
 	}

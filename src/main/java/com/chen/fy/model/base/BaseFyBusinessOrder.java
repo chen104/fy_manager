@@ -457,4 +457,36 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("hang_account");
 	}
 
+	public void setWwQuantity(java.math.BigDecimal wwQuantity) {
+		set("ww_quantity", wwQuantity);
+	}
+	
+	public java.math.BigDecimal getWwQuantity() {
+		return get("ww_quantity");
+	}
+
+	public void setWwUnquantity(java.math.BigDecimal wwUnquantity) {
+		set("ww_unquantity", wwUnquantity);
+	}
+	
+	public java.math.BigDecimal getWwUnquantity() {
+		return get("ww_unquantity");
+	}
+
+	public void setWwHangAmount(java.math.BigDecimal wwHangAmount) {
+		set("ww_hang_amount", wwHangAmount);
+	}
+	
+	public java.math.BigDecimal getWwHangAmount() {
+		return get("ww_hang_amount");
+	}
+
+	public void setWwUnhangAmount(java.math.BigDecimal wwUnhangAmount) {
+		set("ww_unhang_amount", wwUnhangAmount);
+	}
+	
+	public java.math.BigDecimal getWwUnhangAmount() {
+		return get("ww_unhang_amount");
+	}
+
 }

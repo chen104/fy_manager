@@ -67,14 +67,26 @@
 			</div>
 
 		</div>
-
+	
+		
 		<div class="row">
+			 #for(mapItem : columnMap)
 			<div class="col-md-4">
-				#include("fybill.html")
-			
-			</div>
+				<ul class="list-group">
 
+					 #for(x : mapItem.value)
+					<li class="list-group-item">#(x.title) <span
+						class="pull-right"> <input type="checkbox"
+							onclick="onclickCheckCol(this)" data-role-id="#(role.id)"
+							data-col-id="#(x.id)" #(x.checked??)  >
+					</span>
+					</li> #end 
+				</ul>
+		
+			</div>
+			#end
 		</div>
+	
 
 	</div>
 
@@ -114,12 +126,11 @@
 	function onclickCheckCol(input){
 		var state =input.checked
 
-		 console.info( "check : " + state +"  "+$(input).data("col")+"  "+ $(input).data("role-id"));
-	
+		var item = $(input);
 		$.ajax({
 			   type: "POST",
 			   url: state ? "/fy/admin/role/addColumn" : "/fy/admin/role/deleteColumn",
-			   data: "col="+$(input).data("col")+"&roleId="+$(input).data("role-id")+"&table="+$(input).data("table"),
+			   data: {roleId:item.data("role-id") , col_id:item.data("col-id") },
 			   success: function(ret){
 				   if (ret.state == "ok") {
 						

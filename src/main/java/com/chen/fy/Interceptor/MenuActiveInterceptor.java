@@ -9,7 +9,7 @@ public class MenuActiveInterceptor implements Interceptor {
 	public void intercept(Invocation inv) {
 		String key = inv.getActionKey();
 
-		if (key.startsWith("/fy/admin/syaccount") || key.startsWith("/fy/admin/syaccount")) {
+		if (key.startsWith("/fy/admin/account") || key.startsWith("/fy/admin/role")) {
 			inv.getController().setAttr("sys", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/base")) {
 			inv.getController().setAttr("base", "active  menu-open");
@@ -25,6 +25,8 @@ public class MenuActiveInterceptor implements Interceptor {
 			inv.getController().setAttr("aftersale", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/biz/commission")) {
 			inv.getController().setAttr("commission", "active  menu-open");
+		} else if (key.startsWith("/fy/admin/biz/addition")) {
+			inv.getController().setAttr("addition", "active  menu-open");
 		}
 		inv.invoke();
 	}

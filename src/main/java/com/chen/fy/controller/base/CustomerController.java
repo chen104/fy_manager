@@ -74,4 +74,19 @@ public class CustomerController extends BaseController {
 		setAttr("action", "save");
 		render("edit.html");
 	}
+
+	public void searchcustomerJson() {
+		String key = getPara("keyWord");
+		Page<Customer> personPage = null;
+		setAttr("keyWord", key);
+		if (StringUtils.isEmpty(key)) {
+			personPage = Customer.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_customer order by id desc");
+		} else {
+			personPage = Customer.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_base_customer  where name like ? order by id desc", "%" + key + "%");
+
+		}
+		renderJson(personPage);
+	}
 }

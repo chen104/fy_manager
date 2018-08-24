@@ -20,6 +20,14 @@ public class PersonService {
 				"from fy_base_person p left join fy_base_department d on p.department_id = d.id order by p.id desc");
 	}
 
+	public Page<Person> paginate(int pageNum, StringBuilder sb) {
+
+		return dao.paginate(pageNum, 10,
+				"select p.* ,d.part_name department,CURDATE() CURDATE, DATEDIFF(CURDATE(),entry_date) dateNumber",
+				"from fy_base_person p left join fy_base_department d on p.department_id = d.id where " + sb.toString()
+						+ " order by p.id desc");
+	}
+
 	public Page<Person> paginate(int pageNum, String keyWord) {
 
 		return dao.paginate(pageNum, 10,

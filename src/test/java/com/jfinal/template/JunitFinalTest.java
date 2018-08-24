@@ -109,4 +109,8 @@ public class JunitFinalTest {
 		System.out.println("finish");
 
 	}
+
+	public void initPermisson() {
+
+	}
 }

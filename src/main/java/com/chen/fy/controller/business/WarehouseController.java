@@ -28,6 +28,9 @@ public class WarehouseController extends BaseController {
 		renderText(this.getClass().getSimpleName() + "这是一个测试方法");
 	}
 
+	/**
+	 * 库存表，应为对应订单才有库存，库存和订单为同一张表
+	 */
 	public void index() {
 		String key = getPara("keyWord");
 		Page<FyBusinessInWarehouse> modelPage = null;
@@ -51,9 +54,12 @@ public class WarehouseController extends BaseController {
 		render("inWarehouse.html");
 	}
 
+	/**
+	 * 生成检测单
+	 */
 	public void toCheck() {
 		Integer id = getParaToInt("id");
-		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);
+		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);// 入库单
 		Ret ret = null;
 		if (model != null) {
 			model.setIsCreateCheck(true);
@@ -72,6 +78,9 @@ public class WarehouseController extends BaseController {
 		renderJson(ret);
 	}
 
+	/**
+	 * 检测单，检查对应入库，故入库和检测为同一单据
+	 */
 	public void checkIn() {
 		String key = getPara("keyWord");
 		Page<FyBusinessInWarehouse> modelPage = null;
@@ -109,13 +118,13 @@ public class WarehouseController extends BaseController {
 	 * 输入检测结果
 	 */
 	public void checkInHouse() {
-		Integer id = getParaToInt("id");
-		String checkQuantity = getPara("checkQuantity");
-		String checkHandle = getPara("checkHandle");
-		String checkResult = getPara("checkResult");
-		Date checkTime = getParaToDate("checkTime");
-		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);
-		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+		Integer id = getParaToInt("id");// 入库单id
+		String checkQuantity = getPara("checkQuantity");// 检测数量
+		String checkHandle = getPara("checkHandle");// 检测处理
+		String checkResult = getPara("checkResult");// 检测结果
+		Date checkTime = getParaToDate("checkTime");// 检测时间
+		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);// 入库单
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());// 订单
 		Ret ret = null;
 		if (model != null) {
 			model.setCheckTime(checkTime);
@@ -211,6 +220,9 @@ public class WarehouseController extends BaseController {
 		render("addOut.html");
 	}
 
+	/**
+	 * 添加出库
+	 */
 	public void addOut() {
 		FyBusinessOutWarehouse model = getBean(FyBusinessOutWarehouse.class, "out");
 		System.out.println(model);
@@ -218,7 +230,11 @@ public class WarehouseController extends BaseController {
 		FyBusinessOrder parent = FyBusinessOrder.dao.findById(id);
 		BigDecimal outquantity = model.getOutQuantity();
 		BigDecimal starage = parent.getStorageQuantity().subtract(outquantity);
-		parent.setStorageQuantity(starage);
+		parent.setStorageQuantity(starage);// 库存
+
+		BigDecimal hasout = parent.getOutQuantity().add(outquantity);
+		parent.setOutQuantity(hasout);
+
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
 
@@ -236,6 +252,9 @@ public class WarehouseController extends BaseController {
 		renderJson(ret);
 	}
 
+	/**
+	 * 出库
+	 */
 	public void outWhouse() {
 		String key = getPara("keyWord");
 		Page<FyBusinessOutWarehouse> modelPage = null;
@@ -336,4 +355,104 @@ public class WarehouseController extends BaseController {
 
 	}
 
+	/*
+	 * 出库撤回
+	 */
+	public void rollbackOutWarehouse() {
+		Integer id = getParaToInt("id");
+		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(id);
+
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+
+		System.out.println(model);
+
+		BigDecimal outquantity = model.getOutQuantity();
+		BigDecimal StorageQuantity = order.getStorageQuantity().add(model.getOutQuantity());
+		order.setStorageQuantity(StorageQuantity);
+		BigDecimal hasout = order.getOutQuantity().subtract(outquantity);
+		order.setOutQuantity(hasout);
+		model.setIsCreateGetPay(false);
+
+		// 应收信息
+		BigDecimal zelo = new BigDecimal("0");
+		model.setUntaxGetpay(zelo);
+
+		model.setTax(zelo);
+		model.setHangAmount(zelo);// 挂账金额，应付金额
+		model.setCreateMonth(0);
+		model.setGetpayMonth(0);
+
+		boolean re = Db.tx(new IAtom() {
+			public boolean run() throws SQLException {
+				// 删除应收单
+				Db.delete("delete from fy_business_getpay where parent_id =?", id);
+				boolean b1 = order.update();
+				boolean b2 = model.delete();
+				return (b1 & b2);
+			}
+		});
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok("msg", "撤回成功");
+		} else {
+			ret = Ret.fail("msg", "撤回失败");
+		}
+		renderJson(ret);
+
+	}
+
+	/**
+	 * 入库撤回
+	 */
+	public void rollbackInWarehouse() {
+		Integer id = getParaToInt("id");
+		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);
+		if (model.getIsCreateCheck() == null || !model.getIsCreateCheck()) {
+			model.delete();
+			renderJson(Ret.ok().set("msg", "撤回入库完成"));
+			return;
+		}
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+		if (model.getIsCreateCheck() && "合格".equals(model.getCheckResult())) {
+
+			Double storage = order.getStorageQuantity().doubleValue();
+			if (storage < model.getRealInQuantity().doubleValue()) {
+				renderJson(Ret.fail().set("msg", "库存不足，不允许撤回"));
+				return;
+			} else {
+				storage = order.getStorageQuantity().doubleValue() - model.getRealInQuantity().doubleValue();
+				order.setStorageQuantity(new BigDecimal(storage));
+			}
+		}
+
+		// 删除应付单
+
+		boolean re = Db.tx(new IAtom() {
+			public boolean run() throws SQLException {
+				// 删除应收单
+				Db.delete("delete from fy_business_getpay where parent_id =?", id);
+
+				// 更新订单,
+				String updateSql = "update fy_business_order o LEFT JOIN (SELECT SUM(tatol_amount) tatol_amount,order_id from fy_business_assist where order_id = "
+						+ model.getOrderId() + " GROUP BY order_id) assist   " + "on assist.order_id = o.id  "
+						+ "LEFT JOIN (SELECT sum(should_pay) should_pay,order_id from fy_business_pay pay where  order_id  = "
+						+ model.getOrderId() + " GROUP BY order_id) pay  " + "ON pay.order_id =o.id  "
+						+ "LEFT JOIN (SELECT sum(purchase_account) purchase_account,order_id from fy_business_purchase where order_id  = "
+						+ model.getOrderId() + " GROUP BY order_id) purchase  " + "on o.id = purchase.order_id  "
+						+ "set o.ww_hang_amount = pay.should_pay,o.ww_unhang_amount=assist.tatol_amount+purchase.purchase_account  "
+						+ "where id  =  " + model.getOrderId();
+				Db.update(updateSql);
+				boolean b2 = model.delete() && order.update();
+				return b2;
+			}
+		});
+
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok("msg", "撤回成功");
+		} else {
+			ret = Ret.fail("msg", "撤回失败");
+		}
+		renderJson(ret);
+	}
 }

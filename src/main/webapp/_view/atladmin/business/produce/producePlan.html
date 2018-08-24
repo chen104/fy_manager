@@ -71,11 +71,11 @@
 								<td>#(x.machiningRequire)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
-								<td>#(x.plan_time)</td>
-								<td>#(x.plan_finsh_time)</td>
+								<td>#date(x.plan_time,"yyyy-MM-dd")</td>
+								<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
 								<td>#(x.plan_remark)</td>
 							
-								<td class="jfa-operation-button"><a 
+								<td class="jfa-operation-button"><a  href="/fy/admin/biz/produce/editProducePlan?id=#(x.id)"
 									data-action="#"> <i
 										class="glyphicon glyphicon-pencil"  title="修改计划时间"></i>
 								</a></td>

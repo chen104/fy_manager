@@ -9,6 +9,7 @@
 
  				
 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button>
+					<a href="/fy/admin/biz/commission/toDownloadWWsum"><button class="btn btn-primary" >下载</button></a>
 				<div class="box-tools">
 				<!--  
 					<form action="/fy/admin/base/taxRate">
@@ -53,12 +54,18 @@
 								<th>接收时间</th>
 								
 								<th>分配时间</th>
-								<th>供应商</th>
-								<th>采购生成时间</th>
-								<th>处理状态</th>
+								<!-- <th>处理状态</th> -->
 										
+								<th>入库数量</th>		
+									
+								<th>挂账数量</th>
+								<th>未挂账数量</th>	
+								<th>挂账金额</th>
+								<th>未挂账金额</th>
 								
-								<th>操作</th>
+							
+								
+								<th>操作 </th>
 							</tr>
 						</thead>
 					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/toCreatePurchase" method="post">     
@@ -85,13 +92,32 @@
 								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.reveive_time)</td>
-								<th>#(x.distribute_time)</th>
-								<th>#(x.supplier)</th>
-								<th>#(x.purchase_time)</th>
-								<th>#(x.handle_status)</th>
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick=""> 
-								<i class="fa fa-pencil" title="生成采购单"></i>
-								</a> </td>
+								<td>#(x.distribute_time)</td>
+								
+								
+								
+								<td>#(x.has_in_quantity)</td>
+								
+								<td>#(x.ww_quantity)</td>
+								<td>#(x.ww_unquantity)</td>
+								<td>#(x.ww_hang_amount)</td>
+								<td>#(x.ww_unhang_amount)</td>
+								
+								<td class="jfa-operation-button">
+								<a href="#" data-action="/fy/admin/biz/fyorder/rollBackOrder" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
+									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a>
+								
+								
+								<a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick="" style="margin-left: 10px;"> 
+								<i class="glyphicon glyphicon-share-alt" title="生成采购单">生成采购单</i>
+								</a> 
+								
+								<a href="#" onclick="showModel(this)" data-id="#(x.id)" style="margin-left: 10px;"> 
+								<i class="fa fa-pencil" title="入库">入库</i>
+								</a> 
+								
+								
+								</td>
 							</tr>
 							#end
 						</tbody>
@@ -126,7 +152,37 @@ function submit(){
 
 	
 }
+
+function rollback(a){
+	var	input = $(a);
+	var re = confirm("确定要撤回"+input.data('title'));
+	if(re){
+		$.ajax({
+			   type: "POST",
+			   data:{id:input.data('id')},
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					   alert(ret.msg);
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	}
+	
+}
+
+
  
     </script>
+
 #include("searchSupplier.html")
+#include("inHouseModel.html")
 #end

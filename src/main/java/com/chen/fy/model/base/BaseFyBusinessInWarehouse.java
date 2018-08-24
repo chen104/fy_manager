@@ -145,4 +145,20 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return getInt("parent_id");
 	}
 
+	public void setCreateTime(java.util.Date createTime) {
+		set("create_time", createTime);
+	}
+	
+	public java.util.Date getCreateTime() {
+		return get("create_time");
+	}
+
+	public void setPayMonth(java.util.Date payMonth) {
+		set("pay_month", payMonth);
+	}
+	
+	public java.util.Date getPayMonth() {
+		return get("pay_month");
+	}
+
 }

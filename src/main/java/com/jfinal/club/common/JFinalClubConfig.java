@@ -18,13 +18,12 @@ import java.sql.Connection;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
-import com.chen.fy.FyPermissionDirective;
 import com.chen.fy.IndexController;
-import com.chen.fy.TaxRateDirective;
-import com.chen.fy.TestDirective;
 import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
+import com.chen.fy.controller.addition.ReadyController;
+import com.chen.fy.controller.addition.advisory.AdvisoryCostConllor;
 import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
 import com.chen.fy.controller.base.DepartmentController;
@@ -32,7 +31,9 @@ import com.chen.fy.controller.base.FileController;
 import com.chen.fy.controller.base.PersonController;
 import com.chen.fy.controller.base.SupplierController;
 import com.chen.fy.controller.base.TaxRateController;
+import com.chen.fy.controller.base.TempletController;
 import com.chen.fy.controller.base.UnitController;
+import com.chen.fy.controller.business.AssistController;
 import com.chen.fy.controller.business.CommissionController;
 import com.chen.fy.controller.business.ComplaintController;
 import com.chen.fy.controller.business.FinanceController;
@@ -41,12 +42,16 @@ import com.chen.fy.controller.business.OrderController;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProduceController;
 import com.chen.fy.controller.business.PurchaseController;
+import com.chen.fy.controller.business.UploadGetpayController;
 import com.chen.fy.controller.business.WarehouseController;
 import com.chen.fy.controller.role.RoleAdminController;
+import com.chen.fy.directive.FyColPermDirective;
+import com.chen.fy.directive.FyPermissionDirective;
+import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.TaxRateDirective;
+import com.chen.fy.directive.TestDirective;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model._MappingKit;
-import com.chen.fy.permission.PermissionDirective;
-import com.chen.fy.role.RoleDirective;
 import com.jfinal.club.common.handler.UrlSeoHandler;
 import com.jfinal.club.common.kit.DruidKit;
 import com.jfinal.config.Constants;
@@ -56,6 +61,7 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
+import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -65,6 +71,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.JsonRender;
 import com.jfinal.template.Engine;
+import com.jfinal.template.ext.directive.NowDirective;
 import com.jfinal.template.source.ClassPathSourceFactory;
 
 /**
@@ -73,8 +80,8 @@ import com.jfinal.template.source.ClassPathSourceFactory;
 public class JFinalClubConfig extends JFinalConfig {
 
 	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置
-	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").appendIfExists("jfinal_club_config_pro.txt");
-	// .append("tx_dev.txt");
+	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").appendIfExists("jfinal_club_config_pro.txt")
+			.append("tx_dev.txt");
 
 	private WallFilter wallFilter;
 
@@ -125,6 +132,7 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/base/file", FileController.class, "/_view/atladmin/file");
 
 		me.add("fy/admin/base/category", CategoryController.class, "/_view/atladmin/category");
+		me.add("fy/admin/base/templet", TempletController.class, "/_view/atladmin/templet");
 
 		// business
 
@@ -142,6 +150,14 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
 				"/_view/atladmin/business/commission/purchase");
 
+		me.add("fy/admin/biz/finance/upgetpay", UploadGetpayController.class,
+				"/_view/atladmin/business/finance/uploadpayget");
+
+		me.add("fy/admin/biz/addition/advisory", AdvisoryCostConllor.class, "/_view/atladmin/addition/advisory");
+		me.add("fy/admin/biz/addition/ready", ReadyController.class, "/_view/atladmin/addition/ready");
+
+		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/commission/assist");
+
 	}
 
 	/**
@@ -150,19 +166,20 @@ public class JFinalClubConfig extends JFinalConfig {
 	public void configEngine(Engine me) {
 		me.setDevMode(p.getBoolean("engineDevMode", false));
 
-		me.addDirective("role", RoleDirective.class);
-		me.addDirective("permission", PermissionDirective.class);
-		me.addDirective("perm", PermissionDirective.class); // 配置一个别名指令
+		// me.addDirective("role", RoleDirective.class);
+		// me.addDirective("permission", PermissionDirective.class);
+		// me.addDirective("perm", PermissionDirective.class); // 配置一个别名指令
 
 		me.addDirective("fypermession", FyPermissionDirective.class); // 配置一个别名指令
+		me.addDirective("fyColPerm", FyColPermDirective.class); // 配置一个别名指令
 		me.addDirective("taxRate", TaxRateDirective.class);
 		me.addDirective("test", TestDirective.class);
 
-		me.addSharedFunction("/_view/common/__layout.html");
-		me.addSharedFunction("/_view/common/_paginate.html");
+		me.addDirective("orderColor", OrderColorDirective.class);
+		me.addDirective("now", NowDirective.class);
 
-		me.addSharedFunction("/_view/_admin/common/__admin_layout.html");
-		me.addSharedFunction("/_view/_admin/common/_admin_paginate.html");
+		// me.addSharedFunction("/_view/_admin/common/__admin_layout.html");
+		// me.addSharedFunction("/_view/_admin/common/_admin_paginate.html");
 
 		me.addSharedFunction("/_view/atladmin/common/layout.html");
 		me.addSharedFunction("/_view/atladmin/common/admin_paginate.html");
@@ -203,6 +220,7 @@ public class JFinalClubConfig extends JFinalConfig {
 		// me.add(new LoginSessionInterceptor());
 		me.add(new FyLoginSessionInterceptor());
 		me.add(new MenuActiveInterceptor());
+		me.add(new SessionInViewInterceptor());
 		// me.add(new FyAuthInterceptor());
 	}
 

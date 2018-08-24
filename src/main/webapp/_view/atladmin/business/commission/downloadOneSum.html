@@ -1,0 +1,80 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">下载委外一览表</h3>
+              	<div class="box-tools">
+              		
+					
+				</div>
+			
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/downloadOneSum" method="post">     
+              <div class="box-body form-horizontal">
+                
+				
+                
+              <div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">订单月份</label>
+
+			<div class="col-sm-9">
+				<input name="date" type="text" class="form-control" placeholder="生产月份"  data-type='month' autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label"></label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  id="supplier_name"  placeholder="供应商"   onclick="showChooesSupplier()">
+				<input type="text" id="supplier_id" name="supplier_id" hidden="hidden"  >
+			</div>
+		</div>
+	</div>
+
+
+</div>
+                
+                
+              </div>
+             
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+                	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+        </form>
+          </div>
+          
+
+#end
+#include("../../supplier/searchSupplier.html")
+<script type="text/javascript">
+	function showChooesSupplier(){
+		var callback =function(isSelect ,id,name){
+			if(isSelect){
+				$("#supplier_name").val(name);
+				$("#supplier_id").val(id);
+				
+			}
+		}
+		var selectSupplier =new  SelectSupplierModal(callback);
+		selectSupplier.show();
+	}
+</script>
+

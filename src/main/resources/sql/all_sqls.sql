@@ -4,30 +4,6 @@
 3：在此文件中还可以通过 define 指令定义一些通用模板函数，供全局共享
    例如定义通用的 CRUD 模板函数
 
-#namespace("index")
-#include("index.sql")
-#end
-
-#namespace("project")
-#include("project.sql")
-#end
-
-#namespace("share")
-#include("share.sql")
-#end
-
-#namespace("feedback")
-#include("feedback.sql")
-#end
-
-#namespace("admin.auth")
-#include("admin_auth.sql")
-#end
-
-#namespace("admin.role")
-#include("admin_role.sql")
-#end
-
-#namespace("admin.permission")
-#include("admin_permission.sql")
+#namespace("permission")
+#include("permission.sql")
 #end

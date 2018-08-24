@@ -36,7 +36,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding text-center">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -84,12 +84,16 @@
 								<td>#(x.distributeTime)</td>
 								<td>#(x.handleStatus)</td>
 								<td class="jfa-operation-button">
-						
+								
+								
 								#if(x.is_create_plan)
 									已生成生产计划表
 								
 								#else
-									<a href="#" onclick="showModel('#(x.id)')"> 
+									<a href="#" data-action="/fy/admin/biz/fyorder/rollBackOrder" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
+									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a>
+								
+									<a href="#" onclick="showModel('#(x.id)')" style="margin-left: 5px"> 生成生产计划单	
 											<i class="glyphicon glyphicon-share-alt" title="生成生产计划单"></i>
 									</a> 
 								#end
@@ -113,7 +117,31 @@
 
 
 <script type="text/javascript">
-	
+	function rollback(a){
+		var	input = $(a);
+		var re = confirm("确定要撤回"+input.data('title'));
+		if(re){
+			$.ajax({
+				   type: "POST",
+				   data:{id:input.data('id')},
+				   url:$(a).data("action") ,
+				   success: function(ret){
+					   if (ret.state == "ok") {
+						   alert(ret.msg);
+						   location.reload();
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
+					}
+				});
+		}
+		
+	}
 	
  </script>
 #include("planModel.html")

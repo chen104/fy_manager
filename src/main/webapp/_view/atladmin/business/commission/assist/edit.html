@@ -4,11 +4,11 @@
 <!-- Horizontal Form -->
           <div class="box box-info" style="wwidth: 300ps">
             <div class="box-header with-border">
-              <h3 class="box-title">新建外协加工单</h3>
+              <h3 class="box-title">#(title) test</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/#(action)" method="post">         
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/assist/#(action)" method="post">         
               <div class="box-body">
                 
 					#include("form.html")
@@ -35,7 +35,7 @@
 						}
 					, success: function(ret) {
 						if (ret.state == "ok") {
-							location.href = "/fy/admin/biz/commission/assist"
+							location.reload();
 						} else {
 							alert(ret.msg);
 						}
@@ -45,5 +45,5 @@
 				});
 			});
 </script>
-#include("../searchSupplier.html")
+
 #end

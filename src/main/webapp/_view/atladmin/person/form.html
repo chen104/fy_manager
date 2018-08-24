@@ -87,7 +87,7 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">联系电话</label>
+			<label class="col-sm-3 control-label">电话</label>
 
 			<div class="col-sm-9">
 
@@ -377,18 +377,35 @@
 		</div>
 	</div>
 
+	
+
+</div>
+
+<div	class="row">
 	<div class="col-md-6">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">执行底薪</label>
+			<label class="col-sm-3 control-label">入职底薪</label>
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control"
-					value="#(model.execBaseSalary??)" name="model.execBaseSalary"
+					value="#(model.entry_salary??)" name="model.entrySalary"
 					placeholder="执行底薪">
 			</div>
 		</div>
 	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">当前底薪</label>
 
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(model.current_salary??)" name="model.currentSalary"
+					placeholder="执行底薪">
+			</div>
+		</div>
+	</div>
 </div>
 
 

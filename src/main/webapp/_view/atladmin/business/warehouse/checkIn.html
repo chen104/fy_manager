@@ -68,10 +68,10 @@
 								<th>检测处理</th>
 								<th>挂账期间</th>
 								<th>应付期间</th>
-								
+							<!--  
 								<th>是否生成质量处理单据</th>
 								<th>生成时间</th>
-								<th>是否生成应付明细表	</th>
+								<th>是否生成应付明细表	</th>-->
 								<th>应付明细表生成生成时间	</th>
 								<th>输入检测结果</th>
 							</tr>
@@ -83,7 +83,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> #if(!x.is_create_pay&&x.in_from=="委外") <input name="inhouseId" value="#(x.wid)" type="checkbox" data-select='select' > #end </td>
+								<td> #if(!x.is_create_pay&&x.in_from=="委外"&&x.check_result=="合格") <input name="inhouseId" value="#(x.wid)" type="checkbox" data-select='select' > #end </td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
@@ -114,11 +114,12 @@
 								<td>#if(x.create_month) #(x.create_month) 月  #end</td><!-- 挂账期间 -->
 								<td>#if(x.pay_month) #(x.pay_month) 月 #end</td><!-- 付款期间 -->
 								
+								<!--  
 								<td>#(x.is_create_quality)
 									
 									
 									<a href=""> 
-										<i class="glyphicon glyphicon-share-alt " style="color: red" title="检测入库"  ></i>
+										<i class="glyphicon glyphicon-share-alt " style="color: red" title="质量处理单据"  ></i>
 									</a> 
 								
 									
@@ -126,10 +127,12 @@
 								
 			
 								<td>#(x.create_out_time)</td>
+								
+							
 								<td>
-								#if(x.in_from=="委外")
+								#if(x.in_from=="委外"&& x.check_result=="合格")
 									#if(!x.is_create_pay)
-									<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
+									<a href="#" onclick="" data-id="#(x.id)"> 
 										<i class="glyphicon glyphicon-share-alt" title="检测入库"  ></i>
 									</a> 
 									#else
@@ -137,13 +140,15 @@
 									#end
 								#end
 								</td>
+									-->
 								<td>#(x.pay_create_time)</td>
+								
 								<td class="jfa-operation-button">
-								 	#if(!x.check_result)
+								
 										<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
 										<i class="fa fa-pencil" title="检测入库"  ></i>
 										</a> 
-									#end
+								
 								</td>
 							</tr>
 							#end
@@ -226,6 +231,7 @@ function sure(){
 						}
 					, success: function(ret) {
 						if (ret.state == "ok") {
+							alert(ret.msg);
 							location.href = "/fy/admin/biz/whouse/checkIn?p=#(p)";
 						} else {
 							alert(ret.msg);
@@ -236,7 +242,7 @@ function sure(){
 				});
 			});
 </script>
-#end
+
 
 <!-- Modal -->
 <div class="modal fade" id="create_pay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
@@ -244,43 +250,29 @@ function sure(){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">生成应付明细</h4>
+        <h4 class="modal-title" id="myModalLabel">应付期间</h4>
       </div>
       <div class="modal-body">
-      	<div class="row">
-      	<div class="col-md-4"></div>
-      		<div class="col-md-6">
-      		
-      			 <div class="form-group">
-		              <label>应付期间</label>
-		                <div class="input-group ">
-		                	<select class="form-control" id="should_pay_period" name="should_pay_period"  >
-		                		<option value="1">1 月 </option>
-		                		<option value="2">2 月 </option>
-		                		<option value="3">3 月 </option>
-		                		<option value="4">4 月 </option>
-		                		<option value="5">5月 </option>
-		                		<option value="6">6 月 </option>
-		                		<option value="7">7 月 </option>
-		                		<option value="8">8 月 </option>
-		                		<option value="9">9 月 </option>
-		                		<option value="10">10 月 </option>
-		                		<option value="11">11月 </option>
-		                		<option value="12">12月 </option>
-		                	</select>
+   
+	     <div class=" row">
+	     
+	     	<div class="text-center">
+	      			 <div class="form-group">
+			          
+			              <label class="col-sm-3 control-label">应付期间</label>
 			               
-		                </div>
-		                <!-- /.input group -->
-		              </div>
-      		
-      		
-      		</div>
-	      		
-            
-			
-      	</div>
-      	
+			              <div class="col-sm-9">
+								<input type="text"  data-type='month' class="form-control" placeholder="应付期间" value="" id="should_pay_period" name="should_pay_period" >
+							</div>
+			          </div>    
+	     </div>
+		</div>
+     	
+     	
+  
       </div>
+      
+      
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         <button type="button" class="btn btn-primary" onclick="sure()">确定</button>
@@ -288,4 +280,5 @@ function sure(){
     </div>
   </div>
 </div>
+#end
 							

@@ -217,6 +217,26 @@
 </div>
 
 
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">采购日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  value="#(assist.assist_date??)" readonly="readonly"  name="model.purchaseDate"  >
+			</div>
+		</div>
+	</div>
+	
+
+
+</div>
+
+
+
 <div class="row">
 
 	<div class="col-md-6">
@@ -368,7 +388,7 @@
 			<label  class="col-sm-3 control-label">入库时间</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(assist.backtime)" name="model.inWarehouseTime"  >
+				<input type="text" class="form-control" value="#date(assist.backtime,"yyyy-MM-dd")" name="model.inWarehouseTime"  >
 			</div>
 		</div>
 	</div>
@@ -417,55 +437,47 @@
 
 <div class="row">
 
-	<div class="col-md-6">
 
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">挂账期间</label>
+			
+				<div class="col-md-6">
 
-			<div class="col-sm-9">
-				<select class="form-control" name="model.createMonth"  >
-					<option value="1">1月</option>
-					<option value="2">2月</option>
-					<option value="3">3月</option>
-					<option value="4">4月</option>
-					<option value="5">5月</option>
-					<option value="6">6月</option>
-					<option value="7">7月</option>
-					<option value="8">8月</option>
-					<option value="9">9月</option>
-					<option value="10">10月</option>
-					<option value="11">11月</option>
-					<option value="12">12月</option>
-				</select>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">挂账期间</label>
+
+						<div class="col-sm-9">
+							<input id="create_date" name="model.create_date" type="text" class="form-control" value="#date(model.create_date??,"yyyy-MM")"
+								placeholder="挂账期间" data-type='month' autocomplete="off">
+						</div>
+					</div>
+				</div>
 				 
-			</div>
-		</div>
-	</div>
+				<script type="text/javascript">
+				
+					$(function(){
+						var vc=$("#create_date").val();
+						if(vc ==null&&""==vc){
+							var date =new Date();
+							var val = date.getFullYear()+"-"+date.getMonth();
+							$("#create_date").val(val);
+						}
+					});
+				</script>
 	
 	
-	<div class="col-md-6">
 
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">应付期间</label>
+				<div class="col-md-6">
 
-			<div class="col-sm-9">
-				<select class="form-control" name="model.payMonth"  >
-					<option value="1">1月</option>
-					<option value="2">2月</option>
-					<option value="3">3月</option>
-					<option value="4">4月</option>
-					<option value="5">5月</option>
-					<option value="6">6月</option>
-					<option value="7">7月</option>
-					<option value="8">8月</option>
-					<option value="9">9月</option>
-					<option value="10">10月</option>
-					<option value="11">11月</option>
-					<option value="12">12月</option>
-				</select>
-			</div>
-		</div>
-	</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">付账期间</label>
+
+						<div class="col-sm-9">
+							<input name="model.pay_date" type="text" class="form-control" 
+								placeholder="付账期间" data-type='month' autocomplete="off" value="#date(model.pay_date??,"yyyy-MM")">
+						</div>
+					</div>
+				</div>
+				 
+	
 
 </div>
 

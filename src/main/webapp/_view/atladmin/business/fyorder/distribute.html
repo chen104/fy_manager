@@ -59,9 +59,9 @@
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
-							<tr>
+							<tr class="#orderColor("x")">
 								<td>#(for.index+1)</td>
-								<td>#if(!x.distribute_time) <input name="selectId" type="checkbox"  value="#(x.id)"> #end </td>
+								<td> <input name="selectId" type="checkbox"  value="#(x.id)"> </td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>

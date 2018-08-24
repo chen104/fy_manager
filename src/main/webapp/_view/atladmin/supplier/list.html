@@ -4,7 +4,10 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
+			#include("upload.html")
+		
 			<div class="box-header">
+			
 				<h3 class="box-title">厂商管理</h3>
 
 				<a href="/fy/admin/base/supplier/add"><button type="submit"
@@ -38,11 +41,12 @@
 								<th>统一社会代码</th>
 								<th>地址</th>
 								<th>电话</th>
-								<th>银行账户</th>
+								<th>开户行</th>
 								<th>银行账号</th>
 								<th>结算方式</th>
 								<th>联系人</th>
 								<th>联系方式</th>
+								<th>备注</th>
 								<th>附件</th>
 								<th>操作</th>
 							</tr>
@@ -60,6 +64,7 @@
 								<td>#(x.settlementType)</td>
 								<td>#(x.contactPerson)</td>	
 								<td>#(x.contactType)</td>	
+								<td>#(x.remark)</td>
 								<td>#(x.annex)</td>	
 								<td class="jfa-operation-button"><a href="/fy/admin/base/supplier/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>

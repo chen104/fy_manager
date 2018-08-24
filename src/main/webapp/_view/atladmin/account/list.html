@@ -48,16 +48,19 @@
       					<a href="/fy/admin/account/edit?id=#(x.id)" style="margin-left:14px;" >
 							<i class="fa fa-pencil" title="修改"></i>
 						</a>
-<!-- 
+<!--  -->
+						
+
+						<a href="/fy/admin/account/assignRoles?id=#(x.id)"  style="margin-left:14px;" >
+							<i class="fa fa-toggle-on" title="分配权限" ></i>
+						</a>
+						
+						
 						<a data-delete
 						   data-title="#escape(x.userName)"
 						   data-account-id="#(x.id)"
-						   data-action="#"  style="margin-left:14px;color:red;">
+						   data-action="/fy/admin/account/delete?accountId=#(x.id)"  style="margin-left:14px;color:red;" onclick="deleteAccount(this)">
 							<i class="fa fa-trash" title="删除" ></i>
-						</a>
- -->
-						<a href="/fy/admin/account/assignRoles?id=#(x.id)"  style="margin-left:14px;" >
-							<i class="fa fa-toggle-on" title="分配权限" ></i>
 						</a>
                     
                    </td>
@@ -79,6 +82,32 @@
       </div>
      <script type="text/javascript">
 
+     function deleteAccount(a){
+    		var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
+    		if(issure){
+
+    			$.ajax({
+    				   type: "POST",
+    				   url:$(a).data("action") ,
+    				   success: function(ret){
+    					   if (ret.state == "ok") {
+    				
+    						   location.reload();
+    						}
+    					   alert(ret.msg);
+    				   },
+    				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+    					    // 通常 textStatus 和 errorThrown 之中
+    					    // 只有一个会包含信息
+    					 //   this; // 调用本次AJAX请求时传递的options参数
+    					   alert('网络异常');
+    					}
+    				});
+    			}
+    		else{
+    		
+    			}
+    		}
      
        </script>
        

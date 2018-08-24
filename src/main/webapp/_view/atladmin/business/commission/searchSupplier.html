@@ -1,25 +1,3 @@
-<style type="text/css">
-		.myinput {
-		    border-radius: 0;
-		    box-shadow: none;
-		    border-color: #d2d6de;
-		  -webkit-appearance: none;
-		    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		    height: 34px;
-		    padding: 6px 12px;
-		    font-size: 14px;
-		    line-height: 1.42857143;
-		    color: #555;
-		    background-color: #fff;
-		    background-image: none;
-		    border: 1px solid #ccc;
-			}  
-			
-			
-		.text-center{
-			text-align: center;
-		}
-</style>
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="myModel">
@@ -82,5 +60,53 @@
 <!-- /.modal -->
 
 <script type="text/javascript">
+
+
+function SelecTaxRateModal(callback){
+	
+	this.callback = callback;
+	$("#tax_bt_onSelect").click(function(){
+		/**
+			获得选择值
+		*/
+		 var a = $("input[name='selectTaxRate']:checked").val();
+  		 if(a!=null){
+  			 var vals = 	a.split("_");
+  			 if(callback!=null){
+  				callback(true,vals[0],vals[1],vals[3]);
+  			 }
+  			 console.debug("选择税率");
+ 	  		$('#tax-Model').modal("hide");
+ 	  		
+  	  		 
+  	  	}else{
+			alert("没有选择税率");
+			return;
+  	    }
+  	
+  		
+	});
+	
+	var noselect= function(){
+	
+		callback(false,null,null,null);
+	
+	};
+	
+	$("#tax_bt_onCancel").click(noselect);
+	$("#tax_bt_onclose").click(noselect);
+	
+	this.show=show;
+	function show(){
+		$('#myModel').modal("show");
+			getTaxRateFromServer(1);
+			
+	}
+	
+	function dosome(){
+		console.info("some thing");
+	}
+}
+
 
   </script>

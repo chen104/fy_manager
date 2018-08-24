@@ -41,12 +41,4 @@ public abstract class BaseColPermision<M extends BaseColPermision<M>> extends Mo
 		return getStr("ctable");
 	}
 
-	public void setRoleId(java.lang.String roleId) {
-		set("role_id", roleId);
-	}
-	
-	public java.lang.String getRoleId() {
-		return getStr("role_id");
-	}
-
 }

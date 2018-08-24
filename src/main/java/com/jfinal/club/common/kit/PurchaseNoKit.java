@@ -23,7 +23,7 @@ public class PurchaseNoKit {
 
 	public static String getNo() {
 		synchronized (auomic) {
-			String no = "A" + currentDate + "-" + auomic.incrementAndGet();
+			String no = "FYL" + currentDate + "-" + auomic.incrementAndGet();
 			return no;
 		}
 	}

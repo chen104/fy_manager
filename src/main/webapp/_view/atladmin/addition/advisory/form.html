@@ -1,0 +1,216 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+			
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">询价单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="询价单位" name="model.advisoryOrg"   value="#(model.advisory_org??)"  autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">询价人</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="询价人"  value="#(model.advisory_persion??)" name="model.advisoryPersion" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">询价日期</label>
+
+			<div class="col-sm-9">
+				
+				<input type="text" class="form-control"  placeholder="询价日期" data-type='datepicker'  value="#(model.advisory_date??)" name="model.advisoryDate" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">报价人	</label>
+
+			<div class="col-sm-9">
+					<input type="text" id="person_name" onclick="onClickPerson()" class="form-control pull-right" value="#(model.answer_persion_name??)"  placeholder="报价人	"  autocomplete="off">
+					<input type="text" id="answer_persion" value="#(model.answer_persion??)" hidden="hidden" name="model.answerPersion">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+					
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">报价日期</label>
+
+			<div class="col-sm-9">
+					<input type="text" class="form-control pull-right" data-type='datepicker'  placeholder="报价日期"  value="#(model.answer_date??)" name="model.answerDate" autocomplete="off" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称</label>
+
+			<div class="col-sm-9">
+			
+					<input type="text" class="form-control pull-right"   placeholder="商品名称"  value="#(model.commodity_name??)" name="model.commodityName" autocomplete="off">
+		
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="商品规格" value="#(model.commodity_spec??)" name="model.commoditySpec" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="商品总图号" value="#(model.map_no??)" name="model.mapNo" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+<div class="row">
+
+	
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="unit_name" class="form-control" value="#(model.unit_name??)" placeholder="单位"  onclick="searchUnit()" autocomplete="off"  >
+				<input type="text" id="unit_id" hidden="hidden"  value="#(model.unit??)" name="model.unit">
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="数量" value="#(model.quantity??)" name="model.quantity" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+<div class="row">			
+<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">本部成本单价</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="本部成本单价" value="#(model.base_cost??)" name="model.baseCost" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">客户利润总价</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  placeholder="客户利润总价" value="#(model.customer_profit_amount??)" name="model.customerProfitAmount" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+#include("../../person/searchPerson.html")
+#include("../../unit/unitSelectModel.html")
+<script>
+	
+	function onClickPerson(){
+		var callback = function(isSelect,id,name){
+			if(isSelect){
+				$("#answer_persion").val(id);
+				$("#person_name").val(name);
+			}else{
+				
+			}
+			
+		}
+		var showPerson = new ShowPerson(callback);
+		showPerson.show();
+		
+	}
+	
+	function selectUnit(){
+		var callback = function (isSelectUnit,unitId,unitStr){
+			console.info(unitStr+"  "+unitId);
+			if(isSelectUnit){
+				$("#unit_name").val(unitStr);
+				$("#unit_id").val(unitId);
+			}
+			
+		}
+		var selecUnitModal  = new SelecUnitModal( callback );
+		selecUnitModal.show();
+	}
+	
+	
+ function searchUnit(){
+	 var callback = function (isSelectUnit,unitId,unitStr){
+			console.info(unitStr+"  "+unitId);
+			if(isSelectUnit){
+				$("#unit_name").val(unitStr);
+				$("#unit_id").val(unitId);
+			}
+			
+		}
+		var selecUnitModal  = new SelecUnitModal( callback );
+		selecUnitModal.show();
+ }
+</script>
+

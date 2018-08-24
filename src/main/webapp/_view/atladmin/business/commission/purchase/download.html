@@ -1,0 +1,166 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">下载采购单</h3>
+              	<div class="box-tools">
+              		
+					
+				</div>
+			
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/downloadZip" method="post">     
+              <div class="box-body form-horizontal">
+                
+				
+                
+              <div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">采购月份</label>
+
+			<div class="col-sm-9">
+				<input name="date" type="text" class="form-control" placeholder="采购月份"  data-type='month'>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">供应商</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  id="supplier_name"  placeholder="供应商"   onclick="showChooesSupplier()">
+				<input type="text" id="supplier_id" name="supplier_id"  hidden="hidden" >
+			</div>
+		</div>
+	</div>
+
+
+</div>
+                
+                
+              </div>
+             
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+                	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+        </form>
+          </div>
+          
+#include("../searchSupplier.html")
+<script type="text/javascript">
+
+
+
+function showChooesSupplier(){
+	
+	$('#myModel').modal("show");
+	getSupplierFromServer(1);	
+  	}
+
+function onselectSupplier(){
+	
+	
+  	
+	 var a = $("input[name='selectSupplier']:checked").val();
+	 console.debug(a);
+	 if(a!=null){
+		 var idName = 	a.split("_");
+		 $("#supplier_id").val(idName[0]);
+  		$("#supplier_name").val(idName[1]);
+  	}else{
+		alert("没有选择人员");
+		return;
+    }
+    
+
+	$('#myModel').modal("hide");
+  	}
+
+
+function getSupplierFromServer(pageNumer){
+	
+	$.get("/fy/admin/base/supplier/searchSupplierJson", { keyWord: $("#pmodelKeyWord").val(), p : pageNumer},
+		  function(data){
+			plist = 	data.list;
+			var	ptbody = $("#ptbody");
+			ptbody.empty();
+		for(x in plist){
+				console.debug(plist[x].name);
+				
+				var tr='<tr><td class="text-center"><input type="radio" name="selectSupplier" value="'+plist[x].id+'_'+plist[x].name+'"></td>'+
+				'<td>'+plist[x].name+'</td>'+
+				'<td>'+plist[x].address+'</td>'+
+				'<td>'+plist[x].phone+'</td></tr>';
+				ptbody.append(tr);
+			}
+
+		
+		var pageUl =$("#pageUl");
+		pageUl.empty();
+		if(data.totalPage < 2 ){
+			return;
+		}
+		else{
+			
+			if(data.firstPage){
+				var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					pageUl.append(li);
+			}else{
+				var li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					pageUl.append(li);
+			}
+
+			if(data.totalPage>5){
+					for(var i = 1;i<6;i++){
+						if(data.pageNumber==i){
+								var li = '<li class="active"><a href="#">'+i+'</a></li>'
+								pageUl.append(li);
+							}
+							else{
+								var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+								pageUl.append(li);
+							}
+					}	
+			}else{
+				for(var i = 1;i<(data.totalPage+1);i++){
+					if(data.pageNumber==i){
+							var li = '<li class="active"><a href="#">'+i+'</a></li>'
+							pageUl.append(li);
+						}
+						else{
+							var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+							pageUl.append(li);
+						}
+				}	
+
+			}
+			if(data.lastPage){
+				var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+					pageUl.append(li);
+			}else{
+				var  li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+				pageUl.append(li);
+			}
+
+			
+			}
+		  },'json');
+  	}
+</script>
+
+#end
+

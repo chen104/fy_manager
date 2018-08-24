@@ -1,0 +1,82 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">应收明细表</h3>
+
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/finance/upgetpay/#(action)" method="post">         
+              <div class="box-body">
+  					#include("form.html")
+					
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+                	<button onclick="" class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.reload();
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+		
+		$(function(){
+			var can = $("#can_download");
+			can.click(function(){
+				updateDownloadState();
+			});
+		});
+		
+function updateDownloadState(){
+	console.debug("test");
+			$.ajax({
+				   type: "POST",
+				   url:'/fy/admin/biz/finance/pay/updateDownload' ,
+				   data:{id:'#(model.id)'},
+				   success: function(ret){
+					   if (ret.state == "ok") {
+							
+						   
+						}else{
+							$("#can_download").attr("checked",'false');
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
+					   $("#can_download").attr("checked",'false');
+					}
+				});
+		
+}
+</script>
+#end

@@ -225,4 +225,28 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("real_account");
 	}
 
+	public void setCreateDate(java.util.Date createDate) {
+		set("create_date", createDate);
+	}
+	
+	public java.util.Date getCreateDate() {
+		return get("create_date");
+	}
+
+	public void setPayDate(java.util.Date payDate) {
+		set("pay_date", payDate);
+	}
+	
+	public java.util.Date getPayDate() {
+		return get("pay_date");
+	}
+
+	public void setPurchaseDate(java.util.Date purchaseDate) {
+		set("purchase_date", purchaseDate);
+	}
+	
+	public java.util.Date getPurchaseDate() {
+		return get("purchase_date");
+	}
+
 }

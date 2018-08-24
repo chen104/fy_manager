@@ -1,0 +1,179 @@
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="suplierModel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" id="suppler_bt_onclose"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">厂商选择</h4>
+			</div>
+			<div class="modal-body">
+				<div style="padding-bottom:5px"> 
+					<input class="myinput" id="supplierKeyWord" > <a class="btn btn-info" href="#" onclick="getSupplierFromServer()">查找</a>
+				</div>
+				<div style="overflow-y:scroll">
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th></th>
+								<th>厂商名称</th>
+								<th>地址</th>
+								<th>电话</th>
+							</tr>
+						</thead>
+						<tbody id="ptbody">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="width: 100%; text-align:center" >
+				<nav aria-label="Page navigation">
+					<ul class="pagination" id="supplierpageUl">
+						<li ><a href="#" aria-label="Previous"> <span
+								aria-hidden="true">&laquo;</span>
+						</a></li>
+						<li onclick="console.debug(1)"><a href="#">1</a></li>
+						<li class="active"><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#" aria-label="Next"> <span
+								aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" id="supplier_bt_onCancel" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary" id="supplier_bt_onSelect">确定</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript">
+
+
+function SelectSupplierModal(callback){
+	
+	this.callback = callback;
+	$("#supplier_bt_onSelect").click(function(){
+		/**
+			获得选择值
+		*/
+		 var a = $("input[name='selectSupplier']:checked").val();
+  		 if(a!=null){
+  			 var vals = 	a.split("_");
+  			 if(callback!=null){
+  				callback(true,vals[0],vals[1]);
+  			 }
+  			 console.debug("选择供应商");
+ 	  		$('#suplierModel').modal("hide");
+ 	  		
+  	  		 
+  	  	}else{
+			alert("没有选择供应商");
+			return;
+  	    }
+  	
+  		
+	});
+	
+	var noselect= function(){
+	
+		callback(false,null,null,null);
+	
+	};
+	
+	$("#supplier_bt_onCancel").click(noselect);
+	$("#suppler_bt_onclose").click(noselect);
+	
+	this.show=show;
+	function show(){
+		$('#suplierModel').modal("show");
+			getSupplierFromServer(1);
+			
+	}
+	
+
+}
+
+function getSupplierFromServer(pageNumer){
+	
+	$.get("/fy/admin/base/supplier/searchSupplierJson", { keyWord: $("#supplierKeyWord").val(), p : pageNumer},
+		  function(data){
+			plist = 	data.list;
+			var	ptbody = $("#ptbody");
+			ptbody.empty();
+		for(x in plist){
+				console.debug(plist[x].name);
+				
+				var tr='<tr><td class="text-center"><input type="radio" name="selectSupplier" value="'+plist[x].id+'_'+plist[x].name+'"></td>'+
+				'<td>'+plist[x].name+'</td>'+
+				'<td>'+plist[x].address+'</td>'+
+				'<td>'+plist[x].phone+'</td></tr>';
+				ptbody.append(tr);
+			}
+
+		
+		var supplierpageUl =$("#supplierpageUl");
+		supplierpageUl.empty();
+		if(data.totalPage < 2 ){
+			return;
+		}
+		else{
+			
+			if(data.firstPage){
+				var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					supplierpageUl.append(li);
+			}else{
+				var li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					supplierpageUl.append(li);
+			}
+
+			if(data.totalPage>5){
+					for(var i = 1;i<6;i++){
+						if(data.pageNumber==i){
+								var li = '<li class="active"><a href="#">'+i+'</a></li>'
+								supplierpageUl.append(li);
+							}
+							else{
+								var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+								supplierpageUl.append(li);
+							}
+					}	
+			}else{
+				for(var i = 1;i<(data.totalPage+1);i++){
+					if(data.pageNumber==i){
+							var li = '<li class="active"><a href="#">'+i+'</a></li>'
+							supplierpageUl.append(li);
+						}
+						else{
+							var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
+							supplierpageUl.append(li);
+						}
+				}	
+
+			}
+			if(data.lastPage){
+				var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+					supplierpageUl.append(li);
+			}else{
+				var  li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+				supplierpageUl.append(li);
+			}
+
+			
+			}
+		  },'json');
+  	}
+
+
+  </script>

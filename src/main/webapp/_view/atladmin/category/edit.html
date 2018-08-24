@@ -17,7 +17,7 @@
               <!-- /.box-body -->
               <div class="box-footer text-center">
               	<div>
-              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+              		   <button type="button" class="btn btn-default pull-left" onclick="back()">返回</button>
                 	<button onclick="" class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
               	</div>
              
@@ -27,6 +27,12 @@
           </div>
  <script src="/assets/atl/dist/js/jquery.form.js"></script>
 <script type="text/javascript">
+
+	function back(){
+		
+		window.history.back();
+		localhost.reload();
+	}
 		$(document).ready(function() {
 				$("#myForm").ajaxForm({
 					dataType: "json"
@@ -35,7 +41,7 @@
 						}
 					, success: function(ret) {
 						if (ret.state == "ok") {
-							location.href = "/fy/admin/base/category"
+							location.reload();
 						} else {
 							alert(ret.msg);
 						}

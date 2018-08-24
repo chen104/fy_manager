@@ -6,8 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title text-center" >订单管理</h3>
+				#fypermession("order_upload")
 					#include("upload.html")
-
+				#end
 				<div class="box-tools">
 			
 					<form action="/fy/admin/biz/fyorder"  class="form-inline">
@@ -18,6 +19,9 @@
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	<option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>
+							    	<option #if(condition=="delay_warn") selected="selected" #end value="commodity_spec">交货预警</option>
+							    	<option #if(condition=="delay") selected="selected" #end value="commodity_spec">拖期</option>
 							    </select>
 						  
 						  </div>
@@ -66,95 +70,280 @@
 						<thead>
 							<tr>
 								<th>序号</th>
+								#fyColPerm("order","category_id")
 								<th>类别</th>
+								#end
+								
+								#fyColPerm("order","planer_id")
 								<th>计划员</th>
+								#end
+								
+								#fyColPerm("order","execu_status")
 								<th>执行状态</th>
+								#end
+								
+								#fyColPerm("order","urgent_status")
 								<th>紧急状态</th>
+								#end
+								
+								#fyColPerm("order","bill_date")
 								<th>订单日期</th>
+								#end
+								
+								#fyColPerm("order","delivery_date")
 								<th>交货日期</th>
+								#end
+								
+								#fyColPerm("order","work_bill_no")
 								<th>工作订单号</th>
+								#end
+								
+								#fyColPerm("order","delivery_no")
 								<th>送货单号</th>
+								#end
+								
+								#fyColPerm("order","commodity_name")
 								<th>商品名称</th>
+								#end
+								
+								#fyColPerm("order","commodity_spec")
 								<th>商品规格</th>
+								#end
+								
+								#fyColPerm("order","map_no")
 								<th>总图号</th>
+								#end
+								#fyColPerm("order","technology")
 								<th>技术条件</th>
+								#end
+								
+								#fyColPerm("order","machining_require")
 								<th>加工要求</th>
+								#end
+								
+								#fyColPerm("order","quantity")
 								<th>数量</th>
+								#end
+								
+								#fyColPerm("order","unit")
 								<th>单位</th>
+								#end
+								
+								#fyColPerm("order","untaxed_amount")
 								<th>未税单价</th>
+								#end
+								
+								#fyColPerm("order","Amount")
 								<th>金额</th>
+								#end
+								
+								#fyColPerm("order","tax")
 								<th>税率</th>
+								#end
+								
+								#fyColPerm("order","tax_amount")
 								<th>税额</th>
+								#end
+								
+								#fyColPerm("order","tatol_amount")
 								<th>含税金额</th>
+								#end
+								
+								#fyColPerm("order","inport_time")
 								<th>导入时间</th>
+								#end
+								
+								#fyColPerm("order","receive_time")
 								<th>接收时间</th>
+								#end
+								
+								#fyColPerm("order","distribute_time")
 								<th>订单分配时间</th>
+								#end
+								
+								#fyColPerm("order","warn_time")
 								<th>分配预警时间</th>
+								#end
+								
+								#fyColPerm("order","remark")
 								<th>备注</th>
+								#end
+								
+								#fyColPerm("order","draw")
 								<th>图纸</th>
+								#end
+								
+								#fyColPerm("order","hang_time")
 								<th>挂账时间</th>
+								#end
+								
+								#fyColPerm("order","hang_status")
 								<th>挂账状态</th>
+								#end
+								
+								#fyColPerm("order","hang_quantity")
 								<th>挂账数量</th>
+								#end
+								
+								#fyColPerm("order","hang_amount")
 								<th>挂账金额</th>
+								#end
+								
+								#fyColPerm("order","unhang_quantity")
 								<th>未挂账数量</th>
+								#end
+							
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
-							<tr>
+							<tr class="#orderColor("x")">
 								<td>#(for.index+1) </td>
+								#fyColPerm("order","category_id")
 								<td>#(x.cate_tmp)</td>  
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
-								<td>#(x.untaxedCost)</td>
-								<td>#(x.amount)</td>
-								<td>#taxRate(x.taxRate)</td>
-								<td>#(x.tax_amount)</td>
-								<td>#(x.tatolAmount)</td>
-								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
-								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
-								<td>#(x.distributeTime)</td>
-								<td>#(x.warnTime)</td>
-								<td>#(x.remark)</td>
-					
+								#end
 								
+								#fyColPerm("order","planer_id")
+								<td>#(x.plan_tmp)</td>
+								#end
+								
+								#fyColPerm("order","execu_status")
+								<td>#(x.execuStatus)</td>
+								#end
+								
+								#fyColPerm("order","urgent_status")
+								<td>#(x.urgentStatus)</td>
+								#end
+								
+								#fyColPerm("order","bill_date")
+								<td>#(x.orderDate)</td>
+								#end
+								
+								#fyColPerm("order","delivery_date")
+								<td>#(x.deliveryDate)</td>
+								#end
+								#fyColPerm("order","work_bill_no")
+								<td>#(x.workOrderNo)</td>
+								#end
+								
+								#fyColPerm("order","delivery_no")
+								<td>#(x.deliveryNo)</td>
+								#end
+								
+								#fyColPerm("order","commodity_name")
+								<td>#(x.commodityName)</td>
+								#end
+								
+								#fyColPerm("order","commodity_spec")
+								<td>#(x.commoditySpec)</td>
+								#end
+								
+								#fyColPerm("order","map_no")
+								<td>#(x.mapNo)</td>
+								#end
+								
+								#fyColPerm("order","technology")
+								<td>#(x.technology)</td>
+								#end
+								
+								#fyColPerm("order","machining_require")
+								<td>#(x.machiningRequire)</td>
+								#end
+								
+								#fyColPerm("order","quantity")
+								<td>#(x.quantity)</td>
+								#end
+								
+								#fyColPerm("order","unit")
+								<td>#(x.unit_tmp)</td>
+								#end
+								
+								#fyColPerm("order","untaxed_amount")
+								<td>#(x.untaxedCost)</td>
+								#end
+								
+								#fyColPerm("order","Amount")
+								<td>#(x.amount)</td>
+								#end
+								
+								#fyColPerm("order","tax")
+								<td>#taxRate(x.taxRate)</td>
+								#end
+								
+								#fyColPerm("order","tax_amount")
+								<td>#(x.tax_amount)</td>
+								#end
+								
+								#fyColPerm("order","tatol_amount")
+								<td>#(x.tatolAmount)</td>
+								#end
+								
+								#fyColPerm("order","inport_time")
+								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
+								#end
+								
+								#fyColPerm("order","receive_time")
+								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
+								#end
+								
+								#fyColPerm("order","distribute_time")
+								
+								<td>#(x.distributeTime)</td>
+								#end
+								
+								#fyColPerm("order","warn_time")
+								
+								<td>#(x.warnTime)</td>
+								#end
+								
+								#fyColPerm("order","remark")
+								<td>#(x.remark)</td>
+								#end
+								
+								#fyColPerm("order","draw")
 								<td  data-id="#(x.id)">
-								#if(x.filename) #(x.filename) #else
-									<a href="#" onclick="showChooesFile(this)"> 
-										<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
-									</a>
-                               #end
+										#if(x.filename) #(x.filename) #else
+											<a href="#" onclick="showChooesFile(this)"> 
+												<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
+											</a>
+		                               #end
 								 </td>
+								 #end
+								 
+								#fyColPerm("order","hang_time")
 								<td>#(x.hangTime)</td>
+								#end
+								
+								#fyColPerm("order","hang_status")
 								<td>#(x.hangStatus)</td>
+								#end
+								
+								#fyColPerm("order","hang_quantity")
 								<td>#(x.hangQuantity)</td>
+								#end
+								
+								#fyColPerm("order","hang_amount")
 								<td>#(x.hang_account)</td>
+								#end
+								
+								#fyColPerm("order","unhang_quantity")
 								<td>#(x.unhang_quantity)</td>
-						
+								#end
+								
+					
 								<td class="jfa-operation-button">
 								
+								#fypermession("order_update")
 								<a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
 									<i class="glyphicon glyphicon-pencil" title="修改"></i>
 								</a> 
-								
-								
+								#end
+								#fypermession("order_delete")
 								<a href="#" onclick="deleteOrder(this)" data-id="#(x.id)" data-order-id="#(x.workOrderNo)"  style="color: red;margin-left: 10px"> 
 									<i class="glyphicon glyphicon-trash" title="删除"></i>
 								</a> 
-								
+								#end
 								</td>
 								
 							</tr>

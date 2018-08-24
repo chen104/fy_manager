@@ -247,7 +247,7 @@
 			<label class="col-sm-3 control-label">采购数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="采购数量"  value="#(model.purchase_quantity??)"
+				<input type="text" class="form-control" placeholder="采购数量" id="purchase_quantity" value="#(model.purchase_quantity??)"
 					 name="model.purchaseQuantity">
 			</div>
 		</div>
@@ -265,7 +265,7 @@
 			<label class="col-sm-3 control-label">单件</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="单件"  name="model.purchaseSingleWeight" autocomplete="off" 
+				<input type="text" class="form-control" placeholder="单件" id="single" name="model.purchaseSingleWeight" autocomplete="off"  onblur="excutweigth()"
 					value="#(model.purchaseSingleWeight??)" >
 			</div>
 		</div>
@@ -276,12 +276,31 @@
 			<label class="col-sm-3 control-label">总重</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="总重"  name="model.purchaseWeight" autocomplete="off" 
+				<input type="text" id="purchaseWeight" class="form-control" placeholder="总重"  name="model.purchaseWeight" autocomplete="off" 
 					value="#(model.purchaseWeight??)" >
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+<!--
+
+//-->
+function excutweigth(){
+	var single  = 	$("#single").val();
+	var quantity  = 	$("#purchase_quantity").val();
+	$("#purchaseWeight").val(single*quantity);
+}
+
+function execuCost(){
+	var single  = 	$("#cost").val();
+	var quantity  = 	$("#purchase_quantity").val();
+	$("#totalCost").val(single*quantity);
+	
+	
+}
+
+</script>
 
 
 <div class="row">
@@ -291,7 +310,7 @@
 			<label class="col-sm-3 control-label">单价</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="单价"  name="model.purchaseCost" autocomplete="off" 
+				<input type="text" class="form-control" placeholder="单价" id="cost" name="model.purchaseCost" autocomplete="off" onblur="execuCost()"
 					value="#(model.purchaseCost??)" >
 			</div>
 		</div>
@@ -302,7 +321,7 @@
 			<label class="col-sm-3 control-label">总金额</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="总金额"   name="model.purchaseAccount" autocomplete="off" 
+				<input type="text" class="form-control" placeholder="总金额" id="totalCost"  name="model.purchaseAccount" autocomplete="off" 
 					value="#(model.purchaseAccount??)" >
 			</div>
 		</div>
@@ -364,103 +383,6 @@
 //-->
 
 
-
-
-	function showChooesSupplier(){
-		
-		$('#myModel').modal("show");
-		getSupplierFromServer(1);	
-	  	}
-
-	function onselectSupplier(){
-		
-		
-	  	
-		 var a = $("input[name='selectSupplier']:checked").val();
-		 console.debug(a);
-		 if(a!=null){
-			 var idName = 	a.split("_");
-			 $("#supplierId").val(idName[0]);
-	  		$("#supplier").val(idName[1]);
-	  	}else{
-			alert("没有选择人员");
-			return;
-	    }
-	    
-	
-		$('#myModel').modal("hide");
-	  	}
-
-
-	function getSupplierFromServer(pageNumer){
-		
-		$.get("/fy/admin/base/supplier/searchSupplierJson", { keyWord: $("#pmodelKeyWord").val(), p : pageNumer},
-			  function(data){
-				plist = 	data.list;
-				var	ptbody = $("#ptbody");
-				ptbody.empty();
-			for(x in plist){
-					console.debug(plist[x].name);
-					
-					var tr='<tr><td class="text-center"><input type="radio" name="selectSupplier" value="'+plist[x].id+'_'+plist[x].name+'"></td>'+
-					'<td>'+plist[x].name+'</td>'+
-					'<td>'+plist[x].address+'</td>'+
-					'<td>'+plist[x].phone+'</td></tr>';
-					ptbody.append(tr);
-				}
-
-			
-			var pageUl =$("#pageUl");
-			pageUl.empty();
-			if(data.totalPage < 2 ){
-				return;
-			}
-			else{
-				
-				if(data.firstPage){
-					var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
-						pageUl.append(li);
-				}else{
-					var li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
-						pageUl.append(li);
-				}
-
-				if(data.totalPage>5){
-						for(var i = 1;i<6;i++){
-							if(data.pageNumber==i){
-									var li = '<li class="active"><a href="#">'+i+'</a></li>'
-									pageUl.append(li);
-								}
-								else{
-									var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
-									pageUl.append(li);
-								}
-						}	
-				}else{
-					for(var i = 1;i<(data.totalPage+1);i++){
-						if(data.pageNumber==i){
-								var li = '<li class="active"><a href="#">'+i+'</a></li>'
-								pageUl.append(li);
-							}
-							else{
-								var li = '<li onclick="getSupplierFromServer('+ i +')"><a href="#">'+i+'</a></li>'
-								pageUl.append(li);
-							}
-					}	
-
-				}
-				if(data.lastPage){
-					var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
-						pageUl.append(li);
-				}else{
-					var  li = '<li onclick="getSupplierFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
-					pageUl.append(li);
-				}
-
-				
-				}
-			  },'json');
-	  	}
 </script>
 #include("../searchSupplier.html")
 

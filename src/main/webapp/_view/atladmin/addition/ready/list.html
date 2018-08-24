@@ -1,0 +1,268 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+		#include("upload.html")
+			<div class="box-header">
+				
+			
+				<h3 class="box-title">备货</h3>
+
+				<a href="/fy/admin/biz/addition/ready/add"><button type="submit"
+						class="btn btn-primary">添加记录</button></a>
+				<a class="btn btn-info" href="/fy/admin/biz/addition/ready/toDownload" > <i class="glyphicon glyphicon-download-alt"></i>下载</a>
+				<div class="box-tools">
+			
+					<form action="/fy/admin/biz/addition/ready"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()">
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">工作订单号</option>
+							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>
+							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="cutomer") selected="selected" #end value="cutomer" >客户</option>
+							    	<option #if(condition=="supplier") selected="selected" #end value="supplier">厂商</option>
+						
+							    	
+							    </select>
+						  
+						  </div>
+						  
+						
+						   <div id="keyword_div" class="form-group  input-group-sm" >
+
+							<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+						  
+						  </div>
+						  <input type="text" name="modelId" hidden="hidden" value="#(modelId)">
+						  
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+						  </div>
+						
+  <script type="text/javascript">
+  	$(function(){
+  		
+  		var val = $("#condition").val();
+  		if(val == "order_date"){
+  			
+  			$("#keyword").datepicker({
+  		    	language:'zh-CN',
+    		      autoclose: true,
+    		      format:'yyyy-mm-dd',
+    		      todayBtn:'linked',
+    		      todayHighlight:true,
+    		       orientation:'bottom' 
+    		    });
+   	 	
+  		}
+  		
+  	
+  		
+  	});
+  
+	  function onselectCondition(){
+		  var value = $("#condition").val();
+		  $("#keyword_div").empty();
+		  var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+			$("#keyword_div").append(input);
+	  		if("cutomer"== value ){
+	  			
+	  			$("#keyword").click(selectCustomer);
+	  		}else if("supplier"==value){
+	  			
+	  			$("#keyword").click(selectCustomer);
+	  		}else if(value == "order_date"){
+	  			
+	  			$("#keyword").datepicker({
+	  		    	language:'zh-CN',
+	    		      autoclose: true,
+	    		      format:'yyyy-mm-dd',
+	    		      todayBtn:'linked',
+	    		      todayHighlight:true,
+	    		       orientation:'bottom' 
+	    		    });
+	  		}
+	  }
+						  	
+</script>
+					</form>
+			
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding text-center">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+								<th>客户</th>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>导入时间</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>加工要求</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>未税单价</th>
+								<th>补单状态</th>
+								<th>厂商</th>
+								<th>订单编码</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>单价</th>
+								<th>金额</th>
+								<th>折扣</th>
+								<th>折扣后金额</th>
+								<th>入库时间</th>
+								<th>入库数量</th>
+								<th>检测时间</th>
+								<th>检测结果</th>
+								<th>出库时间</th>
+								<th>出库数量</th>
+								<th>挂账数量</th>
+								<th>挂账金额</th>
+								<th>挂账日期</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+							<td>#(for.index)</td> 
+							<td>#(x.customer_name)</td> 
+							  <td>#(x.category_name)</td> 
+							  <td>#(x.planer_name)</td> 
+							  <td>#(x.execu_status)</td> 
+							
+							  <td>#(x.import_time)</td>
+							  <td>#(x.order_date) </td>
+							  <td>#(x.delivery_date)</td>
+							  <td>#(x.work_order_no)</td> 
+							  <td>#(x.delivery_no)</td> 
+							  <td>#(x.commodity_name)</td> 
+							  <td>#(x.commodity_spec)</td>
+							  <td>#(x.map_no)</td>
+							  <td>#(x.technology)</td>
+							  <td>#(x.machining_require)</td>
+							  <td>#(x.quantity)</td>
+							  <td>#(x.unit_name)</td> 
+							  <td>#(x.untaxed_cost)</td>
+							  <td>#(x.add_status)</td> 
+							  <td> #(x.supplier_name) </td> 
+							  <td>#(x.order_no)</td>
+							  	  
+							  <td>#(x.purchase_quanity)</td>
+							  <td>#(x.purchase_unit)</td>
+							  
+							  <td>#(x.cost)</td>
+							  <td>#(x.amount)</td>
+							  <td>#(x.discount)</td>
+							  <td>#(x.discount_amount)</td>
+							  <td>#(x.in_date)</td>
+							  <td>#(x.in_quantity)</td>
+							  <td>#(x.check_time)</td>
+							  <td>#(x.check_result)</td>
+							  <td>#(x.out_date)</td>
+							  <td>#(x.out_quantity)</td>
+							  <td>#(x.hang_quantity)</td>
+							  <td>#(x.hang_account)</td>
+							  <td>#(x.hang_date)</td>
+														
+								
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/addition/ready/edit?id=#(x.id)" style="margin-left: 14px;"> 
+								<i class="fa fa-pencil" title="修改"></i>
+								</a> <a data-delete data-title="#escape(x.name)"
+									data-action="/fy/admin/biz/addition/ready/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+										class="fa fa-trash" title="删除"></i>
+								</a></td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/addition/ready?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function deleteperson(a){
+	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+    </script>
+#include("../../customer/searchCustomer.html")
+#include("../../supplier/searchSupplier.html")
+<script type="text/javascript">
+var selectCustomer =function selectCustomer(){
+		var callback = function (isSelect,id,name){
+
+			if(isSelect){
+				$("#keyword").val(name);
+				$("#modelId").val(id);
+			}
+			
+		}
+		var showcustomer  = new ShowCustomerModel( callback );
+		showcustomer.show();
+	}
+
+	var selectSurpplier =function(){
+		var callback = function (isSelect,id,name){
+
+			if(isSelect){
+				$("#keyword").val(name);
+				$("#modelId").val(id);
+			}
+			
+		}
+		var  select   = new SelectSupplierModal( callback );
+		select.show();
+		
+	}
+</script>
+#end

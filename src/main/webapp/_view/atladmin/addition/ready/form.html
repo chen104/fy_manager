@@ -1,0 +1,677 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">客户</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="客户" id="customer_name" onclick="selectCustomer()"
+					value="#(model.customer_name??)" autocomplete="off"> 
+					<input id="customer_id"
+					type="text" name="model.customer" value="#(model.customer??)" hidden="hidden"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">类别</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="类别" id="category_name"
+					value="#(model.category_name??)" autocomplete="off" onclick="selectCate()"> <input id="category_id"
+					type="text" value="#(model.category_id??)" name="model.categoryId" hidden="hidden"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">计划员</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="person_name" onclick="selectPerson()"
+					class="form-control pull-right" value="#(model.planer_name??)"
+					placeholder="计划员" autocomplete="off">
+					 <input type="text"
+					id="person_id" value="#(model.planer_id??)" hidden="hidden" 
+					name="model.planerId">
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">执行状态 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="执行状态"
+					value="#(model.execu_status??)" name="model.execuStatus"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">导入时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" data-type='datepicker' readonly="readonly"
+					class="form-control pull-right" data-type='datepicker'
+					placeholder="导入时间" value="#(model.import_time??)"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">订单日期</label>
+
+			<div class="col-sm-9">
+
+				<input type="text" class="form-control pull-right"
+					placeholder="订单日期" value="#date(model.order_date??,"yyyy-MM-dd")"  data-type='datepicker'
+					name="model.orderDate" autocomplete="off">
+
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">交货日期</label>
+
+			<div class="col-sm-9">
+
+				<input type="text" class="form-control pull-right"
+					placeholder="交货日期" value="#(model.delivery_date??)"  data-type='datepicker'
+					name="model.deliveryDate" autocomplete="off">
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">工作订单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="工作订单号"
+					value="#(model.work_order_no??)" name="model.workOrderNo"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+<div class="row">
+
+
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">送货单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="送货单号"
+					value="#(model.delivery_no??)" name="model.deliveryNo"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品名称</label>
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="商品名称"
+					value="#(model.commodity_name??)" name="model.commodityName"
+					autocomplete="off">
+			</div>
+
+
+		</div>
+	</div>
+
+
+
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="商品规格"
+					value="#(model.commodity_spec??)" name="model.commoditySpec"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="总图号"
+					value="#(model.map_no??)" name="model.mapNo" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">技术条件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="技术条件"
+					value="#(model.technology??)" name="model.technology"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label"> 加工要求</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="加工要求"
+					value="#(model.machining_require??)" name="model.machiningRequire"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="数量"
+					value="#(model.quantity??)" name="model.quantity"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单位</label>
+
+
+
+			<div class="col-sm-9">
+				<input type="text" id="unit_name" class="form-control"
+					value="#(model.unit_name??)" placeholder="单位"
+					 autocomplete="off">
+					 
+				<input type="text"  
+					value="#(model.unit??)" name="model.unit"    id="unit_id" hidden="hidden"
+					 autocomplete="off">
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">未税单价</label>
+			<div class="col-sm-9">
+
+				<input type="text" class="form-control" placeholder="未税单价"
+					value="#(model.untaxed_cost??)" name="model.untaxedCost"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">补单状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="补单状态"
+					value="#(model.add_status??)" name="model.addStatus"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">订单编码</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="订单编码"
+					value="#(model.order_no??)" name="model.orderNo" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">厂商</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="厂商" 
+					value="#(model.supplier_name??)" id="supplier_name"
+					autocomplete="off">
+					<input type="text" id="supplier_id" name="model.supplierId" hidden="hidden" value="#(model.supplier_id)">
+			</div>
+		</div>
+	</div>
+	
+	
+	
+
+	
+</div>
+
+
+
+<div class="row">
+<div class="col-md-6">
+
+	<div class="form-group">
+			<label class="col-sm-3 control-label">采购数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="采购数量"
+					value="#(model.purchase_quanity??)" name="model.purchaseQuanity" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+	<div class="form-group">
+			<label class="col-sm-3 control-label">采购单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="采购单位"
+					value="#(model.purchase_unit??)" name="model.purchaseUnit" autocomplete="off" id="purchase_unit">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单价"
+					value="#(model.cost??)" name="model.cost" autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="金额"
+					value="#(model.amount??)" name="model.amount" autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">折扣</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="折扣"
+					value="#(model.discount??)" name="model.discount"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">折扣后金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="折扣后金额	"
+					value="#(model.discount_amount??)" name="model.discountAmount"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间"  data-type='datepicker'
+					value="#(model.in_date??)" name="model.inDate" autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量"
+					value="#(model.inQuantity??)" name="model.inQuantity"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">检测时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="检测时间"  data-type='datepicker'
+					value="#(model.check_time??)" name="model.checkTime"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">检测结果</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="检测结果"
+					value="#(model.check_result??)" name="model.checkResult"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间"  data-type='datepicker'
+					value="#(model.out_date??)" name="model.outDate" autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量"  
+					value="#(model.out_quantity??)" name="model.outQuantity"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量"
+					value="#(model.hang_quantity??)" name="model.hangQuantity"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额"
+					value="#(model.hang_account??)" name="model.hangAccount"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期"  data-type='datepicker'
+					value="#(model.hang_date??)" name="model.hangDate"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+#include("../../person/searchPerson.html")
+#include("../../unit/unitSelectModel.html")
+#include("../../category/searchCategory.html")
+#include("../../customer/searchCustomer.html")
+#include("../../supplier/searchSupplier.html")
+<script>
+	
+var selectPerson = 	function selectPerson(){
+		var callback = function(isSelect,id,name){
+			if(isSelect){
+				$("#person_id").val(id);
+				$("#person_name").val(name);
+			}else{
+				
+			}
+			
+		}
+		var showPerson = new ShowPerson(callback);
+		showPerson.show();
+		
+	}
+	
+	
+	function selectCate(){
+		var callback = function(isSelect,id,name){
+			if(isSelect){
+				$("#category_id").val(id);
+				$("#category_name").val(name);
+			}else{
+				
+			}
+			
+		}
+		var showCategory = new ShowCategory(callback);
+		showCategory.show();
+		
+	}
+	
+var selectunit = function selectUnit(){
+		var callback = function (isSelectUnit,unitId,unitStr){
+			console.info(unitStr+"  "+unitId);
+			if(isSelectUnit){
+				$("#unit_name").val(unitStr);
+				$("#unit_id").val(unitId);
+			}
+			
+		}
+		var selecUnitModal  = new SelecUnitModal( callback );
+		selecUnitModal.show();
+	}
+
+
+var selectCustomer =function selectCustomer(){
+	var callback = function (isSelect,id,name){
+
+		if(isSelect){
+			$("#customer_name").val(name);
+			$("#customer_id").val(id);
+		}
+		
+	}
+	var showcustomer  = new ShowCustomerModel( callback );
+	showcustomer.show();
+}
+
+var selectSurpplier =function(){
+	var callback = function (isSelect,id,name){
+
+		if(isSelect){
+			$("#supplier_name").val(name);
+			$("#supplier_id").val(id);
+		}
+		
+	}
+	var  select   = new SelectSupplierModal( callback );
+	select.show();
+	
+}
+
+var selectPurchaseUnit = function(){
+	
+	var callback = function (isSelectUnit,unitId,unitStr){
+		console.info(unitStr+"  "+unitId);
+		if(isSelectUnit){
+			$("#purchase_unit").val(unitStr);
+		
+		}
+		
+	}
+	var selecUnitModal  = new SelecUnitModal( callback );
+	selecUnitModal.show();
+	}
+	
+
+ $(function(){
+	 $("#customer_name").click(selectCustomer);
+	 $("#person_name").click(selectPerson);
+	 $("#person_name").click(selectPerson);
+	 $("#supplier_name").click(selectSurpplier);
+	 $("#unit_name").click(selectunit);
+	 $("#purchase_unit").click(selectPurchaseUnit);
+ });
+</script>
+
