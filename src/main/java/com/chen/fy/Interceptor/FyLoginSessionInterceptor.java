@@ -14,15 +14,12 @@
 
 package com.chen.fy.Interceptor;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.club.common.kit.IpKit;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.Ret;
 
 /**
  * 从 cookie 中获取 sessionId，如果获取到则根据该值使用 LoginService 得到登录的 Account 对象 --->
@@ -55,31 +52,30 @@ public class FyLoginSessionInterceptor implements Interceptor {
 		if (uri.startsWith("/fy/admin")) {
 			Account account = inv.getController().getSessionAttr("account");
 			if (account != null) {
-				// Object o = inv.getController().getSessionAttr(Constant.account);
-				// if (o instanceof Account) {
-				// threadLocal.set((Account) o);
-				// }
-				if (account.hasUriPermission(uri)) {
-					inv.invoke();
-				} else {
-					String c = inv.getController().getRequest().getHeader("X-Requested-With");
-					// Enumeration<String> enume =
-					// inv.getController().getRequest().getHeaderNames();
-					// while (enume.hasMoreElements()) {
-					// String key = enume.nextElement();
-					// System.out.print(key + " = ");
-					// System.out.println(inv.getController().getRequest().getHeader(key));
-					// }
-					// boolean isPjax = "true".equalsIgnoreCase(c);
-					if (!StringUtils.isEmpty(c)) {
-						inv.getController().renderJson(Ret.fail().set("msg", "没有权限"));
-					} else {
-						inv.getController().redirect("/fy/noAuth");
-					}
-				}
+				inv.invoke();
 
 			} else {
-				inv.getController().redirect("/fy");
+
+				Controller c = inv.getController();
+				String sessionId = c.getCookie(LoginService.sessionIdName);
+				if (sessionId != null) {
+					Account loginAccount = LoginService.me.getLoginAccountWithSessionId(sessionId);
+					if (loginAccount == null) {
+						String loginIp = IpKit.getRealIp(c.getRequest());
+						loginAccount = LoginService.me.loginWithSessionId(sessionId, loginIp);
+					}
+					if (loginAccount != null) {
+						// 用户登录账号
+						c.setAttr(LoginService.loginAccountCacheName, loginAccount);
+						c.setSessionAttr(Account.sessionKey, loginAccount);
+						inv.invoke();
+					} else {
+						c.removeCookie(LoginService.sessionIdName); // cookie 登录未成功，证明该 cookie 已经没有用处，删之
+						inv.getController().redirect("/fy");
+					}
+				} else {
+					inv.getController().redirect("/fy");
+				}
 
 			}
 		} else {

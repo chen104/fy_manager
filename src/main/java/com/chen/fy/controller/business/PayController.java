@@ -392,4 +392,19 @@ public class PayController extends BaseController {
 
 		renderFile(targetfile);
 	}
+
+	/**w
+	 * 撤回应付单
+	 */
+	public void rollbackPay() {
+		Integer id = getParaToInt("id");
+		FyBusinessPay model = FyBusinessPay.dao.findById(id);
+		if (model == null) {
+			renderJson(Ret.fail().set("msg", "应付单不存在，请刷新页面"));
+		}
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+		// 更新已挂装金额
+		BigDecimal wwhangamout = order.getWwHangAmount();
+
+	}
 }

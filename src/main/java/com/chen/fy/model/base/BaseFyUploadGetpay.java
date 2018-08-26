@@ -17,6 +17,46 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getInt("id");
 	}
 
+	public void setHangDate(java.util.Date hangDate) {
+		set("hang_date", hangDate);
+	}
+	
+	public java.util.Date getHangDate() {
+		return get("hang_date");
+	}
+
+	public void setMaterials(java.lang.String materials) {
+		set("materials", materials);
+	}
+	
+	public java.lang.String getMaterials() {
+		return getStr("materials");
+	}
+
+	public void setCommodityName(java.lang.String commodityName) {
+		set("commodity_name", commodityName);
+	}
+	
+	public java.lang.String getCommodityName() {
+		return getStr("commodity_name");
+	}
+
+	public void setBrandNo(java.lang.String brandNo) {
+		set("Brand_no", brandNo);
+	}
+	
+	public java.lang.String getBrandNo() {
+		return getStr("Brand_no");
+	}
+
+	public void setSpec(java.lang.String spec) {
+		set("spec", spec);
+	}
+	
+	public java.lang.String getSpec() {
+		return getStr("spec");
+	}
+
 	public void setProjectNo(java.lang.String projectNo) {
 		set("project_no", projectNo);
 	}
@@ -65,6 +105,22 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getStr("invoice_stat");
 	}
 
+	public void setHangAmount(java.math.BigDecimal hangAmount) {
+		set("hang_amount", hangAmount);
+	}
+	
+	public java.math.BigDecimal getHangAmount() {
+		return get("hang_amount");
+	}
+
+	public void setPerchasePerson(java.lang.String perchasePerson) {
+		set("perchase_person", perchasePerson);
+	}
+	
+	public java.lang.String getPerchasePerson() {
+		return getStr("perchase_person");
+	}
+
 	public void setDeliveryNo(java.lang.String deliveryNo) {
 		set("delivery_no", deliveryNo);
 	}
@@ -79,38 +135,6 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 	
 	public java.lang.String getDeliveryIndex() {
 		return getStr("delivery_index");
-	}
-
-	public void setMaterials(java.lang.String materials) {
-		set("materials", materials);
-	}
-	
-	public java.lang.String getMaterials() {
-		return getStr("materials");
-	}
-
-	public void setBrandNo(java.lang.String brandNo) {
-		set("Brand_no", brandNo);
-	}
-	
-	public java.lang.String getBrandNo() {
-		return getStr("Brand_no");
-	}
-
-	public void setSpec(java.lang.String spec) {
-		set("spec", spec);
-	}
-	
-	public java.lang.String getSpec() {
-		return getStr("spec");
-	}
-
-	public void setPerchasePerson(java.lang.String perchasePerson) {
-		set("perchase_person", perchasePerson);
-	}
-	
-	public java.lang.String getPerchasePerson() {
-		return getStr("perchase_person");
 	}
 
 	public void setContract(java.lang.String contract) {
@@ -137,36 +161,12 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getInt("create_by");
 	}
 
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setHangDate(java.util.Date hangDate) {
-		set("hang_date", hangDate);
-	}
-	
-	public java.util.Date getHangDate() {
-		return get("hang_date");
-	}
-
 	public void setInvoiceNo(java.lang.String invoiceNo) {
 		set("invoice_no", invoiceNo);
 	}
 	
 	public java.lang.String getInvoiceNo() {
 		return getStr("invoice_no");
-	}
-
-	public void setHangAmount(java.math.BigDecimal hangAmount) {
-		set("hang_amount", hangAmount);
-	}
-	
-	public java.math.BigDecimal getHangAmount() {
-		return get("hang_amount");
 	}
 
 }

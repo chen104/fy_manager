@@ -233,22 +233,6 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 		return get("discount_amount");
 	}
 
-	public void setInDate(java.util.Date inDate) {
-		set("in_date", inDate);
-	}
-	
-	public java.util.Date getInDate() {
-		return get("in_date");
-	}
-
-	public void setInQuantity(java.math.BigDecimal inQuantity) {
-		set("in_quantity", inQuantity);
-	}
-	
-	public java.math.BigDecimal getInQuantity() {
-		return get("in_quantity");
-	}
-
 	public void setCheckTime(java.util.Date checkTime) {
 		set("check_time", checkTime);
 	}
@@ -263,22 +247,6 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 	
 	public java.lang.String getCheckResult() {
 		return getStr("check_result");
-	}
-
-	public void setOutDate(java.util.Date outDate) {
-		set("out_date", outDate);
-	}
-	
-	public java.util.Date getOutDate() {
-		return get("out_date");
-	}
-
-	public void setOutQuantity(java.math.BigDecimal outQuantity) {
-		set("out_quantity", outQuantity);
-	}
-	
-	public java.math.BigDecimal getOutQuantity() {
-		return get("out_quantity");
 	}
 
 	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
@@ -303,6 +271,174 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 	
 	public java.util.Date getHangDate() {
 		return get("hang_date");
+	}
+
+	public void setIsProduct(java.lang.Boolean isProduct) {
+		set("is_product", isProduct);
+	}
+	
+	public java.lang.Boolean getIsProduct() {
+		return get("is_product");
+	}
+
+	public void setOutDate1(java.util.Date outDate1) {
+		set("out_date1", outDate1);
+	}
+	
+	public java.util.Date getOutDate1() {
+		return get("out_date1");
+	}
+
+	public void setOutQuantity1(java.math.BigDecimal outQuantity1) {
+		set("out_quantity1", outQuantity1);
+	}
+	
+	public java.math.BigDecimal getOutQuantity1() {
+		return get("out_quantity1");
+	}
+
+	public void setInQuantity1(java.math.BigDecimal inQuantity1) {
+		set("in_quantity1", inQuantity1);
+	}
+	
+	public java.math.BigDecimal getInQuantity1() {
+		return get("in_quantity1");
+	}
+
+	public void setInDate1(java.util.Date inDate1) {
+		set("in_date1", inDate1);
+	}
+	
+	public java.util.Date getInDate1() {
+		return get("in_date1");
+	}
+
+	public void setOutDate2(java.util.Date outDate2) {
+		set("out_date2", outDate2);
+	}
+	
+	public java.util.Date getOutDate2() {
+		return get("out_date2");
+	}
+
+	public void setOutQuantity2(java.math.BigDecimal outQuantity2) {
+		set("out_quantity2", outQuantity2);
+	}
+	
+	public java.math.BigDecimal getOutQuantity2() {
+		return get("out_quantity2");
+	}
+
+	public void setInQuantity2(java.math.BigDecimal inQuantity2) {
+		set("in_quantity2", inQuantity2);
+	}
+	
+	public java.math.BigDecimal getInQuantity2() {
+		return get("in_quantity2");
+	}
+
+	public void setInDate2(java.util.Date inDate2) {
+		set("in_date2", inDate2);
+	}
+	
+	public java.util.Date getInDate2() {
+		return get("in_date2");
+	}
+
+	public void setOutDate3(java.util.Date outDate3) {
+		set("out_date3", outDate3);
+	}
+	
+	public java.util.Date getOutDate3() {
+		return get("out_date3");
+	}
+
+	public void setOutQuantity3(java.math.BigDecimal outQuantity3) {
+		set("out_quantity3", outQuantity3);
+	}
+	
+	public java.math.BigDecimal getOutQuantity3() {
+		return get("out_quantity3");
+	}
+
+	public void setInQuantity3(java.math.BigDecimal inQuantity3) {
+		set("in_quantity3", inQuantity3);
+	}
+	
+	public java.math.BigDecimal getInQuantity3() {
+		return get("in_quantity3");
+	}
+
+	public void setInDate3(java.util.Date inDate3) {
+		set("in_date3", inDate3);
+	}
+	
+	public java.util.Date getInDate3() {
+		return get("in_date3");
+	}
+
+	public void setOutDate4(java.util.Date outDate4) {
+		set("out_date4", outDate4);
+	}
+	
+	public java.util.Date getOutDate4() {
+		return get("out_date4");
+	}
+
+	public void setOutQuantity4(java.math.BigDecimal outQuantity4) {
+		set("out_quantity4", outQuantity4);
+	}
+	
+	public java.math.BigDecimal getOutQuantity4() {
+		return get("out_quantity4");
+	}
+
+	public void setInQuantity4(java.math.BigDecimal inQuantity4) {
+		set("in_quantity4", inQuantity4);
+	}
+	
+	public java.math.BigDecimal getInQuantity4() {
+		return get("in_quantity4");
+	}
+
+	public void setInDate4(java.util.Date inDate4) {
+		set("in_date4", inDate4);
+	}
+	
+	public java.util.Date getInDate4() {
+		return get("in_date4");
+	}
+
+	public void setOutDate5(java.util.Date outDate5) {
+		set("out_date5", outDate5);
+	}
+	
+	public java.util.Date getOutDate5() {
+		return get("out_date5");
+	}
+
+	public void setOutQuantity5(java.math.BigDecimal outQuantity5) {
+		set("out_quantity5", outQuantity5);
+	}
+	
+	public java.math.BigDecimal getOutQuantity5() {
+		return get("out_quantity5");
+	}
+
+	public void setInQuantity5(java.math.BigDecimal inQuantity5) {
+		set("in_quantity5", inQuantity5);
+	}
+	
+	public java.math.BigDecimal getInQuantity5() {
+		return get("in_quantity5");
+	}
+
+	public void setInDate5(java.util.Date inDate5) {
+		set("in_date5", inDate5);
+	}
+	
+	public java.util.Date getInDate5() {
+		return get("in_date5");
 	}
 
 }

@@ -19,6 +19,7 @@ import com.chen.fy.model.FyBusinessReady;
 import com.chen.fy.model.Person;
 import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
+import com.jfinal.club.common.kit.ReadyProductNoKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -27,7 +28,13 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class ReadyController extends BaseController {
-	final static String sql = "select r.* , cate.`name` category_name,cu.name customer_name ,person.`name` planer_name,su.`name` supplier_name ,unit.`name` unit_name ";
+	final static String storage = " (IFNULL(in_quantity1,0) \r\n" + "+ IFNULL(in_quantity2,0)\r\n"
+			+ " +IFNULL(in_quantity3,0) \r\n" + "+IFNULL(in_quantity4,0) \r\n" + "+IFNULL(in_quantity5,0)  )-\r\n"
+			+ "(IFNULL(out_quantity1,0) + \r\n" + "IFNULL(out_quantity2,0) + \r\n" + "IFNULL(out_quantity3,0) + \r\n"
+			+ "IFNULL(out_quantity4,0) + \r\n" + "IFNULL(out_quantity5,0)) storage";
+
+	final static String sql = "select r.* , cate.`name` category_name,cu.name customer_name ,person.`name` planer_name,su.`name` supplier_name ,unit.`name` unit_name ,"
+			+ storage;
 	final static String table = " from fy_business_ready  r "
 			+ "LEFT JOIN fy_base_customer cu on r.customer = cu.id  \n"
 			+ "LEFT JOIN fy_base_category cate on cate.id= r.category_id  \n"
@@ -80,6 +87,9 @@ public class ReadyController extends BaseController {
 
 	public void save() {
 		FyBusinessReady model = getBean(FyBusinessReady.class, "model");
+		if (StringUtils.isEmpty(model.getOrderNo())) {
+			model.setOrderNo(ReadyProductNoKit.getNo());
+		}
 		boolean re = model.save();
 		Ret ret = null;
 		if (re) {
@@ -127,7 +137,10 @@ public class ReadyController extends BaseController {
 	}
 
 	public void add() {
+		FyBusinessReady model = new FyBusinessReady();
+		model.setOrderNo(ReadyProductNoKit.getNo());
 		setAttr("action", "save");
+		setAttr("model", model);
 		render("edit.html");
 	}
 
@@ -242,10 +255,10 @@ public class ReadyController extends BaseController {
 							NumberUtils.isNumber(discountAmount) ? new BigDecimal(discountAmount) : null);
 
 					Date inDate = excel.getDateValue(i, 26);// 入库时间
-					item.setInDate(inDate);
+					item.setInDate1(inDate);
 
 					String inQuantity = excel.getCellVal(i, 27);// 入库数量
-					item.setInQuantity(NumberUtils.isNumber(inQuantity) ? new BigDecimal(inQuantity) : null);
+					item.setInQuantity1(NumberUtils.isNumber(inQuantity) ? new BigDecimal(inQuantity) : null);
 
 					Date chcekTime = excel.getDateValue(i, 28);// 检测时间
 					item.setCheckTime(chcekTime);
@@ -254,10 +267,10 @@ public class ReadyController extends BaseController {
 					item.setCheckResult(checkResult);
 
 					Date outDate = excel.getDateValue(i, 30);// 出库时间时间
-					item.setOutDate(outDate);
+					item.setOutDate1(outDate);
 
 					String outQuantity = excel.getCellVal(i, 31);// 出库数量
-					item.setOutQuantity(NumberUtils.isNumber(outQuantity) ? new BigDecimal(outQuantity) : null);
+					item.setOutQuantity1(NumberUtils.isNumber(outQuantity) ? new BigDecimal(outQuantity) : null);
 
 					String hangQuantity = excel.getCellVal(i, 32);// 挂账数量
 					item.setHangQuantity(NumberUtils.isNumber(hangQuantity) ? new BigDecimal(hangQuantity) : null);

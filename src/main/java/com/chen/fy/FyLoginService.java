@@ -66,18 +66,14 @@ public class FyLoginService {
 			return Ret.fail("msg", "保存 session 到数据库失败，请联系管理员");
 		}
 
-		if (!session.save()) {
-			Record loginLog = new Record().set("accountId", loginAccount.getId()).set("ip", loginIp).set("loginAt",
-					new Date());
-			Db.save("login_log", loginLog);
-		}
-
 		loginAccount.removeSensitiveInfo(); // 移除 password 与 salt 属性值
 		loginAccount.put("sessionId", sessionId); // 保存一份 sessionId 到 loginAccount 备用
+		loginAccount.reloadPermission();// 登录重新加载权限
 		CacheKit.put(loginAccountCacheName, sessionId, loginAccount);// 用户保存到缓存
 
 		createLoginLog(loginAccount.getId(), loginIp);
 		controller.setSessionAttr(Constant.account, loginAccount);
+		controller.setCookie(sessionIdName, sessionId, 60 * 60 * 24 * 3);
 		return Ret.ok(sessionIdName, sessionId).set(loginAccountCacheName, loginAccount).set("maxAgeInSeconds",
 				maxAgeInSeconds); // 用于设置 cookie 的最大存活时间
 	}

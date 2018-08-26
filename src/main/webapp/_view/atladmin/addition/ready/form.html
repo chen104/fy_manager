@@ -340,7 +340,7 @@
 				<input type="text" class="form-control" placeholder="厂商" 
 					value="#(model.supplier_name??)" id="supplier_name"
 					autocomplete="off">
-					<input type="text" id="supplier_id" name="model.supplierId" hidden="hidden" value="#(model.supplier_id)">
+					<input type="text" id="supplier_id" name="model.supplierId" hidden="hidden" value="#(model.supplier_id??)">
 			</div>
 		</div>
 	</div>
@@ -361,7 +361,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control" placeholder="采购数量"
-					value="#(model.purchase_quanity??)" name="model.purchaseQuanity" autocomplete="off">
+					value="#(model.purchase_quanity??)" name="model.purchaseQuanity??" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -372,7 +372,7 @@
 
 			<div class="col-sm-9">
 				<input type="text" class="form-control" placeholder="采购单位"
-					value="#(model.purchase_unit??)" name="model.purchaseUnit" autocomplete="off" id="purchase_unit">
+					value="#(model.purchase_unit??)" name="model.purchaseUnit??" autocomplete="off" id="purchase_unit">
 			</div>
 		</div>
 	</div>
@@ -394,11 +394,7 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-<div class="row">
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="col-sm-3 control-label">金额</label>
@@ -409,6 +405,13 @@
 			</div>
 		</div>
 	</div>
+	
+</div>
+
+
+
+<div class="row">
+	
 
 	<div class="col-md-6">
 
@@ -422,12 +425,9 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-<div class="row">
-	<div class="col-md-6">
+	
+	
+		<div class="col-md-6">
 		<div class="form-group">
 			<label class="col-sm-3 control-label">折扣后金额</label>
 
@@ -438,33 +438,15 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label class="col-sm-3 control-label">入库时间</label>
-
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="入库时间"  data-type='datepicker'
-					value="#(model.in_date??)" name="model.inDate" autocomplete="off">
-			</div>
-		</div>
-	</div>
+	
 </div>
 
 
-<div class="row">
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="col-sm-3 control-label">入库数量</label>
 
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="入库数量"
-					value="#(model.inQuantity??)" name="model.inQuantity"
-					autocomplete="off">
-			</div>
-		</div>
-	</div>
+
+
+<div class="row">
+	
 
 	<div class="col-md-6">
 
@@ -478,12 +460,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-
-<div class="row">
+	
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="col-sm-3 control-label">检测结果</label>
@@ -495,35 +473,17 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label class="col-sm-3 control-label">出库时间</label>
-
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="出库时间"  data-type='datepicker'
-					value="#(model.out_date??)" name="model.outDate" autocomplete="off">
-			</div>
-		</div>
-	</div>
+	
 </div>
 
 
 
 
-<div class="row">
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="col-sm-3 control-label">出库数量</label>
 
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="出库数量"  
-					value="#(model.out_quantity??)" name="model.outQuantity"
-					autocomplete="off">
-			</div>
-		</div>
-	</div>
+
+
+<div class="row">
+	
 
 	<div class="col-md-6">
 
@@ -537,13 +497,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-
-
-
-
-<div class="row">
+	
+	
 	<div class="col-md-6">
 		<div class="form-group">
 			<label class="col-sm-3 control-label">挂账金额</label>
@@ -555,6 +510,16 @@
 			</div>
 		</div>
 	</div>
+	
+	
+</div>
+
+
+
+
+
+<div class="row">
+	
 
 	<div class="col-md-6">
 
@@ -569,6 +534,309 @@
 		</div>
 	</div>
 </div>
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量1"
+					value="#(model.inQuantity1??)" name="model.inQuantity1"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量1"  
+					value="#(model.out_quantity1??)" name="model.outQuantity1"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间1"  data-type='datepicker'
+					value="#(model.in_date1??)" name="model.inDate1" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间1"  data-type='datepicker'
+					value="#(model.out_date1??)" name="model.outDate1" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量2"
+					value="#(model.inQuantity2??)" name="model.inQuantity2"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量2"  
+					value="#(model.out_quantity2??)" name="model.outQuantity2"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间2"  data-type='datepicker'
+					value="#(model.in_date2??)" name="model.inDate2" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间2"  data-type='datepicker'
+					value="#(model.out_date2??)" name="model.outDate2" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量3"
+					value="#(model.inQuantity3??)" name="model.inQuantity3"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量3"  
+					value="#(model.out_quantity3??)" name="model.outQuantity3"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间3"  data-type='datepicker'
+					value="#(model.in_date3??)" name="model.inDate3" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间3"  data-type='datepicker'
+					value="#(model.out_date3??)" name="model.outDate3" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量4"
+					value="#(model.inQuantity4??)" name="model.inQuantity4"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量4"  
+					value="#(model.out_quantity4??)" name="model.outQuantity4"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间4"  data-type='datepicker'
+					value="#(model.in_date4??)" name="model.inDate4" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间4"  data-type='datepicker'
+					value="#(model.out_date4??)" name="model.outDate4" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库数量5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库数量5"
+					value="#(model.inQuantity5??)" name="model.inQuantity5"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库数量5"  
+					value="#(model.out_quantity5??)" name="model.outQuantity5"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">入库时间5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="入库时间5"  data-type='datepicker'
+					value="#(model.in_date5??)" name="model.inDate5" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="出库时间5"  data-type='datepicker'
+					value="#(model.out_date5??)" name="model.outDate5" autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
 
 
 #include("../../person/searchPerson.html")

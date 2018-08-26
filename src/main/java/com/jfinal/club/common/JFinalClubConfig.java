@@ -19,6 +19,7 @@ import java.sql.Connection;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
 import com.chen.fy.IndexController;
+import com.chen.fy.Interceptor.FyAuthInterceptor;
 import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
@@ -52,6 +53,7 @@ import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.directive.TestDirective;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model._MappingKit;
+import com.chen.fy.task.DeleteFileTask;
 import com.jfinal.club.common.handler.UrlSeoHandler;
 import com.jfinal.club.common.kit.DruidKit;
 import com.jfinal.config.Constants;
@@ -213,7 +215,11 @@ public class JFinalClubConfig extends JFinalConfig {
 		arp.addSqlTemplate("/sql/all_sqls.sql");
 
 		me.add(new EhCachePlugin());
-		me.add(new Cron4jPlugin(p));
+
+		Cron4jPlugin cp = new Cron4jPlugin();
+		cp.addTask("* 0 * * *", new DeleteFileTask());
+		me.add(cp);
+		// me.add(new Cron4jPlugin(p));
 	}
 
 	public void configInterceptor(Interceptors me) {
@@ -221,7 +227,7 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add(new FyLoginSessionInterceptor());
 		me.add(new MenuActiveInterceptor());
 		me.add(new SessionInViewInterceptor());
-		// me.add(new FyAuthInterceptor());
+		me.add(new FyAuthInterceptor());
 	}
 
 	public void configHandler(Handlers me) {

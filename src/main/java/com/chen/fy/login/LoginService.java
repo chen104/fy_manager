@@ -187,6 +187,7 @@ public class LoginService {
 		if (sessionId != null) {
 			CacheKit.remove(loginAccountCacheName, sessionId);
 			Session.dao.deleteById(sessionId);
+
 		}
 	}
 

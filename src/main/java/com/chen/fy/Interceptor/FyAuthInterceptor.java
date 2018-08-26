@@ -1,44 +1,48 @@
 package com.chen.fy.Interceptor;
 
-import com.chen.fy.Constant;
+import org.apache.commons.lang3.StringUtils;
+
 import com.chen.fy.model.Account;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
-import com.jfinal.core.Controller;
 import com.jfinal.kit.Ret;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 
 public class FyAuthInterceptor implements Interceptor {
 
 	@Override
 	public void intercept(Invocation inv) {
-		Controller c = inv.getController();
-		Object o = c.getSessionAttr(Constant.account);
-		if (!inv.getActionKey().startsWith("/fy/admin")) {
-			inv.invoke();
-			return;
-		}
-		if (o == null) {
-			c.redirect("fy");
-		}
-		if (((Account) o).getId() == 1) {
-			inv.invoke();
-			return;
-		}
 
-		Record record = Db.findFirst(
-				"select * from account_role ar INNER JOIN role_permission  rp on ar.roleId= rp.roleId inner JOIN permission p ON rp.permissionId = p.id where ar.accountId = ? and p.actionKey = ?",
-				((Account) o).getId(), inv.getActionKey());
-		boolean isPjax = "true".equalsIgnoreCase(c.getHeader("X-PJAX"));
-		if (record == null) {
-			if (isPjax) {
+		String uri = inv.getController().getRequest().getRequestURI();
+		Account account = inv.getController().getSessionAttr("account");
+
+		if (!uri.startsWith("/fy/admin") || "/fy/admin".equals(uri) || "/fy/admin/account/tochangPassWord".equals(uri)
+				|| "/fy/admin/account/changPassword".equals(uri) || "/fy/admin/account/reloadPermission".equals(uri)) {
+			inv.invoke();
+			return;
+		}
+		// ajax选择实体
+		if (uri.contains("search")
+				&& StringUtils.isNotEmpty(inv.getController().getRequest().getHeader("X-Requested-With"))) {
+			inv.invoke();
+			return;
+		}
+		if (account.hasUriPermission(uri)) {
+			inv.invoke();
+		} else {
+			String c = inv.getController().getRequest().getHeader("X-Requested-With");
+			// Enumeration<String> enume =
+			// inv.getController().getRequest().getHeaderNames();
+			// while (enume.hasMoreElements()) {
+			// String key = enume.nextElement();
+			// System.out.print(key + " = ");
+			// System.out.println(inv.getController().getRequest().getHeader(key));
+			// }
+			// boolean isPjax = "true".equalsIgnoreCase(c);
+			if (!StringUtils.isEmpty(c)) {
 				inv.getController().renderJson(Ret.fail().set("msg", "没有权限"));
 			} else {
-				inv.getController().render("/_view/atladmin/noAuth.html");
+				inv.getController().redirect("/fy/noAuth");
 			}
-		} else {
-			inv.invoke();
 		}
 
 	}

@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.Adler32;
@@ -20,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
@@ -363,19 +365,36 @@ public class PurchaseController extends BaseController {
 	public void downloadZip() throws Exception {
 		Integer supplierId = getParaToInt("supplier_id");
 		String date = getPara("date");
+		String supplier_name = getPara("supplier_name");
 		Supplier supplier = Supplier.dao.findById(supplierId);
 		if (supplier == null) {
-			renderText("没有找到供应商");
-
+			setAttr("supplierMsg", "没有选择供应商");
+			render("download.html");
+			return;
 		}
+		if (StringUtils.isEmpty(date)) {
+			setAttr("dateMsg", "没有选择采购月份");
+			render("download.html");
+			return;
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(DateUtils.parseDate(date, "yyyy-MM"));
+		calendar.add(Calendar.DATE, -1);
+		String start = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
+		calendar.add(Calendar.DATE, 1);
+		calendar.add(Calendar.MONTH, 1);
+		String end = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
 
 		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
 				+ "";
-		List<Record> list = Db.find("select " + sql
+		List<Record> list = Db.find("select p.*," + sql
 				+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where can_download = 1 and  p.supplier_id = "
-				+ supplierId + " and purchase_date = '" + date + "'");
+				+ supplierId + " and purchase_date > '" + start + "' and purchase_date < '" + end + "'");
 		if (list.size() == 0) {
-			renderText("没有符合的采购单");
+			keepPara("date", "supplier_name", "supplierId");
+			setAttr("downloadMsg", "没有符合条件的采购单");
+			render("download.html");
+			return;
 		}
 
 		List<List<Record>> alllist = split(list);
@@ -389,8 +408,6 @@ public class PurchaseController extends BaseController {
 		int findex = 0;
 		for (List<Record> itemlist : alllist) {
 
-			String filePath = PathKit.getWebRootPath() + File.separator + "download/excel/" + name + index;
-			filename.add(filePath + ".xlsx");
 			// 读取模板
 			// InputStream input =
 			// this.getClass().getClassLoader().getResourceAsStream("templet/purchase.xlsx");
@@ -427,7 +444,7 @@ public class PurchaseController extends BaseController {
 				excel.setCellVal(row, 15, cate_tmp);
 
 				Double purchase_single_weight = item.getDouble("purchase_single_weight"); // 单件
-				excel.setCellVal(row, 17, purchase_single_weight);
+				excel.setCellVal(row, 18, purchase_single_weight);
 
 				Double purchase_weight = item.getDouble("purchase_weight"); // 总重
 				excel.setCellVal(row, 19, purchase_weight);
@@ -447,11 +464,20 @@ public class PurchaseController extends BaseController {
 
 			}
 			excel.save2File(targetfile);
+			filename.add(targetfile.getAbsolutePath());
 			excel.close();
 			index++;
 
 		}
 
+		if (filename.size() == 1) {
+			File file = new File(filename.get(0));
+			if (file.exists()) {
+				System.out.println("下载文件");
+			}
+			renderFile(file);
+			return;
+		}
 		String zipname = parentfile.getAbsolutePath() + ".zip";
 		String source = parentfile.getAbsolutePath();
 		ZipCompressor zc = new ZipCompressor(zipname);

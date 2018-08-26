@@ -8,4 +8,8 @@ package com.chen.fy.controller.base;
  */
 public class HelpController {
 
+	public void setPurchaseInitNo() {
+
+	}
+
 }

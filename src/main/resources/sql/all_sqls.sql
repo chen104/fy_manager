@@ -7,3 +7,7 @@
 #namespace("permission")
 #include("permission.sql")
 #end
+
+#namespace("upgetpay")
+#include("upgetpay.sql")
+#end

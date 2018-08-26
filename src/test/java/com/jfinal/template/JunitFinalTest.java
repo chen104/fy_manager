@@ -1,10 +1,18 @@
 package com.jfinal.template;
 
+import java.util.Date;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+
 import com.chen.fy.model.Permission;
 import com.jfinal.config.Constants;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.plugin.IPlugin;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * jfinal单元测试
@@ -19,7 +27,7 @@ public class JunitFinalTest {
 	/**
 	 * 通过配置类启动jfinal插件等
 	 */
-
+	@Before
 	public void initConfig() {
 		try {
 			String configClass = "com.jfinal.club.common.JFinalClubConfig";
@@ -39,10 +47,16 @@ public class JunitFinalTest {
 		}
 	}
 
+	public void totest() {
+		List<Record> list = Db.find("select * from fy_business_purchase ");
+		Date l = list.get(0).getDate("purchase_date");
+		System.out.println(l.getTime());
+	}
+
 	/**
 	 * 停止jfinal插件
 	 */
-
+	@After
 	public void endConfig() {
 		System.out.println("\n==JunitFinalTest End====================");
 		try {

@@ -19,9 +19,34 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
          
+         <li class="dropdown messages-menu" data-toggle="tooltip" data-placement="bottom" title="刷新权限">
+            <a href="#" data-aciton="/fy/reloadPermission" onclick="onreloadPerminssion(this)">
+            	 加载权限  <i class="glyphicon glyphicon-refresh"></i>
+            </a>
+            
+          </li>
+           <script type="text/javascript">
+        	function onreloadPerminssion(a){
+        		   $.ajax({
+                	   type: "POST",
+                	   url: '/fy/reloadPermission',
+                	   success: function(data){
+                	     alert(  data.msg );
+                	   },
+                	   error:function (XMLHttpRequest, textStatus, errorThrown) {
+                		    // 通常 textStatus 和 errorThrown 之中
+                		    // 只有一个会包含信息
+                		    this; // 调用本次AJAX请求时传递的options参数
+                		    alert(textStatus);
+                		}
+                	});
+        	}
+           </script>
+         
+         
            <li class="dropdown messages-menu" data-toggle="tooltip" data-placement="bottom" title="退出登录">
             <a href="/fy/logout" >
-              <i class="glyphicon glyphicon-log-out"></i>
+             	 退出 <i class="glyphicon glyphicon-log-out"></i>
             </a>
             
           </li>

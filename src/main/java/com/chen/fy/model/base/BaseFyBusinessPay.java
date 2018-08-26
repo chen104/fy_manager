@@ -249,4 +249,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("purchase_date");
 	}
 
+	public void setRemark(java.lang.String remark) {
+		set("remark", remark);
+	}
+	
+	public java.lang.String getRemark() {
+		return getStr("remark");
+	}
+
 }

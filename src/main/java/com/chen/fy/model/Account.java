@@ -23,6 +23,7 @@ public class Account extends BaseAccount<Account> {
 	public static final int STATUS_LOCK_ID = -1; // 锁定账号，无法做任何事情
 	public static final int STATUS_REG = 0; // 注册、未激活
 	public static final int STATUS_OK = 1; // 正常、已激活
+	public static final String sessionKey = "account"; // 正常、已激活
 
 	public boolean isStatusOk() {
 		return getStatus() == STATUS_OK;
@@ -80,7 +81,10 @@ public class Account extends BaseAccount<Account> {
 		if (getId() == 1) {
 			return true;
 		}
-		if ("/fy/admin".equals(key)) {
+		/**
+		 * 首页和刷新权限，直接返回
+		 */
+		if ("/fy/admin/base/account/reloadPermission".equals(key)) {
 			return true;
 		}
 		Object obj = CacheKit.get("urlPermission", getId());
@@ -138,6 +142,42 @@ public class Account extends BaseAccount<Account> {
 		}
 
 		return false;
+	}
+
+	/**
+	 * 刷新缓存
+	 */
+	public void reloadPermission() {
+		Integer id = getId();
+		/**
+		 * 列缓存
+		 */
+		String sql = Db.getSql("permission.listColPermission");
+		List<Record> list = Db.find(sql, id);
+		HashMap<String, HashSet<String>> permission = new HashMap<String, HashSet<String>>();
+		// HashSet<String> set = new HashSet<String>();
+		for (Record e : list) {
+			String ckey = e.getStr("ctable");
+			HashSet<String> set = permission.get(ckey);
+			if (set == null) {
+				set = new HashSet<String>();
+				permission.put(ckey, set);
+			}
+			set.add(e.getStr("ckey"));
+		}
+		CacheKit.put("colPermission", getId(), permission);
+
+		/**
+		 * url缓存
+		 */
+		sql = Db.getSql("permission.getUrlPermission");
+		List<Record> plist = Db.find(sql, id);
+		HashSet<String> ppermission = new HashSet<String>();
+		for (Record e : plist) {
+			ppermission.add(e.getStr("uri"));
+		}
+		CacheKit.put("urlPermission", getId(), ppermission);
+
 	}
 
 }

@@ -16,6 +16,10 @@
             <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/downloadZip" method="post">     
               <div class="box-body form-horizontal">
                 
+                <div class="row text-center">
+                
+                	<h2 style="color: red;margin-left: auto;margin-right: auto;">#(downloadMsg)</h2>
+                </div>
 				
                 
               <div class="row">
@@ -26,7 +30,8 @@
 			<label class="col-sm-3 control-label">采购月份</label>
 
 			<div class="col-sm-9">
-				<input name="date" type="text" class="form-control" placeholder="采购月份"  data-type='month'>
+				<input name="date" type="text" class="form-control" placeholder="采购月份"  data-type='month' autocomplete="off" value="#(date)">
+				<div id="date_msg" style="color: red">#(dateMsg)</div>
 			</div>
 		</div>
 	</div>
@@ -36,8 +41,9 @@
 			<label class="col-sm-3 control-label">供应商</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  id="supplier_name"  placeholder="供应商"   onclick="showChooesSupplier()">
-				<input type="text" id="supplier_id" name="supplier_id"  hidden="hidden" >
+				<input type="text" value="#(supplier_name)"  class="form-control"  id="supplier_name"  placeholder="供应商"  autocomplete="off"  onclick="showChooesSupplier()">
+				<input type="text" value="#(supplier_id)" id="supplier_id" name="supplier_id"  hidden="hidden" >
+				<div id="date_msg" style="color: red">#(supplierMsg)</div>
 			</div>
 		</div>
 	</div>
@@ -51,7 +57,7 @@
               <!-- /.box-body -->
               <div class="box-footer text-center">
               	<div>
-              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+              		   <a type="button" class="btn btn-default pull-left" href="/fy/admin/biz/commission/purchase">返回</a>
                 	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
               	</div>
              

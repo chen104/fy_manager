@@ -441,59 +441,71 @@
 
 </div>
 
+
 <div class="row">
 
-	<div class="col-md-6">
 
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">挂账期间</label>
+			
+				<div class="col-md-6">
 
-			<div class="col-sm-9">
-				<select class="form-control" name="createMonth" disabled="disabled" >
-					<option #if(model.createMonth==1) selected="selected"  #end value="1">1月</option>
-					<option  #if(model.createMonth==2) selected="selected"  #end value="2">2月</option>
-					<option #if(model.createMonth==3) selected="selected"  #end value="3">3月</option>
-					<option #if(model.createMonth==4) selected="selected"  #end value="4">4月</option>
-					<option #if(model.createMonth==5) selected="selected"  #end value="5">5月</option>
-					<option #if(model.createMonth==6) selected="selected"  #end value="6">6月</option>
-					<option #if(model.createMonth==7) selected="selected"  #end value="7">7月</option>
-					<option #if(model.createMonth==8) selected="selected"  #end value="8">8月</option>
-					<option #if(model.createMonth==9) selected="selected"  #end value="9">9月</option>
-					<option #if(model.createMonth==10) selected="selected"  #end value="10">10月</option>
-					<option #if(model.createMonth==11) selected="selected"  #end value="11">11月</option>
-					<option #if(model.createMonth==12) selected="selected"  #end value="12">12月</option>
-				</select>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">挂账期间</label>
+
+						<div class="col-sm-9">
+							<input id="create_date" name="model.create_date" type="text" class="form-control" value="#date(model.create_date??,"yyyy-MM")"
+								placeholder="挂账期间" data-type='month' autocomplete="off">
+						</div>
+					</div>
+				</div>
 				 
-			</div>
-		</div>
-	</div>
+				<script type="text/javascript">
+				
+					$(function(){
+						var vc=$("#create_date").val();
+						if(vc ==null&&""==vc){
+							var date =new Date();
+							var val = date.getFullYear()+"-"+date.getMonth();
+							$("#create_date").val(val);
+						}
+					});
+				</script>
 	
 	
-	<div class="col-md-6">
 
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">应付期间</label>
+				<div class="col-md-6">
 
-			<div class="col-sm-9">
-				<select class="form-control" name="payMonth"  >
-					<option #if(model.payMonth ==1) selected="selected"  #end  value="1">1月</option>
-					<option #if(model.payMonth ==2) selected="selected"  #end  value="2">2月</option>
-					<option #if(model.payMonth ==3) selected="selected"  #end  value="3">3月</option>
-					<option #if(model.payMonth ==4) selected="selected"  #end  value="4">4月</option>
-					<option #if(model.payMonth ==5) selected="selected"  #end  value="5">5月</option>
-					<option #if(model.payMonth ==6) selected="selected"  #end  value="6">6月</option>
-					<option #if(model.payMonth ==7) selected="selected"  #end  value="7">7月</option>
-					<option #if(model.payMonth ==8) selected="selected"  #end  value="8">8月</option>
-					<option #if(model.payMonth ==9) selected="selected"  #end  value="9">9月</option>
-					<option #if(model.payMonth ==10) selected="selected"  #end  value="10">10月</option>
-					<option #if(model.payMonth ==11) selected="selected"  #end  value="11">11月</option>
-					<option #if(model.payMonth ==12) selected="selected"  #end  value="12">12月</option>
-				</select>
-			</div>
-		</div>
-	</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">付账期间</label>
+
+						<div class="col-sm-9">
+							<input name="model.pay_date" type="text" class="form-control" 
+								placeholder="付账期间" data-type='month' autocomplete="off" value="#date(model.pay_date??,"yyyy-MM")">
+						</div>
+					</div>
+				</div>
+				 
+	
 
 </div>
+
+
+<div class="row">
+			
+				<div class="col-md-6">
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">备注</label>
+
+						<div class="col-sm-9">
+							<textarea rows="4" cols=""  name="model.remark" class="form-control" autocomplete="off"  >#(model.remark??)</textarea>
+						</div>
+					</div>
+				</div>
+
+	
+
+</div>
+
 
 
 

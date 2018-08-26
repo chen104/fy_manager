@@ -4,6 +4,8 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +54,7 @@ public class UploadGetpayController extends BaseController {
 				// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
 				// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
 				List<Record> list = new ArrayList<Record>();
+				HashSet<String> deliveryNoSet = new HashSet<String>();
 				int rows = excel.getRowNum() + 1;
 				for (int i = 1; i < rows; i++) {
 					FyUploadGetpay item = new FyUploadGetpay();
@@ -90,20 +93,24 @@ public class UploadGetpayController extends BaseController {
 					String cost = excel.getCellVal(i, 9);// 单价
 					item.setCost(NumberUtils.isNumber(cost) ? new BigDecimal(quantity) : null);
 
-					String hangquantity = excel.getCellVal(i, 10);// 挂账数量
+					String hangquantity = excel.getCellVal(i, 10);// 已挂帐数量
 					item.setHangQuantity(NumberUtils.isNumber(hangquantity) ? new BigDecimal(quantity) : null);
 
-					String hangAmount = excel.getCellVal(i, 11);// 挂账数量
+					String invoice_stat = excel.getCellVal(i, 11);// 发票挂账状态
+					item.setInvoiceStat(invoice_stat);
+
+					String hangAmount = excel.getCellVal(i, 12);// 挂账金额
 					item.setHangAmount(NumberUtils.isNumber(hangAmount) ? new BigDecimal(quantity) : null);
 
-					String invoice = excel.getCellVal(i, 12);// 发票挂账状态
+					String invoice = excel.getCellVal(i, 13);// 发票挂账状态
 					item.setInvoiceStat(invoice);
 
-					String puerchase = excel.getCellVal(i, 13);// 发票挂账状态
+					String puerchase = excel.getCellVal(i, 14);// 发票挂账状态
 					item.setPerchasePerson(puerchase);
 
-					String deliveryNo = excel.getCellVal(i, 14);// 送货单号
+					String deliveryNo = excel.getCellVal(i, 15);// 送货单号
 					item.setDeliveryNo(deliveryNo);
+					deliveryNoSet.add(deliveryNo);
 
 					String deliveryIndex = excel.getCellVal(i, 15);// 送货单序号
 					item.setDeliveryIndex(deliveryIndex);
@@ -116,12 +123,16 @@ public class UploadGetpayController extends BaseController {
 				}
 				int[] re = Db.batchSave("fy_upload_getpay", list, 20);
 
-				Db.update("update fy_business_order o INNER JOIN   "
-						+ "(SELECT  max(g.hang_quantity) hquantity ,MAX(cost) cost,g.delivery_no delivery_no  "
-						+ "FROM fy_upload_getpay g LEFT JOIN fy_business_order o  on  g.delivery_no = o.delivery_no where o.quantity <> o.hang_quantity GROUP BY g.delivery_no   "
-						+ ")  g ON o.delivery_no = g.delivery_no  "
-						+ " set  hang_quantity=hquantity,unhang_quantity=quantity - hquantity,hang_account =   cost * hquantity  "
-						+ "where o.id=12613  " + "");
+				/**
+				 * 
+				 */
+
+				List<String> delino = splitdeliveryNoSet(deliveryNoSet);
+				for (String e : delino) {
+					String sql = String.format(Db.getSql("upgetpay.updateorder"), e);
+					System.out.println(sql);
+					Db.update(sql);
+				}
 
 				Db.update("update fy_business_order set hang_status='全部挂账' where quantity = hang_quantity;");
 				Db.update(
@@ -134,12 +145,14 @@ public class UploadGetpayController extends BaseController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				renderText(e.getMessage());
+				return;
 			}
 		}
 		ufile.getFile().deleteOnExit();
 		// 更新订单反写状态
 
-		Db.update("");
+		// Db.update("");
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
 	}
 
@@ -193,6 +206,45 @@ public class UploadGetpayController extends BaseController {
 	public void add() {
 		setAttr("action", "save");
 		render("edit.html");
+	}
+
+	/**
+	 * 避免送货单号过长
+	 * @param deliveryNoSet
+	 * @return
+	 */
+	protected List<String> splitdeliveryNoSet(HashSet<String> deliveryNoSet) {
+		List<String> deliveryNos = new ArrayList<String>();
+		int row = 0;
+		StringBuilder sb = null;
+
+		Iterator<String> iterator = deliveryNoSet.iterator();
+		while (iterator.hasNext()) {
+			if (row % 10 == 0) {
+				if (sb != null) {
+					if (sb.length() > 2) {
+						sb.deleteCharAt(sb.length() - 1);
+					}
+					sb.append(")");
+					deliveryNos.add(sb.toString());
+					sb = new StringBuilder();
+					sb.append("(");
+				} else {
+					sb = new StringBuilder();
+					sb.append("(");
+
+				}
+
+			}
+			sb.append("'").append(iterator.next()).append("',");
+			row++;
+		}
+		if (sb.length() > 2) {
+			sb.deleteCharAt(sb.length() - 1);
+			sb.append(")");
+		}
+		deliveryNos.add(sb.toString());
+		return deliveryNos;
 	}
 
 }
