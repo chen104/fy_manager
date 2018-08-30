@@ -513,4 +513,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("is_all_in_house");
 	}
 
+	public void setReadyId(java.lang.Integer readyId) {
+		set("ready_id", readyId);
+	}
+	
+	public java.lang.Integer getReadyId() {
+		return getInt("ready_id");
+	}
+
 }

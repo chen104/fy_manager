@@ -6,92 +6,136 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">生产计划表</h3>
+				<button class="btn btn-info" onclick="toUpdateTime()">更新计划时间</button>
+				<script type="text/javascript">
+					function toUpdateTime(){
+						var select = $('input[data-select=select]:checked');
+						if(select.length ==0 ){
+							alert("没有选择计划单");
+						}else{
+							$("#myForm").submit();
+						}
+					}
+				</script>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
-						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
-								placeholder="Search" value="#(keyWord)">
+					<form action="" method="post" class="form-inline">
+					<div class="form-group  input-group-sm">
+						<label for="condition">显示</label> <select id="condition"
+							class="form-control" name="pageSize">
+							<option value="10">10</option>
+							<option value="20" #if(pageSize== 20) selected="selected" #end>20</option>
+							<option value="30" #if(pageSize== 30) selected="selected" #end>30</option>
+							<option value="50" #if(pageSize== 50) selected="selected" #end>50</option>
+							<option value="100" #if(pageSize== 1000) selected="selected" #end>100</option>
+						</select>
+					</div>
+					<div class="form-group  input-group-sm">
+						<label for="condition">条件</label> <select id="condition"
+							class="form-control" name="condition"">
 
-							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
-									<i class="fa fa-search"></i>
-								</button>
-							</div>
-						</div>
+							<option #if(condition== "work_order_no") selected="selected" #end
+								value="work_order_no">工作订单号</option>
+							<option #if(condition== "commodity_spec") selected="selected"
+								#end value="commodity_spec">商品规格</option>
 
+						</select>
+
+					</div>
+
+
+
+					<div id="keyword_div" class="form-group  input-group-sm">
+						<input id="order_date" type="text" name="keyWord"
+							autocomplete="off" class="form-control" value="#(keyWord)">
+
+					</div>
+
+					<div class="form-group  input-group-sm">
+						<button type="submit" class="btn btn-default">
+							<i class="fa fa-search"></i>
+						</button>
+					</div>
 					</form>
-					-->
 				</div>
+
+
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
-	
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style="">序号</th>
-								<th>类别</th>
-								<th>计划员</th>
-								<th>执行状态</th>
-								<th>紧急状态</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
-								<th>总图号</th>
-								<th>技术条件</th>
-								<th>加工要求</th>
-								<th>数量</th>
-								<th>单位</th>
-								<th>预计投产时间</th>
-								<th>预计完工时间</th>
-								<th>备注</th>
-								<th>修改计划时间</th>
-							</tr>
-						</thead>
+					<form action="/fy/admin/biz/produce/toUpdateTime" method="post" id="myForm">
+				<table class="table table-bordered" style="white-space: nowrap">
+					<thead>
+						<tr>
+							<th style="">序号</th>
+							<th><input type="checkbox" id='selectAll' name="selectAll">
+							</th>
+							<th>类别</th>
+							<th>计划员</th>
+							<th>执行状态</th>
+							<th>紧急状态</th>
+							<th>订单日期</th>
+							<th>交货日期</th>
+							<th>工作订单号</th>
+							<th>送货单号</th>
+							<th>商品名称</th>
+							<th>商品规格</th>
+							<th>总图号</th>
+							<th>技术条件</th>
+							<th>加工要求</th>
+							<th>数量</th>
+							<th>单位</th>
+							<th>预计投产时间</th>
+							<th>预计完工时间</th>
+							<th>备注</th>
+							<th>修改计划时间</th>
+						</tr>
+					</thead>
+				
+					
 						<tbody>
-							#for(x : modelPage.getList())
-							<tr>
-								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp) </td>
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
-								<td>#date(x.plan_time,"yyyy-MM-dd")</td>
-								<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
-								<td>#(x.plan_remark)</td>
-							
-								<td class="jfa-operation-button"><a  href="/fy/admin/biz/produce/editProducePlan?id=#(x.id)"
-									data-action="#"> <i
-										class="glyphicon glyphicon-pencil"  title="修改计划时间"></i>
-								</a></td>
-								
-							</tr>
-							#end
-						</tbody>
-					</table>
-		
+						#for(x : modelPage.getList())
+						<tr>
+							<td>#(for.index+1)</td>
+							<td><input type="checkbox" name="orderIds" value="#(x.id)"
+								data-select='select'></td>
+							<td>#(x.cate_tmp)</td>
+							<td>#(x.plan_tmp)</td>
+							<td>#(x.execu_status)</td>
+							<td>#(x.urgent_status)</td>
+							<td>#(x.orderDate)</td>
+							<td>#(x.deliveryDate)</td>
+							<td>#(x.workOrderNo)</td>
+							<td>#(x.deliveryNo)</td>
+							<td>#(x.commodityName)</td>
+							<td>#(x.commoditySpec)</td>
+							<td>#(x.mapNo)</td>
+							<td>#(x.technology)</td>
+							<td>#(x.machiningRequire)</td>
+							<td>#(x.quantity)</td>
+							<td>#(x.unit_tmp)</td>
+							<td>#date(x.plan_time,"yyyy-MM-dd")</td>
+							<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
+							<td>#(x.plan_remark)</td>
 
+							<td class="jfa-operation-button"><a
+								href="/fy/admin/biz/produce/editProducePlan?id=#(x.id)"
+								data-action="#"> <i class="glyphicon glyphicon-pencil"
+									title="修改计划时间"></i>
+							</a></td>
+
+						</tr>
+						#end
+					</tbody>
+					
+				</table>
+
+ 		</form>	
 			</div>
 			<!-- /.box-body -->
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/produce/planPro?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -99,6 +143,27 @@
 
 
 <script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
 function deleteperson(a){
 	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
 	if(issure){
@@ -126,5 +191,4 @@ function deleteperson(a){
 		}
 	}
     </script>
-#include("planModel.html")
-#end
+#include("planModel.html") #end

@@ -1,0 +1,166 @@
+#@myLayout() #define main()
+<!-- Horizontal Form -->
+<div class="box box-info" style="wwidth: 300ps">
+	<div class="box-header with-border">
+		<h3 class="box-title">生产计划更新</h3>
+		<div class="box-tools"></div>
+
+	</div>
+	<!-- /.box-header -->
+	<!-- form start -->
+	<form   id="myForm" action="/fy/admin/biz/produce/batchUpdatePlan" method="post"  class="form-horizontal">
+		<div class="box-body ">
+				
+				
+				<div class="row"
+					style="margin-left: 30px; margin-right: 30px; margin-bottom: 50px">
+					<table class="table table-bordered" style="white-space: nowrap">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id='selectAll' name="selectAll" checked="checked">
+								</th>
+								<th>类别</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>加工要求</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>预计开工时间</th>
+								<th>预计完工时间</th>
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelList)
+							<tr>
+								<td><input type="checkbox" name="orderIds" value="#(x.id)"
+									data-select='select' checked="checked"></td>
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.workOrderNo)</td>
+								<td>#(x.deliveryNo)</td>
+								<td>#(x.commodityName)</td>
+								<td>#(x.commoditySpec)</td>
+								<td>#(x.mapNo)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machiningRequire)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								<td>#date(x.plan_time,"yyyy-MM-dd")</td>
+								<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+				</div>
+				
+				
+					
+					<div class="row">
+
+						
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label  class="col-sm-3 control-label">预计投产时间</label>  
+					
+								<div class="col-sm-9">
+									  <input  data-type="datepicker"  type="text" class="form-control " id="beginTime" name="startTime" autocomplete="off">
+								</div>
+							</div>
+						</div>
+						
+						
+						
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label  class="col-sm-3 control-label">预计完工时间</label>
+					
+								<div class="col-sm-9">
+									      <input data-type="datepicker" type="text" class="form-control pull-right"  id="finishTime" name="finishTime" autocomplete="off">
+								</div>
+							</div>
+						</div>
+						
+					
+				
+	
+		</div>
+			     
+			      	
+		</div><!-- body -->
+			
+	
+
+		<!-- /.box-body -->
+		<div class="box-footer text-center">
+			<div>
+				<button type="button" class="btn btn-default pull-left"
+					onclick="window.history.herf = /fy/admin/biz/produce/planPro">返回</button>
+				<button onclick="" class="btn btn-info">确定</button>
+				<!-- 靠右 class  pull-right  -->
+			</div>
+
+		</div>
+		<!-- /.box-footer -->
+	</form>
+</div>
+<script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							var ids = $('input[data-select=select]:checked');
+							var finsh = formData.finishTime;
+							console.info(finsh);
+							if(ids.length ==0){
+								alert("没有选择计划单");
+								return false;
+							}
+					
+						
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							alert(ret.msg);
+							 window.location.href='/fy/admin/biz/produce/planPro';
+							 ///fy/admin/biz/finance/pay/
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+</script>
+
+#end

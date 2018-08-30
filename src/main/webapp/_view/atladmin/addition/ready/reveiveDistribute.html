@@ -7,21 +7,31 @@
 			<div class="box-header">
 				<h3 class="box-title">备货接收表</h3>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
-						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
-								placeholder="Search" value="#(keyWord)">
+					<form action="/fy/admin/biz/addition/ready/receiveReady"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition"   ">
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">工作订单号</option>
+							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>  	
+							    </select>
+						  
+						  </div>
+						  
+						
+						   <div id="keyword_div" class="form-group  input-group-sm" >
 
-							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
+							<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+						  
+						  </div>
+						  <input type="text" name="modelId" hidden="hidden" value="#(modelId)">
+						  
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
 									<i class="fa fa-search"></i>
 								</button>
-							</div>
-						</div>
-
-					</form>
-					-->
+						  </div>
+						 </form>
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -51,6 +61,16 @@
 								<th>分配流向</th>
 								<th>分配属性</th>
 								<th>分配时间</th>
+								
+								<th>订单编码</th>
+								
+								<th>备货数量</th>
+								
+								<th>补单数量1</th>
+								<th>补单数量2</th>
+								<th>补单数量3</th>				
+									
+								
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -79,11 +99,21 @@
 								<td>#(x.distribute_to)</td>
 								<td>#(x.distribute_attr)</td>
 								<td>#(x.distribute_time)</td>
+								
+								<td>#(x.order_no)</td>
+								
+								<td>#(x.ready_quantity)</td>
+								
+								<td>#(x.add_quantity1)</td>
+								<td>#(x.add_quantity2)</td>
+								<td>#(x.add_quantity3)</td>
 								<td>
+									#if(x.add_status!="已补单")
 									<a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/biz/addition/ready/delete?id=#(x.id)" onclick="deleteperson(this)" > <i
+									data-id="#(x.id)" onclick="onSelectReady(this)" > <i
 										class="glyphicon glyphicon-link" title="选择备货">选择备货</i>
 									</a>
+									#end
 								</td>
 							</tr>
 							#end
@@ -101,10 +131,48 @@
 		<!-- /.box -->
 	</div>
 </div>
+#include("searchReady.html")
 <script type="text/javascript">
+	function selectOrderToReady(order_id,ready_id){
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/addition/ready/addOrderToReady' ,
+			   data:{order_id:order_id,ready_id:ready_id},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					   alert(ret.msg);
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+		
+
 /**
  * 多个分配
  */
+ 	function onSelectReady(a){
+		var callback =function(select,id,name){
+			console.info(select+" "+id+" "+name);
+			if(select){
+				selectOrderToReady($(a).data('id'),id);
+			}else{
+				
+			}
+		};
+		new SelectReadyModal(callback,a).show();
+	
+	}
+	
+	
+
 
 </script>
 

@@ -15,12 +15,14 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.business.service.ProductService;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessProduce;
 import com.jfinal.aop.Before;
 import com.jfinal.club.common.kit.PIOExcelUtil;
+import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -89,6 +91,8 @@ import com.jfinal.plugin.activerecord.tx.Tx;
  *
  */
 public class ProduceController extends BaseController {
+	ProductService productService = ProductService.me;
+
 	public void test() {
 		renderText(this.getClass().getSimpleName() + "这是一个测试方法");
 	}
@@ -177,11 +181,21 @@ public class ProduceController extends BaseController {
 	public void planPro() {
 		String key = getPara("keyWord");
 		Page<FyBusinessOrder> modelPage = null;
-		setAttr("keyWord", key);
+		keepPara("condition", "keyWord", "pageSize");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		if (StringUtils.isEmpty(key)) {
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
+					"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity  order by id desc");
 
-		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity  order by id desc");
+		} else {
+			String condition = getPara("condition");
+			StringBuilder sb = new StringBuilder();
+			sb.append(" and ").append(condition).append(" like '").append(key).append("' ");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
+					"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity " + sb.toString()
+							+ " order by id desc");
 
+		}
 		setAttr("modelPage", modelPage);
 		render("producePlan.html");
 	}
@@ -403,5 +417,75 @@ public class ProduceController extends BaseController {
 	public static void main(String[] args) {
 
 		System.out.println(DateFormatUtils.format(System.currentTimeMillis(), "'yyyy-MM-00'"));
+	}
+
+	/**
+	 * 批量生成生产计划单
+	 */
+	public void batchCreatePlan() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+		String start = getPara("start");
+		String end = getPara("end");
+		String remark = getPara("remark");
+		Ret ret = productService.batchCreatePlanProduct(ids, start, end, remark);
+		renderJson(ret);
+	}
+
+	public void batchupdate() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+
+		String start = getPara("start");
+		String end = getPara("end");
+		String remark = getPara("remark");
+		Ret ret = productService.batchUpdatePlanProduct(ids, start, end, remark);
+		renderJson(ret);
+	}
+
+	public void batchUpateStart() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+		String start = getPara("start");
+	}
+
+	public void batchUpateEnd() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+		String end = getPara("end");
+	}
+
+	/**
+	 * 生产计划单修改金额
+	 */
+	public void batchUpdatePlan() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+		if (ids == null || ids.length == 0) {
+			renderJson(Ret.fail().set("msg", "没有选择生产计划单"));
+			return;
+		}
+		String start = getPara("startTime");
+		String end = getPara("finishTime");
+		if (StringUtils.isEmpty(start) && StringUtils.isEmpty(end)) {
+
+			renderJson(Ret.fail("msg", "没有选择时间"));
+			return;
+		}
+
+		Ret ret = productService.updatePlanTimeProduct(ids, start, end);
+		renderJson(ret);
+	}
+
+	/**
+	 * 编辑时间页面
+	 */
+	public void toUpdateTime() {
+		Integer[] ids = getParaValuesToInt("orderIds");
+		if (ids == null || ids.length == 0) {
+			planPro();
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(ids, sb);
+		String sql = "select * from  fy_business_order where  id  in " + sb.toString() + " order by id desc";
+		List<FyBusinessOrder> modelList = FyBusinessOrder.dao.find(sql);
+		setAttr("modelList", modelList);
+		render("updatePlanTime.html");
 	}
 }

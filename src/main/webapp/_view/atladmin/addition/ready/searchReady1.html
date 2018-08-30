@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+   <!-- jQuery 3 -->
+	<script src="/assets/atl/bower_components/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<form action="" class="form-inline">
+				 <span class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition"  >
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">客户</option>
+							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>
+				
+							    </select>
+						  
+						  </span>
+						  
+						
+						   <span>
+
+							<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+						  
+						  </span>
+						  <input type="text" name="modelId" hidden="hidden" value="#(modelId)">
+						  
+						  <span class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search">查找</i>
+								</button>
+						  </span>
+			</form>
+			
+			
+		</div>
+		<div class="row">
+			<table>
+				<thead></thead>
+				
+			</table>
+		
+		</div>
+		<div class="row"></div>
+	</div>
+</body>
+
+
+</html>

@@ -10,4 +10,7 @@ public class FyBusinessReady extends BaseFyBusinessReady<FyBusinessReady> {
 
 	public final static FyBusinessReady dao = new FyBusinessReady().dao();
 
+	public String getCustomerName() {
+		return getStr("customer_name");
+	}
 }

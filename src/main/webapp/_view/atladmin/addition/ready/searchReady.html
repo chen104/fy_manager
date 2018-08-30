@@ -1,57 +1,185 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="/assets/atl/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <!-- jQuery 3 -->
-	<script src="/assets/atl/bower_components/jquery/dist/jquery.min.js"></script>
-</head>
-<body>
-	<div class="container">
-		<div class="row">
-			<form action="" class="form-inline">
-				 <div class="form-group  input-group-sm">
-						    <label for="condition">条件</label>
-							    <select id="condition" class="form-control" name="condition"  >
-							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">客户</option>
-							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="readyModel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" id="suppler_bt_onclose"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">备货选择</h4>
+			</div>
+			<div class="modal-body">
 				
-							    </select>
-						  
-						  </div>
-						  
-						
-						   <div id="keyword_div" class="form-group  input-group-sm" >
-
-							<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
-						  
-						  </div>
-						  <input type="text" name="modelId" hidden="hidden" value="#(modelId)">
-						  
-						  <div class="form-group  input-group-sm">
-						  	<button type="submit" class="btn btn-default">
-									<i class="fa fa-search"></i>
-								</button>
-						  </div>
-			</form>
-			
-			
+				<div style="overflow-y:scroll">
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th></th>
+								<th>客户名称</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+							</tr>
+						</thead>
+						<tbody id="ptbody">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="width: 100%; text-align:center" >
+				<nav aria-label="Page navigation">
+					<ul class="pagination" id="ReadypageUl">
+						<li ><a href="#" aria-label="Previous"> <span
+								aria-hidden="true">&laquo;</span>
+						</a></li>
+						<li onclick="console.debug(1)"><a href="#">1</a></li>
+						<li class="active"><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#" aria-label="Next"> <span
+								aria-hidden="true">&raquo;</span>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" id="Ready_bt_onCancel" data-dismiss="modal">取消</button>
+				<button type="button" class="btn btn-primary" id="Ready_bt_onSelect">确定</button>
+			</div>
 		</div>
-		<div class="row">
-			
-		
-		</div>
-		<div class="row"></div>
+		<!-- /.modal-content -->
 	</div>
-</body>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-<!-- jQuery UI 1.11.4 -->
-<script src="/assets/atl/bower_components/jquery-ui/jquery-ui.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="/assets/atl/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
 
-</html>
+
+function SelectReadyModal(callback,a){
+	
+	
+	this.callback = callback;
+	$("#Ready_bt_onSelect").click(function(){
+		/**
+			获得选择值
+		*/
+		 var a = $("input[name='selectReady']:checked").val();
+  		 if(a!=null){
+  			 var vals = 	a.split("_");
+  			 if(callback!=null){
+  				callback(true,vals[0],vals[1]);
+  			 }
+  			 console.debug("选择备货");
+ 	  		$('#readyModel').modal("hide");
+ 	  		
+  	  		 
+  	  	}else{
+			alert("没有选择备货");
+			return;
+  	    }
+  	
+  		
+	});
+	
+	var noselect= function(){
+	
+		callback(false,null,null,null);
+	
+	};
+	
+	$("#Ready_bt_onCancel").click(noselect);
+	$("#ready_bt_onclose").click(noselect);
+	
+	this.show=show;
+	function show(){
+		$('#readyModel').modal("show");
+			getReadyFromServer(1,$(a).data('id'));
+			
+	}
+	
+
+}
+
+function checknull(value){
+
+	return value ==null?"":value;
+	
+}
+
+function getReadyFromServer(pageNumer , order_id){
+	
+	$.get("/fy/admin/biz/addition/ready/searchReadyJson", { keyWord: $("#ReadyKeyWord").val(), p : pageNumer,order_id:order_id},
+		  function(data){
+			plist = 	data.list;
+			var	ptbody = $("#ptbody");
+			ptbody.empty();
+		for(x in plist){
+				console.debug(plist[x].name);
+				
+				var tr='<tr><td class="text-center"><input type="radio" name="selectReady" value="'+plist[x].id+'_'+plist[x].commodityName+'"></td>'+
+				'<td>'+checknull(plist[x].customerName)+'</td>'+
+				'<td>'+plist[x].commodityName+'</td>'+
+				'<td>'+plist[x].commoditySpec+'</td></tr>';
+				ptbody.append(tr);
+			}
+
+		
+		var ReadypageUl =$("#ReadypageUl");
+		ReadypageUl.empty();
+		if(data.totalPage < 2 ){
+			return;
+		}
+		else{
+			
+			if(data.firstPage){
+				var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					ReadypageUl.append(li);
+			}else{
+				var li = '<li onclick="getReadyFromServer('+ (data.pageNumber -1 )+','+order_id+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
+					ReadypageUl.append(li);
+			}
+
+			if(data.totalPage>5){
+					for(var i = 1;i<6;i++){
+						if(data.pageNumber==i){
+								var li = '<li class="active"><a href="#">'+i+'</a></li>'
+								ReadypageUl.append(li);
+							}
+							else{
+								var li = '<li onclick="getReadyFromServer('+ i +','+order_id+')"><a href="#">'+i+'</a></li>'
+								ReadypageUl.append(li);
+							}
+					}	
+			}else{
+				for(var i = 1;i<(data.totalPage+1);i++){
+					if(data.pageNumber==i){
+							var li = '<li class="active"><a href="#">'+i+'</a></li>'
+							ReadypageUl.append(li);
+						}
+						else{
+							var li = '<li onclick="getReadyFromServer('+ i +','+order_id+')"><a href="#">'+i+'</a></li>'
+							ReadypageUl.append(li);
+						}
+				}	
+
+			}
+			if(data.lastPage){
+				var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+					ReadypageUl.append(li);
+			}else{
+				var  li = '<li onclick="getReadyFromServer('+ (data.pageNumber -1 )+','+order_id+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
+				ReadypageUl.append(li);
+			}
+
+			
+			}
+		  },'json');
+  	}
+
+
+
+  </script>

@@ -1,0 +1,117 @@
+<!-- Modal -->
+<div class="modal fade" id="updatePlanModel" tabindex="-1" role="dialog" aria-labelledby="updatePlanModelLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="updatePlanModelLabel">更新生产计划表</h4>
+      </div>
+      <div class="modal-body text-center">
+      	<form id="myForm" action="/fy/admin/biz/produce/batchUpdatePlan" method="post">
+      	<div class="row">
+      		<div class="col-md-6">
+	      		 <div class="form-group">
+	                <label>预计投产时间</label>
+	                <div class="input-group date">
+	                  <div class="input-group-addon">
+	                    <i class="fa fa-calendar"></i>
+	                  </div>
+	                  <input  data-type="datepicker"  type="text" class="form-control pull-right" id="beginTime" name="startTime">
+	                </div>
+	                 <!-- /.input group -->
+	             </div>
+             </div>
+      	
+      	<div class="col-md-6">
+      	 	<div class="form-group">
+                <label>预计完工时间</label>
+                <div class="input-group date">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input data-type="datepicker" type="text" class="form-control pull-right"  id="finishTime" name="finishTime">
+                </div>
+                <!-- /.input group -->
+              </div>
+      		</div>
+      	</div>
+      	</form>
+	</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="updateTime()">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							var v= $("#beginTime").val();
+						
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							alert(ret.msg);
+							 window.location.reload();;
+							 //href="/fy/admin/biz/produce/batchUpdatePlan"
+							 ///fy/admin/biz/finance/pay/
+						} else {
+							alert(ret.msg);
+						}
+						$("#updatePlanModel");
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+		
+		$(function(){
+			
+			$("#selectAll").click(function(){
+				var isChecked =  $("#selectAll").is(":checked");
+				if( isChecked ){
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', true);
+						this.checked= true;
+						});
+				}else{
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', false);
+						this.checked= false;
+					});
+				}
+				console.info('this');
+				
+			});
+		});
+</script>
+
+<script type="text/javascript">
+
+	function updateTime(){
+		var beginTime= $("#beginTime").val();
+		if($("#beginTime").val()==null||$("#finishTime").val()==null){
+			alert("没有选择开始或结束时间");
+			return;
+		}
+		$("#myForm").submit();
+	}
+
+  function showUpdateTimeModel(){
+		var checkbox =   $('input[data-select=select]:checked');
+		if(checkbox.length ==0){
+			alert("没有选择计划单");
+			return;
+		}
+	  	var modar = $("#updatePlanModel");
+	 	 modar.modal("show");
+
+	  }
+
+</script>

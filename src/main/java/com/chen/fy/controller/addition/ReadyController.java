@@ -23,6 +23,7 @@ import com.chen.fy.model.Person;
 import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.ReadyProductNoKit;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -31,6 +32,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class ReadyController extends BaseController {
+	ReadyService service = ReadyService.me;
 	private static final Logger logger = LogManager.getLogger(ReadyController.class);
 	final static String storage = " (IFNULL(in_quantity1,0) \r\n" + "+ IFNULL(in_quantity2,0)\r\n"
 			+ " +IFNULL(in_quantity3,0) \r\n" + "+IFNULL(in_quantity4,0) \r\n" + "+IFNULL(in_quantity5,0)  )-\r\n"
@@ -697,12 +699,59 @@ public class ReadyController extends BaseController {
 	 */
 	public void receiveReady() {
 		String key = getPara("keyWord");
+		keepPara("condition", "keyWord");
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
-		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order where  dis_to = 3 order by  id desc");
-
+		if (StringUtils.isEmpty(key)) {
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+					"select o.*,r.order_no,r.add_quantity1,r.add_quantity2,r.add_quantity3 ,r.quantity ready_quantity,add_status",
+					"from fy_business_order o LEFT JOIN fy_business_ready r\r\n"
+							+ "on o.ready_id= r.id where  dis_to = 3 order by  id desc");
+		} else {
+			String condition = getPara("condition");
+			StringBuilder sb = new StringBuilder();
+			sb.append(" and ").append(condition).append(" like '").append(key).append("' ");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+					"select o.*,r.order_no,r.add_quantity1,r.add_quantity2,r.add_quantity3,r.quantity ready_quantity ,add_status",
+					"from fy_business_order o LEFT JOIN fy_business_ready r\r\n"
+							+ "on o.ready_id= r.id where  dis_to = 3 " + sb.toString() + " order by  id desc");
+		}
 		setAttr("modelPage", modelPage);
 		render("reveiveDistribute.html");
+	}
+
+	public void searchReady() {
+		render("searchReady.html");
+	}
+
+	/**
+	 * 
+	 */
+	public void searchReadyJson() {
+		Page<FyBusinessReady> modelPage = null;
+		Integer order_id = getParaToInt("order_id");
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(order_id);
+		if (order == null) {
+			modelPage = FyBusinessReady.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from fy_business_ready order by id desc");
+			renderJson(modelPage);
+			return;
+		}
+		String commodityName = order.getCommodityName();
+		String commoditySpec = order.getCommoditySpec();
+
+		modelPage = FyBusinessReady.dao.paginate(getParaToInt("p", 1), 10, "select r.*,c.name customer_name ",
+				"	 from fy_business_ready  r LEFT JOIN fy_base_customer c 		on r.customer=c.id  where commodity_name = ? and commodity_spec=? order by id desc",
+				commodityName, commoditySpec);
+		// String name = modelPage.getList().get(0).getStr("customer_name");
+		// System.out.println(JsonKit.toJson(modelPage));
+		renderJson(JsonKit.toJson(modelPage));
+	}
+
+	public void addOrderToReady() {
+		Integer order_id = getParaToInt("order_id");
+		Integer ready_id = getParaToInt("ready_id");
+		Ret ret = service.selectReady(order_id, ready_id);
+		renderJson(ret);
 	}
 }

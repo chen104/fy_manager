@@ -19,5 +19,7 @@ public class TestDate {
 		calender.add(Calendar.DATE, 1);
 		calender.add(Calendar.MONTH, 1);
 		System.out.println(DateFormatUtils.format(calender, "yyyy-MM-dd"));
+		// 737217
+		System.out.println(DateUtils.parseDate("2018-6-7", "yyyy-MM-dd").getTime());
 	}
 }
