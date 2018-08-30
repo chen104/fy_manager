@@ -37,6 +37,7 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
+								<th>厂商编码</th>
 								<th>厂商名称</th>
 								<th>统一社会代码</th>
 								<th>地址</th>
@@ -55,6 +56,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
+								<td>#(x.supplier_no)</td>
 								<td>#(x.name)</td>
 								<td>#(x.code)</td>
 								<td>#(x.address)</td>

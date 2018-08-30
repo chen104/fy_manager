@@ -87,6 +87,23 @@ public class Account extends BaseAccount<Account> {
 		if ("/fy/admin/base/account/reloadPermission".equals(key)) {
 			return true;
 		}
+
+		Object allperm = CacheKit.get("Permission", "all");
+		if (allperm == null) {
+			List<Record> allperms = Db.find("select  actionKey from permission");
+			HashSet<String> allppermission = new HashSet<String>();
+			for (Record e : allperms) {
+				allppermission.add(e.getStr("actionKey"));
+			}
+
+			CacheKit.put("Permission", "all", allppermission);
+			allperm = allppermission;
+		}
+		HashSet<String> allSet = (HashSet<String>) allperm;
+		if (!allSet.contains(key)) {
+			return true;
+		}
+
 		Object obj = CacheKit.get("urlPermission", getId());
 
 		if (obj == null) {
@@ -113,6 +130,7 @@ public class Account extends BaseAccount<Account> {
 		if (getId() == 1) {
 			return true;
 		}
+
 		Object obj = CacheKit.get("colPermission", getId());
 
 		if (obj == null) {
@@ -177,6 +195,16 @@ public class Account extends BaseAccount<Account> {
 			ppermission.add(e.getStr("uri"));
 		}
 		CacheKit.put("urlPermission", getId(), ppermission);
+
+		// 加载所有权限，里面有的才拦截，没有的不拦截
+
+		List<Record> allperm = Db.find("select  actionKey from permission");
+		HashSet<String> allppermission = new HashSet<String>();
+		for (Record e : allperm) {
+			allppermission.add(e.getStr("actionKey"));
+		}
+
+		CacheKit.put("Permission", "all", allppermission);
 
 	}
 

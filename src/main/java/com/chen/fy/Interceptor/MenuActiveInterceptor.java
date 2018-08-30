@@ -17,13 +17,13 @@ public class MenuActiveInterceptor implements Interceptor {
 			inv.getController().setAttr("fyorder", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/biz/produce")) {
 			inv.getController().setAttr("produce", "active  menu-open");
-		} else if (key.startsWith("/fy/admin/biz/whouse")) {
+		} else if (key.startsWith("/fy/admin/biz/whouse") || key.startsWith("/fy/admin/biz/outWhouse")) {
 			inv.getController().setAttr("whouse", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/biz/finance")) {
 			inv.getController().setAttr("finance", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/biz/aftersale")) {
 			inv.getController().setAttr("aftersale", "active  menu-open");
-		} else if (key.startsWith("/fy/admin/biz/commission")) {
+		} else if (key.startsWith("/fy/admin/biz/commission") || key.startsWith("/fy/admin/biz/assist")) {
 			inv.getController().setAttr("commission", "active  menu-open");
 		} else if (key.startsWith("/fy/admin/biz/addition")) {
 			inv.getController().setAttr("addition", "active  menu-open");

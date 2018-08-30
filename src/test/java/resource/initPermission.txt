@@ -92,3 +92,5 @@ outhouse,出库表查看,/fy/admin/biz/whouse/outWhouse,com.chen.fy.controller.b
 outhouse_create,新建出库,/fy/admin/biz/whouse/addOut,com.chen.fy.controller.business.WarehouseController
 pay,应付单查看, /fy/admin/biz/finance/pay/pay,com.chen.fy.controller.business.PayController
 
+
+

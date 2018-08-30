@@ -36,13 +36,15 @@ public class OrderController extends BaseController {
 		String condition = getPara("condition");
 
 		keepPara("condition", "keyWord", "order_date");
-
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
 		StringBuilder conditionSb = new StringBuilder();
 
 		if ("dis_warn".equals(condition)) {// 分配预警，三天未分配,导入时间，后还没有分配
 			String sql = " where dis_to is null and DATEDIFF(now() , import_time ) > 3";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
 					"select o.*,f.originalFileName filename ",
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
 							+ " order by id desc");
@@ -53,7 +55,7 @@ public class OrderController extends BaseController {
 
 		if ("delay_warn".equals(condition)) {
 			String sql = " where  DATEDIFF(now() , order_date) > 28 and out_quantity = 1 ";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
 					"select o.*,f.originalFileName filename ",
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
 							+ " order by id desc");
@@ -64,7 +66,7 @@ public class OrderController extends BaseController {
 
 		if ("delay".equals(condition)) {
 			String sql = " where  DATEDIFF(now() , order_date) > 30 and out_quantity = 1 ";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
 					"select o.*,f.originalFileName filename ",
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
 							+ " order by id desc");
@@ -85,11 +87,11 @@ public class OrderController extends BaseController {
 			conditionSb.append("'%").append(key).append("%'");
 		}
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
 					"select o.*,f.originalFileName filename ",
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  order by id desc");
 		} else {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
 					String.format("from fy_business_order %s order by id desc", conditionSb.toString()));
 
 			setAttr("append", "keyWord=" + key);
@@ -183,6 +185,9 @@ public class OrderController extends BaseController {
 					String totalAccount = excel.getCellVal(i, 19);// 含税金额
 
 					item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
+
+					String sendAddress = excel.getCellVal(i, 20);// 发货地址
+					item.setSendAddress(sendAddress);
 
 					item.setImportTime(new Date());
 					item.setDistributeAttr("首次");
@@ -389,6 +394,7 @@ public class OrderController extends BaseController {
 	 * 把接收表转成分配表
 	 */
 	@Before(Tx.class)
+	@Deprecated
 	public void toDistribute() {
 		Integer id = getParaToInt("id");
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
@@ -434,6 +440,10 @@ public class OrderController extends BaseController {
 		renderJson(ret);
 	}
 
+	/**
+	 * 单个分配
+	 */
+	@Deprecated
 	public void distrubite() {
 		Integer id = getParaToInt("id");
 		String disTo = getPara("disTo");
@@ -442,9 +452,11 @@ public class OrderController extends BaseController {
 		order.setIsDistribute(true);
 		order.setDistributeTime(new Date());
 		if ("自产".equals(disTo)) {
-			order.setDisTo(false);
+			order.setDisTo(0);
+		} else if ("委外".equals(disTo)) {
+			order.setDisTo(1);
 		} else {
-			order.setDisTo(true);
+			order.setDisTo(3);
 		}
 
 		order.setOrderby(1);
@@ -479,9 +491,13 @@ public class OrderController extends BaseController {
 			sql.append("update fy_business_order set dis_to = 0 ,distribute_to = '" + disTo
 					+ "' ,is_distribute = 1, distribute_time = now() , orderby = 1  where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
-		} else {
+		} else if ("委外".equals(disTo)) {
 			// order.setDisTo(true);
 			sql.append("update fy_business_order set dis_to = 1 ,distribute_to = '" + disTo
+					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
+			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
+		} else {
+			sql.append("update fy_business_order set dis_to = 3,distribute_to = '" + disTo
 					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		}

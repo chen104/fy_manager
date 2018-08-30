@@ -161,4 +161,12 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getStr("purchase_title");
 	}
 
+	public void setPurchaseParent(java.lang.String purchaseParent) {
+		set("purchase_parent", purchaseParent);
+	}
+	
+	public java.lang.String getPurchaseParent() {
+		return getStr("purchase_parent");
+	}
+
 }

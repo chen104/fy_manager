@@ -11,21 +11,29 @@
 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button>
 					<a href="/fy/admin/biz/commission/toDownloadWWsum"><button class="btn btn-primary" >下载</button></a>
 				<div class="box-tools">
-				<!--  
-					<form action="/fy/admin/base/taxRate">
+					<form action="/fy/admin/biz/commission/sumReceive" class="form-inline">
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition" >
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    </select>
+						  
+						  </div>
+						
 						<div class="input-group input-group-sm" style="width: 150px;">
-							<input type="text" name="keyWord" class="form-control pull-right"
+							<input type="text" name="keyWord" class="form-control pull-right" autocomplete="off"
 								placeholder="Search" value="#(keyWord)">
 
 							<div class="input-group-btn">
-								<button type="submit" class="btn btn-default">
+								<button type="submit" class="btn btn-default" >
 									<i class="fa fa-search"></i>
 								</button>
 							</div>
 						</div>
 
 					</form>
-					-->
 				</div>
 			</div>
 			<!-- /.box-header -->
@@ -74,7 +82,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> <input type="checkbox" name = "selectId"  value="#(x.id)"> </td>
+								<td> 	#if(!x.has_in_quantity == 0) <input type="checkbox" name = "selectId"  value="#(x.id)"> #end</td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
@@ -104,18 +112,23 @@
 								<td>#(x.ww_unhang_amount)</td>
 								
 								<td class="jfa-operation-button">
+							
+								
+								#if(x.has_in_quantity == 0)
+								
 								<a href="#" data-action="/fy/admin/biz/fyorder/rollBackOrder" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
 									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a>
-								
-								
+									
 								<a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick="" style="margin-left: 10px;"> 
 								<i class="glyphicon glyphicon-share-alt" title="生成采购单">生成采购单</i>
 								</a> 
-								
+									
+								#end
+								#if(x.quantity !=x.has_in_quantity)
 								<a href="#" onclick="showModel(this)" data-id="#(x.id)" style="margin-left: 10px;"> 
 								<i class="fa fa-pencil" title="入库">入库</i>
 								</a> 
-								
+								#end
 								
 								</td>
 							</tr>
@@ -131,7 +144,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/commission/sumReceive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -152,6 +165,8 @@ function submit(){
 
 	
 }
+
+
 
 function rollback(a){
 	var	input = $(a);

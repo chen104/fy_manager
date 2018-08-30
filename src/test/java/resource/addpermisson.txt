@@ -1,0 +1,6 @@
+upgetpay,应收单查看,/fy/admin/biz/finance/upgetpay,UploadGetpayController,
+complaint,投诉单,/fy/admin/biz/aftersale/complaint,ComplaintController
+advisory,价格查询表,/fy/admin/biz/addition/advisory,AdvisoryCostConllor
+ready,备货,/fy/admin/biz/addition/ready,ReadyController
+readyPurchase,备货采购单,/fy/admin/biz/addition/readyPurchaseReadyPurchaseController
+readyPurchase,备货采购,/fy/admin/biz/addition/readyPurchase,ReadyPurchaseController

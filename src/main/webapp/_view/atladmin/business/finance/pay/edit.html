@@ -25,12 +25,7 @@
 					
 					
 <input hidden="hidden" value="#(model.id??)" name="model.id"></input>
-#if(action == "save")
-	<input hidden="hidden" value="#(assist.id??)" name="model.parentId"></input>
-#else
-	<input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
-#end
-<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+
 
 <div class="row">
 
@@ -234,7 +229,7 @@
 			<label  class="col-sm-3 control-label"> 检测结果</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  value="#(assist.check_result??)"  readonly="readonly"   name="model.checkResult" >
+				<input type="text" class="form-control"  value="#(model.check_result??)"  readonly="readonly"   >
 			</div>
 		</div>
 	</div>
@@ -452,33 +447,19 @@
 						<label class="col-sm-3 control-label">挂账期间</label>
 
 						<div class="col-sm-9">
-							<input id="create_date" name="model.create_date" type="text" class="form-control" value="#date(model.create_date??,"yyyy-MM")"
+							<input id="hang_date" name="hang_date" type="text" class="form-control" value="#date(model.hang_date??,"yyyy-MM")"
 								placeholder="挂账期间" data-type='month' autocomplete="off">
 						</div>
 					</div>
 				</div>
-				 
-				<script type="text/javascript">
 				
-					$(function(){
-						var vc=$("#create_date").val();
-						if(vc ==null&&""==vc){
-							var date =new Date();
-							var val = date.getFullYear()+"-"+date.getMonth();
-							$("#create_date").val(val);
-						}
-					});
-				</script>
-	
-	
-
 				<div class="col-md-6">
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label">付账期间</label>
 
 						<div class="col-sm-9">
-							<input name="model.pay_date" type="text" class="form-control" 
+							<input name="pay_date" type="text" class="form-control" 
 								placeholder="付账期间" data-type='month' autocomplete="off" value="#date(model.pay_date??,"yyyy-MM")">
 						</div>
 					</div>
@@ -536,7 +517,9 @@
 						}
 					, success: function(ret) {
 						if (ret.state == "ok") {
-							location.href = "/fy/admin/biz/finance/pay"
+							alert(ret.msg);
+							location.reload();
+							///fy/admin/biz/finance/pay/pay
 						} else {
 							alert(ret.msg);
 						}

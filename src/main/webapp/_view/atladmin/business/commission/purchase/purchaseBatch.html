@@ -23,7 +23,7 @@
 							<label class="col-sm-3 control-label">采购日期</label>
 
 							<div class="col-sm-9">
-								<input type="text" class="form-control" placeholder="采购日期"
+								<input type="text" class="form-control" placeholder="采购日期" autocomplete="off"
 									data-type='datepicker' name="purchaseDate">
 							</div>
 						</div>
@@ -34,8 +34,8 @@
 						<label class="col-sm-3 control-label">供应商</label>
 
 						<div class="col-sm-9">
-
-							<input type="text" placeholder="选择供应商" id="supplier"
+ 
+							<input type="text" placeholder="选择供应商" id="supplier" autocomplete="off"
 								class="form-control" onclick="showChooesSupplier()"> <input
 								type="text" placeholder="" hidden="hidden" id="supplierId"
 								name="supplierId">
@@ -73,6 +73,7 @@ $(document).ready(function() {
 			}
 		, success: function(ret) {
 			if (ret.state == "ok") {
+				alert(ret.msg);
 				location.href = "/fy/admin/biz/commission/sumReceive";
 			} else {
 				alert(ret.msg);

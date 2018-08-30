@@ -10,7 +10,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
+import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyUploadGetpay;
 import com.jfinal.club.common.kit.PIOExcelUtil;
@@ -21,7 +24,10 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class UploadGetpayController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(FyLoginSessionInterceptor.class);
+
 	public void index() {
+
 		String key = getPara("keyWord");
 		keepPara("keyWord", "condition", "p");
 		String condition = getPara("condition");
@@ -145,6 +151,7 @@ public class UploadGetpayController extends BaseController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				logger.error(e);
 				renderText(e.getMessage());
 				return;
 			}

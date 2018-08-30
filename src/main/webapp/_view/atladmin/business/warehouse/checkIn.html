@@ -4,8 +4,8 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				<h3 class="box-title">检测汇总表</h3> <button class="btn btn-primary" data-p="#(p)" onclick="createPay()">生成应付明细</button>
+			<div class="box-header"><h3 class="box-title">检测汇总表</h3> 
+				<!--   <button class="btn btn-primary" data-p="#(p)" onclick="createPay()">生成应付明细</button> -->
 				<div class="box-tools">
 			<form action="fy/admin/biz/finance/pay"  class="form-inline" >
 						 <div class="form-group  input-group-sm">
@@ -41,7 +41,7 @@
 						<thead>
 							<tr>
 								<th>序号</th>
-								<th><input id="selectAll" type="checkbox" data-select="selectAll"> </th>
+									<!-- 	<th><input id="selectAll" type="checkbox" data-select="selectAll"> </th>-->
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -74,6 +74,7 @@
 								<th>是否生成应付明细表	</th>-->
 								<th>应付明细表生成生成时间	</th>
 								<th>输入检测结果</th>
+								<th>生成应付单</th>
 							</tr>
 						</thead>
 						<form action="/fy/admin/biz/finance/pay/inhouseAddPay" method="post" id="myForm" >
@@ -83,7 +84,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> #if(!x.is_create_pay&&x.in_from=="委外"&&x.check_result=="合格") <input name="inhouseId" value="#(x.wid)" type="checkbox" data-select='select' > #end </td>
+							<!--  	<td> #if(!x.is_create_pay&&x.in_from=="委外"&&x.check_result=="合格") <input name="inhouseId" value="#(x.wid)" type="checkbox" data-select='select' > #end </td>  -->
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
@@ -144,10 +145,26 @@
 								<td>#(x.pay_create_time)</td>
 								
 								<td class="jfa-operation-button">
-								
+									#if(!x.is_create_pay)
 										<a href="/fy/admin/biz/whouse/editCheck?id=#(x.wid)"> 
 										<i class="fa fa-pencil" title="检测入库"  ></i>
 										</a> 
+									#end
+								
+								</td>
+								
+									<td class="jfa-operation-button">
+								
+									#if(x.in_from=="委外"&& x.check_result=="合格")
+										#if(!x.is_create_pay)
+											<a href="#" onclick=" showcreateModel(this)" data-id=#(x.wid)> 
+												<i class="fa fa-pencil" title="生成应付单"  ></i>
+											</a> 
+										#else
+											已生成应付明细
+										#end
+									#end
+										
 								
 								</td>
 							</tr>
@@ -241,6 +258,39 @@ function sure(){
 					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
 				});
 			});
+		
+		
+		function showcreateModel(a){
+		var create_pay= 	$("#create_pay");
+			create_pay.modal("show");
+			create_pay.data("id",$(a).data("id"));
+		}
+		
+	function	createPayById(){
+
+		var create_pay= 	$("#create_pay");
+		create_pay.modal("hide");
+		var paytime = $("#should_pay_period").val();
+		
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/finance/pay/inhouseCreatePay',
+			   data:{shoupaypireod:paytime,id:create_pay.data('id')},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					   alert(ret.msg);
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	}
 </script>
 
 
@@ -275,7 +325,7 @@ function sure(){
       
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="sure()">确定</button>
+        <button type="button" class="btn btn-primary" onclick="createPayById()">确定</button>
       </div>
     </div>
   </div>

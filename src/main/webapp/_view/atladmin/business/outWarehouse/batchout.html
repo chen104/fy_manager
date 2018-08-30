@@ -1,0 +1,194 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">新建出库单</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/outWhouse/batchSave" method="post">         
+              <div class="box-body">
+                	<div class="row">
+                		<div class="box-body table-responsive no-padding text-center " style="margin-left: 30px;margin-right: 30px">
+	
+							<table class="table table-bordered"  style="white-space:nowrap">
+								<thead>
+									<tr>
+										<th>类别</th>
+										<th>计划员</th>
+										<th>工作订单号</th>
+										<th>送货单号</th>
+										<th>商品名称</th>
+										<th>商品规格</th>
+										<th>总图号</th>
+										<th>数量</th>
+										<th>单位</th>
+										<th>库存</th>
+									</tr>
+								</thead>
+								<tbody>
+									#for(x : modelList)
+										<tr>
+											<td>#(x.cate_tmp)</td>
+											<td>#(x.plan_tmp)</td>
+					
+											<td>#(x.work_order_no)</td>
+											<td>#(x.delivery_no)</td>
+											<td>#(x.commodity_name)</td>
+											<td>#(x.commodity_spec)</td>
+											<td>#(x.map_no)</td>
+											
+											<td>#(x.quantity)</td>
+											<td>#(x.unit_tmp)</td>
+											<td>#(x.storage_quantity)</td>
+										</tr>
+									#end
+								
+								</tbody>
+							</table>
+							</div>
+                	</div>
+                	
+                		#for(x : modelList)
+                			<input hidden="hidden" name="order_ids" value="#(x.id)" type="checkbox" checked="checked">
+                		#end
+                	<div class="row" style="margin-top: 40px">
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">到货地址</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control"  value="#(waybill.receive_address??)"  autocomplete="off"
+										placeholder="到货地址" name="out.receiveAddress">
+										<div style="color: red">#(receive_address_msg)</div>
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">运输方式</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="运输方式" autocomplete="off"   value="#(waybill.transport_type??)"  
+										name="out.transportType">
+										<div style="color: red">#(transport_type_msg)</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+					</div>
+					
+					
+					<div class="row">
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">运输公司</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="运输公司" autocomplete="off"  value="#(waybill.transport_company??)"
+										name="out.transportCompany">
+										<div style="color: red">#(transport_company_msg)</div>
+								</div>
+							</div>
+						</div>
+					
+					
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">运输重量</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="运输重量" autocomplete="off"  value="#(waybill.transport_weight??)"
+										name="out.transportWeight" >
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					<div class="row">
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">运输单号</label>
+					
+								<div class="col-sm-9">
+					
+									<input type="text" class="form-control"   autocomplete="off"  value="#(waybill.transport_no??)"
+										placeholder="运输单号" name="out.transportNo">
+									<div style="color: red">#(transport_no_msg)</div>
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">运输费用</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="运输费用" autocomplete="off"    value="#(waybill.transport_fee??)"
+										name="out.transportFee">
+								</div>
+							</div>
+						</div>
+					
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">出库时间</label>
+									<div class="col-sm-9">
+										<input type="text" data-type="datepicker" name="out.outTime" autocomplete="off"  
+											class="form-control" placeholder="出库时间">
+										<div style="color: red">#(out_time_msg)</div>
+									</div>
+								</div>
+							</div>
+					
+					
+					</div>
+			
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		<button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
+                	<button onclick="" class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/biz/outWhouse";
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+</script>
+
+#end

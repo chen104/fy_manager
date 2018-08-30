@@ -38,7 +38,7 @@ public class FileController extends BaseController {
 	public void uploadFile() {
 		List<UploadFile> uploadFiles = getFiles();
 		Account account = getSessionAttr("account");
-		File fileDir = new File(PathKit.getWebRootPath(), "upload/map");
+		File fileDir = new File(PathKit.getWebRootPath(), "map");
 		if (!fileDir.exists()) {
 			fileDir.mkdir();
 		}

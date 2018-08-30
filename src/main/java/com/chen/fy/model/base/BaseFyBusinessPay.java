@@ -225,12 +225,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("real_account");
 	}
 
-	public void setCreateDate(java.util.Date createDate) {
-		set("create_date", createDate);
+	public void setHangDate(java.util.Date hangDate) {
+		set("hang_date", hangDate);
 	}
 	
-	public java.util.Date getCreateDate() {
-		return get("create_date");
+	public java.util.Date getHangDate() {
+		return get("hang_date");
 	}
 
 	public void setPayDate(java.util.Date payDate) {
@@ -255,6 +255,22 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 	
 	public java.lang.String getRemark() {
 		return getStr("remark");
+	}
+
+	public void setCreateTime(java.util.Date createTime) {
+		set("create_time", createTime);
+	}
+	
+	public java.util.Date getCreateTime() {
+		return get("create_time");
+	}
+
+	public void setCreateBy(java.lang.Integer createBy) {
+		set("create_by", createBy);
+	}
+	
+	public java.lang.Integer getCreateBy() {
+		return getInt("create_by");
 	}
 
 }

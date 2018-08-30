@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Category;
 import com.jfinal.kit.Ret;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 public class CategoryController extends BaseController {
@@ -29,6 +30,12 @@ public class CategoryController extends BaseController {
 
 	public void save() {
 		Category customer = getBean(Category.class, "model");
+		Integer i = Db.queryInt("select 1 from fy_base_category  where name = ?", customer.getName());
+		if (i == 1) {
+			Ret ret = Ret.ok("msg", "类别" + customer.getName() + "已存在");
+			renderJson(ret);
+			return;
+		}
 		boolean re = customer.save();
 		Ret ret = null;
 		if (re) {

@@ -13,6 +13,16 @@
 			
 					<form action="/fy/admin/biz/fyorder"  class="form-inline">
 						 <div class="form-group  input-group-sm">
+						 	    <label for="condition">显示</label>
+						 	   	<select id="condition" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+						 <div class="form-group  input-group-sm">
 						    <label for="condition">条件</label>
 							    <select id="condition" class="form-control" name="condition" onselect="" onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
@@ -192,7 +202,9 @@
 								#fyColPerm("order","unhang_quantity")
 								<th>未挂账数量</th>
 								#end
-							
+								#fyColPerm("order","send_address")
+								<th>送货地址</th>
+								#end
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -329,6 +341,10 @@
 								
 								#fyColPerm("order","unhang_quantity")
 								<td>#(x.unhang_quantity)</td>
+								#end
+								
+								#fyColPerm("order","send_address")
+								<td>#(x.send_address)</td>
 								#end
 								
 					

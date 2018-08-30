@@ -368,7 +368,7 @@ function execuCost(){
 			<div class="col-sm-9">
 					
 				<input type="text" placeholder="选择供应商"  id="supplier" class="form-control"  value="#(supplier.name??)"  autocomplete="off" 
-					 onclick="showChooesSupplier()">
+					>
 					
 				<input type="text"  hidden="hidden" id="supplierId" value="#(model.supplier_id??)"  name="model.supplierId" >
 			</div>
@@ -377,14 +377,27 @@ function execuCost(){
 
 
 </div>
+#include("../../../supplier/searchSupplier.html")
 <script type="text/javascript">
 <!--
 
 //-->
 
+$(function(){
+	$("#supplier").click(function(){
+		var callback = function(select ,id,name){
+			if(select){
+				$("#supplier").val(name);
+				$("#supplierId").val(id);
+			}
+			
+		};
+		new SelectSupplierModal(callback).show();
+	});
+});
 
 </script>
-#include("../searchSupplier.html")
+
 
 
 

@@ -55,7 +55,8 @@
 					, success: function(ret) {
 						if (ret.state == "ok") {
 				
-							 window.location.href= '/fy/admin/biz/commission/purchase?p=#(p)';
+							 window.location.reload();
+							 ///fy/admin/biz/finance/pay/
 						} else {
 							alert(ret.msg);
 						}

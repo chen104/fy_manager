@@ -12,9 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Customer;
+import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessReady;
 import com.chen.fy.model.Person;
 import com.chen.fy.model.Supplier;
@@ -28,6 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class ReadyController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(ReadyController.class);
 	final static String storage = " (IFNULL(in_quantity1,0) \r\n" + "+ IFNULL(in_quantity2,0)\r\n"
 			+ " +IFNULL(in_quantity3,0) \r\n" + "+IFNULL(in_quantity4,0) \r\n" + "+IFNULL(in_quantity5,0)  )-\r\n"
 			+ "(IFNULL(out_quantity1,0) + \r\n" + "IFNULL(out_quantity2,0) + \r\n" + "IFNULL(out_quantity3,0) + \r\n"
@@ -145,11 +149,17 @@ public class ReadyController extends BaseController {
 	}
 
 	public void upload() {
-
+		// boolean isMultipart =
+		// ServletFileUpload.isMultipartContent(this.getRequest());
+		// if (isMultipart) {
+		// renderJson(Ret.fail().set("msg", "没有上传文件"));
+		// return;
+		// }
 		UploadFile ufile = getFile();
 		int total = 0;
 		if (ufile != null) {
 			try {
+
 				File file = ufile.getFile();
 
 				PIOExcelUtil excel = new PIOExcelUtil(file, 0);
@@ -194,10 +204,11 @@ public class ReadyController extends BaseController {
 						System.out.println(item);
 						continue;
 					}
-					item.setWorkOrderNo(workid);
+
+					item.setWorkOrderNo1(workid);
 
 					String DeliveryId = excel.getCellVal(i, 8);// 送货单号
-					item.setDeliveryNo(DeliveryId);
+					item.setDeliveryNo1(DeliveryId);
 
 					String name = excel.getCellVal(i, 9);// 商品名称
 					item.setCommodityName(name);
@@ -234,7 +245,7 @@ public class ReadyController extends BaseController {
 					String orderNo = excel.getCellVal(i, 19);// 订单编码
 					item.setOrderNo(orderNo);
 
-					String totalAccount = excel.getCellVal(i, 20);// 含税金额
+					String totalAccount = excel.getCellVal(i, 20);// 数量
 
 					item.setPurchaseQuanity(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
 
@@ -244,42 +255,126 @@ public class ReadyController extends BaseController {
 					String cost = excel.getCellVal(i, 22);// 未税单价
 					item.setCost(NumberUtils.isNumber(cost) ? new BigDecimal(cost) : null);
 
-					String amount = excel.getCellVal(i, 23);// 未税单价
+					String amount = excel.getCellVal(i, 23);// 金额
 					item.setAmount(NumberUtils.isNumber(amount) ? new BigDecimal(amount) : null);
 
-					String discount = excel.getCellVal(i, 24);// 未税单价
+					String discount = excel.getCellVal(i, 24);// 折扣
 					item.setDiscount(NumberUtils.isNumber(discount) ? new BigDecimal(discount) : null);
 
-					String discountAmount = excel.getCellVal(i, 25);// 未税单价
+					String discountAmount = excel.getCellVal(i, 25);// 折后金额
 					item.setDiscountAmount(
 							NumberUtils.isNumber(discountAmount) ? new BigDecimal(discountAmount) : null);
 
-					Date inDate = excel.getDateValue(i, 26);// 入库时间
-					item.setInDate1(inDate);
-
-					String inQuantity = excel.getCellVal(i, 27);// 入库数量
-					item.setInQuantity1(NumberUtils.isNumber(inQuantity) ? new BigDecimal(inQuantity) : null);
-
-					Date chcekTime = excel.getDateValue(i, 28);// 检测时间
-					item.setCheckTime(chcekTime);
-
-					String checkResult = excel.getCellVal(i, 29);// 入库时间
+					String checkResult = excel.getCellVal(i, 26);// 检测结果
 					item.setCheckResult(checkResult);
 
-					Date outDate = excel.getDateValue(i, 30);// 出库时间时间
-					item.setOutDate1(outDate);
+					Date chcekTime = excel.getDateValue(i, 27);// 检测时间
+					item.setCheckTime(chcekTime);
 
-					String outQuantity = excel.getCellVal(i, 31);// 出库数量
-					item.setOutQuantity1(NumberUtils.isNumber(outQuantity) ? new BigDecimal(outQuantity) : null);
+					Date inDate = excel.getDateValue(i, 28);// 入库时间1
+					item.setInDate1(inDate);
 
-					String hangQuantity = excel.getCellVal(i, 32);// 挂账数量
-					item.setHangQuantity(NumberUtils.isNumber(hangQuantity) ? new BigDecimal(hangQuantity) : null);
+					String inQuantity = excel.getCellVal(i, 29);// 入库数量1
+					item.setInQuantity1(NumberUtils.isNumber(inQuantity) ? new BigDecimal(inQuantity) : null);
 
-					String hangAccount = excel.getCellVal(i, 33);// 挂账金额
-					item.setHangAccount(NumberUtils.isNumber(hangAccount) ? new BigDecimal(hangAccount) : null);
+					Date inDate2 = excel.getDateValue(i, 30);// 入库时间2
+					item.setInDate2(inDate2);
 
-					Date hangDate = excel.getDateValue(i, 34);// 挂账日期
-					item.setHangDate(hangDate);
+					String inQuantity2 = excel.getCellVal(i, 31);// 入库数量2
+					item.setInQuantity2(NumberUtils.isNumber(inQuantity2) ? new BigDecimal(inQuantity2) : null);
+
+					Date inDate3 = excel.getDateValue(i, 32);// 入库时间3
+					item.setInDate3(inDate3);
+
+					String inQuantity3 = excel.getCellVal(i, 33);// 入库数量3
+					item.setInQuantity3(NumberUtils.isNumber(inQuantity3) ? new BigDecimal(inQuantity3) : null);
+
+					Date inDate4 = excel.getDateValue(i, 34);// 入库时间4
+					item.setInDate4(inDate4);
+
+					String inQuantity4 = excel.getCellVal(i, 35);// 入库数量4
+					item.setInQuantity4(NumberUtils.isNumber(inQuantity4) ? new BigDecimal(inQuantity4) : null);
+
+					Date inDate5 = excel.getDateValue(i, 36);// 入库时间5
+					item.setInDate5(inDate5);
+
+					String inQuantity5 = excel.getCellVal(i, 37);// 入库数量5
+					item.setInQuantity5(NumberUtils.isNumber(inQuantity5) ? new BigDecimal(inQuantity5) : null);
+
+					Date outDate1 = excel.getDateValue(i, 38);// 出库时间时间1
+					item.setOutDate1(outDate1);
+
+					String outQuantity1 = excel.getCellVal(i, 39);// 出库数量1
+					item.setOutQuantity1(NumberUtils.isNumber(outQuantity1) ? new BigDecimal(outQuantity1) : null);
+
+					Date outDate2 = excel.getDateValue(i, 40);// 出库时间时间2
+					item.setOutDate1(outDate2);
+
+					String outQuantity2 = excel.getCellVal(i, 41);// 出库数量2
+					item.setOutQuantity2(NumberUtils.isNumber(outQuantity2) ? new BigDecimal(outQuantity2) : null);
+
+					Date outDate3 = excel.getDateValue(i, 42);// 出库时间时间3
+					item.setOutDate3(outDate3);
+
+					String outQuantity3 = excel.getCellVal(i, 43);// 出库数量3
+					item.setOutQuantity3(NumberUtils.isNumber(outQuantity3) ? new BigDecimal(outQuantity3) : null);
+
+					Date outDate4 = excel.getDateValue(i, 44);// 出库时间时间4
+					item.setOutDate4(outDate4);
+
+					String outQuantity4 = excel.getCellVal(i, 45);// 出库数量4
+					item.setOutQuantity4(NumberUtils.isNumber(outQuantity4) ? new BigDecimal(outQuantity4) : null);
+
+					Date outDate5 = excel.getDateValue(i, 46);// 出库时间时间5
+					item.setOutDate5(outDate5);
+
+					String outQuantity5 = excel.getCellVal(i, 47);// 出库数量5
+					item.setOutQuantity5(NumberUtils.isNumber(outQuantity5) ? new BigDecimal(outQuantity5) : null);
+
+					String hangQuantity1 = excel.getCellVal(i, 48);// 挂账数量
+					item.setHangQuantity1(NumberUtils.isNumber(hangQuantity1) ? new BigDecimal(hangQuantity1) : null);
+
+					String hangAccount1 = excel.getCellVal(i, 49);// 挂账金额
+					item.setHangAccount1(NumberUtils.isNumber(hangAccount1) ? new BigDecimal(hangAccount1) : null);
+
+					Date hangDate1 = excel.getDateValue(i, 50);// 挂账日期
+					item.setHangDate1(hangDate1);
+
+					String hangQuantity2 = excel.getCellVal(i, 51);// 挂账数量2
+					item.setHangQuantity2(NumberUtils.isNumber(hangQuantity2) ? new BigDecimal(hangQuantity2) : null);
+
+					String hangAccount2 = excel.getCellVal(i, 52);// 挂账金额2
+					item.setHangAccount2(NumberUtils.isNumber(hangAccount2) ? new BigDecimal(hangAccount2) : null);
+
+					Date hangDate2 = excel.getDateValue(i, 53);// 挂账日期2
+					item.setHangDate1(hangDate2);
+
+					String hangQuantity3 = excel.getCellVal(i, 54);// 挂账数量3
+					item.setHangQuantity3(NumberUtils.isNumber(hangQuantity3) ? new BigDecimal(hangQuantity3) : null);
+
+					String hangAccount3 = excel.getCellVal(i, 55);// 挂账金额3
+					item.setHangAccount3(NumberUtils.isNumber(hangAccount3) ? new BigDecimal(hangAccount3) : null);
+
+					Date hangDate3 = excel.getDateValue(i, 56);// 挂账日期3
+					item.setHangDate1(hangDate3);
+
+					String hangQuantity4 = excel.getCellVal(i, 57);// 挂账数量4
+					item.setHangQuantity4(NumberUtils.isNumber(hangQuantity4) ? new BigDecimal(hangQuantity4) : null);
+
+					String hangAccount4 = excel.getCellVal(i, 58);// 挂账金额4
+					item.setHangAccount4(NumberUtils.isNumber(hangAccount4) ? new BigDecimal(hangAccount4) : null);
+
+					Date hangDate4 = excel.getDateValue(i, 59);// 挂账日期4
+					item.setHangDate1(hangDate4);
+
+					String hangQuantity5 = excel.getCellVal(i, 60);// 挂账数量5
+					item.setHangQuantity5(NumberUtils.isNumber(hangQuantity5) ? new BigDecimal(hangQuantity5) : null);
+
+					String hangAccount5 = excel.getCellVal(i, 61);// 挂账金额5
+					item.setHangAccount5(NumberUtils.isNumber(hangAccount5) ? new BigDecimal(hangAccount5) : null);
+
+					Date hangDate5 = excel.getDateValue(i, 62);// 挂账日期5
+					item.setHangDate1(hangDate5);
 
 					list.add(new Record().setColumns(item));
 
@@ -293,9 +388,10 @@ public class ReadyController extends BaseController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				logger.error(e.getMessage());
 			}
 		}
-		ufile.getFile().deleteOnExit();
+		ufile.getFile().delete();
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
 	}
 
@@ -467,33 +563,116 @@ public class ReadyController extends BaseController {
 				Double discount_amount = item.getDouble("discount_amount"); // 折后金额
 				excel.setCellVal(row, 25, discount_amount);
 
-				Date in_date = item.getDate("in_date"); // 入库时间
-				excel.setCellVal(row, 26, in_date);
-
-				Double in_quantity = item.getDouble("in_quantity"); // 入库数量
-				excel.setCellVal(row, 27, in_quantity);
+				String check_result = item.getStr("check_result"); // 检测结果
+				excel.setCellVal(row, 26, check_result);
 
 				Date check_time = item.getDate("check_time"); // 检测时间
-				excel.setCellVal(row, 28, check_time);
+				excel.setCellVal(row, 27, check_time);
 
-				String check_result = item.getStr("check_result"); // 检测结果
-				excel.setCellVal(row, 29, check_result);
+				Date in_date = item.getDate("in_date1"); // 入库时间
+				excel.setCellVal(row, 28, in_date);
 
-				Date out_date = item.getDate("out_date"); // 出库时间
-				excel.setCellVal(row, 30, out_date);
+				Double in_quantity = item.getDouble("in_quantity1"); // 入库数量
+				excel.setCellVal(row, 29, in_quantity);
 
-				Double out_quantity = item.getDouble("out_quantity"); // 出库数量
-				excel.setCellVal(row, 31, out_quantity);
+				Date in_date2 = item.getDate("in_date2"); // 入库时间2
+				excel.setCellVal(row, 30, in_date2);
 
-				Double hang_quantity = item.getDouble("hang_quantity"); // 挂账数量
-				excel.setCellVal(row, 32, hang_quantity);
+				Double in_quantity2 = item.getDouble("in_quantity2"); // 入库数量2
+				excel.setCellVal(row, 31, in_quantity2);
 
-				Double hang_account = item.getDouble("hang_account"); // 挂账金额
-				excel.setCellVal(row, 33, hang_account);
+				Date in_date3 = item.getDate("in_date3"); // 入库时间3
+				excel.setCellVal(row, 32, in_date3);
 
-				Date hang_date = item.getDate("hang_date"); // 挂账时间
-				excel.setCellVal(row, 34, hang_date);
+				Double in_quantity3 = item.getDouble("in_quantity3"); // 入库数量3
+				excel.setCellVal(row, 33, in_quantity3);
 
+				Date in_date4 = item.getDate("in_date4"); // 入库时间4
+				excel.setCellVal(row, 34, in_date4);
+
+				Double in_quantity4 = item.getDouble("in_quantity4"); // 入库数量4
+				excel.setCellVal(row, 35, in_quantity4);
+
+				Date in_date5 = item.getDate("in_date5"); // 入库时间5
+				excel.setCellVal(row, 34, in_date5);
+
+				Double in_quantity5 = item.getDouble("in_quantity5"); // 入库数量5
+				excel.setCellVal(row, 35, in_quantity5);
+
+				Date out_date = item.getDate("out_date1"); // 出库时间
+				excel.setCellVal(row, 36, out_date);
+
+				Double out_quantity = item.getDouble("out_quantity1"); // 出库数量
+				excel.setCellVal(row, 37, out_quantity);
+
+				Date out_date2 = item.getDate("out_date2"); // 出库时间2
+				excel.setCellVal(row, 38, out_date2);
+
+				Double out_quantity2 = item.getDouble("out_quantity2"); // 出库数量2
+				excel.setCellVal(row, 39, out_quantity2);
+
+				Date out_date3 = item.getDate("out_date3"); // 出库时间3
+				excel.setCellVal(row, 40, out_date3);
+
+				Double out_quantity3 = item.getDouble("out_quantity3"); // 出库数量3
+				excel.setCellVal(row, 41, out_quantity3);
+
+				Date out_date4 = item.getDate("out_date4"); // 出库时间4
+				excel.setCellVal(row, 42, out_date4);
+
+				Double out_quantity4 = item.getDouble("out_quantity4"); // 出库数量4
+				excel.setCellVal(row, 43, out_quantity4);
+
+				Date out_date5 = item.getDate("out_date5"); // 出库时间4
+				excel.setCellVal(row, 44, out_date5);
+
+				Double out_quantity5 = item.getDouble("out_quantity5"); // 出库数量4
+				excel.setCellVal(row, 45, out_quantity5);
+
+				Double hang_quantity = item.getDouble("hang_quantity1"); // 挂账数量
+				excel.setCellVal(row, 46, hang_quantity);
+
+				Double hang_account = item.getDouble("hang_account1"); // 挂账金额
+				excel.setCellVal(row, 47, hang_account);
+
+				Date hang_date = item.getDate("hang_date1"); // 挂账时间
+				excel.setCellVal(row, 48, hang_date);
+
+				Double hang_quantity2 = item.getDouble("hang_quantity2"); // 挂账数量2
+				excel.setCellVal(row, 49, hang_quantity2);
+
+				Double hang_account2 = item.getDouble("hang_account2"); // 挂账金额2
+				excel.setCellVal(row, 50, hang_account2);
+
+				Date hang_date2 = item.getDate("hang_date2"); // 挂账时间2
+				excel.setCellVal(row, 51, hang_date2);
+
+				Double hang_quantity3 = item.getDouble("hang_quantity3"); // 挂账数量3
+				excel.setCellVal(row, 52, hang_quantity3);
+
+				Double hang_account3 = item.getDouble("hang_account3"); // 挂账金额3
+				excel.setCellVal(row, 53, hang_account3);
+
+				Date hang_date3 = item.getDate("hang_date3"); // 挂账时间3
+				excel.setCellVal(row, 54, hang_date3);
+
+				Double hang_quantity4 = item.getDouble("hang_quantity4"); // 挂账数量4
+				excel.setCellVal(row, 55, hang_quantity4);
+
+				Double hang_account4 = item.getDouble("hang_account4"); // 挂账金额4
+				excel.setCellVal(row, 56, hang_account4);
+
+				Date hang_date4 = item.getDate("hang_date4"); // 挂账时间4
+				excel.setCellVal(row, 57, hang_date4);
+
+				Double hang_quantity5 = item.getDouble("hang_quantity5"); // 挂账数量4
+				excel.setCellVal(row, 58, hang_quantity5);
+
+				Double hang_account5 = item.getDouble("hang_account5"); // 挂账金额4
+				excel.setCellVal(row, 59, hang_account5);
+
+				Date hang_date5 = item.getDate("hang_date5"); // 挂账时间4
+				excel.setCellVal(row, 60, hang_date5);
 				row++;
 
 			}
@@ -503,6 +682,7 @@ public class ReadyController extends BaseController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 			renderText(e.getMessage());
 		}
 
@@ -510,5 +690,19 @@ public class ReadyController extends BaseController {
 		// + " " + file.getName());
 
 		renderFile(targetfile);
+	}
+
+	/**
+	 * 备货接收
+	 */
+	public void receiveReady() {
+		String key = getPara("keyWord");
+		Page<FyBusinessOrder> modelPage = null;
+		setAttr("keyWord", key);
+		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+				"from  fy_business_order where  dis_to = 3 order by  id desc");
+
+		setAttr("modelPage", modelPage);
+		render("reveiveDistribute.html");
 	}
 }

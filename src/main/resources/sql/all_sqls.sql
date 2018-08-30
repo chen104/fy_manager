@@ -11,3 +11,11 @@
 #namespace("upgetpay")
 #include("upgetpay.sql")
 #end
+
+#namespace("ready")
+#include("ready.sql")
+#end
+
+#namespace("order")
+#include("order.sql")
+#end

@@ -133,7 +133,7 @@ public class ProduceController extends BaseController {
 		setAttr("keyWord", key);
 
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order  where Is_Distribute = 1 and dis_to = 0    order by id desc");
+				"from  fy_business_order  where Is_Distribute = 1 and dis_to = 0   and has_in_quantity <> quantity   order by id desc");
 		setAttr("modelPage", modelPage);
 		render("sumProduce.html");
 	}
@@ -180,7 +180,7 @@ public class ProduceController extends BaseController {
 		setAttr("keyWord", key);
 
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order where is_create_plan = 1 order by id desc");
+				"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity  order by id desc");
 
 		setAttr("modelPage", modelPage);
 		render("producePlan.html");
@@ -192,7 +192,7 @@ public class ProduceController extends BaseController {
 		keepPara("keyWord", "condition");
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_order where  is_create_plan = 1 order by id desc");
+					"from  fy_business_order where  is_create_plan = 1  order by id desc");
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append(String.format(" and %s like  ", getPara("condition"), key));

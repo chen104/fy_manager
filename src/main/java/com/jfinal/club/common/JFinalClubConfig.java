@@ -24,6 +24,7 @@ import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
 import com.chen.fy.controller.addition.ReadyController;
+import com.chen.fy.controller.addition.ReadyPurchaseController;
 import com.chen.fy.controller.addition.advisory.AdvisoryCostConllor;
 import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
@@ -40,6 +41,7 @@ import com.chen.fy.controller.business.ComplaintController;
 import com.chen.fy.controller.business.FinanceController;
 import com.chen.fy.controller.business.GetPayController;
 import com.chen.fy.controller.business.OrderController;
+import com.chen.fy.controller.business.OutWarehouseContollor;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProduceController;
 import com.chen.fy.controller.business.PurchaseController;
@@ -55,7 +57,11 @@ import com.chen.fy.login.LoginService;
 import com.chen.fy.model._MappingKit;
 import com.chen.fy.task.DeleteFileTask;
 import com.jfinal.club.common.handler.UrlSeoHandler;
+import com.jfinal.club.common.kit.AssistNoKit;
 import com.jfinal.club.common.kit.DruidKit;
+import com.jfinal.club.common.kit.PurchaseNoKit;
+import com.jfinal.club.common.kit.ReadyProductNoKit;
+import com.jfinal.club.common.kit.SupplierNoKit;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -113,6 +119,7 @@ public class JFinalClubConfig extends JFinalConfig {
 
 		me.setErrorView(404, "/_view/atladmin/error/404.html");
 		me.setErrorView(500, "/_view/atladmin/error/500.html");
+		me.setMaxPostSize(1024 * 1024 * 104);
 	}
 
 	/**
@@ -160,6 +167,11 @@ public class JFinalClubConfig extends JFinalConfig {
 
 		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/commission/assist");
 
+		me.add("fy/admin/biz/addition/readyPurchase", ReadyPurchaseController.class,
+				"/_view/atladmin/addition/readypurchase");
+
+		me.add("/fy/admin/biz/outWhouse", OutWarehouseContollor.class, "/_view/atladmin/business/outWarehouse");
+
 	}
 
 	/**
@@ -185,6 +197,7 @@ public class JFinalClubConfig extends JFinalConfig {
 
 		me.addSharedFunction("/_view/atladmin/common/layout.html");
 		me.addSharedFunction("/_view/atladmin/common/admin_paginate.html");
+
 	}
 
 	/**
@@ -245,6 +258,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		// 让 druid 允许在 sql 中使用 union
 		// https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE-wallfilter
 		wallFilter.getConfig().setSelectUnionCheck(false);
-
+		SupplierNoKit.init();
+		PurchaseNoKit.init();
+		AssistNoKit.init();
+		ReadyProductNoKit.init();
 	}
 }

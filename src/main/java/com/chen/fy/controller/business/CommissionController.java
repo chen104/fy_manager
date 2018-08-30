@@ -16,18 +16,16 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBizWwReceive;
-import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessPurchase;
-import com.jfinal.aop.Before;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.plugin.activerecord.Record;
 
 public class CommissionController extends BaseController {
 	public void test() {
@@ -56,39 +54,23 @@ public class CommissionController extends BaseController {
 	/**
 	 * 
 	 */
-	@Before(Tx.class)
-	public void receiveOrder() {
-		Integer id = getParaToInt("id", 1);
-		FyBizWwReceive model = FyBizWwReceive.dao.findById(id);
-		model.setIsReceive(true);
-		Integer pid = model.getParentId();
-		FyBusinessDistribute distribut = FyBusinessDistribute.dao.findById(pid);
-		distribut.setReceiveTime(new Date());
-		Ret ret = null;
-
-		boolean re = model.update();
-		boolean save = distribut.update();
-		if (re && save) {
-			ret = Ret.ok("msg", "接收成功");
-
-		} else {
-			ret = Ret.ok("msg", "接收失败");
-		}
-		renderJson(ret);
-	}
-
-	/**
-	 * 
-	 */
 	public void sumReceive() {
 		String key = getPara("keyWord");
 		Page<FyBizWwReceive> modelPage = null;
 		setAttr("keyWord", key);
+		keepPara("keyWord", "condition");
+		if (StringUtils.isEmpty(key)) {
+			modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from  fy_business_order o " + "LEFT JOIN payView p on o.id = p.order_id"
+							+ "  where Is_Distribute = 1 and dis_to = 1 order by id desc");
+		} else {
+			StringBuilder sb = new StringBuilder();
+			sb.append(" and o.").append(getPara("condition")).append(" like ").append("'%").append(key).append("%' ");
 
-		modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order o " + "LEFT JOIN payView p on o.id = p.order_id"
-						+ "  where Is_Distribute = 1 and dis_to = 1 order by id desc");
-
+			modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+					"from  fy_business_order o " + "LEFT JOIN payView p on o.id = p.order_id"
+							+ "  where Is_Distribute = 1 and dis_to = 1 " + sb.toString() + " order by id desc");
+		}
 		setAttr("modelPage", modelPage);
 		render("sumReceive.html");
 	}
@@ -117,8 +99,8 @@ public class CommissionController extends BaseController {
 					"select o.* ,in_time,real_in_quantity," + purchase + supplier_name,
 					"from   fy_business_order   o  inner  join fy_business_purchase  p  on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id "
 							+ " left join  fy_business_in_warehouse w on o.id = w.order_id"
-							+ " left join fy_base_supplier  bs on bs.id = p.supplier_id "
-							+ " where dis_to = 1 order by id desc");
+							+ " left join fy_base_supplier  bs on bs.id = p.supplier_id " + " where dis_to = 1 "
+							+ sb.toString() + " order by id desc");
 
 			// modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10,
 			// "select o.* ,in_time,real_in_quantity," + purchase + supplier_name,
@@ -144,6 +126,20 @@ public class CommissionController extends BaseController {
 		model.setOrderId(id);
 		model.setParentId(id);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);// 获取订单
+		List<Record> list = Db.find(
+				"select purchase_account , supplier_id  from fy_business_purchase where (supplier_id is null or purchase_account is null) AND order_id = ?",
+				id);
+
+		if (list.size() > 0) {
+			renderJson(Ret.fail().set("msg", "采购单信息不完善，没有设置采购金额或没有选择厂商"));
+			return;
+		}
+		Integer num = Db.queryInt("select COUNT(1) num  from fy_business_purchase where order_id=? GROUP BY order_id ",
+				id);
+		if (num == null || num == 0) {
+			renderJson(Ret.fail().set("msg", "没有采购单"));
+			return;
+		}
 		order.setInWarehouseTime(new Date());// 入库时间
 		model.setInTime(order.getInWarehouseTime());// 入库时间
 		model.setInFrom("委外");
@@ -172,12 +168,21 @@ public class CommissionController extends BaseController {
 
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
-				return model.save() && order.update();
+				boolean r = model.save() && order.update();
+				try {
+					String sql = Db.getSql("order.updateWWhang");
+					Db.update(sql, id);
+				} catch (Exception e) {
+					return false;
+				}
+				return r;
 
 			}
 		});
 		if (re) {
 			ret = Ret.ok().set("msg", "生成入库单成功");
+			// 更新未挂账金额
+
 		} else {
 			ret = Ret.fail().set("msg", "生成失败");
 		}

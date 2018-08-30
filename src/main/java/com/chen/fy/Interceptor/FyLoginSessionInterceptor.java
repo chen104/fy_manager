@@ -29,8 +29,8 @@ import com.jfinal.core.Controller;
  */
 public class FyLoginSessionInterceptor implements Interceptor {
 	/**
-	 * 用于在模板指令中使用
-	 */
+		 * 用于在模板指令中使用
+		 */
 	// private static final ThreadLocal<Account> threadLocal = new
 	// ThreadLocal<Account>();
 	//

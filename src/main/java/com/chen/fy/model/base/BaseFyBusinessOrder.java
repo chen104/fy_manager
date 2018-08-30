@@ -393,12 +393,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("is_create_in_house");
 	}
 
-	public void setDisTo(java.lang.Boolean disTo) {
+	public void setDisTo(java.lang.Integer disTo) {
 		set("dis_to", disTo);
 	}
 	
-	public java.lang.Boolean getDisTo() {
-		return get("dis_to");
+	public java.lang.Integer getDisTo() {
+		return getInt("dis_to");
 	}
 
 	public void setHandleStatus(java.lang.String handleStatus) {
@@ -487,6 +487,30 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	
 	public java.math.BigDecimal getWwUnhangAmount() {
 		return get("ww_unhang_amount");
+	}
+
+	public void setSendAddress(java.lang.String sendAddress) {
+		set("send_address", sendAddress);
+	}
+	
+	public java.lang.String getSendAddress() {
+		return getStr("send_address");
+	}
+
+	public void setIsFinsh(java.lang.Boolean isFinsh) {
+		set("is_finsh", isFinsh);
+	}
+	
+	public java.lang.Boolean getIsFinsh() {
+		return get("is_finsh");
+	}
+
+	public void setIsAllInHouse(java.lang.Boolean isAllInHouse) {
+		set("is_all_in_house", isAllInHouse);
+	}
+	
+	public java.lang.Boolean getIsAllInHouse() {
+		return get("is_all_in_house");
 	}
 
 }

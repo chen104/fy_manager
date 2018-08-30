@@ -81,22 +81,6 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 		return get("delivery_date");
 	}
 
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("work_order_no", workOrderNo);
-	}
-	
-	public java.lang.String getWorkOrderNo() {
-		return getStr("work_order_no");
-	}
-
-	public void setDeliveryNo(java.lang.String deliveryNo) {
-		set("delivery_no", deliveryNo);
-	}
-	
-	public java.lang.String getDeliveryNo() {
-		return getStr("delivery_no");
-	}
-
 	public void setCommodityName(java.lang.String commodityName) {
 		set("commodity_name", commodityName);
 	}
@@ -247,30 +231,6 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 	
 	public java.lang.String getCheckResult() {
 		return getStr("check_result");
-	}
-
-	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
-		set("hang_quantity", hangQuantity);
-	}
-	
-	public java.math.BigDecimal getHangQuantity() {
-		return get("hang_quantity");
-	}
-
-	public void setHangAccount(java.math.BigDecimal hangAccount) {
-		set("hang_account", hangAccount);
-	}
-	
-	public java.math.BigDecimal getHangAccount() {
-		return get("hang_account");
-	}
-
-	public void setHangDate(java.util.Date hangDate) {
-		set("hang_date", hangDate);
-	}
-	
-	public java.util.Date getHangDate() {
-		return get("hang_date");
 	}
 
 	public void setIsProduct(java.lang.Boolean isProduct) {
@@ -439,6 +399,214 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 	
 	public java.util.Date getInDate5() {
 		return get("in_date5");
+	}
+
+	public void setIsCreatePurchase(java.lang.Boolean isCreatePurchase) {
+		set("is_create_purchase", isCreatePurchase);
+	}
+	
+	public java.lang.Boolean getIsCreatePurchase() {
+		return get("is_create_purchase");
+	}
+
+	public void setHangQuantity1(java.math.BigDecimal hangQuantity1) {
+		set("hang_quantity1", hangQuantity1);
+	}
+	
+	public java.math.BigDecimal getHangQuantity1() {
+		return get("hang_quantity1");
+	}
+
+	public void setHangAccount1(java.math.BigDecimal hangAccount1) {
+		set("hang_account1", hangAccount1);
+	}
+	
+	public java.math.BigDecimal getHangAccount1() {
+		return get("hang_account1");
+	}
+
+	public void setHangDate1(java.util.Date hangDate1) {
+		set("hang_date1", hangDate1);
+	}
+	
+	public java.util.Date getHangDate1() {
+		return get("hang_date1");
+	}
+
+	public void setHangQuantity2(java.math.BigDecimal hangQuantity2) {
+		set("hang_quantity2", hangQuantity2);
+	}
+	
+	public java.math.BigDecimal getHangQuantity2() {
+		return get("hang_quantity2");
+	}
+
+	public void setHangAccount2(java.math.BigDecimal hangAccount2) {
+		set("hang_account2", hangAccount2);
+	}
+	
+	public java.math.BigDecimal getHangAccount2() {
+		return get("hang_account2");
+	}
+
+	public void setHangDate2(java.util.Date hangDate2) {
+		set("hang_date2", hangDate2);
+	}
+	
+	public java.util.Date getHangDate2() {
+		return get("hang_date2");
+	}
+
+	public void setHangQuantity3(java.math.BigDecimal hangQuantity3) {
+		set("hang_quantity3", hangQuantity3);
+	}
+	
+	public java.math.BigDecimal getHangQuantity3() {
+		return get("hang_quantity3");
+	}
+
+	public void setHangAccount3(java.math.BigDecimal hangAccount3) {
+		set("hang_account3", hangAccount3);
+	}
+	
+	public java.math.BigDecimal getHangAccount3() {
+		return get("hang_account3");
+	}
+
+	public void setHangDate3(java.util.Date hangDate3) {
+		set("hang_date3", hangDate3);
+	}
+	
+	public java.util.Date getHangDate3() {
+		return get("hang_date3");
+	}
+
+	public void setHangQuantity4(java.math.BigDecimal hangQuantity4) {
+		set("hang_quantity4", hangQuantity4);
+	}
+	
+	public java.math.BigDecimal getHangQuantity4() {
+		return get("hang_quantity4");
+	}
+
+	public void setHangAccount4(java.math.BigDecimal hangAccount4) {
+		set("hang_account4", hangAccount4);
+	}
+	
+	public java.math.BigDecimal getHangAccount4() {
+		return get("hang_account4");
+	}
+
+	public void setHangDate4(java.util.Date hangDate4) {
+		set("hang_date4", hangDate4);
+	}
+	
+	public java.util.Date getHangDate4() {
+		return get("hang_date4");
+	}
+
+	public void setHangQuantity5(java.math.BigDecimal hangQuantity5) {
+		set("hang_quantity5", hangQuantity5);
+	}
+	
+	public java.math.BigDecimal getHangQuantity5() {
+		return get("hang_quantity5");
+	}
+
+	public void setHangAccount5(java.math.BigDecimal hangAccount5) {
+		set("hang_account5", hangAccount5);
+	}
+	
+	public java.math.BigDecimal getHangAccount5() {
+		return get("hang_account5");
+	}
+
+	public void setHangDate5(java.util.Date hangDate5) {
+		set("hang_date5", hangDate5);
+	}
+	
+	public java.util.Date getHangDate5() {
+		return get("hang_date5");
+	}
+
+	public void setParentId(java.lang.Integer parentId) {
+		set("parent_id", parentId);
+	}
+	
+	public java.lang.Integer getParentId() {
+		return getInt("parent_id");
+	}
+
+	public void setWorkOrderNo1(java.lang.String workOrderNo1) {
+		set("work_order_no1", workOrderNo1);
+	}
+	
+	public java.lang.String getWorkOrderNo1() {
+		return getStr("work_order_no1");
+	}
+
+	public void setDeliveryNo1(java.lang.String deliveryNo1) {
+		set("delivery_no1", deliveryNo1);
+	}
+	
+	public java.lang.String getDeliveryNo1() {
+		return getStr("delivery_no1");
+	}
+
+	public void setWorkOrderNo2(java.lang.String workOrderNo2) {
+		set("work_order_no2", workOrderNo2);
+	}
+	
+	public java.lang.String getWorkOrderNo2() {
+		return getStr("work_order_no2");
+	}
+
+	public void setDeliveryNo2(java.lang.String deliveryNo2) {
+		set("delivery_no2", deliveryNo2);
+	}
+	
+	public java.lang.String getDeliveryNo2() {
+		return getStr("delivery_no2");
+	}
+
+	public void setWorkOrderNo3(java.lang.String workOrderNo3) {
+		set("work_order_no3", workOrderNo3);
+	}
+	
+	public java.lang.String getWorkOrderNo3() {
+		return getStr("work_order_no3");
+	}
+
+	public void setDeliveryNo3(java.lang.String deliveryNo3) {
+		set("delivery_no3", deliveryNo3);
+	}
+	
+	public java.lang.String getDeliveryNo3() {
+		return getStr("delivery_no3");
+	}
+
+	public void setAddQuantity1(java.math.BigDecimal addQuantity1) {
+		set("add_quantity1", addQuantity1);
+	}
+	
+	public java.math.BigDecimal getAddQuantity1() {
+		return get("add_quantity1");
+	}
+
+	public void setAddQuantity2(java.math.BigDecimal addQuantity2) {
+		set("add_quantity2", addQuantity2);
+	}
+	
+	public java.math.BigDecimal getAddQuantity2() {
+		return get("add_quantity2");
+	}
+
+	public void setAddQuantity3(java.math.BigDecimal addQuantity3) {
+		set("add_quantity3", addQuantity3);
+	}
+	
+	public java.math.BigDecimal getAddQuantity3() {
+		return get("add_quantity3");
 	}
 
 }

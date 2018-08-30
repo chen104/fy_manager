@@ -6,6 +6,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">库存一览表</h3>
+				<button class="btn btn-info" onclick="onbatchOut()" >出库</button>
 				<div class="box-tools">
 				<form action="/fy/admin/biz/whouse/storage"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -35,12 +36,13 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding text-center">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th>序号</th>
+								<th> 多选  <input type="checkbox" id="selectAll"> </th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -64,11 +66,13 @@
 								<th>出库</th>
 							</tr>
 						</thead>
+						<form action="/fy/admin/biz/outWhouse/tobatchOut" id="out_form">
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
-								<td>#(for.index+1)</td>
-									<td>#(x.cate_tmp)</td>
+								<td>#(for.index+1)</td> 
+								<td><input name="out_id" type="checkbox" value="#(x.id)" data-select=select ></td>
+								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
 								<td>#(x.urgent_status)</td>
@@ -83,9 +87,6 @@
 								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
-								
-								
-								
 								<td>#(x.storage_quantity)</td>
 								<!-- 
 								<td>#(x.out_quantity)	</td>
@@ -94,7 +95,7 @@
 							
 								<td class="jfa-operation-button">
 								  #if(!x.create_out_time)
-									<a href="/fy/admin/biz/whouse/toAddOut?id=#(x.id)" > 
+									<a href="/fy/admin/biz/outWhouse/add?id=#(x.id)" > 
 									<i class="fa fa-pencil" title="生成出库表"></i>
 									</a> 
 									
@@ -105,15 +106,17 @@
 							</tr>
 							#end
 						</tbody>
+					
+						</form>
 					</table>
-		
+			
 
 			</div>
 			<!-- /.box-body -->
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/whouse/storage?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
@@ -121,6 +124,38 @@
 
 
 <script type="text/javascript">
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+function onbatchOut(){
+	var select = $("input[data-select=select]:checked");
+
+	if(select.length ==0){
+		alert("没有选择订单");
+	}else{
+		$("#out_form").submit();
+	}
+}
+
+
 function deleteperson(a){
 	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
 	if(issure){

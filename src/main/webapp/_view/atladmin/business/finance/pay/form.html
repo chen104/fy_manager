@@ -445,24 +445,12 @@
 						<label class="col-sm-3 control-label">挂账期间</label>
 
 						<div class="col-sm-9">
-							<input id="create_date" name="model.create_date" type="text" class="form-control" value="#date(model.create_date??,"yyyy-MM")"
+							<input id="hang_date" name="hang_date" type="text" class="form-control" value="#date(model.hang_date??,"yyyy-MM")"
 								placeholder="挂账期间" data-type='month' autocomplete="off">
 						</div>
 					</div>
 				</div>
 				 
-				<script type="text/javascript">
-				
-					$(function(){
-						var vc=$("#create_date").val();
-						if(vc ==null&&""==vc){
-							var date =new Date();
-							var val = date.getFullYear()+"-"+date.getMonth();
-							$("#create_date").val(val);
-						}
-					});
-				</script>
-	
 	
 
 				<div class="col-md-6">
@@ -471,7 +459,7 @@
 						<label class="col-sm-3 control-label">付账期间</label>
 
 						<div class="col-sm-9">
-							<input name="model.pay_date" type="text" class="form-control" 
+							<input name="pay_date" type="text" class="form-control" 
 								placeholder="付账期间" data-type='month' autocomplete="off" value="#date(model.pay_date??,"yyyy-MM")">
 						</div>
 					</div>

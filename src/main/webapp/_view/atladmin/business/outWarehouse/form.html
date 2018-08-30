@@ -1,0 +1,270 @@
+
+<input hidden="hidden" value="#(model.id??)" name="out.id"></input>
+<input hidden="hidden" value="#(order.id??)" name="out.parentId"></input>
+
+
+
+<input hidden="hidden" value="#(order.id??)" name="out.orderId"></input>
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">类别</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"
+					value="#(order.cate_tmp??)" readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">计划员 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.plan_tmp??)"  
+					readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">工作订单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  
+					value="#(order.workOrderNo??)" readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">送货单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.deliveryNo??)" 
+					readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" 
+					value="#(order.commodityName??)" readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  
+					value="#(order.commoditySpec??)" readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.mapNo??)" 
+					readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">订单数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.quantity??)" 
+					readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">库存数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" #if(model.out_quantity??) value="#(order.storage_quantity.doubleValue() + model.out_quantity.doubleValue())" #else value="#(order.storage_quantity??)" #end readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(order.unitTmp??)" 
+					readonly="readonly">
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+<div  class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" #if(model.out_quantity??) value="#(order.out_quantity??)"  #else value="#(order.storage_quantity??)" #end autocomplete="off"
+					name="out.outQuantity">
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">出库时间</label>
+			<div class="col-sm-9">
+				<input type="text" data-type="datepicker" name="out.outTime" autocomplete="off"
+					class="form-control" placeholder="出库时间">
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">到货地址</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" #if(model.receive_address??)  value="#(model.receive_address??)" #else value="#(waybill.receive_address??)" #end  
+					placeholder="到货地址" name="out.receiveAddress">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">运输方式</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="运输方式" autocomplete="off" #if(model.transport_type??)  value="#(model.transport_type??)" #else value="#(waybill.transport_type??)" #end
+					name="out.transportType">
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">运输公司</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="运输公司" autocomplete="off" #if(model.transport_company??) value="#(model.transport_company??)" #else value="#(waybill.transport_company??)"  #end
+					name="out.transportCompany">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">运输重量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="运输重量" autocomplete="off" #if(model.transport_weight??) value="#(model.transport_weight??)" #else value="#(waybill.transport_weight??)"  #end
+					name="out.transportWeight" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">运输单号</label>
+
+			<div class="col-sm-9">
+
+				<input type="text" class="form-control"  #if(model.transport_no??) value="#(model.transport_no??)" #else value="#(waybill.transport_no??)"  #end
+					placeholder="运输单号" name="out.transportNo">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">运输费用</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="运输费用" autocomplete="off"  #if(model.transport_fee??) value="#(model.transport_fee??)" #else value="#(waybill.transport_fee??)"  #end
+					name="out.transportFee">
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+

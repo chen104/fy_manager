@@ -137,20 +137,12 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getStr("delivery_index");
 	}
 
-	public void setContract(java.lang.String contract) {
-		set("contract", contract);
+	public void setInvoiceNo(java.lang.String invoiceNo) {
+		set("invoice_no", invoiceNo);
 	}
 	
-	public java.lang.String getContract() {
-		return getStr("contract");
-	}
-
-	public void setCreateTime(java.util.Date createTime) {
-		set("create_time", createTime);
-	}
-	
-	public java.util.Date getCreateTime() {
-		return get("create_time");
+	public java.lang.String getInvoiceNo() {
+		return getStr("invoice_no");
 	}
 
 	public void setCreateBy(java.lang.Integer createBy) {
@@ -161,12 +153,20 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getInt("create_by");
 	}
 
-	public void setInvoiceNo(java.lang.String invoiceNo) {
-		set("invoice_no", invoiceNo);
+	public void setCreateTime(java.util.Date createTime) {
+		set("create_time", createTime);
 	}
 	
-	public java.lang.String getInvoiceNo() {
-		return getStr("invoice_no");
+	public java.util.Date getCreateTime() {
+		return get("create_time");
+	}
+
+	public void setContract(java.lang.String contract) {
+		set("contract", contract);
+	}
+	
+	public java.lang.String getContract() {
+		return getStr("contract");
 	}
 
 }

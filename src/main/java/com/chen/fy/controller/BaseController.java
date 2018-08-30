@@ -14,6 +14,7 @@
 
 package com.chen.fy.controller;
 
+import com.chen.fy.Constant;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.jfinal.aop.Before;
@@ -35,6 +36,9 @@ public class BaseController extends Controller {
 	public Account getLoginAccount() {
 		if (loginAccount == null) {
 			loginAccount = getAttr(LoginService.loginAccountCacheName);
+			if (loginAccount == null) {
+				loginAccount = getSessionAttr(Account.sessionKey);
+			}
 			if (loginAccount != null && !loginAccount.isStatusOk()) {
 				throw new IllegalStateException("当前用户状态不允许登录，status = " + loginAccount.getStatus());
 			}
@@ -59,5 +63,13 @@ public class BaseController extends Controller {
 	@Before(NotAction.class)
 	public int getLoginAccountId() {
 		return getLoginAccount().getId();
+	}
+
+	public Integer getAccountId() {
+		Account account = getSessionAttr(Constant.account);
+		if (account != null) {
+			return account.getId();
+		}
+		return null;
 	}
 }

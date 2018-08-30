@@ -121,4 +121,12 @@ public abstract class BaseSupplier<M extends BaseSupplier<M>> extends Model<M> i
 		return getStr("remark");
 	}
 
+	public void setSupplierNo(java.lang.String supplierNo) {
+		set("supplier_no", supplierNo);
+	}
+	
+	public java.lang.String getSupplierNo() {
+		return getStr("supplier_no");
+	}
+
 }

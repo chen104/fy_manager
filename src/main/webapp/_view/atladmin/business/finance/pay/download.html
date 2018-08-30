@@ -6,25 +6,31 @@
 		<div class="box-tools"></div>
 
 	</div>
+		
 	<!-- /.box-header -->
 	<!-- form start -->
 	<form class="form-horizontal" id="myForm"
 		action="/fy/admin/biz/finance/pay/downloadPay" method="post">
+			<div class="text-center">
+					<h3 style="color: red;margin-left: auto;margin-right: auto;">#(msg)</h3>
+			</div>
 		<div class="box-body form-horizontal">
-
-
+			
+			
 
 			<div class="row">
 
 				<div class="col-md-6">
 
 					<div class="form-group">
-						<label class="col-sm-3 control-label">应付月份</label>
+						<label class="col-sm-3 control-label">应付期间</label>
 
 						<div class="col-sm-9">
 							<input name="date" type="text" class="form-control"
-								placeholder="采购月份" data-type='month' autocomplete="off">
+								placeholder="应付期间" data-type='month' autocomplete="off" value="#(date)">
+									<div style="color: red">#(dateMsg)</div>
 						</div>
+					
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -34,9 +40,9 @@
 
 						<div class="col-sm-9">
 							<input type="text" class="form-control" id="supplier_name"
-								name="supplier_name" placeholder="供应商"
+								name="supplier_name" placeholder="供应商" value="#(supplier_name)"
 								onclick="showChooesSupplier()"> <input type="text"
-								id="supplier_id" name="supplier_id" hidden="hidden">
+								id="supplier_id" name="supplier_id" hidden="hidden" value="#(supplier_id)">
 						</div>
 					</div>
 				</div>

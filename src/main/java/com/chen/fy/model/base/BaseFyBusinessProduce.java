@@ -97,4 +97,12 @@ public abstract class BaseFyBusinessProduce<M extends BaseFyBusinessProduce<M>> 
 		return get("is_create_in_house");
 	}
 
+	public void setIsBackBack(java.lang.Boolean isBackBack) {
+		set("is_back_back", isBackBack);
+	}
+	
+	public java.lang.Boolean getIsBackBack() {
+		return get("is_back_back");
+	}
+
 }

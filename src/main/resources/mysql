@@ -1,0 +1,45 @@
+
+delete from fy_business_pay;
+delete from fy_business_in_warehouse;
+delete from  fy_business_pay;
+delete from   fy_ready_purchase;
+delete from  fy_complaint;
+delete from   fy_ready_purchase;
+delete from   fy_business_order;
+delete from  fy_upload_getpay;
+delete from  fy_business_ready
+
+CREATE TABLE `fy_upload_getpay` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hang_date` date DEFAULT NULL COMMENT '挂账日期',
+	materials   varchar(50)  DEFAULT NULL COMMENT '物料',
+	commodity_name  varchar(50)  DEFAULT NULL COMMENT '商品名称',
+	Brand_no varchar(50)  DEFAULT NULL COMMENT '牌号',
+	spec varchar(50)  DEFAULT NULL COMMENT '商品规格',
+	project_no varchar(50)  DEFAULT NULL COMMENT '项目编号',
+	unit  varchar(30)  DEFAULT NULL COMMENT '单位',
+	quantity decimal(14,4) DEFAULT 0 COMMENT '数量',
+	cost decimal(14,2) DEFAULT 0 COMMENT '单价',
+	hang_quantity  decimal(14,4) DEFAULT 0 COMMENT '挂账数量',
+	invoice_stat varchar(30)  DEFAULT NULL COMMENT '发票状态',
+	hang_amount decimal(14,2) DEFAULT 0 COMMENT '挂账金额',
+	perchase_person  varchar(30)  DEFAULT NULL COMMENT '采购人',
+	delivery_no  varchar(50)  DEFAULT NULL COMMENT '送货单号',
+	delivery_index varchar(50)  DEFAULT NULL COMMENT '送货序列号',
+	invoice_no varchar(50)  DEFAULT NULL COMMENT '发票号',
+	create_by int(11)  ,
+	create_time datetime ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+alter table fy_business_ready add `work_order_no1` varchar(20) DEFAULT NULL COMMENT '工作订单号1';
+alter table fy_business_ready add `delivery_no1` varchar(20) DEFAULT NULL COMMENT '送货单号1';
+alter table fy_business_ready add `work_order_no2` varchar(20) DEFAULT NULL COMMENT '工作订单号2';
+alter table fy_business_ready add `delivery_no2` varchar(20) DEFAULT NULL COMMENT '送货单号2';
+alter table fy_business_ready add `work_order_no3` varchar(20) DEFAULT NULL COMMENT '工作订单号3';
+alter table fy_business_ready add `delivery_no3` varchar(20) DEFAULT NULL COMMENT '送货单号3';
+
+alter table fy_business_ready add `add_quantity1` decimal(14,4) DEFAULT 0 COMMENT '补单1';
+alter table fy_business_ready add `add_quantity2` decimal(14,4) DEFAULT 0 COMMENT '补单2';
+alter table fy_business_ready add `add_quantity3` decimal(14,4) DEFAULT 0 COMMENT '补单3';

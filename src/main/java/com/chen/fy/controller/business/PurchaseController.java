@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,8 +21,11 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
@@ -38,8 +42,11 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 
 public class PurchaseController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(PurchaseController.class);
+
 	public void index() {
 		String key = getPara("keyWord");
 		Page<FyBusinessPurchase> modelPage = null;
@@ -86,42 +93,76 @@ public class PurchaseController extends BaseController {
 			renderJson(Ret.fail().set("msg", "没有选择采购时间"));
 			return;
 		}
+		StringBuilder resb = new StringBuilder();
+		List<Integer> exsist = new ArrayList<Integer>();
+		Date date = new Date();
+		/*
+		 * 检测是否已生成采购单
+		 */
+		List<FyBusinessOrder> orders = new ArrayList<FyBusinessOrder>();
 		for (Integer S : orderIds) {
+			List<Record> list = Db.find("select  1 from fy_business_purchase where order_id = ? and supplier_id = ?", S,
+					supplier);
+			if (list.size() > 0) {
+				exsist.add(S);
+				continue;
+			}
 			FyBusinessPurchase model = new FyBusinessPurchase();
+
+			FyBusinessOrder order = FyBusinessOrder.dao.findById(S);
+			orders.add(order);
+			order.setReceiveTime(date);
+			model.setPurchaseQuantity(order.getQuantity());
+
+			model.setPurchaseTitle(order.getCommodityName());
 			model.setOrderId(S);
 			model.setParentId(S);
 			model.setSupplierId(supplier);
 			model.setPurchaseDate(purchase);
+
 			model.setPurchaseNo(PurchaseNoKit.getNo());
 			modelList.add(model);
 
 		}
+		if (modelList.size() == 0) {
+			renderJson(Ret.fail().set("msg", "选择的订单已存在采购单，新建采购失败"));
+			return;
+		}
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
 				int[] re = Db.batchSave(modelList, 10);
+				int[] up = Db.batchUpdate(orders, orders.size());
 				int row = 0;
 				for (int i = 0; i < re.length; i++) {
 					row = row + re[i];
 				}
-				String updatesql = " update fy_business_order p  set is_finish_purchase = 1  "
-						+ "where is_finish_purchase is null " + "and  EXISTS ("
-						+ "	select 1 from fy_business_purchase  fp where p.id = fp.order_id " + ")";
-				Db.update(updatesql);// 已生成采购单
-				String updateorder = "update fy_business_order o LEFT JOIN   "
-						+ "(SELECT sum(purchase_account) purchase_account,order_id from fy_business_purchase where order_id in "
-						+ sb.toString() + ") purchase  " + "on o.id = purchase.order_id   "
-						+ "set o.ww_unhang_amount = purchase_account  " + "where o.id  in " + sb.toString();
-				Db.update(updateorder);
-				// 更新接收时间
-				Db.update("update  fy_business_order set receive_time =NOW() where receive_time is null and id in "
-						+ sb.toString());
+
 				return row == modelList.size();
 			}
 		});
 
 		Ret ret = null;
+		if (exsist.size() > 0) {
+			StringBuilder insb = new StringBuilder();
+			SqlKit.joinIds(exsist, insb);
+			List<Record> ls = Db
+					.find("select commodity_name,work_order_no,s.name supplier_name from fy_business_order o\r\n"
+							+ "INNER  JOIN fy_base_supplier s\r\n" + " where o.id in  " + insb + " and s.id=  "
+							+ supplier);
+			StringBuilder reStr = new StringBuilder();
+			reStr.append("新建" + modelList.size() + "条 采购单成功 \n");
+			for (Record e : ls) {
+				reStr.append(e.get("work_order_no") + " " + e.getStr("commodity_name") + " " + e.getStr("supplier_name")
+						+ " \n");
+			}
+			reStr.append(" 已存在采购单");
+
+			ret = Ret.ok("msg", reStr);
+			renderJson(ret);
+			return;
+		}
 		if (re) {
-			ret = Ret.ok("msg", "新建 成功");
+			ret = Ret.ok("msg", "新建" + modelList.size() + "条 采购单成功");
 		} else {
 			ret = Ret.ok("msg", "新建失败");
 		}
@@ -417,17 +458,21 @@ public class PurchaseController extends BaseController {
 					targetfile);
 			PIOExcelUtil excel = null;
 			excel = new PIOExcelUtil(targetfile, 0);
+			String PurchaseNo = PurchaseNoKit.getNo();
 
-			excel.setCellVal(1, 16, "客户编码  : " + supplier.getId());
-			excel.setCellVal(2, 16, "订单编号 : " + PurchaseNoKit.getNo());
-			excel.setCellVal(3, 16, "订单日期 : " + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd"));
-			excel.setCellVal(4, 16, "厂     商 : " + supplier.getName());
-			excel.setCellVal(5, 16, "电话/传真 : " + supplier.getPhone());
-			excel.setCellVal(6, 16, "地址  :" + supplier.getAddress());
-			excel.setCellVal(7, 16, "联系人 :" + supplier.getContactPerson() + " 联系方式  " + supplier.getContactType());
+			excel.setCellVal(1, 16, supplier.getSupplierNo());
+			excel.setCellVal(2, 16, PurchaseNo);
+			excel.setCellVal(3, 16, DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd"));
+			excel.setCellVal(4, 16, supplier.getName());
+			excel.setCellVal(5, 16, supplier.getPhone());
+			excel.setCellVal(6, 16, supplier.getAddress());
+			excel.setCellVal(7, 16, supplier.getContactPerson());
+			excel.setCellVal(7, 19, supplier.getContactType());
 
 			int row = 11;
 			for (Record item : itemlist) {
+				item.set("purchase_parent", PurchaseNo);
+				item.set("can_download", false);
 				String commodity_name = item.getStr("commodity_name"); // 商品名称
 				excel.setCellVal(row, 0, commodity_name);
 
@@ -444,16 +489,22 @@ public class PurchaseController extends BaseController {
 				excel.setCellVal(row, 15, cate_tmp);
 
 				Double purchase_single_weight = item.getDouble("purchase_single_weight"); // 单件
-				excel.setCellVal(row, 18, purchase_single_weight);
+				excel.setCellVal(row, 16, purchase_single_weight);
 
 				Double purchase_weight = item.getDouble("purchase_weight"); // 总重
-				excel.setCellVal(row, 19, purchase_weight);
+				excel.setCellVal(row, 17, purchase_weight);
 
 				Double purchase_cost = item.getDouble("purchase_cost"); // 单价
-				excel.setCellVal(row, 20, purchase_cost);
+				excel.setCellVal(row, 18, purchase_cost);
 
 				Double purchase_account = item.getDouble("purchase_account"); // 总金额
-				excel.setCellVal(row, 21, purchase_account);
+				excel.setCellVal(row, 19, purchase_account);
+
+				Double discount = item.getDouble("discount"); // 折扣
+				excel.setCellVal(row, 20, discount);
+
+				Double discount_account = item.getDouble("discount_account"); // 折后金额
+				excel.setCellVal(row, 21, discount_account);
 
 				String work_order_no = item.getStr("work_order_no");// 工作订单号
 				excel.setCellVal(row, 22, work_order_no);
@@ -469,7 +520,10 @@ public class PurchaseController extends BaseController {
 			index++;
 
 		}
-
+		for (Record e : list) {
+			e.keep("id", "can_download", "purchase_parent");
+		}
+		Db.batchUpdate("fy_business_purchase", list, list.size());
 		if (filename.size() == 1) {
 			File file = new File(filename.get(0));
 			if (file.exists()) {
@@ -483,7 +537,7 @@ public class PurchaseController extends BaseController {
 		ZipCompressor zc = new ZipCompressor(zipname);
 		zc.compress(source);
 
-		FileUtils.forceDeleteOnExit(parentfile);
+		FileUtils.forceDelete(parentfile);
 		renderFile(new File(zipname));
 
 	}
@@ -541,6 +595,282 @@ public class PurchaseController extends BaseController {
 		System.out.println("checksum: " + csum.getChecksum().getValue());
 
 		return filePath;
+	}
+
+	public void uploadPurchase() {
+
+	}
+
+	public void tomyDownload() {
+		render("mydownload.html");
+	}
+
+	public void download() {
+		try {
+			Integer supplierId = getParaToInt("supplier_id");
+			String date = getPara("date");
+			String supplier_name = getPara("supplier_name");
+			Supplier supplier = Supplier.dao.findById(supplierId);
+			if (supplier == null) {
+				setAttr("supplierMsg", "没有选择供应商");
+				render("mydownload.html");
+				return;
+			}
+			if (StringUtils.isEmpty(date)) {
+				setAttr("dateMsg", "没有选择采购月份");
+				render("mydownload.html");
+				return;
+			}
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.setTime(DateUtils.parseDate(date, "yyyy-MM"));
+
+			calendar.add(Calendar.DATE, -1);
+			String start = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
+			calendar.add(Calendar.DATE, 1);
+			calendar.add(Calendar.MONTH, 1);
+			String end = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
+
+			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+					+ "";
+			List<Record> list = Db.find("select p.*," + sql
+					+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where can_download = 1 and  p.supplier_id = "
+					+ supplierId + " and purchase_date > '" + start + "' and purchase_date < '" + end + "'");
+			if (list.size() == 0) {
+				keepPara("date", "supplier_name", "supplierId");
+				setAttr("downloadMsg", "没有符合条件的采购单");
+				render("download.html");
+				return;
+			}
+			// 读取模板
+			// InputStream input =
+			// this.getClass().getClassLoader().getResourceAsStream("templet/purchase.xlsx");
+			File targetfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel/",
+					supplier.getName() + "_" + date + ".xlsx");
+			if (targetfile.exists()) {
+				targetfile.delete();
+			}
+			FileUtils.copyFile(
+					new File(
+							this.getClass().getClassLoader().getResource("templet/download/mypurchase.xlsx").getFile()),
+					targetfile);
+			PIOExcelUtil excel = null;
+			excel = new PIOExcelUtil(targetfile, 0);
+			//
+			// excel.setCellVal(1, 16, "客户编码 : " + supplier.getId());
+			// excel.setCellVal(2, 16, "订单编号 : " + PurchaseNoKit.getNo());
+			// excel.setCellVal(3, 16, "订单日期 : " +
+			// DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd"));
+			// excel.setCellVal(4, 16, "厂 商 : " + supplier.getName());
+			// excel.setCellVal(5, 16, "电话/传真 : " + supplier.getPhone());
+			// excel.setCellVal(6, 16, "地址 :" + supplier.getAddress());
+			// excel.setCellVal(7, 16, "联系人 :" + supplier.getContactPerson() + " 联系方式 " +
+			// supplier.getContactType());
+
+			int row = 11;
+			for (Record item : list) {
+
+				String purchase_no = item.getStr("purchase_no"); // 商品名称
+				excel.setCellVal(row, 0, purchase_no);
+
+				String commodity_name = item.getStr("commodity_name"); // 商品名称
+				excel.setCellVal(row, 1, commodity_name);
+
+				String commodity_spec = item.getStr("commodity_spec");// 商品规格
+				excel.setCellVal(row, 2, commodity_spec);
+
+				String map_no = item.getStr("map_no"); // 总图号
+				excel.setCellVal(row, 3, map_no);
+
+				Double quantity = item.getDouble("quantity");// 数量
+				excel.setCellVal(row, 4, quantity);
+
+				String cate_tmp = item.getStr("unit_tmp"); // 单位
+				excel.setCellVal(row, 5, cate_tmp);
+
+				Double purchase_single_weight = item.getDouble("purchase_single_weight"); // 单件
+				excel.setCellVal(row, 6, purchase_single_weight);
+
+				Double purchase_weight = item.getDouble("purchase_weight"); // 总重
+				excel.setCellVal(row, 7, purchase_weight);
+
+				Double purchase_cost = item.getDouble("purchase_cost"); // 单价
+				excel.setCellVal(row, 8, purchase_cost);
+
+				Double purchase_account = item.getDouble("purchase_account"); // 总金额
+				excel.setCellVal(row, 9, purchase_account);
+
+				Double discount = item.getDouble("discount"); // 单价
+				excel.setCellVal(row, 10, discount);
+
+				Double discount_account = item.getDouble("discount_account"); // 总金额
+				excel.setCellVal(row, 11, discount_account);
+
+				String work_order_no = item.getStr("work_order_no");// 工作订单号
+				excel.setCellVal(row, 12, work_order_no);
+
+				String purchase_remark = item.getStr("purchase_remark");// 备注
+				excel.setCellVal(row, 13, purchase_remark);
+				row++;
+
+			}
+			excel.save2File(targetfile);
+			renderFile(targetfile);
+			return;
+
+		} catch (
+
+		ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void upload() {
+		UploadFile ufile = getFile();
+		int total = 0;
+		if (ufile != null) {
+			try {
+				File file = ufile.getFile();
+
+				PIOExcelUtil excel = new PIOExcelUtil(file, 0);
+				// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
+				// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
+				// excel.setCellVal(1, 16, supplier.getSupplierNo());
+				// excel.setCellVal(2, 16, PurchaseNoKit.getNo());
+				String supplierNO = excel.getCellVal(1, 16);
+				if (StringUtils.isEmpty(supplierNO)) {
+					setAttr("msg", "没有厂商编码");
+					renderJson(Ret.fail("msg", "没有厂商编码"));
+					return;
+				}
+				Supplier supplier = Supplier.dao.findFirst("select * from fy_base_supplier where supplier_no = ?",
+						supplierNO);
+				if (supplier == null) {
+
+					renderJson(Ret.fail("msg", "不存在厂商编码"));
+					return;
+				}
+
+				List<FyBusinessPurchase> update = new ArrayList<FyBusinessPurchase>();
+
+				int row = 11;
+				for (; row < 32; row++) {
+
+					// Double purchase_single_weight = item.getDouble("purchase_single_weight"); //
+					// 单件
+					// excel.setCellVal(row, 6, purchase_single_weight);
+
+					String work_order_no = excel.getCellVal(row, 22);
+
+					if (StringUtils.isEmpty(work_order_no)) {
+						continue;
+					}
+					FyBusinessPurchase item = FyBusinessPurchase.dao.findFirst(
+							"select p.*,work_order_no from fy_business_purchase p inner join  fy_business_order o on p.order_id =o.id where supplier_id = ? and o.work_order_no = ? ",
+							supplier.getId(), work_order_no);
+
+					item.set("supplier_id", supplier.getId());
+					String purchase_single_weight = excel.getCellVal(row, 16);
+					if (StringUtils.isEmpty(purchase_single_weight)) {
+						purchase_single_weight = "0";
+					}
+					item.set("purchase_single_weight", purchase_single_weight);
+
+					String purchase_weight = excel.getCellVal(row, 17); // 总重
+					if (StringUtils.isEmpty(purchase_weight)) {
+						purchase_weight = "0";
+					}
+					item.set("purchase_weight", purchase_weight);
+
+					String purchase_cost = excel.getCellVal(row, 18);// 单价
+					if (StringUtils.isEmpty(purchase_cost)) {
+						purchase_cost = "0";
+					}
+					item.set("purchase_cost", purchase_cost);
+
+					String purchase_account = excel.getCellVal(row, 19);// 采购金额
+					if (StringUtils.isEmpty(purchase_account)) {
+						purchase_account = "0";
+					}
+					item.set("purchase_account", purchase_account);
+
+					String discount = excel.getCellVal(row, 20);
+					if (StringUtils.isEmpty(discount)) {
+						discount = "0";
+					}
+					item.set("discount", discount);
+					// 折后金额
+
+					String discount_account = excel.getCellVal(row, 21);
+					if (StringUtils.isEmpty(discount_account)) {
+						discount_account = "0";
+					}
+					item.set("discount_account", discount_account);
+					// 工作订单号
+
+					update.add(item);
+				}
+				int[] re = Db.batchUpdate(update, update.size());
+				List<Integer> list = new ArrayList<Integer>();
+
+				for (int i = 0; i < re.length; i++) {
+					total += re[i];
+					if (re[i] == 0) {
+						list.add(i + 1);
+						logger.warn(" 采购单导入 存在没有更新成功的，第 " + i + "条，从0开始算  ");
+					}
+				}
+				if (list.size() > 0) {
+					StringBuilder sb = new StringBuilder();
+					sb.append("添加了" + total + "记录 \n").append("其中  第 ");
+					for (Integer i : list) {
+						sb.append(i).append(",");
+					}
+					sb.append(" 条记录更新失败 ");
+					renderJson(Ret.ok("msg", sb.toString()));
+					return;
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error(e.getMessage());
+				renderJson(Ret.ok("msg", "文件错误"));
+				return;
+			}
+		}
+		ufile.getFile().delete();
+		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
+	}
+
+	public void avaliable(PIOExcelUtil excel, StringBuilder sb) {
+		int row = 11;
+		for (int i = 1; i < 32; i++) {
+
+			String purchase_single_weight = excel.getCellVal(row, 16);// 单件
+			if (NumberUtils.isNumber(purchase_single_weight)) {
+
+			}
+			String purchase_weight = excel.getCellVal(row, 17); // 总重
+
+			String purchase_cost = excel.getCellVal(row, 18);// 单价
+
+			String purchase_account = excel.getCellVal(row, 19);// 采购金额
+
+			String discount = excel.getCellVal(row, 20);
+
+			// 折后金额
+
+			String discount_account = excel.getCellVal(row, 21);
+
+			// 工作订单号
+
+			String work_order_no = excel.getCellVal(row, 22);
+
+		}
 	}
 
 }

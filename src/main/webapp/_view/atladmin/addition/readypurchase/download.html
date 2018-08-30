@@ -1,0 +1,89 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">下载采购单</h3>
+              	<div class="box-tools">
+              		
+					
+				</div>
+			
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/addition/readyPurchase/downloadZip" method="post">     
+              <div class="box-body form-horizontal">
+                
+                <div class="row text-center">
+                
+                	<h2 style="color: red;margin-left: auto;margin-right: auto;">#(downloadMsg)</h2>
+                </div>
+				
+                
+              <div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">采购月份</label>
+
+			<div class="col-sm-9">
+				<input name="date" type="text" class="form-control" placeholder="采购月份"  data-type='month' autocomplete="off" value="#(date)">
+				<div id="date_msg" style="color: red">#(dateMsg)</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">供应商</label>
+
+			<div class="col-sm-9">
+				<input type="text" value="#(supplier_name)"  class="form-control"  id="supplier_name"  placeholder="供应商"  autocomplete="off"  >
+				<input type="text" value="#(supplier_id)" id="supplier_id" name="supplier_id"  hidden="hidden" >
+				<div id="date_msg" style="color: red">#(supplierMsg)</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+                
+                
+              </div>
+             
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <a type="button" class="btn btn-default pull-left" href="/fy/admin/biz/commission/purchase">返回</a>
+                	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+        </form>
+          </div>
+          
+#include("../../supplier/searchSupplier.html")
+<script type="text/javascript">
+	$(function(){
+		$("#supplier_name").click(function(){
+			var callback=function(select,id,name){
+				if(select){
+					$("#supplier_id").val(id);
+					$("#supplier_name").val(name);
+				}
+			};
+		new SelectSupplierModal(callback).show();
+		
+			
+		});
+		
+	});
+	
+</script>
+
+#end
+

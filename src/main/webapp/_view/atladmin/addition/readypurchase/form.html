@@ -1,0 +1,377 @@
+<input hidden="hidden" value="#(order.id??)" name="model.readyOrderId"></input>
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">类别名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="类别名称" readonly="readonly"
+					value="#(order.category_name??)">
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">计划员</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="类别名称"  readonly="readonly"
+					value="#(order.planer_name??)" >
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">执行状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="执行状态"  readonly="readonly"
+					value="#(order.execu_status??)"">
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">订单日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="订单日期"  readonly="readonly"
+					value="#(order.order_date??)">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">交货日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="交货日期"  readonly="readonly"
+					value="#(order.delivery_date??)" >
+			</div>
+		</div>
+	</div>
+
+
+<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">工作订单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="工作订单号"  readonly="readonly"
+					value="#(order.work_order_no??)">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">送货单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="送货单号"  readonly="readonly"
+					value="#(order.delivery_no??)" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="商品名称"  readonly="readonly"
+					value="#(order.commodity_name??)"x>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="商品规格"  readonly="readonly"
+					value="#(order.commodity_spec??)" >
+			</div>
+		</div>
+	</div>
+
+
+
+<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">总图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="总图号"  readonly="readonly"
+					value="#(order.map_no??)" x>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">技术条件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="技术条件"  readonly="readonly"
+					value="#(order.technology??)" x>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">加工要求</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="加工要求"  readonly="readonly"
+					value="#(order.machining_require??)" >
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="数量"  readonly="readonly"
+					value="#(order.quantity??)">
+			</div>
+		</div>
+	</div>
+	
+		<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单位"  readonly="readonly"
+					value="#(order.unit_name)" >
+			</div>
+		</div>
+	</div>
+	
+
+
+</div>
+
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">供应商</label>
+
+			<div class="col-sm-9">
+					
+				<input type="text" placeholder="选择供应商"  id="supplier" class="form-control"  value="#(order.supplier_name??)"  autocomplete="off"  readonly="readonly">
+
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">采购日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="采购日期" autocomplete="off"  data-type='datepicker'
+					 name="model.purchaseDate" value="#(model.purchase_date??)">
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">采购名称</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="采购名称" #if(model.purchase_title) value="#(model.purchase_title??)" #else  value="#(order.commodity_name??)"  value="#(model.purchase_title??)"  #end name="model.purchaseTitle"  autocomplete="off" >
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">采购数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="采购数量" id="purchase_quantity"  #if(model.purchase_quantity) value="#(model.purchase_quantity??)"  #else value="#(order.quantity)"   #end  autocomplete="off" 
+					 name="model.purchaseQuantity">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单件" id="single" name="model.purchaseSingleWeight" autocomplete="off"  
+					value="#(model.purchaseSingleWeight??)" >
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">总重</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="purchaseWeight" class="form-control" placeholder="总重"  name="model.purchaseWeight" autocomplete="off"  onclick=" excutweigth()"
+					value="#(model.purchaseWeight??)" >
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+<!--
+
+//-->
+function excutweigth(){
+	var single  = 	$("#single").val();
+	var quantity  = 	$("#purchase_quantity").val();
+	if(single!=null&&quantity!=null){
+		$("#purchaseWeight").val(single*quantity);
+	}
+}
+
+function execuCost(){
+	var single  = 	$("#cost").val();
+	var quantity  = 	$("#purchase_quantity").val();
+	if(single!=null&&quantity!=null){
+		$("#totalCost").val(single*quantity);
+	
+	}
+}
+
+</script>
+
+
+<div class="row">
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单价" id="cost" name="model.purchaseCost" autocomplete="off" 
+					value="#(model.purchaseCost??)" >
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">总金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="总金额" id="totalCost"  name="model.purchaseAccount" autocomplete="off" onclick="execuCost()"
+					value="#(model.purchaseAccount??)" >
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">备注</label>
+
+			<div class="col-sm-9">
+				<textarea rows="3" cols="" class="form-control" name="model.purchaseRemark" >#(model.purchase_remark??)</textarea>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+<!--
+
+//-->
+
+
+</script>
+
+
+
+	

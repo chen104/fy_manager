@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
+import com.jfinal.club.common.kit.SupplierNoKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -119,6 +120,7 @@ public class SupplierController extends BaseController {
 						continue;
 					}
 					item.setName(name);
+					item.setSupplierNo(SupplierNoKit.getNo());
 
 					String code = excel.getCellVal(i, 1);// 统一社会代码
 					item.setCode(code);

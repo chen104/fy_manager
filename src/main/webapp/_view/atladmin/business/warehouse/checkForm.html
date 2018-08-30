@@ -242,7 +242,7 @@
 			<label  class="col-sm-3 control-label">检测时间</label>
 
 			<div class="col-sm-9">
-				<input type="text" data-type="datepicker" class="form-control" placeholder="检测时间" value="#(model.checkTime??)" name="checkTime" >
+				<input type="text" data-type="datepicker" class="form-control" placeholder="检测时间" value="#(model.checkTime??)" name="checkTime"  autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -252,7 +252,7 @@
 			<label  class="col-sm-3 control-label">检测数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" readonly="readonly"  placeholder="检测数量"  value="#(model.real_in_quantity??)" name="checkQuantity">
+				<input type="text" class="form-control" readonly="readonly" autocomplete="off"  placeholder="检测数量"  value="#(model.real_in_quantity??)" name="checkQuantity">
 			</div>
 		</div>
 	</div>

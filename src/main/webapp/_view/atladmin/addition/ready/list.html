@@ -109,8 +109,16 @@
 								<th>导入时间</th>
 								<th>订单日期</th>
 								<th>交货日期</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
+								
+								<th>工作订单号1</th>
+								<th>送货单号1</th>
+								
+								<th>工作订单号1</th>
+								<th>送货单号1</th>
+								
+								<th>工作订单号1</th>
+								<th>送货单号1</th>
+								
 								<th>商品名称</th>
 								<th>商品规格</th>
 								<th>总图号</th>
@@ -120,6 +128,11 @@
 								<th>单位</th>
 								<th>未税单价</th>
 								<th>补单状态</th>
+								
+								<th>补单数量1</th>
+								<th>补单数量2</th>
+								<th>补单数量3</th>
+								
 								<th>厂商</th>
 								<th>订单编码</th>
 								<th>数量</th>
@@ -132,38 +145,61 @@
 								<th>检测时间</th>
 								<th>检测结果</th>
 								
-								<th>挂账数量</th>
-								<th>挂账金额</th>
-								<th>挂账日期</th>
-								
 								<th>库存</th>
 								<th>入库数量1</th>
 								<th>入库时间1</th>
-								<th>出库数量1</th>
-								<th>出库时间1</th>
-								
+	
 								<th>入库数量2</th>
 								<th>入库时间2</th>
-								<th>出库数量2</th>
-								<th>出库时间2</th>
-								
 								
 								<th>入库数量3</th>
 								<th>入库时间3</th>
-								<th>出库数量3</th>
-								<th>出库时间3</th>
-								
 								
 								
 								<th>入库数量4</th>
 								<th>入库时间4</th>
-								<th>出库数量4</th>
-								<th>出库时间4</th>
 								
 								<th>入库数量5</th>
 								<th>入库时间5</th>
+								
+								<th>出库数量1</th>
+								<th>出库时间1</th>
+								
+								
+								<th>出库数量2</th>
+								<th>出库时间2</th>
+								
+								<th>出库数量3</th>
+								<th>出库时间3</th>
+								
+								
+								<th>出库数量4</th>
+								<th>出库时间4</th>
+								
 								<th>出库数量5</th>
 								<th>出库时间5</th>
+								
+								
+								<th>挂账数量1</th>
+								<th>挂账金额1</th>
+								<th>挂账日期1</th>
+								
+								<th>挂账数量2</th>
+								<th>挂账金额2</th>
+								<th>挂账日期2</th>
+								
+								<th>挂账数量3</th>
+								<th>挂账金额3</th>
+								<th>挂账日期3</th>
+								
+								<th>挂账数量4</th>
+								<th>挂账金额4</th>
+								<th>挂账日期4</th>
+								
+								<th>挂账数量5</th>
+								<th>挂账金额5</th>
+								<th>挂账日期5</th>
+								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -178,8 +214,14 @@
 							  <td>#(x.import_time)</td>
 							  <td>#(x.order_date) </td>
 							  <td>#(x.delivery_date)</td>
-							  <td>#(x.work_order_no)</td> 
-							  <td>#(x.delivery_no)</td> 
+							  
+							  <td>#(x.work_order_no1)</td> 
+							  <td>#(x.delivery_no1)</td> 
+							  <td>#(x.work_order_no2)</td> 
+							  <td>#(x.delivery_no2)</td> 
+							  <td>#(x.work_order_no3)</td> 
+							  <td>#(x.delivery_no3)</td> 
+							  
 							  <td>#(x.commodity_name)</td> 
 							  <td>#(x.commodity_spec)</td>
 							  <td>#(x.map_no)</td>
@@ -189,6 +231,11 @@
 							  <td>#(x.unit_name)</td> 
 							  <td>#(x.untaxed_cost)</td>
 							  <td>#(x.add_status)</td> 
+							  
+							  <td>#(x.add_quantity1)</td>
+							  <td>#(x.add_quantity2)</td>
+							  <td>#(x.add_quantity3)</td>
+							  
 							  <td> #(x.supplier_name) </td> 
 							  <td>#(x.order_no)</td>
 							  	  
@@ -202,10 +249,7 @@
 							
 							  <td>#(x.check_time)</td>
 							  <td>#(x.check_result)</td>
-							 
-							  <td>#(x.hang_quantity)</td>
-							  <td>#(x.hang_account)</td>
-							  <td>#(x.hang_date)</td>
+							
 							  
 							  <td>#(x.storage)</td>
 							
@@ -213,33 +257,72 @@
 							   
 							  <td>#(x.in_quantity1)</td>	
 							  <td>#(x.in_date1)</td>
-							  <td>#(x.out_quantity1)</td>
-							  <td>#(x.out_date1)</td>
 							  
 							  <td>#(x.in_quantity2)</td>	
 							  <td>#(x.in_date2)</td>
-							  <td>#(x.out_quantity2)</td>
-							  <td>#(x.out_date2)</td>
 							  
-							    <td>#(x.in_quantity3)</td>	
+							  <td>#(x.in_quantity3)</td>	
 							  <td>#(x.in_date3)</td>
-							  <td>#(x.out_quantity3)</td>
-							  <td>#(x.out_date3)</td>
 							  
-							    <td>#(x.in_quantity4)</td>	
+							 <td>#(x.in_quantity4)</td>	
 							  <td>#(x.in_date4)</td>
-							  <td>#(x.out_quantity4)</td>
-							  <td>#(x.out_date4)</td>
+							  
 							  
 							  <td>#(x.in_quantity5)</td>	
 							  <td>#(x.in_date5)</td>
+							  
+							  <td>#(x.out_quantity1)</td>
+							  <td>#(x.out_date1)</td>
+							  
+						
+							  <td>#(x.out_quantity2)</td>
+							  <td>#(x.out_date2)</td>
+							  
+							 
+							  
+							  
+							  <td>#(x.out_quantity3)</td>
+							  <td>#(x.out_date3)</td>
+							  
+							 
+							  <td>#(x.out_quantity4)</td>
+							  <td>#(x.out_date4)</td>
+							  
+							 
 							  <td>#(x.out_quantity5)</td>
 							  <td>#(x.out_date5)</td>
+							  
+							  
+							  <td>#(x.hang_quantity1)</td>
+							  <td>#(x.hang_account1)</td>
+							  <td>#(x.hang_date1)</td>
 							  				
+							   <td>#(x.hang_quantity2)</td>
+							  <td>#(x.hang_account2)</td>
+							  <td>#(x.hang_date2)</td>
+							  
+							  <td>#(x.hang_quantity3)</td>
+							  <td>#(x.hang_account3)</td>
+							  <td>#(x.hang_date3)</td>
+								
+							  <td>#(x.hang_quantity4)</td>
+							  <td>#(x.hang_account4)</td>
+							  <td>#(x.hang_date4)</td>
+							  
+							  <td>#(x.hang_quantity5)</td>
+							  <td>#(x.hang_account5)</td>
+							  <td>#(x.hang_date5)</td>
 								
 								<td class="jfa-operation-button"><a href="/fy/admin/biz/addition/ready/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
+								</a> 
+								#if(!x.is_create_purchase)
+								<a href="/fy/admin/biz/addition/readyPurchase/add?id=#(x.id)" style="margin-left: 14px;"> 
+									<i class="glyphicon glyphicon-plus" title="添加">新建采购单</i>
+								</a> 
+								#end
+								
+								<a data-delete data-title="#escape(x.name)"
 									data-action="/fy/admin/biz/addition/ready/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
 										class="fa fa-trash" title="删除"></i>
 								</a></td>

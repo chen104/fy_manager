@@ -64,9 +64,9 @@
 								<th>委外金额</th>
 								<!--
 								<th>含税金额</th>
-								<th>折扣</th>
 								<th>质量扣款</th>
 								  -->
+								<th>折扣</th>
 								<th>入库时间</th>
 								<th>入库来源</th>
 								<th>实际入库数量</th>
@@ -74,7 +74,7 @@
 								<th>应付总额</th>
 								<th>挂账期间</th>
 								<th>应付期间</th>
-								
+								<th>操作</th>
 							
 							</tr>
 						</thead>
@@ -107,16 +107,16 @@
 								<td>#(x.weiwai_account)</td>
 							<!--  
 								<td>#(x.tatol_amount)</td>
-								<td>#(x.discount)</td>
 								<td>#(x.quality_deduction)</td>
-								-->
+									-->
+								<td>#(x.discount)</td>	
 								
 								<td>#(x.in_warehouse_time)</td>
 								<td>#(x.in_from)</td>
 								<td>#(x.real_in_quantity)</td>
 								<td>#(x.check_time)</td>
 								<td>#(x.should_pay)</td>
-								<td>#date(x.create_date,"yyyy年MM月") </td>
+								<td>#date(x.hang_date,"yyyy年MM月") </td>
 								<td>#date(x.pay_date,"yyyy年MM月")</td>
 							
 								<td class="jfa-operation-button"><a href="/fy/admin/biz/finance/pay/edit?id=#(x.id)" style="margin-left: 14px;"> 

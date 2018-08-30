@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
+import org.junit.Before;
 
 import com.chen.fy.model.Permission;
 import com.jfinal.String.TestString;
@@ -26,7 +28,7 @@ public class PermissonInit {
 	/**
 	 * 通过配置类启动jfinal插件等
 	 */
-
+	@Before
 	public void initConfig() {
 		try {
 			String configClass = "com.jfinal.club.common.JFinalClubConfig";
@@ -49,7 +51,7 @@ public class PermissonInit {
 	/**
 	 * 停止jfinal插件
 	 */
-
+	@After
 	public void endConfig() {
 		System.out.println("\n==JunitFinalTest End====================");
 		try {
@@ -83,8 +85,10 @@ public class PermissonInit {
 	}
 
 	public void initPermisson() throws IOException {
-		InputStream input = TestString.class.getClassLoader().getResourceAsStream("initPermission.txt");
-
+		InputStream input = TestString.class.getClassLoader().getResourceAsStream("addpermisson.txt");
+		if (input == null) {
+			return;
+		}
 		BufferedReader read = new BufferedReader(new InputStreamReader(input));
 		String line = read.readLine();
 

@@ -307,9 +307,13 @@
 			<label class="col-sm-3 control-label">补单状态</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="补单状态"
-					value="#(model.add_status??)" name="model.addStatus"
-					autocomplete="off">
+				<select   class="form-control" name="model.addStatus" >
+					<option value="待补单">待补单</option>
+					<option #if(model.add_status=="已补单") selected="selected" #end value="已补单">已补单</option>
+					<option #if(model.add_status=="部分补单") selected="selected" #end value="部分补单">部分补单</option>
+					 
+				</select>
+				
 			</div>
 		</div>
 	</div>
@@ -478,62 +482,6 @@
 
 
 
-
-
-
-
-<div class="row">
-	
-
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label class="col-sm-3 control-label">挂账数量</label>
-
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="挂账数量"
-					value="#(model.hang_quantity??)" name="model.hangQuantity"
-					autocomplete="off">
-			</div>
-		</div>
-	</div>
-	
-	
-	<div class="col-md-6">
-		<div class="form-group">
-			<label class="col-sm-3 control-label">挂账金额</label>
-
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="挂账金额"
-					value="#(model.hang_account??)" name="model.hangAccount"
-					autocomplete="off">
-			</div>
-		</div>
-	</div>
-	
-	
-</div>
-
-
-
-
-
-<div class="row">
-	
-
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label class="col-sm-3 control-label">挂账日期</label>
-
-			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="挂账日期"  data-type='datepicker'
-					value="#(model.hang_date??)" name="model.hangDate"
-					autocomplete="off">
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="row">
 
@@ -837,6 +785,250 @@
 	
 </div>
 
+
+<div class="row">
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量1"
+					value="#(model.hang_quantity1??)" name="model.hangQuantity1"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量2"
+					value="#(model.hang_quantity1??)" name="model.hangQuantity2"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</div>
+
+<div class="row">
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期1"  data-type='datepicker'
+					value="#(model.hang_date1??)" name="model.hangDate1"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+		<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期2"  data-type='datepicker'
+					value="#(model.hang_date2??)" name="model.hangDate2"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<div class="row">
+		
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额1</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额1"
+					value="#(model.hang_account1??)" name="model.hangAccount1"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额2</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额2"
+					value="#(model.hang_account2??)" name="model.hangAccount2"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量3"
+					value="#(model.hang_quantity3??)" name="model.hangQuantity3"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量4"
+					value="#(model.hang_quantity4??)" name="model.hangQuantity4"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</div>
+
+<div class="row">
+	
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期3"  data-type='datepicker'
+					value="#(model.hang_date3??)" name="model.hangDate3"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+		<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期4"  data-type='datepicker'
+					value="#(model.hang_date4??)" name="model.hangDate4"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+</div>
+
+<div class="row">
+		
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额3</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额3"
+					value="#(model.hang_account3??)" name="model.hangAccount3"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额4</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额4"
+					value="#(model.hang_account4??)" name="model.hangAccount4"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账数量5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账数量5"
+					value="#(model.hang_quantity5??)" name="model.hangQuantity5"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账日期5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账日期5"  data-type='datepicker'
+					value="#(model.hang_date5??)" name="model.hangDate5"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">挂账金额5</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="挂账金额5"
+					value="#(model.hang_account5??)" name="model.hangAccount5"
+					autocomplete="off">
+			</div>
+		</div>
+	</div>
+
+</div>
 
 
 #include("../../person/searchPerson.html")
