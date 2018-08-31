@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessDistribute;
@@ -26,6 +28,8 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 public class OrderController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(OrderController.class);
+
 	/**
 	 * 订单表
 	 */
@@ -41,13 +45,12 @@ public class OrderController extends BaseController {
 		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
 		StringBuilder conditionSb = new StringBuilder();
-
+		String select = "select o.*,f.originalFileName filename ,u.hang_quantity uhang_quantity ,u.hang_amount uhang_amount , o.quantity - IFNULL(u.hang_quantity,0) unhquantity";
 		if ("dis_warn".equals(condition)) {// 分配预警，三天未分配,导入时间，后还没有分配
 			String sql = " where dis_to is null and DATEDIFF(now() , import_time ) > 3";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
-					"select o.*,f.originalFileName filename ",
-					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
-							+ " order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id "
+							+ "LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + sql + " order by id desc");
 			setAttr("modelPage", modelPage);
 			render("orderlist.html");
 			return;
@@ -55,10 +58,9 @@ public class OrderController extends BaseController {
 
 		if ("delay_warn".equals(condition)) {
 			String sql = " where  DATEDIFF(now() , order_date) > 28 and out_quantity = 1 ";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
-					"select o.*,f.originalFileName filename ",
-					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
-							+ " order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  "
+							+ "LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + sql + " order by id desc");
 			setAttr("modelPage", modelPage);
 			render("orderlist.html");
 			return;
@@ -66,10 +68,9 @@ public class OrderController extends BaseController {
 
 		if ("delay".equals(condition)) {
 			String sql = " where  DATEDIFF(now() , order_date) > 30 and out_quantity = 1 ";
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
-					"select o.*,f.originalFileName filename ",
-					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id " + sql
-							+ " order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id "
+							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + sql + " order by id desc");
 			setAttr("modelPage", modelPage);
 			render("orderlist.html");
 			return;
@@ -87,12 +88,15 @@ public class OrderController extends BaseController {
 			conditionSb.append("'%").append(key).append("%'");
 		}
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize,
-					"select o.*,f.originalFileName filename ",
-					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id \r\n"
+							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no  order by id desc");
 		} else {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
-					String.format("from fy_business_order %s order by id desc", conditionSb.toString()));
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					String.format("from fy_business_order o "
+							+ " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id \r\n "
+							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + " %s order by id desc",
+							conditionSb.toString()));
 
 			setAttr("append", "keyWord=" + key);
 		}
@@ -550,5 +554,35 @@ public class OrderController extends BaseController {
 		} else {
 			renderJson(Ret.fail().set("msg", "撤回失败，请重试"));
 		}
+	}
+
+	/**
+	 * 更新交货时间
+	 */
+	public void updateOrderDedeliveryDate() {
+		Ret ret = null;
+		Integer id = getParaToInt("id");
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+
+		Date delivery_date = getParaToDate("delivery_date");
+		if (delivery_date == null) {
+			ret = Ret.ok("msg", "交货时间格式错误");
+
+			logger.warn("修改订单交货时间格式错误");
+
+			renderJson(ret);
+			return;
+		}
+		order.setDeliveryDate(delivery_date);
+
+		boolean re = order.update();
+
+		if (re) {
+			ret = Ret.ok("msg", "修改 成功");
+		} else {
+			ret = Ret.ok("msg", "修改失败");
+		}
+		renderJson(ret);
+
 	}
 }

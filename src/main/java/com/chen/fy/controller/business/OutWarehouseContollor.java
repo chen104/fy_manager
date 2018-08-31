@@ -131,11 +131,15 @@ public class OutWarehouseContollor extends BaseController {
 		setAttr("order", order);
 		setAttr("action", "addOut");
 		setAttr("waybill", Waybill);
-		if (Waybill == null) {
+		Waybill.put("transport_company", "东莞市莞泰货物运输有限公司");
+		if (Waybill != null) {
 			setAttr("model", Waybill);
-		} else {
-			setAttr("model", new FyBusinessOutWarehouse());
 		}
+		// else {
+		// FyBusinessOutWarehouse model = new FyBusinessOutWarehouse();
+		// model.setTransportCompany("东莞市莞泰货物运输有限公司");
+		// setAttr("model", model);
+		// }
 		setAttr("action", "/fy/admin/biz/outWhouse/save");
 		render("edit.html");
 	}
@@ -153,7 +157,7 @@ public class OutWarehouseContollor extends BaseController {
 		// System.out.println(model);
 		Integer id = model.getOrderId();
 		FyBusinessOrder parent = FyBusinessOrder.dao.findById(id);
-		if (parent.getStorageQuantity().doubleValue() > model.getOutQuantity().doubleValue()) {
+		if (parent.getStorageQuantity().doubleValue() < model.getOutQuantity().doubleValue()) {
 			Ret ret = Ret.fail("msg", "出库数量不能超过库存");
 			renderJson(ret);
 			return;
@@ -304,6 +308,9 @@ public class OutWarehouseContollor extends BaseController {
 
 	}
 
+	/**
+	 * 跳转批量出库页面
+	 */
 	public void tobatchOut() {
 
 		String out_id[] = getParaValues("out_id");
@@ -326,6 +333,8 @@ public class OutWarehouseContollor extends BaseController {
 				Waybill = record.getColumns();
 			}
 		}
+
+		Waybill.put("transport_company", "东莞市莞泰货物运输有限公司");
 		setAttr("modelList", modellist);
 		setAttr("action", "addOut");
 		setAttr("waybill", Waybill);

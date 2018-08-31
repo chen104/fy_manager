@@ -185,15 +185,15 @@ public class ProduceController extends BaseController {
 		Integer pageSize = getParaToInt("pageSize", 10);
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
-					"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity  order by id desc");
+					"from  fy_business_order where  has_in_quantity <> quantity and Is_Distribute = 1 and dis_to = 0  order by id desc");
 
 		} else {
 			String condition = getPara("condition");
 			StringBuilder sb = new StringBuilder();
 			sb.append(" and ").append(condition).append(" like '").append(key).append("' ");
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
-					"from  fy_business_order where is_create_plan = 1 and has_in_quantity <> quantity " + sb.toString()
-							+ " order by id desc");
+					"from  fy_business_order where   has_in_quantity <> quantity and  Is_Distribute = 1 and dis_to = 0 "
+							+ sb.toString() + " order by id desc");
 
 		}
 		setAttr("modelPage", modelPage);
@@ -462,13 +462,14 @@ public class ProduceController extends BaseController {
 		}
 		String start = getPara("startTime");
 		String end = getPara("finishTime");
+		String remark = getPara("remark");
 		if (StringUtils.isEmpty(start) && StringUtils.isEmpty(end)) {
 
 			renderJson(Ret.fail("msg", "没有选择时间"));
 			return;
 		}
 
-		Ret ret = productService.updatePlanTimeProduct(ids, start, end);
+		Ret ret = productService.updatePlanTimeProduct(ids, start, end, remark);
 		renderJson(ret);
 	}
 

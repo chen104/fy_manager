@@ -43,3 +43,28 @@ alter table fy_business_ready add `delivery_no3` varchar(20) DEFAULT NULL COMMEN
 alter table fy_business_ready add `add_quantity1` decimal(14,4) DEFAULT 0 COMMENT '补单1';
 alter table fy_business_ready add `add_quantity2` decimal(14,4) DEFAULT 0 COMMENT '补单2';
 alter table fy_business_ready add `add_quantity3` decimal(14,4) DEFAULT 0 COMMENT '补单3';
+
+
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`chen`@`%` SQL SECURITY DEFINER VIEW `upGetpay` AS select sum(`fy_upload_getpay`.`quantity`) AS `quantity`,sum(`fy_upload_getpay`.`hang_quantity`) AS `hang_quantity`,sum(`fy_upload_getpay`.`hang_amount`) AS `hang_amount`,`fy_upload_getpay`.`delivery_no` AS `delivery_no` from `fy_upload_getpay` group by `fy_upload_getpay`.`delivery_no`

@@ -87,8 +87,8 @@ import com.jfinal.template.source.ClassPathSourceFactory;
  */
 public class JFinalClubConfig extends JFinalConfig {
 
-	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置
-	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").append("aliyun-pro.txt");
+	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置 append("aliyun-pro.txt")
+	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").append("tx_dev.txt");
 
 	private WallFilter wallFilter;
 

@@ -32,7 +32,7 @@
 					<div class="form-group  input-group-sm">
 						<label for="condition">条件</label> <select id="condition"
 							class="form-control" name="condition"">
-
+							<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							<option #if(condition== "work_order_no") selected="selected" #end
 								value="work_order_no">工作订单号</option>
 							<option #if(condition== "commodity_spec") selected="selected"
@@ -121,7 +121,12 @@
 								href="/fy/admin/biz/produce/editProducePlan?id=#(x.id)"
 								data-action="#"> <i class="glyphicon glyphicon-pencil"
 									title="修改计划时间"></i>
-							</a></td>
+							</a>
+							
+							<a href="#" data-action="/fy/admin/biz/fyorder/rollBackOrder" style="margin-left: 30px" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
+									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a>
+							
+							</td>
 
 						</tr>
 						#end
@@ -190,5 +195,33 @@ function deleteperson(a){
 	
 		}
 	}
+	
+	
+	
+function rollback(a){
+	var	input = $(a);
+	var re = confirm("确定要撤回"+input.data('title'));
+	if(re){
+		$.ajax({
+			   type: "POST",
+			   data:{id:input.data('id')},
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					   alert(ret.msg);
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	}
+	
+}
     </script>
 #include("planModel.html") #end

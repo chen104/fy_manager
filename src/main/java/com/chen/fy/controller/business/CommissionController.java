@@ -13,8 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.business.service.CommissionService;
 import com.chen.fy.model.FyBizWwReceive;
 import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
@@ -28,6 +31,9 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
 public class CommissionController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(CommissionController.class);
+	CommissionService commissionService = CommissionService.me;
+
 	public void test() {
 		renderText(this.getClass().getSimpleName() + "这是一个测试方法");
 	}
@@ -331,142 +337,65 @@ public class CommissionController extends BaseController {
 	 * 
 	 */
 	public void toDownloadWWsum() {
-		setAttr("new", new Date());
+		String downloadMonth = getPara("downloadMonth");
+		keepPara("downloadMonth");
+		if (!StringUtils.isEmpty(downloadMonth)) {
+			Date dDate = null;
+			try {
+				dDate = DateUtils.parseDate(downloadMonth, "yyyy-MM");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				setAttr("msg", "时间格式错误");
+				render("downloadWwOrder.html");
+				return;
+			}
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(dDate);
+			calendar.add(Calendar.DATE, -1);
+			String start = DateFormatUtils.format(calendar, "yyyy-MM-dd");
+			calendar.add(Calendar.DATE, 1);
+			calendar.add(Calendar.MONTH, 1);
+			String end = DateFormatUtils.format(calendar, "yyyy-MM-dd");
+			List<FyBusinessOrder> modelList = CommissionService.me.searchDownloadOrder(start, end);
+			if (modelList.size() == 0) {
+				setAttr("msg", "没有符合条件的委外单");
+			} else {
+				setAttr("listSize", modelList.size());
+			}
+			setAttr("modelList", modelList);
+		} else {
+			setAttr("downloadMonth", DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM"));
+		}
+
 		render("downloadWwOrder.html");
 
 	}
 
 	/**
-	 * 委外汇总表，没有厂商
-	 * @throws ParseException
+	 * 下载委外汇总表
 	 */
-	public void downloadWWsum() throws ParseException {
-		String date = getPara("date");
-		if (StringUtils.isEmpty(date)) {
-			renderText("没有选择日期");
+	public void downloadWWsum() {
+		String downloadMonth = getPara("downloadMonth");
+		String ids[] = getParaValues("selectId");
+		if (ids == null || ids.length == 0) {
+
+			setAttr("msg", "没有选择委外单");
+			render("downloadWwOrder.html");
+			return;
 		}
-		Integer id = getParaToInt("supplier_id");
-		Date start = DateUtils.parseDate(date, "yyyy-MM");
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(start);
-		calendar.add(Calendar.MONTH, 1);
-		String ptime = " and order_date >'" + DateFormatUtils.format(start, "yyyy-MM-00") + "' and order_date <'"
-				+ DateFormatUtils.format(calendar, "yyyy-MM-00") + "'";
-
-		if (id != null) {
-			ptime = ptime + " and p.supplier_id = " + id + " ";
-		}
-		String sql = "select *  from  fy_business_order o  " + "  where Is_Distribute = 1 and dis_to = 1 " + ptime
-				+ " order by id desc";
-		List<FyBusinessOrder> list = FyBusinessOrder.dao.find(sql);
-		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
-		if (!parentfile.exists()) {
-			parentfile.mkdirs();
-		}
-		File targetfile = new File(parentfile, "委外一览表" + date + ".xlsx");
-		try {
-
-			// 读取模板
-			String filename = this.getClass().getClassLoader().getResource("templet/download/wwsum.xlsx").getFile();
-			FileUtils.copyFile(new File(filename), targetfile);
-			PIOExcelUtil excel = null;
-			excel = new PIOExcelUtil(targetfile, 0);
-
-			int row = 1;
-
-			for (FyBusinessOrder item : list) {
-
-				String cate_tmp = item.getStr("cate_tmp");// 客户
-				// cate_tmp = item.getStr("customer");// 客户
-				// cate_tmp = CacheKit.get(CacheNameConstant.base_customer_id2key, cate_tmp);
-
-				// String plan_tmp = item.getStr("cate_tmp");// 类别
-				excel.setCellVal(row, 0, cate_tmp);
-
-				String plan_name = item.getStr("plan_tmp");// 计划员 plan_nam
-				excel.setCellVal(row, 1, plan_name);
-
-				String execu_status = item.getStr("execu_status");// 执行状态
-				excel.setCellVal(row, 2, execu_status);
-
-				String urgent_status = item.getStr("urgent_status");// 紧急状态
-				excel.setCellVal(row, 3, urgent_status);
-
-				Date order_date = item.getDate("order_date");// 订单日期
-				excel.setCellVal(row, 4, order_date);
-				excel.setDateCellStyle(row, 4);
-
-				Date delivery_date = item.getDate("delivery_date");// 交货日期
-				excel.setCellVal(row, 5, delivery_date);
-				excel.setDateCellStyle(row, 5);
-
-				String work_order_no = item.getStr("work_order_no");// 工作订单号
-				excel.setCellVal(row, 6, work_order_no);
-
-				String delivery_no = item.getStr("delivery_no");// 送货单号
-				excel.setCellVal(row, 7, delivery_no);
-
-				String commodity_name = item.getStr("commodity_name");// 商品名称
-				excel.setCellVal(row, 8, commodity_name);
-
-				String commodity_spec = item.getStr("commodity_spec");// 商品规格
-				excel.setCellVal(row, 9, commodity_spec);
-
-				String map_no = item.getStr("map_no");// 总图号
-				excel.setCellVal(row, 10, map_no);
-
-				String technology = item.getStr("technology");// 技术条件
-				excel.setCellVal(row, 11, technology);
-
-				String machining_require = item.getStr("machining_require");// 加工要求
-				excel.setCellVal(row, 12, machining_require);
-
-				Double quantity = item.getDouble("quantity");// 数量
-				excel.setCellVal(row, 13, quantity);
-
-				String unit_tmp = item.getStr("unit_tmp");// 单位
-				excel.setCellVal(row, 14, unit_tmp);
-
-				Date receive_time = item.getDate("receive_time");// 接收时间
-				excel.setCellVal(row, 15, receive_time);
-				excel.setDateCellStyle(row, 15);
-
-				Date distribute_time = item.getDate("distribute_time");// 分配时间
-				excel.setCellVal(row, 16, distribute_time);
-				excel.setDateCellStyle(row, 16);
-
-				Double has_in_quantity = item.getDouble("has_in_quantity");// 入库数量
-				excel.setCellVal(row, 17, has_in_quantity);
-
-				Double ww_quantity = item.getDouble("ww_quantity");// 委外挂账数量
-				excel.setCellVal(row, 18, ww_quantity);
-
-				Double ww_unquantity = item.getDouble("ww_unquantity");// 未挂账数量
-				excel.setCellVal(row, 19, ww_unquantity);
-
-				Double ww_hang_amount = item.getDouble("ww_hang_amount");// 挂账金额
-				excel.setCellVal(row, 20, ww_hang_amount);
-
-				Double ww_unhang_amount = item.getDouble("ww_unhang_amount");// 未挂账金额
-				excel.setCellVal(row, 21, ww_unhang_amount);
-
-				// Date plan_finsh_time = item.getDate("plan_finsh_time");//入库时间
-				// excel.setCellVal(row, 2, plan_finsh_time);
-
-				row++;
+		keepPara("downloadMonth");
+		if (!StringUtils.isEmpty(downloadMonth)) {
+			File file = commissionService.downloadWWsum(ids, downloadMonth);
+			if (file == null) {
+				setAttr("msg", "下载异常请看日志");
+			} else {
+				renderFile(file);
+				return;
 			}
 
-			excel.save2File(targetfile);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			renderText(e.getMessage());
 		}
 
-		if (targetfile.exists()) {
-			renderFile(targetfile);
-		}
+		render("downloadWwOrder.html");
 	}
 
 }

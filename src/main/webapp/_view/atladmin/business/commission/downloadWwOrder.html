@@ -13,11 +13,11 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/downloadWWsum" method="post">     
+          
               <div class="box-body form-horizontal">
                 
-				
-                
+				<div class="text-center"><h3 style="margin-left:auto;margin-right: auto;color: red">#(msg)</h3></div>
+             <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/toDownloadWWsum" method="post">     
               <div class="row">
 
 				<div class="col-md-6">
@@ -25,11 +25,22 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">订单月份</label>
 			
-						<div class="col-sm-9">
-							<input name="date" type="text" class="form-control" placeholder="订单月份" autocomplete="off"   data-type='month'>
+						<div class="col-sm-9  input-group">
+							<input name="downloadMonth" type="text" class="form-control" placeholder="订单月份" autocomplete="off" value="#(downloadMonth)"  data-type='month'>
+							<span class="input-group-addon btn btn-info" onclick=" submitSearch()"><i class="glyphicon glyphicon-search">查找</i></span>
 						</div>
+						
 					</div>
+					
 				</div>
+				<script type="text/javascript">
+					function submitSearch(){
+						$("#myForm").submit();
+						
+					}
+					
+				</script>
+		
 	<!-- 
 	<div class="col-md-6">
 
@@ -44,26 +55,133 @@
 	</div>
  -->
 
-</div>
-                
+				</div><!-- row -->
+        	</form>        
                 
               </div>
+              
+              <form id="downloadForm" action="/fy/admin/biz/commission/downloadWWsum" method="post">
+              	<input name="downloadMonth" value="#(downloadMonth)" hidden="hidden">
+              	<div class="row  table-responsive no-padding" style="margin-left: 50px;margin-right: 50px">
+              	
+              		<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+							
+								<th><input type="checkbox" checked="checked" id="selectAll"></th>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>紧急状态</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>加工要求</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>接收时间</th>
+								<th>分配时间</th>
+								<th>入库数量</th>		
+								<th>挂账数量</th>
+								<th>未挂账数量</th>	
+								<th>挂账金额</th>
+								<th>未挂账金额</th>
+
+							</tr>
+						</thead>
+						
+						<tbody>
+					
+								#for(x : modelList)
+								<tr>
+									<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+									<td>#(x.cate_tmp)</td>
+									<td>#(x.plan_tmp)</td>
+									<td>#(x.execuStatus)</td>
+									<td>#(x.urgentStatus)</td>
+									<td>#(x.order_date)</td>
+									<td>#(x.delivery_date)</td>
+									<td>#(x.work_order_no)</td>
+									<td>#(x.deliveryNo)</td>
+									<td>#(x.commodityName)</td>
+									<td>#(x.commoditySpec)</td>
+									<td>#(x.mapNo)</td>
+									<td>#(x.technology)</td>
+									<td>#(x.machiningRequire)</td>
+									<td>#(x.quantity)</td>
+									<td>#(x.unit_tmp)</td>
+									
+									<td>#(x.reveive_time)</td>
+									<td>#(x.distribute_time)</td>
+
+									<td>#(x.has_in_quantity)</td>
+									
+									<td>#(x.ww_quantity)</td>
+									<td>#(x.ww_unquantity)</td>
+									<td>#(x.ww_hang_amount)</td>
+									<td>#(x.ww_unhang_amount)</td>
+
+								</tr>
+								#end
+							</tbody>
+						</table>
+						
+              	
+              	</div>
+              
+              
+              </form>
+              
              
               <!-- /.box-body -->
               <div class="box-footer text-center">
               	<div>
-              		   <button type="button" class="btn btn-default pull-left" onclick="window.history.back()">返回</button>
-                	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              		   <a   class="btn btn-default pull-left" href="/fy/admin/biz/commission/sumReceive" >返回</a>
+                	 #if(listSize)<button    class="btn btn-info" onclick="download()">下载</button>  #end
               	</div>
              
               </div>
               <!-- /.box-footer -->
-        </form>
+    
           </div>
           
 
 <script type="text/javascript">
 
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+	function download(){
+		var selectId = $('input[data-select=select]:checked');
+		if(selectId.length == 0){
+			alert("没有选择委外单");
+			return;
+		}
+		$("#downloadForm").submit();
+	}
 
 
 function showChooesSupplier(){

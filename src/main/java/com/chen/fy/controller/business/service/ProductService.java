@@ -206,14 +206,13 @@ public class ProductService {
 	 * @param end
 	 * @return
 	 */
-	public Ret updatePlanTimeProduct(Integer[] ids, String start, String end) {
+	public Ret updatePlanTimeProduct(Integer[] ids, String start, String end, String remark) {
 		StringBuilder set = new StringBuilder();
 		try {
 			if (StringUtils.isNotEmpty(start)) {
 				DateUtils.parseDate(start, "yyyy-MM-dd");
 				set.append("o.plan_time =STR_TO_DATE('" + start + "','%Y-%m-%d')");
-			} else {
-
+				set.append(" , is_create_plan = 1 ");
 			}
 			if (StringUtils.isNotEmpty(end)) {
 				DateUtils.parseDate(end, "yyyy-MM-dd");
@@ -222,6 +221,11 @@ public class ProductService {
 				} else {
 					set.append("  o.plan_finsh_time  = STR_TO_DATE('" + end + "','%Y-%m-%d')");
 				}
+
+			}
+
+			if (StringUtils.isNotEmpty(remark)) {
+				set.append(" , plan_remark ='").append(remark).append("' ");
 			}
 
 		} catch (Exception e) {

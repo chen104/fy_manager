@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.cron4j.ITask;
 
 public class DeleteFileTask implements ITask {
+	private static final Logger logger = LogManager.getLogger(DeleteFileTask.class);
 
 	@Override
 	public void run() {
@@ -21,7 +24,7 @@ public class DeleteFileTask implements ITask {
 		try {
 			if (files != null) {
 				for (File e : files) {
-
+					logger.info("task delete file " + e.getAbsolutePath());
 					FileUtils.forceDelete(e);
 
 				}
@@ -42,7 +45,7 @@ public class DeleteFileTask implements ITask {
 		try {
 			if (files != null) {
 				for (File e : files) {
-
+					logger.info("task delete file " + e.getAbsolutePath());
 					FileUtils.forceDelete(e);
 				}
 			}

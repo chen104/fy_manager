@@ -80,14 +80,17 @@ public class UploadGetpayController extends BaseController {
 
 					String name = excel.getCellVal(i, 3);// 名称
 					item.setCommodityName(name);
+					if (StringUtils.isEmpty(name)) {
+						continue;
+					}
 
-					String Brand_no = excel.getCellVal(i, 4);// 名称
+					String Brand_no = excel.getCellVal(i, 4);// 牌号
 					item.setBrandNo(Brand_no);// 牌号
 
 					String spec = excel.getCellVal(i, 5);// 规格
 					item.setSpec(spec);
 
-					String project_no = excel.getCellVal(i, 6);// 类别
+					String project_no = excel.getCellVal(i, 6);//
 					item.setProjectNo(project_no);// 项目编号
 
 					String unit = excel.getCellVal(i, 7);// 单位
@@ -108,13 +111,10 @@ public class UploadGetpayController extends BaseController {
 					String hangAmount = excel.getCellVal(i, 12);// 挂账金额
 					item.setHangAmount(NumberUtils.isNumber(hangAmount) ? new BigDecimal(quantity) : null);
 
-					String invoice = excel.getCellVal(i, 13);// 发票挂账状态
-					item.setInvoiceStat(invoice);
+					String perchase_person = excel.getCellVal(i, 13);// 采购人
+					item.setPerchasePerson(perchase_person);
 
-					String puerchase = excel.getCellVal(i, 14);// 发票挂账状态
-					item.setPerchasePerson(puerchase);
-
-					String deliveryNo = excel.getCellVal(i, 15);// 送货单号
+					String deliveryNo = excel.getCellVal(i, 14);// 送货单号
 					item.setDeliveryNo(deliveryNo);
 					deliveryNoSet.add(deliveryNo);
 
@@ -140,10 +140,13 @@ public class UploadGetpayController extends BaseController {
 					Db.update(sql);
 				}
 
-				Db.update("update fy_business_order set hang_status='全部挂账' where quantity = hang_quantity;");
-				Db.update(
-						"update fy_business_order set handle_status='部分挂账' where quantity <> hang_quantity and hang_quantity <> 0;");
-
+				String updateHangStatus = Db.getSql("upgetpay.updateHangStatus");
+				try {
+					Db.update(updateHangStatus);
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(e.getMessage());
+				}
 				for (int i = 0; i < re.length; i++) {
 					total = total + re[i];
 				}
