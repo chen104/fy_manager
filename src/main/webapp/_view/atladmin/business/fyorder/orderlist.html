@@ -4,17 +4,19 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				<h3 class="box-title text-center" >订单管理</h3>
-				#fypermession("order_upload")
+			#fypermession("order_upload")
 					#include("upload.html")
 				#end
+			<div class="box-header">
+				<h3 class="box-title text-center" >订单管理</h3>
+				<a href="/fy/admin/biz/fyorder/toDownload"><button class="btn btn-primary">下载</button> </a>
+			
 				<div class="box-tools">
 			
 					<form action="/fy/admin/biz/fyorder"  class="form-inline">
 						 <div class="form-group  input-group-sm">
-						 	    <label for="condition">显示</label>
-						 	   	<select id="condition" class="form-control" name="pageSize" >
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
 						 	   			<option  value="10">10</option>
 						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
 						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
@@ -24,9 +26,12 @@
 						 </div>
 						 <div class="form-group  input-group-sm">
 						    <label for="condition">条件</label>
-							    <select id="condition" class="form-control" name="condition" onselect="" onchange="onselectCondition()">
+							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
 							    	<option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>
@@ -36,18 +41,14 @@
 						  
 						  </div>
 						  
-						 <div id="order_date_div" class="form-group  input-group-sm" #if(condition!="order_date") style="display:none;" #end  >
-
-							<input id="order_date" type="text" name="order_date" value="#(order_date)"  autocomplete="off" class="form-control"  data-type='datepicker' >
+						 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
 						  
 						  </div>
 						  
 						
-						   <div id="keyword_div" class="form-group  input-group-sm"  #if(condition=="order_date") style="display:none;" #end  >
-
-							<input id="order_date" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
-						  
-						  </div>
+						
 						  
 						  <div class="form-group  input-group-sm">
 						  	<button type="submit" class="btn btn-default">
@@ -58,13 +59,24 @@
   <script type="text/javascript">
 	  function onselectCondition(){
 	  		var val = $("#condition").val();
-	  		if("order_date"==val){
+	  		var keyword_div = $("#keyword_div");
+	  			keyword_div.empty();
+	  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+	  			keyword_div.append(input);
+	  		if("order_date"==val||"delivery_date"==val){
 	  			
-	  			$("#order_date_div").css('display','inline');//visible
-	  			$("#keyword_div").css('display','none');//visible
+	  			$("#keyword").datepicker({
+	 	  		    	language:'zh-CN',
+	 	  		      autoclose: true,
+	 	  		      format:'yyyy-mm-dd',
+	 	  		      todayBtn:'linked',
+	 	  		      todayHighlight:true,
+	 	  		       orientation:'bottom' 
+	 	  		    });
+	 	 	 	
+	 	 		
 	  		}else{
-	  			$("#keyword_div").css('display','inline');//visible
-	  			$("#order_date_div").css('display','none');//visible
+	  			
 	  		}
 	  }
 						  	
@@ -128,7 +140,7 @@
 								#end
 								
 								#fyColPerm("order","machining_require")
-								<th>加工要求</th>
+								<th>质量等级</th>
 								#end
 								
 								#fyColPerm("order","quantity")
@@ -229,11 +241,11 @@
 								#end
 								
 								#fyColPerm("order","bill_date")
-								<td>#(x.orderDate)</td>
+								<td>#date(x.orderDate,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","delivery_date")
-								<td>#(x.deliveryDate)</td>
+								<td>#date(x.deliveryDate,"yyyy-MM-dd")</td>
 								#end
 								#fyColPerm("order","work_bill_no")
 								<td>#(x.workOrderNo)</td>
@@ -292,21 +304,21 @@
 								#end
 								
 								#fyColPerm("order","inport_time")
-								<td>#date(x.import_time,"yyyy-MM-dd hh:mm:ss")</td>
+								<td>#date(x.import_time,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","receive_time")
-								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
+								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","distribute_time")
 								
-								<td>#(x.distributeTime)</td>
+								<td>#date(x.distributeTime,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","warn_time")
 								
-								<td>#(x.warnTime)</td>
+								<td>#date(x.warnTime,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","remark")
@@ -315,16 +327,17 @@
 								
 								#fyColPerm("order","draw")
 								<td  data-id="#(x.id)">
-										#if(x.filename) #(x.filename) #else
-											<a href="#" onclick="showChooesFile(this)"> 
+										#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> #else
+											<a href="#" onclick=" selectMapFile(this)"> 
 												<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
 											</a>
+		                               	
 		                               #end
 								 </td>
 								 #end
 								 
 								#fyColPerm("order","hang_time")
-								<td>#(x.hangTime)</td>
+								<td>#date(x.hangTime,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","hang_status")
@@ -365,6 +378,7 @@
 							</tr>
 							#end
 						</tbody>
+						<tfoot> <tr><td colspan="16"></td><td>合计金额</td> <td colspan="1">#number(amount,"#.##")</td> <td></td> <td>合计金额</td> <td colspan="1">#number(totalAmount,"#.##")</td></tr></tfoot>
 					</table>
 		
 
@@ -379,7 +393,7 @@
 	</div>
 </div>
 
-
+#include("../../file/listFileModel.html")
 <script type="text/javascript">
 function receive(a){
 
@@ -431,10 +445,44 @@ function deleteOrder(a){
 	}
 }
 
-
+function selectMapFile(tdFile){
+	var callback=function(select,id,name){
+		var td = $(tdFile).parent();
+		var orderId= td.data("id");
+		if(select){
+			updateOrderFile(orderId,id,name,td);
+		}
+	};
+	new FileChooseModel(callback).show();
+	
+}
+/**
+更新图纸
+*/
+function updateOrderFile(orderId,fileId,filename,td){
+	$.ajax({
+	   type: "POST",
+	   url: "/fy/admin/biz/fyorder/updateFile",
+	   data: {orderId:orderId,fileId:fileId},
+	   success: function(ret){
+		 if (ret.state == "ok") {
+			
+				td.empty();
+				var add= filename+'<a target="_blank" href="/fy/admin/base/file/viewFile?id='+fileId+'" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId='+fileId+'"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>';
+				td.append(add);
+		}
+	   alert(ret.msg);
+	   },
+	 	error:function (XMLHttpRequest, textStatus, errorThrown) {
+	 	    // 通常 textStatus 和 errorThrown 之中
+	 	    // 只有一个会包含信息
+	 	    this; // 调用本次AJAX请求时传递的options参数
+	 	}
+	});
+}
 
     </script>
 
 #end
-#include("../../file/listFileModel.html")
+
 #include("editOrderModel.html")

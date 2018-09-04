@@ -40,7 +40,7 @@ public class CommissionService {
 		if (!parentfile.exists()) {
 			parentfile.mkdirs();
 		}
-		File targetfile = new File(parentfile, "委外一览表" + date + ".xlsx");
+		File targetfile = new File(parentfile, "委外汇总表" + date + ".xlsx");
 		try {
 
 			// 读取模板

@@ -2,6 +2,7 @@ package com.chen.fy.controller.base;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,24 +14,64 @@ import com.jfinal.club.common.kit.SupplierNoKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class SupplierController extends BaseController {
 	public void index() {
+		findAllCate();
 		String key = getPara("keyWord");
 		Page<Supplier> personPage = null;
 		setAttr("keyWord", key);
+		String select = "select s.*,p.name category_name,p.id category_id";
+		String from = "from fy_base_supplier s left join  fy_supplier_category p on s.category= p.id ";
+		String where = "";
+		String ordebyr = " order by s.id desc";
 		if (StringUtils.isEmpty(key)) {
-			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_base_supplier order by id desc");
+			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, select, from + ordebyr);
 		} else {
-			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_base_supplier  where name like ? order by id desc", "%" + key + "%");
+			where = " where name like ? ";
+			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, select, from + where + ordebyr,
+					"%" + key + "%");
 			setAttr("append", "keyWord=" + key);
 		}
 
 		setAttr("modelPage", personPage);
 		render("list.html");
+	}
+
+	public void findByJson() {
+	}
+
+	public void findByCate() {
+		String ordebyr = " order by s.id desc";
+		Integer cateId = getParaToInt("cateId");
+		findAllCate();
+		String select = "select s.*,p.name category_name,p.id category_id";
+		String from = "from fy_base_supplier s left join  fy_supplier_category p on s.category= p.id ";
+		String where = " where p.id = " + cateId + " or p.parent_id= " + cateId + " ";
+		Page<Supplier> modelPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, select, from + where + ordebyr);
+		setAttr("modelPage", modelPage);
+		render("list.html");
+	}
+
+	public void findAllCate() {
+
+		List<Record> parents = Db.find("SELECT * from fy_supplier_category where parent_id = 0 order by id");
+		List<HashMap<String, Object>> cates = new ArrayList<HashMap<String, Object>>();
+
+		for (Record e : parents) {
+			HashMap<String, Object> item = new HashMap<String, Object>();
+			item.put("id", e.get("id"));
+			item.put("name", e.get("name"));
+			List<Record> child = Db.find("SELECT * from fy_supplier_category where parent_id = ? order by id",
+					e.getInt("id"));
+			child.add(0, e);
+			item.put("child", child);
+			cates.add(item);
+		}
+
+		setAttr("category", cates);
 	}
 
 	public void save() {
@@ -59,8 +100,11 @@ public class SupplierController extends BaseController {
 	}
 
 	public void edit() {
-		Supplier person = Supplier.dao.findById(getParaToInt("id"));
-		setAttr("model", person);
+
+		Supplier model = Supplier.dao.findFirst(
+				"select s.*,p.name category_name,p.id category_id  from fy_base_supplier s left join  fy_supplier_category p on s.category= p.id  where s.id = ?",
+				getParaToInt("id"));
+		setAttr("model", model);
 		setAttr("action", "update");
 		setAttr("title", "修改厂商");
 		render("edit.html");

@@ -31,6 +31,7 @@ import com.chen.fy.controller.base.CustomerController;
 import com.chen.fy.controller.base.DepartmentController;
 import com.chen.fy.controller.base.FileController;
 import com.chen.fy.controller.base.PersonController;
+import com.chen.fy.controller.base.SupplierCategoryController;
 import com.chen.fy.controller.base.SupplierController;
 import com.chen.fy.controller.base.TaxRateController;
 import com.chen.fy.controller.base.TempletController;
@@ -44,6 +45,7 @@ import com.chen.fy.controller.business.OrderController;
 import com.chen.fy.controller.business.OutWarehouseContollor;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProduceController;
+import com.chen.fy.controller.business.ProductOneSumController;
 import com.chen.fy.controller.business.PurchaseController;
 import com.chen.fy.controller.business.UploadGetpayController;
 import com.chen.fy.controller.business.WarehouseController;
@@ -88,7 +90,7 @@ import com.jfinal.template.source.ClassPathSourceFactory;
 public class JFinalClubConfig extends JFinalConfig {
 
 	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置 append("aliyun-pro.txt")
-	private static Prop p = PropKit.use("jfinal_club_config_dev.txt").append("tx_dev.txt");
+	private static Prop p = PropKit.use("jfinal_club_config_dev.txt");// .append("aliyun-pro.txt");
 
 	private WallFilter wallFilter;
 
@@ -145,6 +147,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		// business
 
 		me.add("fy/admin/biz/fyorder", OrderController.class, "/_view/atladmin/business/fyorder");
+		me.add("fy/admin/biz/fyorder/productOneSum", ProductOneSumController.class,
+				"/_view/atladmin/business/fyorder/productOneSum");
+
 		me.add("fy/admin/biz/produce", ProduceController.class, "/_view/atladmin/business/produce");
 		me.add("fy/admin/biz/whouse", WarehouseController.class, "/_view/atladmin/business/warehouse");
 
@@ -170,6 +175,8 @@ public class JFinalClubConfig extends JFinalConfig {
 				"/_view/atladmin/addition/readypurchase");
 
 		me.add("/fy/admin/biz/outWhouse", OutWarehouseContollor.class, "/_view/atladmin/business/outWarehouse");
+
+		me.add("/fy/admin/base/supplierCate", SupplierCategoryController.class, " /_view/atladmin/supplierCategory");
 
 	}
 

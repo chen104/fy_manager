@@ -25,7 +25,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
+				<button type="button" class="close" data-dismiss="modal" 
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -54,7 +54,7 @@
 			</div>
 			<div style="width: 100%; text-align: center">
 				<nav aria-label="Page navigation">
-					<ul class="pagination" id="pageUl">
+					<ul class="pagination" id="FilePageUi">
 						<li><a href="#" aria-label="Previous"> <span
 								aria-hidden="true">&laquo;</span>
 						</a></li>
@@ -70,9 +70,8 @@
 				</nav>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-				<button type="button" class="btn btn-primary"
-					onclick="onselectFile()">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" id="FileCancle">取消</button>
+				<button type="button" class="btn btn-primary" id="selectFile" >确定</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -83,6 +82,34 @@
 
 <script type="text/javascript">
 	var tdFile;
+	function FileChooseModel(callback){
+		
+	
+		var onselect=function(){
+			 var a = $("input[name='selectFile']:checked").val();
+	  		 if(a!=null){
+	  			 var idName = 	a.split("_");
+	  			console.debug(idName[0]+" "+idName[1]);
+	  			callback(true,idName[0],idName[1]);
+	  			$('#fileModel').modal("hide");
+	  	  	}else{
+				alert("没有选择图纸");
+				
+				return;
+	  	    }
+		}
+		
+		var oncancel =function(){
+			$('#fileModel').modal("hide");
+		}
+		$("#selectFile").click(onselect);
+		this.show=show;
+		function show(){
+			$('#fileModel').modal("show");
+
+			getFileFromServer(1);	
+		}
+	}
 	
   	function showChooesFile(ali){
   		tdFile = $(ali).parent();
@@ -91,13 +118,14 @@
   			getFileFromServer(1);	
   	  	}
 
+  	
   	function onselectFile(){
   	  	
   		 var a = $("input[name='selectFile']:checked").val();
   		 if(a!=null){
   			 var idName = 	a.split("_");
   			console.debug(idName[0]+" "+idName[1]);
-  			updateOrderFile(tdFile.data("id"),idName[0],idName[1]);
+  			//updateOrderFile(tdFile.data("id"),idName[0],idName[1]);
   	  	}else{
 			alert("没有选择图纸");
 			return;
@@ -107,29 +135,6 @@
 	  		$('#fileModel').modal("hide");
   	  	}
 
-	/**
-		更新图纸
-	*/
-  	function updateOrderFile(orderId,fileId,filename){
-  		$.ajax({
-  		   type: "POST",
-  		   url: "/fy/admin/biz/fyorder/updateFile",
-  		   data: {orderId:orderId,fileId:fileId},
-  		   success: function(ret){
-  			 if (ret.state == "ok") {
-     			
-  					tdFile.empty();
-  					tdFile.text(filename);
-				}
-			   alert(ret.msg);
-  		   },
-  		 	error:function (XMLHttpRequest, textStatus, errorThrown) {
-  		 	    // 通常 textStatus 和 errorThrown 之中
-  		 	    // 只有一个会包含信息
-  		 	    this; // 调用本次AJAX请求时传递的options参数
-  		 	}
-  		});
-  	}
 
   	function getFileFromServer(pageNumer){
   		
@@ -147,8 +152,8 @@
 					}
 
 				
-				var pageUl =$("#pageUl");
-				pageUl.empty();
+				var FilePageUi =$("#FilePageUi");
+				FilePageUi.empty();
 				if(data.totalPage < 2 ){
 					return;
 				}
@@ -156,42 +161,42 @@
 					
 					if(data.firstPage){
 						var li = '<li class="disabled"  ><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
-							pageUl.append(li);
+							FilePageUi.append(li);
 					}else{
 						var li = '<li onclick="getFileFromServer('+ (data.pageNumber -1 )+')"><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a></li>'
-							pageUl.append(li);
+							FilePageUi.append(li);
 					}
 
 					if(data.totalPage>5){
 							for(var i = 1;i<6;i++){
 								if(data.pageNumber==i){
 										var li = '<li class="active"><a href="#">'+i+'</a></li>'
-										pageUl.append(li);
+										FilePageUi.append(li);
 									}
 									else{
 										var li = '<li onclick="getFileFromServer('+ i +')"><a href="#">'+i+'</a></li>'
-										pageUl.append(li);
+										FilePageUi.append(li);
 									}
 							}	
 					}else{
 						for(var i = 1;i<(data.totalPage+1);i++){
 							if(data.pageNumber==i){
 									var li = '<li class="active"><a href="#">'+i+'</a></li>'
-									pageUl.append(li);
+									FilePageUi.append(li);
 								}
 								else{
 									var li = '<li onclick="getFileFromServer('+ i +')"><a href="#">'+i+'</a></li>'
-									pageUl.append(li);
+									FilePageUi.append(li);
 								}
 						}	
 
 					}
 					if(data.lastPage){
 						var  li = '<li class="disabled" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
-							pageUl.append(li);
+							FilePageUi.append(li);
 					}else{
 						var  li = '<li onclick="getFileFromServer('+ (data.pageNumber -1 )+')" ><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>'
-						pageUl.append(li);
+						FilePageUi.append(li);
 					}
 
 					

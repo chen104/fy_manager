@@ -68,3 +68,26 @@ $(function(){
 });
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`chen`@`%` SQL SECURITY DEFINER VIEW `upGetpay` AS select sum(`fy_upload_getpay`.`quantity`) AS `quantity`,sum(`fy_upload_getpay`.`hang_quantity`) AS `hang_quantity`,sum(`fy_upload_getpay`.`hang_amount`) AS `hang_amount`,`fy_upload_getpay`.`delivery_no` AS `delivery_no` from `fy_upload_getpay` group by `fy_upload_getpay`.`delivery_no`
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`fyl`@`%` SQL SECURITY DEFINER VIEW `payView` AS select `fy_business_pay`.`order_id` AS `order_id`,sum(`fy_business_pay`.`should_pay`) AS `should_pay`,sum(`fy_business_pay`.`real_in_quantity`) AS `real_in_quantity` from `fy_business_pay` group by `fy_business_pay`.`order_id`
+
+
+CREATE TABLE `fy_supplier_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+   parent_id int(11) ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE `column_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(30) DEFAULT NULL,
+  `th_title` varchar(500) DEFAULT NULL,
+  `td_key` varchar(500) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

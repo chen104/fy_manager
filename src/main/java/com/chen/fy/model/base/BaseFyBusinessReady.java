@@ -529,14 +529,6 @@ public abstract class BaseFyBusinessReady<M extends BaseFyBusinessReady<M>> exte
 		return get("hang_date5");
 	}
 
-	public void setParentId(java.lang.Integer parentId) {
-		set("parent_id", parentId);
-	}
-	
-	public java.lang.Integer getParentId() {
-		return getInt("parent_id");
-	}
-
 	public void setWorkOrderNo1(java.lang.String workOrderNo1) {
 		set("work_order_no1", workOrderNo1);
 	}

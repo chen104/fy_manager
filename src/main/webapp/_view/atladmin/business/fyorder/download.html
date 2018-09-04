@@ -1,0 +1,180 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">下载订单单</h3>
+              	<div class="box-tools">
+              		
+					
+				</div>
+			
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+          
+              <div class="box-body form-horizontal">
+                	<form class="form-horizontal" id="myForm" action="/fy/admin/biz/fyorder/findDownloadRecord" method="post">     
+					<div class="text-center">
+						<h3 style="color: red;margin-left: auto;margin-right: auto;">#(msg)</h3>
+					</div>	
+		                
+					<div class="row">
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">订单月份</label>
+					
+								<div class="col-sm-9 input-group">
+									<input name="date" type="text" class="form-control" autocomplete="off" placeholder="订单月份"  data-type='month' value="#(date)">
+									<span class="input-group-addon btn btn-info" onclick=" submitSearch()"><i class="glyphicon glyphicon-search">查找</i></span>
+									<div style="color: red;">#(dateMsg)</div>
+								</div>
+							</div>
+						</div>
+						<!-- 
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">客户</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control"  id="supplier_name"  placeholder="供应商"   onclick="showChooesSupplier()">
+									<input type="text" id="supplier_id" name="supplier_id"  hidden="hidden" >
+								</div>
+							</div>
+						</div>
+					 -->
+					
+					</div>
+                
+                     </form>   
+                     
+                    <div class="row">
+                    	   <form id="downloadForm" action="/fy/admin/biz/fyorder/downloadList" method="post">
+			              	<input name="date" value="#(date)" hidden="hidden">
+			              	<div class="row  table-responsive no-padding" style="margin-left: 50px;margin-right: 50px">
+			              	
+			              		<table class="table table-bordered"  style="white-space:nowrap">
+									<thead>
+										<tr>
+										
+											<th><input type="checkbox" checked="checked" id="selectAll"></th>
+											<th>订单日期</th>
+											<th>工作订单号</th>
+
+											<th>商品名称</th>
+											<th>商品规格</th>
+											<th>数量</th>
+											<th>未税单价</th>
+											<th>金额</th>
+											<th>挂账状态</th>
+											<th>挂账数量</th>
+											<th>挂账金额</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+								
+											#for(x : modelList)
+											<tr>
+												<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+												<td>#(x.order_date)</td>
+												<td>#(x.work_order_no)</td>
+												<td>#(x.commodity_name)</td>
+												<td>#(x.commodity_spec)</td>
+												<td>#(x.quantity)</td>
+												
+												<td>#(x.tax_amount)</td>
+												<td>#(x.tatolAmount)</td>
+												<td>#(x.hang_status)</td>
+												<td>#(x.hang_quantity)</td>
+												<td>#(x.hang_amount)</td>
+											</tr>
+											#end
+										</tbody>
+									</table>
+											
+					              	
+					              	</div>
+					              
+					              
+					              </form>
+
+                    </div>
+                     
+                       
+              </div><!-- box body -->
+              
+  
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <a  class="btn btn-default pull-left" href=""   >返回</a>
+                	<button type="submit"  class="btn btn-info" onclick="downloadFile()">下载</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+         </div>   
+          
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+function submitSearch(){
+	$("#myForm").submit();
+}
+function downloadFile(){
+	var outId = $('input[data-select=select]:checked');
+	if(outId.length==0){
+		alert("没有选择订单");
+		return;
+	}
+	$("#downloadForm").submit();
+}
+
+
+/*
+
+function showChooesSupplier(){
+
+		var callback =function(isSelect ,id,name){
+			if(isSelect){
+				$("#supplier_name").val(name);
+				$("#supplier_id").val(id);
+				
+			}
+		}
+		var selectSupplier =new  SelectSupplierModal(callback);
+		selectSupplier.show();
+	
+  	}
+
+	
+	*/
+</script>
+
+#end
+

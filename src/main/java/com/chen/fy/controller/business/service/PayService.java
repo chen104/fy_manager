@@ -61,6 +61,7 @@ public class PayService {
 				pay.setSupplierId(purchase.getSupplierId());// 厂商
 				pay.setOrderNo(purchase.getPurchaseNo());// 订单编号
 				pay.setCheckResult(model.getCheckResult());// 检测结果
+
 				pay.setCheckTime(model.getCheckTime());// 检测时间
 				pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
 				pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价

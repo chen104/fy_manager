@@ -1,0 +1,48 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">厂商分类</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="厂商分类" value="#(model.name??)" name="model.name" >
+			</div>
+		</div>
+	</div>
+
+
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">厂商上一级分类</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" onclick="onSelectCate()"  placeholder="分类" value="#(model.parent_name??)" id="parent_name" autocomplete="off">
+				<input type="text" name="model.parentId" id="parent_id" value="#(model.parent_id??)" hidden="hidden">
+			</div>
+		</div>
+	</div>
+	
+
+
+</div>
+#include("searchSupplierCate.html")
+<script type="text/javascript">	
+	function onSelectCate(){
+		var callback =function (select,id,name){
+			if(select){
+				$("#parent_id").val(id);
+				$("#parent_name").val(name);
+			}
+		}
+		var selectrCate = new  selectSupplierCateModal(callback,true);
+		selectrCate.show();
+	}
+	 
+
+</script>
+

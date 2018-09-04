@@ -204,15 +204,17 @@ public class ProduceController extends BaseController {
 		String key = getPara("keyWord");
 		Page<FyBusinessOrder> modelPage = null;
 		keepPara("keyWord", "condition");
+		String select = "select * ,file.id  fileId ,file.originalFileName filename";
+		String from = "from  fy_business_order o LEFT JOIN" + " fy_base_fyfile file on o.draw = file.id ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_order where  is_create_plan = 1  order by id desc");
+			String where = "where  is_create_plan = 1  order by o.id desc";
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append(String.format(" and %s like  ", getPara("condition"), key));
 			sb.append("'%").append(key).append("%' ");
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ", String
-					.format("from  fy_business_order where  is_create_plan = 1 %s order by id desc", sb.toString()));
+			String where = String.format(" where  is_create_plan = 1 %s order by o.id desc", sb.toString());
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 		}
 		setAttr("modelPage", modelPage);
 		render("oneSumProduce.html");

@@ -43,6 +43,13 @@ public class UploadGetpayController extends BaseController {
 					"from fy_upload_getpay order by id desc");
 		}
 
+		Double hang_amount = 0d;
+		for (FyUploadGetpay e : personPage.getList()) {
+			if (e.getHangAmount() != null) {
+				hang_amount += e.getHangAmount().doubleValue();
+			}
+		}
+		setAttr("hang_amount", hang_amount);
 		setAttr("modelPage", personPage);
 		render("list.html");
 

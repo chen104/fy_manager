@@ -37,6 +37,9 @@
 			<li><a href="/fy/admin/base/supplier"><i class="fa fa-circle-o"></i>厂商管理</a></li>
 			#end
 			
+			
+			<li><a href="/fy/admin/base/supplierCate"><i class="fa fa-circle-o"></i>厂商分类管理</a></li>
+			
 			#fypermession("customer")
 			<li><a href="/fy/admin/base/customer"><i class="fa fa-circle-o"></i>客户管理</a></li>
 			#end
@@ -62,20 +65,23 @@
 
 
 	<li class="treeview  #(fyorder)"><a href="#"> <i class="fa fa-dashboard"></i>
-			<span>订单管理</span> <span class="pull-right-container"> <i
+			<span>PCM执行表</span> <span class="pull-right-container"> <i
 				class="fa fa-angle-left pull-right"></i>
 		</span>
 	</a>
 		<ul class="treeview-menu #(fyorder)">
 			#fypermession("order")
-			<li><a href="/fy/admin/biz/fyorder"><i class="fa fa-circle-o"></i>订单管理</a></li>
+			<li><a href="/fy/admin/biz/fyorder"><i class="fa fa-circle-o">订单管理</i></a></li>
 			#end
+			<!--  
 			#fypermession("receive")
 			<li><a href="/fy/admin/biz/fyorder/receive"><i class="fa fa-circle-o"></i>订单接收表</a></li>
-			#end
+			#end-->
 			#fypermession("distrbut")
 			<li><a href="/fy/admin/biz/fyorder/distribute"><i class="fa fa-circle-o"></i>分配表</a></li>
 			#end
+			<li><a href="/fy/admin/biz/fyorder/productOneSum"><i class="fa fa-circle-o"></i>制造一览表</a></li>
+			
 		</ul>
 	</li>
 	
@@ -90,14 +96,12 @@
 			<li><a href="/fy/admin/biz/commission"><i class="fa fa-circle-o"></i>委外接收表</a></li>
 			#end
 			#fypermession("commission_sum")
-			<li><a href="/fy/admin/biz/commission/sumReceive"><i class="fa fa-circle-o"></i>委外汇总接收表</a></li>
+			<li><a href="/fy/admin/biz/commission/sumReceive"><i class="fa fa-circle-o"></i>委外执行表</a></li>
 			#end
 			#fypermession("purchase")
 			<li><a href="/fy/admin/biz/commission/purchase"><i class="fa fa-circle-o"></i>采购单</a></li>
 			#end
-			#fypermession("assist")
-			<li><a href="/fy/admin/biz/assist"><i class="fa fa-circle-o"></i>外协加工单</a></li>
-			#end
+			
 			#fypermession("commission_one_sum")
 			<li><a href="/fy/admin/biz/commission/oneSumCommission"><i class="fa fa-circle-o"></i>委外一览表</a></li>
 			 #end
@@ -124,6 +128,11 @@
 			#fypermession("product_plan")
 			<li><a href="/fy/admin/biz/produce/planPro"><i class="fa fa-circle-o"></i>生产计划表</a></li>
 			#end
+			
+			#fypermession("assist")
+			<li><a href="/fy/admin/biz/assist"><i class="fa fa-circle-o"></i>外协加工单</a></li>
+			#end
+			
 			#fypermession("product_one_sum")
 			<li><a href="/fy/admin/biz/produce/oneSumPro"><i class="fa fa-circle-o"></i>生产一览表</a></li>
 			#end

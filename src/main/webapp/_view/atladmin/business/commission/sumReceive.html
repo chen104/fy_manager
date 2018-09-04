@@ -5,7 +5,7 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<h3 class="box-title">委外汇总接收表</h3>
+				<h3 class="box-title">委外执行表</h3>
 
  				
 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button>
@@ -56,7 +56,7 @@
 								<th>商品规格</th>
 								<th>总图号</th>
 								<th>技术条件</th>
-								<th>加工要求</th>
+								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
 								<th>接收时间</th>
@@ -82,7 +82,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> 	#if(!x.has_in_quantity == 0) <input type="checkbox" name = "selectId"  value="#(x.id)"> #end</td>
+								<td> #if(x.has_in_quantity.doubleValue()== 0) <input data-select='select' type="checkbox" name = "selectId"  value="#(x.id)"> #end  </td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
@@ -120,15 +120,11 @@
 									<i class="fa fa-fw fa-mail-reply-all"></i>撤回</a>
 									
 								<a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick="" style="margin-left: 10px;"> 
-								<i class="glyphicon glyphicon-share-alt" title="生成采购单">生成采购单</i>
+								<i class="glyphicon glyphicon-share-alt" title="生成采购单">生成询价单</i>
 								</a> 
 									
 								#end
-								#if(x.quantity !=x.has_in_quantity)
-								<a href="#" onclick="showModel(this)" data-id="#(x.id)" style="margin-left: 10px;"> 
-								<i class="fa fa-pencil" title="入库">入库</i>
-								</a> 
-								#end
+								
 								
 								</td>
 							</tr>
@@ -152,6 +148,27 @@
 
 
 <script type="text/javascript">
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
 
 function submit(){
 	var selectIds = $("input[name=selectId]:checked");

@@ -371,8 +371,13 @@
 			<label class="col-sm-3 control-label">工作状态</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.jobStatus??)"
-					name="model.jobStatus" placeholder="工作状态">
+			
+			 	<select  class="form-control" name="model.jobStatus">
+			 		<option value="在职"  > 在职  </option>
+			 		<option #if(model.jobStatus??=="离职") selected="selected" #end  value="离职" > 离职 </option>
+			 		<option #if(model.jobStatus??=="申请离职") selected="selected" #end value="申请离职"> 申请离职 </option>
+			 	</select>
+				
 			</div>
 		</div>
 	</div>

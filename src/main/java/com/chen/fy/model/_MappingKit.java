@@ -19,6 +19,7 @@ public class _MappingKit {
 		arp.addMapping("account", "id", Account.class);
 		arp.addMapping("auth_code", "id", AuthCode.class);
 		arp.addMapping("col_permision", "id", ColPermision.class);
+		arp.addMapping("column_permission", "id", ColumnPermission.class);
 		arp.addMapping("fy_advisory_cost", "id", FyAdvisoryCost.class);
 		arp.addMapping("fy_base_category", "id", Category.class);
 		arp.addMapping("fy_base_customer", "id", Customer.class);
@@ -47,6 +48,7 @@ public class _MappingKit {
 		arp.addMapping("fy_complaint", "id", FyComplaint.class);
 		arp.addMapping("fy_pay_sum", "id", FyPaySum.class);
 		arp.addMapping("fy_ready_purchase", "id", FyReadyPurchase.class);
+		arp.addMapping("fy_supplier_category", "id", FySupplierCategory.class);
 		arp.addMapping("fy_upload_getpay", "id", FyUploadGetpay.class);
 		arp.addMapping("order_upload_log", "id", OrderUploadLog.class);
 		arp.addMapping("permission", "id", Permission.class);

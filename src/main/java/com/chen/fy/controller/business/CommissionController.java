@@ -90,23 +90,20 @@ public class CommissionController extends BaseController {
 		keepPara("keyWord", "condition");
 		String purchase = "purchase_no,purchase_date,purchase_cost,purchase_account,discount,discount_account";
 		String supplier_name = ", bs.name supplier_name";
+		String select = "select o.*  ," + purchase + supplier_name + ",file.id  fileId ,file.originalFileName filename";
+		String from = "from   fy_business_order   o  inner  join fy_business_purchase  p  on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id "
+				+ " left join fy_base_supplier  bs on bs.id = p.supplier_id"
+				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10,
-					"select o.* ," + purchase + supplier_name,
-					"from   fy_business_order   o  inner  join fy_business_purchase  p  on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id "
-							+ " " + " left join fy_base_supplier  bs on bs.id = p.supplier_id "
-							+ " where dis_to = 1 order by id desc");
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, select,
+					from + " where dis_to = 1 order by id desc");
 
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append(" and o.").append(getPara("condition")).append(" like ").append("'%").append(key).append("%' ");
 
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10,
-					"select o.* ,in_time,real_in_quantity," + purchase + supplier_name,
-					"from   fy_business_order   o  inner  join fy_business_purchase  p  on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id "
-							+ " left join  fy_business_in_warehouse w on o.id = w.order_id"
-							+ " left join fy_base_supplier  bs on bs.id = p.supplier_id " + " where dis_to = 1 "
-							+ sb.toString() + " order by id desc");
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, select,
+					from + " where dis_to = 1 " + sb.toString() + " order by id desc");
 
 			// modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10,
 			// "select o.* ,in_time,real_in_quantity," + purchase + supplier_name,

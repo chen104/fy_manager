@@ -13,58 +13,163 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/downloadZip" method="post">     
+           
               <div class="box-body form-horizontal">
                 
                 <div class="row text-center">
                 
                 	<h2 style="color: red;margin-left: auto;margin-right: auto;">#(downloadMsg)</h2>
                 </div>
-				
-                
+			 <form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/findPurchaseDownload" method="post">     
               <div class="row">
 
-	<div class="col-md-6">
+					<div class="col-md-5">
+				
+						<div class="form-group">
+							<label class="col-sm-3 control-label">采购月份</label>
+				
+							<div class="col-sm-9">
+								<input name="date" type="text" class="form-control" placeholder="采购日期"   data-type='datepicker' autocomplete="off" value="#(date)">
+								<div id="date_msg" style="color: red">#(dateMsg)</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5">
+				
+						<div class="form-group">
+							<label class="col-sm-3 control-label">供应商</label>
+				
+							<div class="col-sm-9  ">
+								<input type="text" value="#(supplier_name)" name="supplier_name"  class="form-control"  id="supplier_name"  placeholder="供应商"  autocomplete="off"  onclick="showChooesSupplier()">
+							
+								<input type="text" value="#(supplier_id)" id="supplier_id" name="supplier_id"  hidden="hidden" >
+								<div id="date_msg" style="color: red">#(supplierMsg)</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-md-2">
+						<button class="btn btn-primary " type="submit" >查找</button>
+					</div>
+				
+				
+				 </div><!-- row -->
+ 				</form>
+ 				
+ 				<div class="row" style="margin-top: 50px;margin-left: 30px;margin-right: 30px">
+ 				
+ 						<div class="  table-responsive no-padding">
+							<form  id="downloadForm" method="post" action="/fy/admin/biz/commission/purchase/downloadPurchase">
+								
+								<input name="date" value="#(date)" hidden="hidden">
+								<input name="supplier_name" value="#(supplier_name)" hidden="hidden">
+								<input name="supplier_id" value="#(supplier_id)" hidden="hidden">
+								<table class="table table-bordered"  style="white-space:nowrap">
+									<thead>
+										<tr>
+											<th style=""> <input type="checkbox" checked="checked" id="selectAll"> </th>
+											<th>已下载过</th>
+											<th>采购日期</th>
+											<th>商品名称</th>
+											<th>商品规格</th>
+											<th>总图号</th>
 
-		<div class="form-group">
-			<label class="col-sm-3 control-label">采购月份</label>
+											<th>数量</th>
+											<th>单位</th>
+											<th>单件</th>
+											<th>总重</th>
+											<th>单价</th>
+											<th>总金额	</th>
+											<th>折扣</th>
+											<th>折后总价</th>
+											<th>工作订单号</th>
+											<th>采购编码</th>
+											<th>备注</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+										#for(x : modelList)
+										<tr>
+											<td>  <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"> </td>
+											<td>#if(x.can_download)  否   #else   是 #end  </td>
+											<td>#date(x.purchase_date,"yyyy-MM-dd")</td>
+											<td>#(x.commodity_name)</td>
+											<td>#(x.commodity_spec)</td>
+											<td>#(x.map_no)</td>
 
-			<div class="col-sm-9">
-				<input name="date" type="text" class="form-control" placeholder="采购月份"  data-type='month' autocomplete="off" value="#(date)">
-				<div id="date_msg" style="color: red">#(dateMsg)</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label class="col-sm-3 control-label">供应商</label>
-
-			<div class="col-sm-9">
-				<input type="text" value="#(supplier_name)"  class="form-control"  id="supplier_name"  placeholder="供应商"  autocomplete="off"  onclick="showChooesSupplier()">
-				<input type="text" value="#(supplier_id)" id="supplier_id" name="supplier_id"  hidden="hidden" >
-				<div id="date_msg" style="color: red">#(supplierMsg)</div>
-			</div>
-		</div>
-	</div>
-
-
-</div>
-                
-                
+											<td>#(x.quantity)</td>
+											<td>#(x.unit_tmp)</td>
+											<td>#(x.purchase_single_weight)</td>
+											<td>#(x.purchase_weight)</td>
+											<td>#(x.purchase_cost)</td>
+											<td>#(x.purchase_account)</td>
+											<td>#(x.discount)</td>
+											<td>#(x.discount_account)</td>
+											<td>#(x.work_order_no)</td>
+											<td>#(x.purchase_no)</td>
+											<td>#(x.purchase_remark)</td>
+										</tr>
+										#end
+									</tbody>
+									
+								</table>
+					</form>
+					</div>
+ 					
+ 				
+ 				</div>
               </div>
              
               <!-- /.box-body -->
               <div class="box-footer text-center">
               	<div>
               		   <a type="button" class="btn btn-default pull-left" href="/fy/admin/biz/commission/purchase">返回</a>
-                	<button type="submit"  class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+                	<button type="submit"  class="btn btn-info" onclick="downloadFile()">下载</button> <!-- 靠右 class  pull-right  -->
               	</div>
              
               </div>
               <!-- /.box-footer -->
-        </form>
+  
           </div>
+          
+<<script type="text/javascript">
+<!--
+
+//-->
+		$(function(){
+			$("#selectAll").click(function(){
+				var isChecked =  $("#selectAll").is(":checked");
+				if( isChecked ){
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', true);
+						this.checked= true;
+						});
+				}else{
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', false);
+						this.checked= false;
+					});
+				}
+				console.info('this');
+				
+			});
+			
+			
+		});
+		
+		
+		function downloadFile(){
+			var outId = $('input[data-select=select]:checked');
+			if(outId.length==0){
+				alert("没有选择采购单");
+				return;
+			}
+			$("#downloadForm").submit();
+		}
+
+</script>
+
           
 #include("../searchSupplier.html")
 <script type="text/javascript">

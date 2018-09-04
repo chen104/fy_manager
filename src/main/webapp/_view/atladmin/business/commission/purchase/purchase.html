@@ -14,29 +14,72 @@
 						<form action="/fy/admin/biz/commission/purchase/" class="form-inline">
 								 <div class="form-group  input-group-sm">
 								    <label for="condition">条件</label>
-									    <select id="condition" class="form-control" name="condition" >
+									    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()">
 									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">供应商</option>
+									    	<option #if(condition=="purchase_date") selected="selected" #end value="purchase_date">采购日期</option>
 									    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
 									    </select>
 								  
 								  </div>
 								
-								<div class="input-group input-group-sm" style="width: 150px;">
-									<input type="text" name="keyWord" class="form-control pull-right" autocomplete="off"
-										placeholder="Search" value="#(keyWord)">
-		
-									<div class="input-group-btn">
-										<button type="submit" class="btn btn-default" >
-											<i class="fa fa-search"></i>
-										</button>
-									</div>
-								</div>
+								   <div id="keyword_div" class="form-group  input-group-sm" >
+
+										<input id="keyWord" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+									  
+									  </div>
+									
+									  <div class="form-group  input-group-sm">
+									  	<button type="submit" class="btn btn-default">
+												<i class="fa fa-search"></i>
+											</button>
+									  </div>
 		
 							</form>
-				</div>
-			</div>
-			<!-- /.box-header -->
+				</div><!-- tools -->
+			</div> <!-- /.box-header -->
+<script type="text/javascript">
+  	$(function(){
+  		
+  		var val = $("#condition").val();
+  		if(val == "purchase_date"){
+  			
+  			$("#keyWord").datepicker({
+  		    	language:'zh-CN',
+    		      autoclose: true,
+    		      format:'yyyy-mm-dd',
+    		      todayBtn:'linked',
+    		      todayHighlight:true,
+    		       orientation:'bottom' 
+    		    });
+   	 	
+  		}
+  		
+  	
+  		
+  	});
+  	
+    function onselectCondition(){
+		  var value = $("#condition").val();
+		  $("#keyword_div").empty();
+		  var input='<input id="keyWord" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+			$("#keyword_div").append(input);
+	  
+	  	 if(value == "purchase_date"){
+	  			
+	  			$("#keyWord").datepicker({
+	  		    	language:'zh-CN',
+	    		      autoclose: true,
+	    		      format:'yyyy-mm-dd',
+	    		      todayBtn:'linked',
+	    		      todayHighlight:true,
+	    		       orientation:'bottom' 
+	    		    });
+	  		}
+	  }
+	
+</script>
+			
 			<div class="box-body table-responsive no-padding">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
@@ -56,12 +99,12 @@
 								<th>商品规格</th>
 								<th>总图号</th>
 								<th>技术条件</th>
-								<th>加工要求</th>
+								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
 								
 								<th>采购订单</th>
-								<th><input name="selectAll" id="selectAll" type="checkbox"> 供应商</th>
+								<th>供应商</th><!-- <input name="selectAll" id="selectAll" type="checkbox">  -->
 								<th>采购时间</th>
 								<th>采购名称</th>
 								<th>采购数量</th>
@@ -103,10 +146,10 @@
 								<td>#(x.unit_tmp)</td>
 								
 								<td>#(x.purchase_no)</td>
-								<td>#if(x.can_download)
+								<td>
+								#(x.supplier_name)</td> <!-- #if(x.can_download)
 										<input name="selectPurchase"  type="checkbox" value="#(x.id)" data-supplier="#(x.supplier_id)"> 
-										#end
-								#(x.supplier_name)</td>
+										#end -->
 								<td>#(x.purchase_date)</td>
 								
 								<td>#(x.purchase_title)</td>
@@ -133,6 +176,11 @@
 							#end
 						</tbody>
 						</form>
+						<tfoot>
+							<tr>
+								<td colspan="23"> </td> <td>合计金额 </td><td>#(purchase_account)</td>
+							</tr>
+						</tfoot>
 					</table>
 		
 

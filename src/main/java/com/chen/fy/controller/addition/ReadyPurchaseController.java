@@ -79,7 +79,7 @@ public class ReadyPurchaseController extends BaseController {
 			@Override
 			public boolean run() throws SQLException {
 				// TODO Auto-generated method stub
-				return order.delete() && model.update();
+				return order.update() && model.save();
 			}
 		});
 

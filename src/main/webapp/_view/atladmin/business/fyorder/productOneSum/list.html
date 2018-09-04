@@ -1,0 +1,213 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title text-center" >制造一览表</h3>
+			
+				<div class="box-tools">
+
+					<form action="/fy/admin/biz/fyorder/productOneSum"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						 	    <label for="condition">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							    <select id="condition" class="form-control" name="condition" onselect="" onchange="onselectCondition()">
+							    	<option #if(condition=="supplier") selected="selected" #end value="supplier">厂商</option>
+							    	<option #if(condition=="purchase_date") selected="selected" #end value="purchase_date">采购日期</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	 
+							    
+							    </select>
+						  
+						  </div>
+						  
+						 <div id="purchase_date_div" class="form-group  input-group-sm" #if(condition!="purchase_date") style="display:none;" #end  >
+
+							<input id="order_date" type="text" name="purchase_date" value="#(purchase_date)"  autocomplete="off" class="form-control"  data-type='datepicker' >
+						  
+						  </div>
+						  
+						
+						   <div id="keyword_div" class="form-group  input-group-sm"  #if(condition=="purchase_date") style="display:none;" #end  >
+
+							<input id="order_date" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+						  
+						  </div>
+						  
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+						  </div>
+						
+  <script type="text/javascript">
+	  function onselectCondition(){
+	  		var val = $("#condition").val();
+	  		if("purchase_date"==val){
+	  			
+	  			$("#purchase_date_div").css('display','inline');//visible
+	  			$("#keyword_div").css('display','none');//visible
+	  		}else{
+	  			$("#keyword_div").css('display','inline');//visible
+	  			$("#purchase_date_div").css('display','none');//visible
+	  		}
+	  }
+						  	
+</script>
+					</form>
+			
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding text-center">
+	
+					<table class="table table-bordered"  style="white-space:nowrap;margin-right: 5px;margin-left:5px;text-align:center" >
+						<thead>
+							<tr>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>紧急状态</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>数量</th>
+								<th>单位</th>
+								
+								<th>图纸</th>
+											
+								<th>厂商</th>
+								<th>采购日期</th>
+								<th>采购数量</th>
+								<th>单价</th>
+								<th>金额</th>
+								<th>入库数量</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr class="#orderColor("x")">
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.mapNo)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								<td>
+								
+									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+											
+		                               #end
+								</td>
+								
+								<td>#(x.supplier_name)</td>
+								<td>#(x.purchase_date)</td>
+								<td>#(x.purchase_quantity)</td>
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_account)</td>
+								<td>#(x.has_in_quantity)</td>
+								
+							</tr>
+							#end
+						</tbody>
+						
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/fyorder/productOneSum?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function receive(a){
+
+		
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action"),
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+					 var td=  $(a).parent().parent().children("[name=receiveTime]");
+					 td.text(ret.date)
+					}
+				   alert(ret.msg);
+				   $(a).empty();
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+}
+
+function deleteOrder(a){
+	var obj = $(a);
+	var re = confirm("是否要删除订单 "+obj.data('order-id'));
+	if(re){
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/fyorder/deleteOrder' ,
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						location.reload();
+					
+					}
+				   alert(ret.msg);
+				   $(a).empty();
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	}
+}
+
+
+
+    </script>
+
+#end

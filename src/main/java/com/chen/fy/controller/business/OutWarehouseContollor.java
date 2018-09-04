@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.business.service.OutWarehouseService;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.jfinal.club.common.kit.PIOExcelUtil;
@@ -31,22 +33,27 @@ import com.jfinal.plugin.ehcache.CacheKit;
 
 public class OutWarehouseContollor extends BaseController {
 	private static final Logger logger = LogManager.getLogger(OutWarehouseContollor.class);
+	OutWarehouseService outWarehouseService = OutWarehouseService.me;
 
 	public void index() {
 		String key = getPara("keyWord");
+		if (StringUtils.isNotEmpty(key)) {
+			key = key.trim();
+		}
 		Page<FyBusinessOutWarehouse> modelPage = null;
 		keepPara("keyWord", "condition");
+		String select = "select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp ,file.id  fileId ,file.originalFileName filename";
+		String from = "from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
+
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp",
-					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id   order by w.id desc");
+			String where = "  order by w.id desc";
+			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append("where  o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
-			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					"select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp",
-					"from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id "
-							+ sb.toString() + "  order by w.id desc");
+
+			String where = sb.toString() + "  order by w.id desc";
+			modelPage = FyBusinessOutWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 		}
 		setAttr("modelPage", modelPage);
 		render("list.html");
@@ -333,7 +340,9 @@ public class OutWarehouseContollor extends BaseController {
 				Waybill = record.getColumns();
 			}
 		}
-
+		if (Waybill == null) {
+			Waybill = new HashMap<String, Object>();
+		}
 		Waybill.put("transport_company", "东莞市莞泰货物运输有限公司");
 		setAttr("modelList", modellist);
 		setAttr("action", "addOut");
@@ -488,7 +497,70 @@ public class OutWarehouseContollor extends BaseController {
 	}
 
 	public void toDownload() {
+		setAttr("out_date", DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM"));
 		render("download.html");
+	}
+
+	/**
+	 * 查找符合条件的出库单
+	 */
+	public void findDownloadRecord() {
+		String out_date = getPara("out_date");
+		keepPara("out_date");
+		if (!StringUtils.isEmpty(out_date)) {
+			Date dDate = null;
+			try {
+				dDate = DateUtils.parseDate(out_date, "yyyy-MM");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				setAttr("msg", "时间格式错误");
+				render("download.html");
+				return;
+			}
+
+			List<Record> modelList = outWarehouseService.findDownloadRecord(dDate);
+
+			setAttr("modelList", modelList);
+			render("download.html");
+			return;
+		} else {
+			setAttr("msg", "出库月份格式错误");
+			toDownload();
+			return;
+		}
+	}
+
+	/**
+	 * 下载出库
+	 */
+	public void downloadOutWarehouse() {
+		String out_date = getPara("out_date");
+		String[] ids = getParaValues("selectId");
+		if (!StringUtils.isEmpty(out_date)) {
+
+			try {
+				DateUtils.parseDate(out_date, "yyyy-MM");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				setAttr("msg", "时间格式错误");
+				render("download.html");
+				return;
+			}
+		}
+		if (ids.length == 0) {
+			setAttr("msg", "没有选择出库单");
+			render("download.html");
+			return;
+		}
+
+		File file = outWarehouseService.downloadFile(ids, out_date);
+		if (file == null) {
+			setAttr("msg", "请查看日志");
+			render("download.html");
+			return;
+		}
+
+		renderFile(file);
 	}
 
 }

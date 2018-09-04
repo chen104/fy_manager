@@ -32,18 +32,18 @@ public class WarehouseController extends BaseController {
 		String key = getPara("keyWord");
 		Page<FyBusinessInWarehouse> modelPage = null;
 		keepPara("keyWord", "condition");
+		String select = " select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,o.*,file.id  fileId ,file.originalFileName filename ";
+		String from = " from  fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id"
+				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					" select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,o.* ",
-					" from  fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id  order by w.id desc");
+			String where = " order by w.id desc ";
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 
 		} else {
 			StringBuilder sb = new StringBuilder();
-			sb.append("and o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					" select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,o.* ",
-					" from  fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id "
-							+ sb.toString() + " order by w.id desc");
+			sb.append("where o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
+			String where = sb.toString() + " order by w.id desc";
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 
 		}
 
@@ -80,19 +80,25 @@ public class WarehouseController extends BaseController {
 	 */
 	public void checkIn() {
 		String key = getPara("keyWord");
+		if (StringUtils.isNotEmpty(key)) {
+			key = key.trim();
+		}
 		Page<FyBusinessInWarehouse> modelPage = null;
 		keepPara("keyWord", "condition");
+		String select = " select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,check_time,check_quantity,check_result,check_handle,is_create_quality,is_create_can_out,create_out_time,is_create_pay,pay_create_time,o.* ,file.id  fileId ,file.originalFileName filename";
+		String from = "from fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id "
+				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
+
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					" select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,check_time,check_quantity,check_result,check_handle,is_create_quality,is_create_can_out,create_out_time,is_create_pay,pay_create_time,o.* ",
-					"from fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id  where is_create_check =1 order by w.id desc");
+			String where = " where is_create_check =1 order by w.id desc";
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where
+
+			);
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append("and o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10,
-					" select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,check_time,check_quantity,check_result,check_handle,is_create_quality,is_create_can_out,create_out_time,is_create_pay,pay_create_time,o.* ",
-					"from fy_business_in_warehouse w inner join fy_business_order o on w.order_id = o.id  where is_create_check =1 "
-							+ sb.toString() + " order by w.id desc");
+			String where = " where is_create_check =1 " + sb.toString() + " order by w.id desc";
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
 		}
 		setAttr("modelPage", modelPage);
 		render("checkIn.html");

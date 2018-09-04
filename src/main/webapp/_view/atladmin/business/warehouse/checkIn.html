@@ -7,7 +7,7 @@
 			<div class="box-header"><h3 class="box-title">检测汇总表</h3> 
 				<!--   <button class="btn btn-primary" data-p="#(p)" onclick="createPay()">生成应付明细</button> -->
 				<div class="box-tools">
-			<form action="fy/admin/biz/finance/pay"  class="form-inline" >
+			<form action="/fy/admin/biz/whouse/checkIn"  class="form-inline" >
 						 <div class="form-group  input-group-sm">
 						    <label for="condition"></label>
 							    <select id="condition" class="form-control" name="condition" >
@@ -54,9 +54,11 @@
 								<th>商品规格</th>
 								<th>总图号</th>
 								<th>技术条件</th>
-								<th>加工要求</th>
+								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
+								
+								<th>图纸</th>
 								
 								<th>入库时间</th>
 								<th>实际入库数量</th>
@@ -100,6 +102,13 @@
 								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
+								
+								<td>
+								
+								#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+											
+		                               #end
+								</td>
 								
 								<td>#(x.in_time)</td>
 								<td>#(x.real_in_quantity)</td>
@@ -180,7 +189,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/fybill?p=")</div>
+				"/fy/admin/biz/whouse/checkIn?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

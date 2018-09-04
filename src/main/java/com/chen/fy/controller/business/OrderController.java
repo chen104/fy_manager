@@ -3,16 +3,20 @@ package com.chen.fy.controller.business;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.business.service.OrderService;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.OrderUploadLog;
@@ -29,12 +33,16 @@ import com.jfinal.upload.UploadFile;
 
 public class OrderController extends BaseController {
 	private static final Logger logger = LogManager.getLogger(OrderController.class);
+	OrderService orderService = OrderService.me;
 
 	/**
 	 * 订单表
 	 */
 	public void index() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 
 		Page<FyBusinessOrder> modelPage = null;
 		String condition = getPara("condition");
@@ -45,7 +53,7 @@ public class OrderController extends BaseController {
 		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.*,f.originalFileName filename ,u.hang_quantity uhang_quantity ,u.hang_amount uhang_amount , o.quantity - IFNULL(u.hang_quantity,0) unhquantity";
+		String select = "select o.*,f.originalFileName filename,f.id fileId ,u.hang_quantity uhang_quantity ,u.hang_amount uhang_amount , o.quantity - IFNULL(u.hang_quantity,0) unhquantity";
 		if ("dis_warn".equals(condition)) {// 分配预警，三天未分配,导入时间，后还没有分配
 			String sql = " where dis_to is null and DATEDIFF(now() , import_time ) > 3";
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
@@ -77,29 +85,50 @@ public class OrderController extends BaseController {
 		}
 
 		if ("order_date".equals(condition)) {
-			String orderDate = getPara("order_date");
+			String orderDate = getPara(key);
 			if (StringUtils.isNotEmpty(orderDate)) {
 				conditionSb.append(String.format("where order_date = '%s'", orderDate));
 			}
 
-		} else if (StringUtils.isNotEmpty(condition)) {
+		} else if ("delivery_date".endsWith(condition)) {
+
+		}
+
+		else if (StringUtils.isNotEmpty(condition)) {
 
 			conditionSb.append(String.format("where %s like  ", condition, key));
 			conditionSb.append("'%").append(key).append("%'");
 		}
+
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
 					"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id \r\n"
 							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no  order by id desc");
 		} else {
 			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
-					String.format("from fy_business_order o "
-							+ " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id \r\n "
+					String.format(" from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id \r\n "
 							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + " %s order by id desc",
 							conditionSb.toString()));
 
 			setAttr("append", "keyWord=" + key);
 		}
+		Double totalAmount = 0d;// 含税金额
+		Double amount = 0d;
+		for (FyBusinessOrder e : modelPage.getList()) {
+			if (e.getTatolAmount() != null) {
+				totalAmount += e.getTatolAmount().doubleValue();
+
+			}
+			if (e.getAmount() != null) {
+				amount += e.getAmount().doubleValue();
+			}
+
+		}
+		if (totalAmount > 0) {
+			NumberFormat.getInstance().format(totalAmount);
+			setAttr("totalAmount", totalAmount);
+		}
+		setAttr("amount", amount);
 
 		setAttr("modelPage", modelPage);
 		render("orderlist.html");
@@ -287,7 +316,7 @@ public class OrderController extends BaseController {
 		setAttr("keyWord", key);
 
 		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select o.*,f.originalFileName filename ",
-				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  where distribute_to is null order by id desc,is_distribute desc");
+				"from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  where distribute_to is null order by o.id desc,is_distribute desc");
 
 		setAttr("modelPage", modelPage);
 		render("receive.html");
@@ -297,8 +326,10 @@ public class OrderController extends BaseController {
 		String key = getPara("keyWord");
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
-		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_order where  distribute_to is null  order by orderby asc  , id asc");
+		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
+				"select o.*,originalFileName filename,file.id fileId",
+				"from  fy_business_order o " + " LEFT JOIN fy_base_fyfile file on o.draw = file.id"
+						+ " where  distribute_to is null  order by orderby asc  , id asc");
 
 		setAttr("modelPage", modelPage);
 		render("distribute.html");
@@ -354,6 +385,9 @@ public class OrderController extends BaseController {
 		render("edit.html");
 	}
 
+	/**
+	 * 关联图纸
+	 */
 	public void updateFile() {
 		int orderid = getParaToInt("orderId");
 		int fileId = getParaToInt("fileId");
@@ -585,4 +619,72 @@ public class OrderController extends BaseController {
 		renderJson(ret);
 
 	}
+
+	public void toDownload() {
+		String date = getPara("date");
+		if (StringUtils.isEmpty(date)) {
+			setAttr("date", DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM"));
+		}
+		render("download.html");
+	}
+
+	/**
+	 * 查找符合条件的出库单
+	 */
+	public void findDownloadRecord() {
+		String out_date = getPara("date");
+		keepPara("date");
+		if (!StringUtils.isEmpty(out_date)) {
+			Date dDate = null;
+			try {
+				dDate = DateUtils.parseDate(out_date, "yyyy-MM");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				setAttr("msg", "时间格式错误");
+				render("download.html");
+				return;
+			}
+
+			List<Record> modelList = orderService.findDownloadList(dDate);
+
+			setAttr("modelList", modelList);
+			render("download.html");
+			return;
+		} else {
+			setAttr("msg", "订单月份格式错误");
+			toDownload();
+			return;
+		}
+	}
+
+	public void downloadList() {
+		String date = getPara("date");
+		String[] ids = getParaValues("selectId");
+		if (!StringUtils.isEmpty(date)) {
+
+			try {
+				DateUtils.parseDate(date, "yyyy-MM");
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				setAttr("msg", "时间格式错误");
+				render("download.html");
+				return;
+			}
+		}
+		if (ids.length == 0) {
+			setAttr("msg", "没有选择订单");
+			render("download.html");
+			return;
+		}
+
+		File file = orderService.downloadFileRecord(date, ids);
+		if (file == null) {
+			setAttr("msg", "请查看日志");
+			render("download.html");
+			return;
+		}
+
+		renderFile(file);
+	}
+
 }

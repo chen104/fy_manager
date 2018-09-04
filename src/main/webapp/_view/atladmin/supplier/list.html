@@ -1,8 +1,42 @@
 #@myLayout() #define main()
 
+  <link rel="stylesheet" href="/assets/mysupplier/css/index.css">
+<div class="row" >
+ 
+	<div  style="float: left;">
+	
+	 <dl class="list_dl">
+	 	#for(cate : category)
+        <dt class="list_dt">
+            <span class="_after"></span>
+           <p>#(cate.name??)</p>
+            <i class="list_dt_icon"> </i>
+        </dt>
+        <dd class="list_dd">
+            <ul>	
+            	#for(child : cate.child)
+               <a href="/fy/admin/base/supplier/findByCate?cateId=#(child.id??)">	<li class="list_li" value="#(child.id??)">#(child.name??)</li> </a>   <!-- -->
+	          #end
+            </ul>
+        </dd>
+  		#end
+    </dl>
+ 
+    <script type="text/javascript">
+        $(".list_dt").on("click",function () {
+            $('.list_dd').stop();
+            $(this).siblings("dt").removeAttr("id");
+            if($(this).attr("id")=="open"){
+                $(this).removeAttr("id").siblings("dd").slideUp();
+            }else{
+                $(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
+            }
+        });
+    </script>
+	</div>
 
-<div class="row">
-	<div class="col-xs-12">
+
+	<div class="col-xs-11">
 		<div class="box">
 			#include("upload.html")
 		
@@ -37,6 +71,7 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
+								<th>分类</th>
 								<th>厂商编码</th>
 								<th>厂商名称</th>
 								<th>统一社会代码</th>
@@ -56,6 +91,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
+								 <td>#(x.category_name)</td>
 								<td>#(x.supplier_no)</td>
 								<td>#(x.name)</td>
 								<td>#(x.code)</td>

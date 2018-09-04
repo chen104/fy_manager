@@ -751,6 +751,7 @@ public class ReadyController extends BaseController {
 	public void addOrderToReady() {
 		Integer order_id = getParaToInt("order_id");
 		Integer ready_id = getParaToInt("ready_id");
+
 		Ret ret = service.selectReady(order_id, ready_id);
 		renderJson(ret);
 	}

@@ -51,6 +51,19 @@ public class PayController extends BaseController {
 						+ " left join fy_base_supplier s on  p.supplier_id = s.id " + " order by id desc");
 
 		setAttr("modelPage", modelPage);
+		Double should_pay = 0d;
+		Double weiwai_account = 0d;
+		for (FyBusinessPay e : modelPage.getList()) {
+			if (e.getShouldPay() != null) {
+				should_pay += e.getShouldPay().doubleValue();
+			}
+			if (e.getWeiwaiAccount() != null) {
+				weiwai_account += e.getWeiwaiAccount().doubleValue();
+			}
+		}
+
+		setAttr("should_pay", should_pay);
+		setAttr("weiwai_account", weiwai_account);
 		render("pay.html");
 	}
 

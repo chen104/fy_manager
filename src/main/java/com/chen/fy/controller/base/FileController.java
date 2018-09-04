@@ -1,12 +1,20 @@
 package com.chen.fy.controller.base;
 
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Account;
@@ -17,6 +25,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
 public class FileController extends BaseController {
+	private static final Logger logger = LogManager.getLogger(FileController.class);
+
 	public void index() {
 		String key = getPara("keyWord");
 		Page<Fyfile> modelPage = null;
@@ -44,21 +54,44 @@ public class FileController extends BaseController {
 		}
 		try {
 			for (UploadFile uploadfile : uploadFiles) {
+				File ufile = uploadfile.getFile();
+
+				File toFile = new File(PathKit.getWebRootPath() + "/map", uploadfile.getFileName());
+
 				Fyfile file = new Fyfile();
+				if (toFile.exists()) {
+					String filename = uploadfile.getFileName();
+					int l = filename.lastIndexOf(".");
+					String hou = filename.substring(l);
+					toFile = new File(PathKit.getWebRootPath() + "/map", UUID.randomUUID().toString() + hou);
+				}
 				file.setFilename(uploadfile.getFileName());
+
 				file.setOriginalFileName(uploadfile.getOriginalFileName());
 				file.setFilepath(fileDir.getAbsolutePath());
 				file.setCreateTime(new Date());
 				file.setUpdateTime(file.getCreateTime());
 				file.setCreateBy(account.getId());
+				try {
+					FileUtils.moveFile(ufile, toFile);
+				} catch (FileExistsException e1) {
+					logger.info("文件重名");
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.warn(e.getMessage());
+				}
+
 				file.save();
-				FileUtils.moveFileToDirectory(uploadfile.getFile(), fileDir, true);
+				ufile.delete();
+				// FileUtils.moveFileToDirectory(uploadfile.getFile(), fileDir, true);
 
 			}
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e);
 		}
 		Ret ret = null;
 
@@ -115,9 +148,89 @@ public class FileController extends BaseController {
 			renderText("没有找到文件");
 
 		} else {
-			File file = new File(fyfile.getFilepath(), fyfile.getFilename());
+			File file = new File(PathKit.getWebRootPath() + "/map", fyfile.getFilename());
 			renderFile(file, fyfile.getOriginalFileName());
 		}
+	}
+
+	public void viewFile() {
+		Integer fileId = getParaToInt("id");
+		Fyfile fyfile = Fyfile.dao.findById(fileId);
+		String filename = fyfile.getOriginalFileName();
+		try {
+			if (filename.endsWith(".pdf")) {
+
+				HttpServletResponse response = getResponse();
+
+				File f = new File(PathKit.getWebRootPath() + File.separator + "map", fyfile.getOriginalFileName());
+				if (!f.exists()) {
+					renderError(404);
+					return;
+				}
+				BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));
+
+				response.reset(); // 非常重要
+
+				response.setContentType("application/pdf");
+				// renderFile(f);
+				OutputStream out = response.getOutputStream();
+				byte[] buffer = new byte[1024];
+				int length = -1;
+				while ((length = in.read(buffer)) != -1) {
+					out.write(buffer, 0, length);
+				}
+				in.close();
+				out.close();
+
+				return;
+
+			} else if (filename.endsWith(".jpg")) {
+				setAttr("fileName", fyfile.getOriginalFileName());
+				setAttr("fileUrl", "/map/" + fyfile.getFilename());
+				render("showJpg.html");
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			logger.error(e.getMessage());
+
+		}
+	}
+
+	public void viewFileJpg() {
+
+		HttpServletResponse response = getResponse();
+
+		try {
+			File f = new File(PathKit.getWebRootPath() + File.separator + "map", "fyl_logo.jpg");
+			if (!f.exists()) {
+				renderError(404);
+				return;
+			}
+
+			response.reset(); // 非常重要
+
+			response.setContentType("application/jpeg");
+			renderFile(f);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			logger.error(e.getMessage());
+
+		}
+	}
+
+	public void viewjpg() {
+
+	}
+
+	public static void main(String[] args) {
+		String filename = "sdfsadf.jpg";
+		int l = filename.lastIndexOf(".");
+		String hou = filename.substring(l);
+		System.out.println(hou);
 	}
 
 }

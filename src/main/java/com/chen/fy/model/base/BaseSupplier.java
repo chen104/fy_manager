@@ -129,4 +129,12 @@ public abstract class BaseSupplier<M extends BaseSupplier<M>> extends Model<M> i
 		return getStr("supplier_no");
 	}
 
+	public void setCategory(java.lang.Integer category) {
+		set("category", category);
+	}
+	
+	public java.lang.Integer getCategory() {
+		return getInt("category");
+	}
+
 }
