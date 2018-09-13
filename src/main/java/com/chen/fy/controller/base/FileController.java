@@ -59,6 +59,7 @@ public class FileController extends BaseController {
 				File toFile = new File(PathKit.getWebRootPath() + "/map", uploadfile.getFileName());
 
 				Fyfile file = new Fyfile();
+				file.setOriginalFileName(uploadfile.getOriginalFileName());
 				if (toFile.exists()) {
 					String filename = uploadfile.getFileName();
 					int l = filename.lastIndexOf(".");
@@ -67,7 +68,6 @@ public class FileController extends BaseController {
 				}
 				file.setFilename(uploadfile.getFileName());
 
-				file.setOriginalFileName(uploadfile.getOriginalFileName());
 				file.setFilepath(fileDir.getAbsolutePath());
 				file.setCreateTime(new Date());
 				file.setUpdateTime(file.getCreateTime());

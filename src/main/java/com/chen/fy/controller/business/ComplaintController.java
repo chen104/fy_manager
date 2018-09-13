@@ -19,7 +19,16 @@ public class ComplaintController extends BaseController {
 
 	public void index() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 		Page<FyComplaint> modelPage = null;
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
 
 		modelPage = FyComplaint.dao.paginate(getParaToInt("p", 1), 10,

@@ -71,8 +71,9 @@
 	</a>
 		<ul class="treeview-menu #(fyorder)">
 			#fypermession("order")
-			<li><a href="/fy/admin/biz/fyorder"><i class="fa fa-circle-o">订单管理</i></a></li>
+			<li><a href="/fy/admin/biz/fyorder/order"><i class="fa fa-circle-o">订单管理</i></a></li>
 			#end
+			<li><a href="/fy/admin/biz/fyorder/order2"><i class="fa fa-circle-o">订单管理2</i></a></li>
 			<!--  
 			#fypermession("receive")
 			<li><a href="/fy/admin/biz/fyorder/receive"><i class="fa fa-circle-o"></i>订单接收表</a></li>
@@ -93,11 +94,16 @@
 	</a>
 		<ul class="treeview-menu">
 			#fypermession("commission")
-			<li><a href="/fy/admin/biz/commission"><i class="fa fa-circle-o"></i>委外接收表</a></li>
+			<li><a href="/fy/admin/biz/commission/receive"><i class="fa fa-circle-o"></i>委外接收表</a></li>
 			#end
 			#fypermession("commission_sum")
-			<li><a href="/fy/admin/biz/commission/sumReceive"><i class="fa fa-circle-o"></i>委外执行表</a></li>
+			<li><a href="/fy/admin/biz/commission/execute"><i class="fa fa-circle-o"></i>委外执行表</a></li>
 			#end
+			
+			<li><a href="/fy/admin/biz/commission/audit"><i class="fa fa-circle-o"></i>采购审核</a></li>
+			
+			
+			
 			#fypermession("purchase")
 			<li><a href="/fy/admin/biz/commission/purchase"><i class="fa fa-circle-o"></i>采购单</a></li>
 			#end

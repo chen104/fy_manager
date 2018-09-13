@@ -61,16 +61,16 @@ public class ReadyService {
 			if (quantity1.doubleValue() == 0 && StringUtils.isEmpty(workNo1)) {
 				model.setWorkOrderNo1(order.getWorkOrderNo());
 				model.setDeliveryNo1(order.getDeliveryNo());
-				model.setAddQuantity1(order.getQuantity());
+				// model.setAddQuantity1(order.getQuantity());
 				model.setExecuStatus("备货");
 				model.setAddStatus("部分补单");
 			} else if (quantity2.doubleValue() == 0 && StringUtils.isEmpty(workNo2)) {
 				model.setWorkOrderNo2(order.getWorkOrderNo());
-				model.setAddQuantity2(order.getQuantity());
+				// model.setAddQuantity2(order.getQuantity());
 				model.setDeliveryNo2(order.getDeliveryNo());
 			} else if (quantity3.doubleValue() == 0 && StringUtils.isEmpty(workNo3)) {
 				model.setWorkOrderNo3(order.getWorkOrderNo());
-				model.setAddQuantity3(order.getQuantity());
+				// model.setAddQuantity3(order.getQuantity());
 				model.setDeliveryNo3(order.getDeliveryNo());
 			} else {
 				ret = Ret.fail().set("msg", "已补单三次，不能再补单");

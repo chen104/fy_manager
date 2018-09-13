@@ -1,22 +1,12 @@
 package com.chen.fy.controller.business;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Adler32;
-import java.util.zip.CheckedOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,15 +38,28 @@ public class PurchaseController extends BaseController {
 
 	public void index() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date", "p");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
 		Page<FyBusinessPurchase> modelPage = null;
 		keepPara("keyWord", "condition", "p");
-		String condition = getPara("condition");
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
-				+ ",s.name supplier_name";
+
+		String select = "select p.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+				+ ",s.name supplier_name,f.originalFileName filename,f.id fileId ";
+		String from = " from  fy_business_purchase p" + " left join  fy_business_order o on p.order_id =o.id "
+				+ " left join fy_base_supplier s on p.supplier_id = s.id"
+				+ "  left join fy_base_fyfile  f on o.draw = f.id ";
 		if (StringUtils.isEmpty(key)) {
 
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, "select p.*, " + sql,
-					"from  fy_business_purchase p left join  fy_business_order o on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id  order by id desc");
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + "  order by id desc");
 
 		} else {
 			StringBuilder sb = new StringBuilder();
@@ -66,9 +69,8 @@ public class PurchaseController extends BaseController {
 				sb.append("  o.").append(condition).append(" like '%").append(key).append("%' ");
 			}
 
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, "select p.*, " + sql,
-					"from  fy_business_purchase p left join  fy_business_order o on p.order_id =o.id inner join fy_base_supplier s on p.supplier_id = s.id  where "
-							+ sb.toString() + " order by p.id desc");
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + sb.toString() + " order by p.id desc");
 		}
 		setAttr("modelPage", modelPage);
 		Double purchase_account = 0d;
@@ -121,7 +123,7 @@ public class PurchaseController extends BaseController {
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(S);
 			orders.add(order);
 			order.setReceiveTime(date);
-			model.setPurchaseQuantity(order.getQuantity());
+			// model.setPurchaseQuantity(order.getQuantity());
 
 			model.setPurchaseTitle(order.getCommodityName());
 			model.setOrderId(S);
@@ -209,7 +211,7 @@ public class PurchaseController extends BaseController {
 		model.setPurchaseNo(PurchaseNoKit.getNo());
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		// 未挂账金额
-		order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getPurchaseAccount()));
+		// order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getPurchaseAccount()));
 		if (order.getReceiveTime() == null) {
 			order.setReceiveTime(new Date());
 		}
@@ -260,21 +262,24 @@ public class PurchaseController extends BaseController {
 		 */
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(old.getOrderId());
 		if (order.getWwUnhangAmount() == null) {
-			order.setWwUnhangAmount(new BigDecimal(0));
+			// order.setWwUnhangAmount(new BigDecimal(0));
 		}
-		if (old.getPurchaseAccount() == null && model.getPurchaseAccount() != null) {
-
-			order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getPurchaseAccount()));
-		} else if (old.getPurchaseAccount() != null && model.getPurchaseAccount() == null) {
-			order.setWwUnhangAmount(order.getWwUnhangAmount().subtract(model.getPurchaseAccount()));
-		} else if (old.getPurchaseAccount() != null && model.getPurchaseAccount() != null) {
-			if (model.getPurchaseAccount().doubleValue() != old.getPurchaseAccount().doubleValue()) {
-
-				order.getWwUnhangAmount().subtract(old.getPurchaseAccount());
-				order.setWwUnhangAmount(model.getPurchaseAccount().add(order.getWwUnhangAmount()));
-			}
-
-		}
+		// if (old.getPurchaseAccount() == null && model.getPurchaseAccount() != null) {
+		//
+		// order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getPurchaseAccount()));
+		// } else if (old.getPurchaseAccount() != null && model.getPurchaseAccount() ==
+		// null) {
+		// order.setWwUnhangAmount(order.getWwUnhangAmount().subtract(model.getPurchaseAccount()));
+		// } else if (old.getPurchaseAccount() != null && model.getPurchaseAccount() !=
+		// null) {
+		// if (model.getPurchaseAccount().doubleValue() !=
+		// old.getPurchaseAccount().doubleValue()) {
+		//
+		// order.getWwUnhangAmount().subtract(old.getPurchaseAccount());
+		// order.setWwUnhangAmount(model.getPurchaseAccount().add(order.getWwUnhangAmount()));
+		// }
+		//
+		// }
 
 		boolean re = model.update();
 		Ret ret = null;
@@ -517,37 +522,6 @@ public class PurchaseController extends BaseController {
 		FileUtils.forceDelete(parentfile);
 		renderFile(new File(zipname));
 
-	}
-
-	protected String compress(List<String> filenames) throws IOException {
-
-		String name = "采购单" + System.currentTimeMillis() + ".zip";
-		String filePath = PathKit.getWebRootPath() + File.separator + "download/excel/" + name;
-
-		FileOutputStream f = new FileOutputStream(filePath);
-		CheckedOutputStream csum = new CheckedOutputStream(f, new Adler32());
-		ZipOutputStream zos = new ZipOutputStream(csum);
-		BufferedOutputStream out = new BufferedOutputStream(zos);
-		zos.setComment("采购单压缩");
-		ZipEntry entry = null;
-
-		for (String resource : filenames) {
-			System.out.println("writing file: " + resource);
-			BufferedReader in = new BufferedReader(new FileReader(resource));
-			entry = new ZipEntry(resource);
-			entry.setComment(resource + " comments");
-			zos.putNextEntry(entry);
-			int c;
-			while ((c = in.read()) != -1) {
-				out.write(c);
-			}
-			in.close();
-			out.flush();
-		}
-		out.close();
-		System.out.println("checksum: " + csum.getChecksum().getValue());
-
-		return filePath;
 	}
 
 	public void uploadPurchase() {

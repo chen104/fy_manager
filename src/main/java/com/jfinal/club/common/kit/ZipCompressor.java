@@ -18,14 +18,25 @@ public class ZipCompressor {
 		zipFile = new File(pathName);
 	}
 
-	public ZipCompressor(File parentfile) {
-		this.zipFile = parentfile;
+	public ZipCompressor(File file) {
+		if (!file.exists())
+			throw new RuntimeException(file.getName() + "不存在！");
+		try {
+			FileOutputStream fileOutputStream = new FileOutputStream(zipFile);
+			CheckedOutputStream cos = new CheckedOutputStream(fileOutputStream, new CRC32());
+			ZipOutputStream out = new ZipOutputStream(cos);
+			String basedir = "";
+			compress(file, out, basedir);
+			out.close();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void compress(String srcPathName) {
 		File file = new File(srcPathName);
 		if (!file.exists())
-			throw new RuntimeException(srcPathName + "不存在！");
+			throw new RuntimeException(file.getName() + "不存在！");
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(zipFile);
 			CheckedOutputStream cos = new CheckedOutputStream(fileOutputStream, new CRC32());

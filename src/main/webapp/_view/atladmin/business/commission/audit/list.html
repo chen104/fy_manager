@@ -1,0 +1,191 @@
+
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">采购审核</h3>
+					 <!-- 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button> -->
+				<div class="box-tools">
+							<form action=""  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							   
+							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
+							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
+							    </select>
+							   
+						  
+						  </div>
+						  
+						 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
+						  
+						  </div>
+						   
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+						  </div>
+						
+  <script type="text/javascript">
+	  function onselectCondition(){
+	  		var val = $("#condition").val();
+	  		var keyword_div = $("#keyword_div");
+	  			keyword_div.empty();
+	  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+	  			keyword_div.append(input);
+	  		if("order_date"==val||"delivery_date"==val){
+	  			
+	  			$("#keyword").datepicker({
+	 	  		    	language:'zh-CN',
+	 	  		      autoclose: true,
+	 	  		      format:'yyyy-mm-dd',
+	 	  		      todayBtn:'linked',
+	 	  		      todayHighlight:true,
+	 	  		       orientation:'bottom' 
+	 	  		    });
+	 	 	 	
+	 	 		
+	  		}else{
+	  			
+	  		}
+	  }
+						  	
+</script>
+					</form>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding" style="margin-bottom: 0px;">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>		
+								
+								<th>类别</th>
+								<th>工作订单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>厂商编码</th>
+								<th>厂商名称</th>
+								<th>单价</th>
+								<th>总价</th>
+								<th>审核状态</th>
+								<th>审核时间</th>
+								<th>操作 </th>
+							</tr>
+						</thead>
+					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/toCreatePurchase" method="post">     
+					
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								
+								<td>#(x.cate_tmp)</td>  
+								<td>#(x.work_order_no)</td> 
+								<td>#(x.commodity_name)</td> 
+								<td>#(x.commodity_spec)</td>
+								<td>
+									#(x.total_map_no)
+								</td>  
+								<td>#(x.quantity)</td> 
+								<td>#(x.unit_tmp)</td> 
+								<td>#(x.suppiler_no)</td> 
+								<td>#(x.supplier_name)</td> 		
+								<td>#(x.purchase_cost)</td> 
+								<td>#(x.purchase_account)</td> 
+								
+								<td>#(x.audit_status)</td>
+								<td>#(x.audit_time)</td>
+							
+								<td class="jfa-operation-button">
+								
+								</td>
+							</tr>
+							#end
+						</tbody>
+						
+					</form>
+					</table>
+			</div>
+		
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/commission/execute?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+function submit(){
+	var selectIds = $("input[name=selectId]:checked");
+	if(selectIds==null||selectIds.length ==0){
+		alert("没有选择供应商");
+		return;
+	}
+
+	 $("#myForm").submit();
+	 
+
+	
+}
+
+ 
+    </script>
+
+#end

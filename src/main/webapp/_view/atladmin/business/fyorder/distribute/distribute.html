@@ -1,0 +1,230 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">PCM分配表</h3>
+				<button  class="btn btn-primary" onclick="showDisToModel()">分配</button>
+				<div class="box-tools">
+				
+					<form action="/fy/admin/biz/fyorder/distribute"  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							   
+							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
+							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
+							    </select>
+							   
+						  
+						  </div>
+						  
+						 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
+						  
+						  </div>
+						   
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+						  </div>
+						
+  <script type="text/javascript">
+	  function onselectCondition(){
+	  		var val = $("#condition").val();
+	  		var keyword_div = $("#keyword_div");
+	  			keyword_div.empty();
+	  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+	  			keyword_div.append(input);
+	  		if("order_date"==val||"delivery_date"==val){
+	  			
+	  			$("#keyword").datepicker({
+	 	  		    	language:'zh-CN',
+	 	  		      autoclose: true,
+	 	  		      format:'yyyy-mm-dd',
+	 	  		      todayBtn:'linked',
+	 	  		      todayHighlight:true,
+	 	  		       orientation:'bottom' 
+	 	  		    });
+	 	 	 	
+	 	 		
+	  		}else{
+	  			
+	  		}
+	  }
+						  	
+</script>
+					</form>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+	
+					<table class="table table-bordered text-center"  style="white-space:nowrap">
+						<thead>
+							<tr >
+								<th style="">序号</th>
+								<th style="">
+									多选
+								</th>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>紧急状态</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>商品名称</th>
+								<th>商品规格</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>图纸</th>
+								
+								<th>分配属性</th>
+								
+								<!--  <th>生产委外接收时间</th>
+								<th>分配流向</th>
+								<th>分配时间</th>
+								<th>操作</th>-->
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr class="#orderColor("x")">
+								<td>#(for.index+1)</td>
+								<td> <input name="selectId" type="checkbox"  value="#(x.id)"> </td>
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#date(x.order_date,"yyyy-MM-dd")</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.map_no)</td>
+								
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								
+								<td data-id="#(x.id)"> 
+									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
+									<a href="#" onclick=" selectMapFile(this)"> 
+												<i class="glyphicon glyphicon-th-large" title="选择图纸">选择图纸</i>
+									</a>
+								</td>
+								
+								
+								
+								
+								<td>#(x.distribute_attr)</td>
+							
+								
+								<!--  <td>#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
+								<td>#(x.distribute_to)</td>
+									<td>#(x.distribute_time)</td>
+								<td class="jfa-operation-button"> 
+								#if(!x.distribute_time)
+								<a href="#" data-id="#(x.id)" onclick="showModel(this)" >
+									<i class="glyphicon glyphicon-share-alt" title="分配"></i>
+								</a>
+								#end
+								 </td> -->
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/fyorder/distribute?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+<script type="text/javascript">
+/**
+ * 多个分配
+ */
+
+</script>
+
+
+#end
+#include("disModel.html")
+#include("../../../file/listFileModel.html")
+<script type="text/javascript">
+
+
+
+function selectMapFile(tdFile){
+	var callback=function(select,id,name){
+		var td = $(tdFile).parent();
+		var orderId= td.data("id");
+		if(select){
+			updateOrderFile(orderId,id,name,td);
+		}
+	};
+	new FileChooseModel(callback).show();
+	
+}
+/**
+更新图纸
+*/
+function updateOrderFile(orderId,fileId,filename,td){
+	$.ajax({
+	   type: "POST",
+	   url: "/fy/admin/biz/fyorder/distribute/updateOrderMapFile",
+	   data: {orderId:orderId,fileId:fileId},
+	   success: function(ret){
+		 if (ret.state == "ok") {
+			
+				td.empty();
+				var add= filename+'<a target="_blank" href="/fy/admin/base/file/viewFile?id='+fileId+'" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId='+fileId+'"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>';
+				td.append(add);
+		}
+	   alert(ret.msg);
+	   },
+	 	error:function (XMLHttpRequest, textStatus, errorThrown) {
+	 	    // 通常 textStatus 和 errorThrown 之中
+	 	    // 只有一个会包含信息
+	 	    this; // 调用本次AJAX请求时传递的options参数
+	 	}
+	});
+}
+
+
+</script>

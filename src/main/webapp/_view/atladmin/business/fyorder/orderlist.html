@@ -8,7 +8,7 @@
 					#include("upload.html")
 				#end
 			<div class="box-header">
-				<h3 class="box-title text-center" >订单管理</h3>
+				<h3 class="box-title text-center" >订单管理</h3>#(append)
 				<a href="/fy/admin/biz/fyorder/toDownload"><button class="btn btn-primary">下载</button> </a>
 			
 				<div class="box-tools">
@@ -34,7 +34,7 @@
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-							    	<option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>
+							    	
 							    	<option #if(condition=="delay_warn") selected="selected" #end value="commodity_spec">交货预警</option>
 							    	<option #if(condition=="delay") selected="selected" #end value="commodity_spec">拖期</option>
 							    </select>
@@ -327,12 +327,10 @@
 								
 								#fyColPerm("order","draw")
 								<td  data-id="#(x.id)">
-										#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> #else
-											<a href="#" onclick=" selectMapFile(this)"> 
-												<i class="glyphicon glyphicon-th-large" title="选择图纸"></i>
-											</a>
+										#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>   #end 
+											
 		                               	
-		                               #end
+		                             
 								 </td>
 								 #end
 								 
@@ -445,41 +443,6 @@ function deleteOrder(a){
 	}
 }
 
-function selectMapFile(tdFile){
-	var callback=function(select,id,name){
-		var td = $(tdFile).parent();
-		var orderId= td.data("id");
-		if(select){
-			updateOrderFile(orderId,id,name,td);
-		}
-	};
-	new FileChooseModel(callback).show();
-	
-}
-/**
-更新图纸
-*/
-function updateOrderFile(orderId,fileId,filename,td){
-	$.ajax({
-	   type: "POST",
-	   url: "/fy/admin/biz/fyorder/updateFile",
-	   data: {orderId:orderId,fileId:fileId},
-	   success: function(ret){
-		 if (ret.state == "ok") {
-			
-				td.empty();
-				var add= filename+'<a target="_blank" href="/fy/admin/base/file/viewFile?id='+fileId+'" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId='+fileId+'"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>';
-				td.append(add);
-		}
-	   alert(ret.msg);
-	   },
-	 	error:function (XMLHttpRequest, textStatus, errorThrown) {
-	 	    // 通常 textStatus 和 errorThrown 之中
-	 	    // 只有一个会包含信息
-	 	    this; // 调用本次AJAX请求时传递的options参数
-	 	}
-	});
-}
 
     </script>
 

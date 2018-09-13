@@ -1,10 +1,8 @@
-package com.chen.fy.controller.business;
+package com.chen.fy.controller.business.order;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,16 +17,14 @@ import com.chen.fy.controller.BaseController;
 import com.chen.fy.controller.business.service.OrderService;
 import com.chen.fy.model.FyBusinessDistribute;
 import com.chen.fy.model.FyBusinessOrder;
-import com.chen.fy.model.OrderUploadLog;
 import com.jfinal.aop.Before;
-import com.jfinal.club.common.kit.ContextKit;
-import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.plugin.ehcache.CacheKit;
 import com.jfinal.upload.UploadFile;
 
 public class OrderController extends BaseController {
@@ -49,9 +45,16 @@ public class OrderController extends BaseController {
 
 		keepPara("condition", "keyWord", "order_date");
 		Integer pageSize = getParaToInt("pageSize", 10);
+		if (pageSize != 10) {
+			CacheKit.put("pageSize", getLoginAccount().getId(), pageSize);
+		} else {
+			Object obj = CacheKit.get("pageSize", getLoginAccount().getId());
+			if (obj != null && NumberUtils.isNumber(obj.toString())) {
+				pageSize = Integer.valueOf(obj.toString());
+			}
+		}
 		setAttr("pageSize", pageSize);
-		setAttr("append", "&pageSize=" + pageSize);
-		setAttr("keyWord", key);
+
 		StringBuilder conditionSb = new StringBuilder();
 		String select = "select o.*,f.originalFileName filename,f.id fileId ,u.hang_quantity uhang_quantity ,u.hang_amount uhang_amount , o.quantity - IFNULL(u.hang_quantity,0) unhquantity";
 		if ("dis_warn".equals(condition)) {// 分配预警，三天未分配,导入时间，后还没有分配
@@ -85,16 +88,14 @@ public class OrderController extends BaseController {
 		}
 
 		if ("order_date".equals(condition)) {
-			String orderDate = getPara(key);
-			if (StringUtils.isNotEmpty(orderDate)) {
-				conditionSb.append(String.format("where order_date = '%s'", orderDate));
-			}
 
-		} else if ("delivery_date".endsWith(condition)) {
+			conditionSb.append(String.format("where order_date = '%s'", key));
 
-		}
+		} else if ("delivery_date".equals(condition)) {
 
-		else if (StringUtils.isNotEmpty(condition)) {
+			conditionSb.append(String.format("where delivery_date = '%s'", key));
+
+		} else if (StringUtils.isNotEmpty(condition)) {
 
 			conditionSb.append(String.format("where %s like  ", condition, key));
 			conditionSb.append("'%").append(key).append("%'");
@@ -110,7 +111,7 @@ public class OrderController extends BaseController {
 							+ " LEFT JOIN upGetpay u on o.delivery_no = u.delivery_no " + " %s order by id desc",
 							conditionSb.toString()));
 
-			setAttr("append", "keyWord=" + key);
+			setAttr("append", "&keyWord=" + key);
 		}
 		Double totalAmount = 0d;// 含税金额
 		Double amount = 0d;
@@ -138,110 +139,12 @@ public class OrderController extends BaseController {
 	 * 导入订单
 	 */
 	public void importFile() {
-		boolean isnumber = false;
+
 		UploadFile ufile = getFile();
 		int total = 0;
 		if (ufile != null) {
 			try {
-				File file = ufile.getFile();
-
-				PIOExcelUtil excel = new PIOExcelUtil(file, 0);
-				// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
-				// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
-				List<Record> list = new ArrayList<Record>();
-				int rows = excel.getRowNum() + 1;
-				for (int i = 1; i < rows; i++) {
-					FyBusinessOrder item = new FyBusinessOrder();
-					String catgory = excel.getCellVal(i, 0);// 类别
-					item.setCateTmp(catgory);
-					String planname = excel.getCellVal(i, 1);// 计划员
-					item.setPlanTmp(planname);
-
-					String excustatu = excel.getCellVal(i, 2);// 执行状态
-					item.setExecuStatus(excustatu);
-
-					String urgentStatus = excel.getCellVal(i, 3);// 紧急状态
-					item.setUrgentStatus(urgentStatus);
-
-					Date orderdate = excel.getDateValue(i, 4);// 订单日期
-					item.setOrderDate(orderdate);
-
-					Date DeliveryDate = excel.getDateValue(i, 5);// 交货日期
-					item.setDeliveryDate(DeliveryDate);
-
-					String workid = excel.getCellVal(i, 6);// 工作订单号
-					if (StringUtils.isEmpty(workid)) {
-						System.out.println(item);
-						continue;
-					}
-					item.setWorkOrderNo(workid);
-
-					String DeliveryId = excel.getCellVal(i, 7);// 送货单号
-					item.setDeliveryNo(DeliveryId);
-
-					String name = excel.getCellVal(i, 8);// 商品名称
-					item.setCommodityName(name);
-
-					String nspec = excel.getCellVal(i, 9);// 商品规格
-					item.setCommoditySpec(nspec);
-
-					String map = excel.getCellVal(i, 10);// 总图号
-					// item.setMapNo(mapNo);
-					item.setMapTmp(map);
-
-					String tck = excel.getCellVal(i, 11);// 技术条件
-					item.setTechnology(tck);
-
-					String maching = excel.getCellVal(i, 12);// 加工要求
-					item.setMachiningRequire(maching);
-
-					String quantity = excel.getCellVal(i, 13);// 数量
-					item.setQuantity(NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) : null);
-
-					String unit = excel.getCellVal(i, 14);// 单位
-					item.setUnitTmp(unit);
-
-					String untaxcost = excel.getCellVal(i, 15);// 未税单价
-					item.setUntaxedCost(NumberUtils.isNumber(untaxcost) ? new BigDecimal(untaxcost) : null);
-
-					String account = excel.getCellVal(i, 16);// 金额
-					item.setAmount(NumberUtils.isNumber(account) ? new BigDecimal(account) : null);
-
-					String taxRate = excel.getCellVal(i, 17);// 税率
-					item.setTaxRate(NumberUtils.isNumber(taxRate) ? new BigDecimal(taxRate) : ContextKit.getTaxRate());
-
-					String taxAccount = excel.getCellVal(i, 18);// 税额
-					isnumber = NumberUtils.isNumber(taxAccount);
-
-					item.setTaxAmount(isnumber ? new BigDecimal(taxAccount) : null);
-
-					String totalAccount = excel.getCellVal(i, 19);// 含税金额
-
-					item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
-
-					String sendAddress = excel.getCellVal(i, 20);// 发货地址
-					item.setSendAddress(sendAddress);
-
-					item.setImportTime(new Date());
-					item.setDistributeAttr("首次");
-					item.setHandleStatus("未处理");
-					item.setHangStatus("未挂账");
-					item.setUnhangQuantity(item.getQuantity());
-
-					item.setWwUnquantity(item.getQuantity());
-					list.add(new Record().setColumns(item));
-
-				}
-				int[] re = Db.batchSave("fy_business_order", list, 20);
-
-				for (int i = 0; i < re.length; i++) {
-					total = total + re[i];
-				}
-				OrderUploadLog log = new OrderUploadLog();
-				log.setSucess(total);
-				log.save();
-				Db.update(
-						" update fy_business_order set  warn_time = DATE_ADD(import_time,INTERVAL 2 DAY) where  warn_time is null");
+				total = orderService.upload(ufile.getFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -260,7 +163,7 @@ public class OrderController extends BaseController {
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
 		String quantity = getPara("quantity");
 		String unit = getPara("unit");
-		order.setQuantity(new BigDecimal(quantity));
+		// order.setQuantity(new BigDecimal(quantity));
 		order.setUnitTmp(unit);
 		boolean re = order.update();
 		Ret ret = null;
@@ -324,13 +227,33 @@ public class OrderController extends BaseController {
 
 	public void distribute() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
+
 		Page<FyBusinessOrder> modelPage = null;
 		setAttr("keyWord", key);
-		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
-				"select o.*,originalFileName filename,file.id fileId",
-				"from  fy_business_order o " + " LEFT JOIN fy_base_fyfile file on o.draw = file.id"
-						+ " where  distribute_to is null  order by orderby asc  , id asc");
-
+		keepPara("condition");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		String select = "select o.*,originalFileName filename,file.id fileId";
+		String from = "from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.isEmpty(key)) {
+			sb.append(" where  distribute_to is null order by o.id desc,is_distribute desc  ");
+		} else {
+			String condition = getPara("condition");
+			if ("delivery_date".equals(condition) || "order_date".equals(condition)) {
+				sb.append(" where ").append(condition).append(" = '").append(key).append("' ")
+						.append(" and  distribute_to is null order by o.id desc,is_distribute desc ");
+			} else {
+				sb.append(" where ").append(condition).append(" like '%").append(key).append("%' ")
+						.append(" and  distribute_to is null order by o.id desc,is_distribute desc ");
+			}
+		}
+		modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), getParaToInt("pageSize", 10), select,
+				from + sb.toString());
 		setAttr("modelPage", modelPage);
 		render("distribute.html");
 	}
@@ -455,10 +378,10 @@ public class OrderController extends BaseController {
 			businessDistribute.setDeliveryNo(order.getDeliveryNo());
 			businessDistribute.setCommodityName(order.getCommodityName());
 			businessDistribute.setCommoditySpec(order.getCommoditySpec());
-			businessDistribute.setMapNo(order.getMapNo());
+			// businessDistribute.setMapNo(order.getMapNo());
 			businessDistribute.setTechnology(order.getTechnology());
 			businessDistribute.setMachiningRequire(order.getMachiningRequire());
-			businessDistribute.setQuantity(order.getQuantity());
+			// businessDistribute.setQuantity(order.getQuantity());
 			businessDistribute.setUnit(order.getUnit());
 			businessDistribute.setUnitTmp(order.getUnitTmp());
 			// businessDistribute.setReceiveTime(order.getReceiveTime());
@@ -476,118 +399,6 @@ public class OrderController extends BaseController {
 		}
 
 		renderJson(ret);
-	}
-
-	/**
-	 * 单个分配
-	 */
-	@Deprecated
-	public void distrubite() {
-		Integer id = getParaToInt("id");
-		String disTo = getPara("disTo");
-		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
-		order.setDistributeTo(disTo);
-		order.setIsDistribute(true);
-		order.setDistributeTime(new Date());
-		if ("自产".equals(disTo)) {
-			order.setDisTo(0);
-		} else if ("委外".equals(disTo)) {
-			order.setDisTo(1);
-		} else {
-			order.setDisTo(3);
-		}
-
-		order.setOrderby(1);
-		// order.setHandleStatus("处理中");
-		boolean save = false;
-		save = Db.tx(new IAtom() {
-			public boolean run() throws SQLException {
-
-				return order.update();
-			}
-		});
-		Ret ret = null;
-		if (save) {
-			ret = Ret.ok("msg", "分配成功");
-
-		} else {
-			ret = Ret.ok("msg", "分配失败");
-		}
-		renderJson(ret);
-	}
-
-	public void distrubiteBatch() {
-		String[] ids = getParaValues("ids[]");
-		String disTo = getPara("disTo");
-		// FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
-		// order.setDistributeTo(disTo);
-		// order.setIsDistribute(true);
-		// order.setDistributeTime(new Date());
-		StringBuilder sql = new StringBuilder();
-		if ("自产".equals(disTo)) {
-			// order.setDisTo(false);
-			sql.append("update fy_business_order set dis_to = 0 ,distribute_to = '" + disTo
-					+ "' ,is_distribute = 1, distribute_time = now() , orderby = 1  where id in ");
-			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
-		} else if ("委外".equals(disTo)) {
-			// order.setDisTo(true);
-			sql.append("update fy_business_order set dis_to = 1 ,distribute_to = '" + disTo
-					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
-			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
-		} else {
-			sql.append("update fy_business_order set dis_to = 3,distribute_to = '" + disTo
-					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
-			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
-		}
-
-		// order.setOrderby(1);
-		// order.setHandleStatus("处理中");
-		boolean save = false;
-		save = Db.tx(new IAtom() {
-			public boolean run() throws SQLException {
-				int update = Db.update(sql.toString());
-				return update == ids.length;
-			}
-		});
-		Ret ret = null;
-		if (save) {
-			ret = Ret.ok("msg", "分配成功");
-
-		} else {
-			ret = Ret.ok("msg", "分配失败");
-		}
-		renderJson(ret);
-	}
-
-	/**
-	 * 测回分配，修改状态为 dis_to =null , handle_status =‘未处理 ’ distribute_to` ,
-	 * `distribute_attr ，测回,is_distribute =1
-	 */
-	public void rollBackOrder() {
-		Integer id = getParaToInt("id");
-		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
-		order.setDisTo(null);
-		order.setHandleStatus("未处理");
-		order.setDistributeTo(null);
-		order.setDistributeAttr("撤回");
-		order.setIsDistribute(true);
-		order.setIsCreatePlan(false);
-
-		order.setDistributeTime(null);// 分配时间
-		List<Record> list = Db.find("select 1 from fy_business_in_warehouse where order_id = ?", id);
-		if (list.size() > 0) {
-			renderJson(Ret.fail().set("msg", "已生成入库单，不可撤回"));
-		}
-		list = Db.find("select 1 from fy_business_purchase where order_id = ?", id);
-		if (list.size() > 0) {
-			renderJson(Ret.fail().set("msg", "已生采购单，不可撤回"));
-		}
-		boolean re = order.update();
-		if (re) {
-			renderJson(Ret.ok().set("msg", "撤回成功"));
-		} else {
-			renderJson(Ret.fail().set("msg", "撤回失败，请重试"));
-		}
 	}
 
 	/**

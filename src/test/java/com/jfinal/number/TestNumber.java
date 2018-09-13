@@ -5,6 +5,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.junit.Test;
+
 public class TestNumber {
 	public static void main(String[] args) {
 		// Print out a number using the localized number, integer, currency,
@@ -44,5 +47,12 @@ public class TestNumber {
 			}
 		}
 
+	}
+
+	@Test
+	public void curent() {
+		long l = System.currentTimeMillis();
+		System.out.println(DateFormatUtils.format(l, "yyyy-MM-dd hh:mm:ss"));
+		System.out.println(l);
 	}
 }

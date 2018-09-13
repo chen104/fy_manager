@@ -43,12 +43,45 @@ public class PayController extends BaseController {
 	 */
 	public void pay() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 		Page<FyBusinessPay> modelPage = null;
 		setAttr("keyWord", key);
+		keepPara("condition");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
 		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
-		modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), 10, "select p.*, s.name supplier_name ," + sql,
-				"from  fy_business_pay p left join fy_business_order o on o.id= p.order_id"
-						+ " left join fy_base_supplier s on  p.supplier_id = s.id " + " order by id desc");
+		String select = "select p.*, s.name supplier_name ," + sql;
+		String from = "from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
+		String desc = " order by id desc";
+		StringBuilder where = new StringBuilder();
+		if (StringUtils.isNotEmpty(key)) {
+			String condition = getPara("condition");
+			if ("hang_date".equals(condition)) {
+				Date date = null;
+				try {
+					date = DateUtils.parseDate(key, "yyyy-MM");
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(date);
+					calendar.add(Calendar.DATE, -1);
+					String start = DateFormatUtils.format(calendar, "yyyy-MM-dd");
+					calendar.add(Calendar.DATE, 1);
+					calendar.add(Calendar.MONTH, 1);
+					String end = DateFormatUtils.format(calendar, "yyyy-MM-dd");
+					where.append("where p.hang_date > '").append(start).append("' and p.hang_date < '").append(end)
+							.append("' ");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			} else {
+				where.append("where o.").append(condition).append(" like '%").append(key).append("%' ");
+			}
+
+		}
+		modelPage = FyBusinessPay.dao.paginate(getParaToInt("p", 1), pageSize, select, from + where.toString() + desc);
 
 		setAttr("modelPage", modelPage);
 		Double should_pay = 0d;
@@ -252,10 +285,10 @@ public class PayController extends BaseController {
 				List<FyBusinessPurchase> purchases = FyBusinessPurchase.dao
 						.find("select * from fy_business_purchase where order_id = ?", item.getOrderId());
 				FyBusinessOrder order = FyBusinessOrder.dao.findById(item.getOrderId());
-				BigDecimal wwUnquantity = order.getWwUnquantity();// 委外未挂账金额
-				BigDecimal wwBigDecimal = order.getWwQuantity();// 委外挂账金额
-				order.setWwQuantity(wwBigDecimal.add(item.getRealInQuantity()));
-				order.setWwUnhangAmount(wwUnquantity.subtract(item.getRealInQuantity()));
+				// BigDecimal wwUnquantity = order.getWwUnquantity();// 委外未挂账金额
+				// BigDecimal wwBigDecimal = order.getWwQuantity();// 委外挂账金额
+				// order.setWwQuantity(wwBigDecimal.add(item.getRealInQuantity()));
+				// order.setWwUnhangAmount(wwUnquantity.subtract(item.getRealInQuantity()));
 
 				// order.setUnhangQuantity(unhangQuantity);
 
@@ -268,7 +301,7 @@ public class PayController extends BaseController {
 					pay.setOrderNo(purchase.getPurchaseNo());// 订单编号
 					pay.setCheckResult(item.getCheckResult());// 检测结果
 					pay.setCheckTime(item.getCheckTime());// 检测时间
-					pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
+					// pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
 					pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
 					pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
 					pay.setInFrom("采购");

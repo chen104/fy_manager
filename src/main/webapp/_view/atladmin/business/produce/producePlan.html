@@ -84,6 +84,8 @@
 							<th>质量等级</th>
 							<th>数量</th>
 							<th>单位</th>
+							
+							<th>图纸</th>
 							<th>预计投产时间</th>
 							<th>预计完工时间</th>
 							<th>备注</th>
@@ -113,6 +115,13 @@
 							<td>#(x.machiningRequire)</td>
 							<td>#(x.quantity)</td>
 							<td>#(x.unit_tmp)</td>
+							
+							<td>
+								#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i>
+								</a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>   #end 
+										
+							</td>
+							
 							<td>#date(x.plan_time,"yyyy-MM-dd")</td>
 							<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
 							<td>#(x.plan_remark)</td>

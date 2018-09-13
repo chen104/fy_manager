@@ -97,12 +97,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("commodity_spec");
 	}
 
-	public void setMapNo(java.lang.Integer mapNo) {
+	public void setMapNo(java.lang.String mapNo) {
 		set("map_no", mapNo);
 	}
 	
-	public java.lang.Integer getMapNo() {
-		return getInt("map_no");
+	public java.lang.String getMapNo() {
+		return getStr("map_no");
 	}
 
 	public void setTechnology(java.lang.String technology) {
@@ -121,12 +121,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("machining_require");
 	}
 
-	public void setQuantity(java.math.BigDecimal quantity) {
+	public void setQuantity(java.lang.Integer quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.math.BigDecimal getQuantity() {
-		return get("quantity");
+	public java.lang.Integer getQuantity() {
+		return getInt("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {
@@ -154,11 +154,11 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	}
 
 	public void setTaxRate(java.math.BigDecimal taxRate) {
-		set("taxRate", taxRate);
+		set("tax_rate", taxRate);
 	}
 	
 	public java.math.BigDecimal getTaxRate() {
-		return get("taxRate");
+		return get("tax_rate");
 	}
 
 	public void setTaxAmount(java.math.BigDecimal taxAmount) {
@@ -241,20 +241,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("hang_status");
 	}
 
-	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
+	public void setHangQuantity(java.lang.Integer hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.math.BigDecimal getHangQuantity() {
-		return get("hang_quantity");
+	public java.lang.Integer getHangQuantity() {
+		return getInt("hang_quantity");
 	}
 
-	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
+	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
 		set("unhang_quantity", unhangQuantity);
 	}
 	
-	public java.math.BigDecimal getUnhangQuantity() {
-		return get("unhang_quantity");
+	public java.lang.Integer getUnhangQuantity() {
+		return getInt("unhang_quantity");
 	}
 
 	public void setCateTmp(java.lang.String cateTmp) {
@@ -457,36 +457,36 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("hang_account");
 	}
 
-	public void setWwQuantity(java.math.BigDecimal wwQuantity) {
+	public void setWwQuantity(java.lang.Integer wwQuantity) {
 		set("ww_quantity", wwQuantity);
 	}
 	
-	public java.math.BigDecimal getWwQuantity() {
-		return get("ww_quantity");
+	public java.lang.Integer getWwQuantity() {
+		return getInt("ww_quantity");
 	}
 
-	public void setWwUnquantity(java.math.BigDecimal wwUnquantity) {
+	public void setWwUnquantity(java.lang.Integer wwUnquantity) {
 		set("ww_unquantity", wwUnquantity);
 	}
 	
-	public java.math.BigDecimal getWwUnquantity() {
-		return get("ww_unquantity");
+	public java.lang.Integer getWwUnquantity() {
+		return getInt("ww_unquantity");
 	}
 
-	public void setWwHangAmount(java.math.BigDecimal wwHangAmount) {
+	public void setWwHangAmount(java.lang.Integer wwHangAmount) {
 		set("ww_hang_amount", wwHangAmount);
 	}
 	
-	public java.math.BigDecimal getWwHangAmount() {
-		return get("ww_hang_amount");
+	public java.lang.Integer getWwHangAmount() {
+		return getInt("ww_hang_amount");
 	}
 
-	public void setWwUnhangAmount(java.math.BigDecimal wwUnhangAmount) {
+	public void setWwUnhangAmount(java.lang.Integer wwUnhangAmount) {
 		set("ww_unhang_amount", wwUnhangAmount);
 	}
 	
-	public java.math.BigDecimal getWwUnhangAmount() {
-		return get("ww_unhang_amount");
+	public java.lang.Integer getWwUnhangAmount() {
+		return getInt("ww_unhang_amount");
 	}
 
 	public void setSendAddress(java.lang.String sendAddress) {
@@ -519,6 +519,38 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	
 	public java.lang.Integer getReadyId() {
 		return getInt("ready_id");
+	}
+
+	public void setModelNo(java.lang.String modelNo) {
+		set("model_no", modelNo);
+	}
+	
+	public java.lang.String getModelNo() {
+		return getStr("model_no");
+	}
+
+	public void setOutHouseDate(java.util.Date outHouseDate) {
+		set("out_house_date", outHouseDate);
+	}
+	
+	public java.util.Date getOutHouseDate() {
+		return get("out_house_date");
+	}
+
+	public void setWeiwaiCate(java.lang.String weiwaiCate) {
+		set("weiwai_cate", weiwaiCate);
+	}
+	
+	public java.lang.String getWeiwaiCate() {
+		return getStr("weiwai_cate");
+	}
+
+	public void setTotalMapNo(java.lang.String totalMapNo) {
+		set("total_map_no", totalMapNo);
+	}
+	
+	public java.lang.String getTotalMapNo() {
+		return getStr("total_map_no");
 	}
 
 }

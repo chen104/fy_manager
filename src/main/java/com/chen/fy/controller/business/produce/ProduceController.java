@@ -1,4 +1,4 @@
-package com.chen.fy.controller.business;
+package com.chen.fy.controller.business.produce;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -180,20 +180,31 @@ public class ProduceController extends BaseController {
 
 	public void planPro() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 		Page<FyBusinessOrder> modelPage = null;
-		keepPara("condition", "keyWord", "pageSize");
+
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date");
 		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
+		String select = "select o.* ,f.originalFileName filename,f.id fileId ";
+		String from = " from  fy_business_order o  LEFT JOIN  fy_base_fyfile  f on o.draw = f.id";
+		String where = " where  has_in_quantity <> quantity and Is_Distribute = 1 and dis_to = 0 ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
-					"from  fy_business_order where  has_in_quantity <> quantity and Is_Distribute = 1 and dis_to = 0  order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + where + "  order by id desc");
 
 		} else {
-			String condition = getPara("condition");
+
 			StringBuilder sb = new StringBuilder();
 			sb.append(" and ").append(condition).append(" like '").append(key).append("' ");
-			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, "select * ",
-					"from  fy_business_order where   has_in_quantity <> quantity and  Is_Distribute = 1 and dis_to = 0 "
-							+ sb.toString() + " order by id desc");
+			modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + where + sb.toString() + " order by id desc");
 
 		}
 		setAttr("modelPage", modelPage);
@@ -229,6 +240,9 @@ public class ProduceController extends BaseController {
 		model.setOrderId(id);
 		model.setParentId(id);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
+		if (order == null) {
+			renderJson(Ret.fail().set("msg", "订单是否已被删除，删除的订单不能入库"));
+		}
 		order.setInWarehouseTime(new Date());
 		model.setInTime(order.getInWarehouseTime());
 		model.setInFrom("本部");
@@ -242,10 +256,11 @@ public class ProduceController extends BaseController {
 			renderJson(Ret.fail().set("msg", "失败，输入的入库数量不是数字"));
 			return;
 		}
-		if (Double.valueOf(inQuantity) > order.getQuantity().subtract(order.getHasInQuantity()).doubleValue()) {
-			renderJson(Ret.fail().set("msg", "失败，入库数量大于订单数量"));
-			return;
-		}
+		// if (Double.valueOf(inQuantity) >
+		// order.getQuantity().subtract(order.getHasInQuantity()).doubleValue()) {
+		// renderJson(Ret.fail().set("msg", "失败，入库数量大于订单数量"));
+		// return;
+		// }
 		model.setRealInQuantity(new BigDecimal(inQuantity));// 入库单设置已入库实际数量
 		order.setHasInQuantity(order.getHasInQuantity().add(model.getRealInQuantity()));// 订单设置已经入库数量
 

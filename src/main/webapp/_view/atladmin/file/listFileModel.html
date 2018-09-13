@@ -102,7 +102,11 @@
 		var oncancel =function(){
 			$('#fileModel').modal("hide");
 		}
-		$("#selectFile").click(onselect);
+		
+	
+	
+		$("#selectFile").one("click",onselect);
+
 		this.show=show;
 		function show(){
 			$('#fileModel').modal("show");

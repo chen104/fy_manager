@@ -7,7 +7,18 @@
 			<div class="box-header">
 				<h3 class="box-title">外协加工单</h3>
 				<div class="box-tools">
-					<form action="/fy/admin/biz/commission/assist"  class="form-inline">
+					<form action="/fy/admin/biz/assist"  class="form-inline">
+							 <div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+					
 						 <div class="form-group  input-group-sm">
 						    <label for="condition"></label>
 							    <select id="condition" class="form-control" name="condition" >
@@ -48,6 +59,10 @@
 								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
+								
+								
+								 <th>图纸</th>
+								
 								<th>外协工序单价</th>
 								<th>外协工序金额</th>
 								<th>税率</th>
@@ -77,6 +92,11 @@
 								
 								
 								<td>#(x.unit_tmp)</td>
+								
+								<td>	#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a>
+								 <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+								   #end </td>
+								
 								<td>#(x.assist_cost)</td>
 								<td>#(x.assist_account)</td>
 								<td>#taxRate(x.tax_rate)</td>

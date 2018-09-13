@@ -14,12 +14,15 @@
 
 package com.chen.fy.controller;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.chen.fy.Constant;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.NotAction;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 /**
  * 基础控制器，方便获取登录信息
@@ -71,5 +74,26 @@ public class BaseController extends Controller {
 			return account.getId();
 		}
 		return null;
+	}
+
+	public Integer getPageSize() {
+		Integer pageSize = getParaToInt("pageSize", 10);
+		{
+			// Integer userId = getLoginAccount().getId();
+			// Object obj = CacheKit.get("pageSize", userId);
+			// System.out.println(obj);
+		}
+
+		if (pageSize != 10) {
+			CacheKit.put("pageSize", getLoginAccount().getId(), pageSize);
+		} else {
+			Integer userId = getLoginAccount().getId();
+			Object obj = CacheKit.get("pageSize", userId);
+			if (obj != null && NumberUtils.isNumber(obj.toString())) {
+				pageSize = Integer.valueOf(obj.toString());
+			}
+		}
+		setAttr("pageSize", pageSize);
+		return pageSize;
 	}
 }

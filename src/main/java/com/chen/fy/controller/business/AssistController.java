@@ -1,6 +1,5 @@
 package com.chen.fy.controller.business;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +43,7 @@ public class AssistController extends BaseController {
 		// 更细委外未挂账金额
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		if (model.getAssistAccount() != null) {
-			order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getAssistAccount()));
+			// order.setWwUnhangAmount(order.getWwUnhangAmount().add(model.getAssistAccount()));
 		}
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
@@ -74,12 +73,13 @@ public class AssistController extends BaseController {
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		if (old.getAssistAccount() != null) {
 
-			BigDecimal wUnhangAmount = order.getWwUnhangAmount().subtract(old.getAssistAccount());
-			order.setWwUnhangAmount(wUnhangAmount);
+			// BigDecimal wUnhangAmount =
+			// order.getWwUnhangAmount().subtract(old.getAssistAccount());
+			// order.setWwUnhangAmount(wUnhangAmount);
 		}
 
 		if (model.getAssistAccount() != null) {
-			order.getWwUnhangAmount().add(model.getAssistAccount());
+			// order.getWwUnhangAmount().add(model.getAssistAccount());
 		}
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
@@ -100,24 +100,36 @@ public class AssistController extends BaseController {
 
 	public void assist() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 		Page<FyBusinessAssist> modelPage = null;
-		keepPara("keyWord", "condition");
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
+		String condition = getPara("condition");
+
+		String oTable = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
 				+ ",s.name supplier_name";
+		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
+		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "
+				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id "
+				+ " left join fy_base_fyfile  f on o.draw = f.id ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), 10, "select a.* ,s.name supplier," + sql,
-					"from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id  left join fy_base_supplier s on s.id = a.assist_supplier_id order by id desc");
+			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + " order by id desc");
 		} else {
 			StringBuilder sb = new StringBuilder();
-			String condition = getPara("condition");
+
 			if ("name".equals(condition)) {
 				sb.append(" and s.name like ").append("'%").append(key).append("%' ");
 			} else {
 				sb.append(" and o.work_order_no like ").append("'%").append(key).append("%' ");
 			}
-			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), 10, "select a.* ," + sql,
-					"from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id  left join fy_base_supplier s  on a.assist_supplier_id = s.id "
-							+ sb.toString() + " order by id desc");
+			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + sb.toString() + " order by id desc");
 		}
 		setAttr("modelPage", modelPage);
 		render("assist.html");
@@ -138,8 +150,9 @@ public class AssistController extends BaseController {
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		if (model.getAssistAccount() == null) {
 
-			BigDecimal wUnhangAmount = order.getWwUnhangAmount().subtract(model.getAssistAccount());
-			order.setWwUnhangAmount(wUnhangAmount);
+			// BigDecimal wUnhangAmount =
+			// order.getWwUnhangAmount().subtract(model.getAssistAccount());
+			// order.setWwUnhangAmount(wUnhangAmount);
 		}
 
 		boolean re = Db.tx(new IAtom() {

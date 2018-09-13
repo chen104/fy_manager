@@ -15,7 +15,6 @@ import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.PurchaseNoKit;
 import com.jfinal.club.common.kit.SqlKit;
-import com.jfinal.club.common.kit.ZipCompressor;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -160,7 +159,7 @@ public class PurchaseService {
 			}
 			String zipname = parentfile.getAbsolutePath() + ".zip";
 			String source = parentfile.getAbsolutePath();
-			ZipCompressor zc = new ZipCompressor(zipname);
+			com.jfinal.club.common.kit.ZipCompressor zc = new com.jfinal.club.common.kit.ZipCompressor(zipname);
 			zc.compress(source);
 
 			try {

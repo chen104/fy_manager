@@ -41,14 +41,19 @@ import com.chen.fy.controller.business.CommissionController;
 import com.chen.fy.controller.business.ComplaintController;
 import com.chen.fy.controller.business.FinanceController;
 import com.chen.fy.controller.business.GetPayController;
-import com.chen.fy.controller.business.OrderController;
 import com.chen.fy.controller.business.OutWarehouseContollor;
 import com.chen.fy.controller.business.PayController;
-import com.chen.fy.controller.business.ProduceController;
 import com.chen.fy.controller.business.ProductOneSumController;
 import com.chen.fy.controller.business.PurchaseController;
 import com.chen.fy.controller.business.UploadGetpayController;
 import com.chen.fy.controller.business.WarehouseController;
+import com.chen.fy.controller.business.commission.audit.FyPurchaseAuditController;
+import com.chen.fy.controller.business.commission.execut.CommisionExecutController;
+import com.chen.fy.controller.business.commission.receive.ReceiveController;
+import com.chen.fy.controller.business.distribut.DistributController;
+import com.chen.fy.controller.business.order.OrderController;
+import com.chen.fy.controller.business.order.OrderController2;
+import com.chen.fy.controller.business.produce.ProduceController;
 import com.chen.fy.controller.role.RoleAdminController;
 import com.chen.fy.directive.FyColPermDirective;
 import com.chen.fy.directive.FyPermissionDirective;
@@ -146,9 +151,23 @@ public class JFinalClubConfig extends JFinalConfig {
 
 		// business
 
-		me.add("fy/admin/biz/fyorder", OrderController.class, "/_view/atladmin/business/fyorder");
+		me.add("fy/admin/biz/fyorder/order", OrderController.class, "/_view/atladmin/business/fyorder");
+		me.add("fy/admin/biz/fyorder/order2", OrderController2.class, "/_view/atladmin/business/fyorder/order");
+
+		me.add("fy/admin/biz/fyorder/distribute", DistributController.class,
+				"/_view/atladmin/business/fyorder/distribute");
+
 		me.add("fy/admin/biz/fyorder/productOneSum", ProductOneSumController.class,
 				"/_view/atladmin/business/fyorder/productOneSum");
+
+		me.add("fy/admin/biz/commission/receive", ReceiveController.class,
+				"/_view/atladmin/business/commission/receive");
+
+		me.add("fy/admin/biz/commission/execute", CommisionExecutController.class,
+				"/_view/atladmin/business/commission/execute");
+
+		me.add("fy/admin/biz/commission/audit", FyPurchaseAuditController.class,
+				"/_view/atladmin/business/commission/audit");
 
 		me.add("fy/admin/biz/produce", ProduceController.class, "/_view/atladmin/business/produce");
 		me.add("fy/admin/biz/whouse", WarehouseController.class, "/_view/atladmin/business/warehouse");

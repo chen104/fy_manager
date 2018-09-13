@@ -7,7 +7,10 @@ delete from  fy_complaint;
 delete from   fy_ready_purchase;
 delete from   fy_business_order;
 delete from  fy_upload_getpay;
-delete from  fy_business_ready
+delete from  fy_business_ready;
+delete from fy_business_out_warehouse;
+delete from fy_business_assist;
+DELETE from fy_business_purchase
 
 CREATE TABLE `fy_upload_getpay` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

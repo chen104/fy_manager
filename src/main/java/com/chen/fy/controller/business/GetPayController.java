@@ -82,22 +82,23 @@ public class GetPayController extends BaseController {
 		model.setIsCreateGetPay(true);
 		model.setCreateGetpayTime(new Date());
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-		// 挂账数量
-		BigDecimal hangQuantity = order.getHangQuantity();
+		// // 挂账数量
+		// BigDecimal hangQuantity = order.getHangQuantity();
+		//
+		// BigDecimal newhangQuantity = model.getOutQuantity().add(hangQuantity);
+		// order.setHangQuantity(newhangQuantity);// 挂账数量
+		//
+		// // 未挂账数量
+		// BigDecimal unhangQuantity = order.getUnhangQuantity();
+		//
+		// // 未挂账
+		// BigDecimal newunhangQuantity =
+		// unhangQuantity.subtract(model.getOutQuantity());// 未挂账数量
+		// order.setUnhangQuantity(newunhangQuantity);
 
-		BigDecimal newhangQuantity = model.getOutQuantity().add(hangQuantity);
-		order.setHangQuantity(newhangQuantity);// 挂账数量
-
-		// 未挂账数量
-		BigDecimal unhangQuantity = order.getUnhangQuantity();
-
-		// 未挂账
-		BigDecimal newunhangQuantity = unhangQuantity.subtract(model.getOutQuantity());// 未挂账数量
-		order.setUnhangQuantity(newunhangQuantity);
-
-		if (newunhangQuantity.doubleValue() > 0) {
-			order.setHangStatus("部分挂账");
-		}
+		// if (newunhangQuantity.doubleValue() > 0) {
+		// order.setHangStatus("部分挂账");
+		// }
 		// 挂账数量
 		order.setHangAccount(order.getHangAccount().add(model.getHangAmount()));
 

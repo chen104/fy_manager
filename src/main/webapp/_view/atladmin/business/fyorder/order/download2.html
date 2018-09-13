@@ -1,0 +1,313 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">下载订单</h3>
+              	<div class="box-tools">
+              	
+				</div>
+			
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+          
+              <div class="box-body form-horizontal form-inline">
+                	<form class="form-horizontal" id="myForm" action="/fy/admin/biz/fyorder/order2/findDownload" method="post">     
+					<div class="text-center">
+						<h3 style="color: red;margin-left: auto;margin-right: auto;">#(msg)</h3>
+					</div>	
+		                
+					<div class="row">
+					
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-2 control-label">订单日起</label>
+					
+								<div class="col-sm-5 ">
+									<input name="start_date" type="text" class="form-control" autocomplete="off" placeholder="订单开始日期"  data-type='datepicker' value="#(start_date)">
+								</div>
+								<div class="col-sm-5 ">
+									
+									<input name="end_date" type="text" class="form-control" autocomplete="off" placeholder="订单结束日期"  data-type='datepicker' value="#(end_date)">
+								
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							 <div class="form-group  input-group-sm col-md-4">
+							    条件
+								    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
+								    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+								    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+								    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+								    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+								    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+								    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+								    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+								    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+								    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
+								    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
+								    </select>
+							  
+							  </div>
+							  
+							 <div id="keyword_div" class="form-group   col-md-6"  >
+									<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+								
+							  
+							  </div>
+							  
+							
+							
+							  
+							  <div class="form-group col-md-3">
+							  	<button type="submit" class="btn btn-default">
+										<i class="fa fa-search"></i>
+									</button>
+							  </div>
+			
+						</div>
+				
+					
+					</div>
+					
+					  <script type="text/javascript">
+					  function onselectCondition(){
+					  		var val = $("#condition").val();
+					  		var keyword_div = $("#keyword_div");
+					  			keyword_div.empty();
+					  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+					  			keyword_div.append(input);
+					  		if("order_date"==val||"delivery_date"==val){
+					  			
+					  			$("#keyword").datepicker({
+					 	  		    	language:'zh-CN',
+					 	  		      autoclose: true,
+					 	  		      format:'yyyy-mm-dd',
+					 	  		      todayBtn:'linked',
+					 	  		      todayHighlight:true,
+					 	  		       orientation:'bottom' 
+					 	  		    });
+					 	 	 	
+					 	 		
+					  		}else{
+					  			
+					  		}
+					  }
+										  	
+				</script>
+                
+                     </form>   
+                     
+                    <div class="row" style="margin-top: 30px">
+                    	   <form id="downloadForm" action="/fy/admin/biz/fyorder/order2/download" method="post">
+			              	<input name="date" value="#(date)" hidden="hidden">
+			              	<div class="row  table-responsive no-padding" style="margin-left: 50px;margin-right: 50px">
+			              	
+			              		<table class="table table-bordered"  style="white-space:nowrap">
+									<thead>
+										<tr>
+										
+											<th><input type="checkbox" checked="checked" id="selectAll"></th>
+											
+											<th>类别</th>
+											<th>计划员</th>
+											<th>执行状态</th>
+											<th>紧急状态</th>
+											<th>工作订单号</th>
+											<th>送货单号</th>
+											<th>图号</th>
+											<th>名称</th>
+											<th>总图号</th>
+											<th>数量</th>
+											<th>单位</th>
+											<th>型号</th>
+											<th>规格</th>
+											<th>技术条件</th>
+											<th>质量等级</th>
+											<th>订单日期</th>
+											<th>交货日期</th>
+											<th>未税单价</th>
+											<th>金额</th>
+											<th>税率</th>
+											<th>税额</th>
+											<th>含税金额</th>
+											<th>分配时间</th>
+											<th>分配流向</th>
+											<th>制造商</th>
+											<th>接收时间</th>
+											<th>投产时间</th>
+											<th>入库时间</th>
+											<th>检测时间</th>
+											<th>出库时间</th>
+											<th>出库状态</th>
+											<th>发货地址</th>
+											<th>物流名称</th>
+											<th>物流单号</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+								
+						#for(x : modelList)
+						<tr>
+								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+												
+								<td>#(x.cate_tmp)</td>  
+				
+								<td>#(x.plan_tmp)</td>
+				
+								<td>#(x.execu_status)</td>
+				
+								<td>#(x.urgent_status)</td>
+				
+								<td>#(x.work_order_no)</td>
+				
+								<td>#(x.delivery_no)</td>
+				
+								<td>
+										#(x.filename)
+	
+								 </td>
+								<td>#(x.commodity_name)</td>
+				
+								<td>#(x.mapNo)</td>
+				
+								
+								<td>#(x.quantity)</td>
+				
+								<td>#(x.unit_tmp)</td>
+					 
+								<td>#(x.model_no)</td>
+				
+								
+								<td>#(x.commodity_spec)</td>
+								
+								<td>#(x.technology)</td>
+				
+								<td>#(x.machining_require)</td>
+				
+								
+								<td>#date(x.order_date,"yyyy-MM-dd")</td>
+				
+								<td>#date(x.delivery_date,"yyyy-MM-dd")</td>
+	
+								<td>#(x.untaxed_cost)</td>
+								<td>#(x.amount)</td>
+				
+								<td>#taxRate(x.tax_rate)</td>
+				
+								<td>#(x.tax_amount)</td>
+				
+								<td>#(x.tatol_amount)</td>
+				
+								<td>#date(x.distribute_time,"yyyy-MM-dd")</td>
+				
+								<td> #(x.distribute_to)</td><!-- 分配流向 -->
+								<td> #(x.supplier_name)</td><!-- 制造商-->
+				
+								<td name="receiveTime">#date(x.receiveTime,"yyyy-MM-dd")</td>
+								<td> #date(x.plan_time,"yyyy-MM-dd")</td><!-- 投产时间-->
+								<td> #date(x.in_warehouse_time,"yyyy-MM-dd")</td><!-- 入库时间-->
+												 
+								<td> #date(x.check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
+								<td> #date(x.out_house_date,"yyyy-MM-dd")</td><!-- 出库时间-->
+								
+								<td> #(x.out_house_status)</td><!-- 出库状态-->
+								
+					
+								<td> #(x.out_house_status)</td><!-- 发货地址-->
+								
+								<td> #(x.transport_company)</td><!-- 物流公司名称-->
+					
+								<td> #(x.transport_no)</td><!-- 物流单号-->							
+							</tr>
+											#end
+										</tbody>
+								</table>
+											
+					              	
+					              	</div>
+					              
+					              
+					              </form>
+
+                    </div>
+                     
+                       
+              </div><!-- box body -->
+              
+  
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+              		   <a  class="btn btn-default pull-left" href="/fy/admin/biz/fyorder/order2"   >返回</a>
+                	<button type="submit"  class="btn btn-info" onclick="downloadFile()">下载</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+         </div>   
+          
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+function submitSearch(){
+	$("#myForm").submit();
+}
+function downloadFile(){
+	var outId = $('input[data-select=select]:checked');
+	if(outId.length==0){
+		alert("没有选择订单");
+		return;
+	}
+	$("#downloadForm").submit();
+}
+
+
+/*
+
+function showChooesSupplier(){
+
+		var callback =function(isSelect ,id,name){
+			if(isSelect){
+				$("#supplier_name").val(name);
+				$("#supplier_id").val(id);
+				
+			}
+		}
+		var selectSupplier =new  SelectSupplierModal(callback);
+		selectSupplier.show();
+	
+  	}
+
+	
+	*/
+</script>
+
+#end
+

@@ -42,7 +42,9 @@ public class SupplierCategoryController extends BaseController {
 	public void save() {
 
 		FySupplierCategory model = getBean(FySupplierCategory.class, "model");
-
+		if (model.getParentId() == null) {
+			model.setParentId(0);
+		}
 		Boolean re = model.save();
 		Ret ret = null;
 		if (re) {
@@ -80,7 +82,20 @@ public class SupplierCategoryController extends BaseController {
 			renderJson(Ret.ok().set("msg", "上一级分类错误"));
 			return;
 		}
-		Integer parent = model.getParentId();
+		if (model.getParentId() == null) {
+			model.setParentId(0);
+		} else {
+			FySupplierCategory parent = FySupplierCategory.dao.findById(model.getParentId());
+			if (parent == null) {
+				renderJson(Ret.ok().set("msg", "上一级分类不存在"));
+				return;
+			}
+			if (parent.getParentId() != 0) {
+				renderJson(Ret.ok().set("msg", "上一级分类不是主分类"));
+				return;
+			}
+		}
+
 		Boolean re = model.update();
 		Ret ret = null;
 		if (re) {

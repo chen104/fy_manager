@@ -1,15 +1,22 @@
 package com.chen.fy.controller.business.service;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.chen.fy.model.FyBusinessOrder;
+import com.chen.fy.model.OrderUploadLog;
+import com.jfinal.club.common.kit.ContextKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
@@ -36,8 +43,8 @@ public class OrderService {
 			calendar.add(Calendar.MONTH, 1);
 			String end = DateFormatUtils.format(calendar, "yyyy-MM-dd");
 			String where = " where  o.order_date >'" + start + "' and o.order_date <'" + end + "' ";
-			String sql = "select id,order_date,o.work_order_no,commodity_name,commodity_spec,o.quantity,tax_amount,tatol_amount, hang_status,ugp.hang_amount , ugp.hang_quantity from fy_business_order o INNER JOIN upGetpay ugp "
-					+ " on o.delivery_no = ugp.delivery_no " + where;
+			String sql = "select id,order_date,o.work_order_no,commodity_name,commodity_spec,o.quantity,tax_amount,tatol_amount, hang_status,ugp.hang_amount , ugp.hang_quantity from fy_business_order o "
+					+ "LEFT JOIN upGetpay ugp " + " on o.delivery_no = ugp.delivery_no " + where;
 			List<Record> list = Db.find(sql);
 			return list;
 		} catch (Exception e) {
@@ -74,6 +81,7 @@ public class OrderService {
 			for (Record item : list) {
 
 				Date order_date = item.getDate("order_date");// 类别
+
 				excel.setCellVal(row, 0, order_date);
 				excel.setDateCellStyle(row, 0);
 
@@ -113,5 +121,114 @@ public class OrderService {
 			// TODO: handle exception
 		}
 		return null;
+	}
+
+	/**
+	 * 上传订单
+	 * @param file
+	 * @throws Exception 
+	 */
+	public Integer upload(File file) throws Exception {
+
+		PIOExcelUtil excel = new PIOExcelUtil(file, 0);
+		// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
+		// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
+		List<Record> list = new ArrayList<Record>();
+		int rows = excel.getRowNum() + 1;
+		for (int i = 1; i < rows; i++) {
+			FyBusinessOrder item = new FyBusinessOrder();
+			String catgory = excel.getCellVal(i, 0);// 类别
+			item.setCateTmp(catgory);
+			String planname = excel.getCellVal(i, 1);// 计划员
+			item.setPlanTmp(planname);
+
+			String excustatu = excel.getCellVal(i, 2);// 执行状态
+			item.setExecuStatus(excustatu);
+
+			String urgentStatus = excel.getCellVal(i, 3);// 紧急状态
+			item.setUrgentStatus(urgentStatus);
+
+			Date orderdate = excel.getDateValue(i, 4);// 订单日期
+			item.setOrderDate(orderdate);
+
+			Date DeliveryDate = excel.getDateValue(i, 5);// 交货日期
+			item.setDeliveryDate(DeliveryDate);
+
+			String workid = excel.getCellVal(i, 6);// 工作订单号
+			if (StringUtils.isEmpty(workid)) {
+				System.out.println(item);
+				continue;
+			}
+			item.setWorkOrderNo(workid);
+
+			String DeliveryId = excel.getCellVal(i, 7);// 送货单号
+			item.setDeliveryNo(DeliveryId);
+
+			String name = excel.getCellVal(i, 8);// 商品名称
+			item.setCommodityName(name);
+
+			String nspec = excel.getCellVal(i, 9);// 商品规格
+			item.setCommoditySpec(nspec);
+
+			String map = excel.getCellVal(i, 10);// 总图号
+			// item.setMapNo(mapNo);
+			item.setMapTmp(map);
+
+			String tck = excel.getCellVal(i, 11);// 技术条件
+			item.setTechnology(tck);
+
+			String maching = excel.getCellVal(i, 12);// 加工要求
+			item.setMachiningRequire(maching);
+
+			String quantity = excel.getCellVal(i, 13);// 数量
+			// item.setQuantity(NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) :
+			// null);
+
+			String unit = excel.getCellVal(i, 14);// 单位
+			item.setUnitTmp(unit);
+
+			String untaxcost = excel.getCellVal(i, 15);// 未税单价
+			item.setUntaxedCost(NumberUtils.isNumber(untaxcost) ? new BigDecimal(untaxcost) : null);
+
+			String account = excel.getCellVal(i, 16);// 金额
+			item.setAmount(NumberUtils.isNumber(account) ? new BigDecimal(account) : null);
+
+			String taxRate = excel.getCellVal(i, 17);// 税率
+			item.setTaxRate(NumberUtils.isNumber(taxRate) ? new BigDecimal(taxRate) : ContextKit.getTaxRate());
+
+			String taxAccount = excel.getCellVal(i, 18);// 税额
+			boolean isnumber = NumberUtils.isNumber(taxAccount);
+
+			item.setTaxAmount(isnumber ? new BigDecimal(taxAccount) : null);
+
+			String totalAccount = excel.getCellVal(i, 19);// 含税金额
+
+			item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
+
+			String sendAddress = excel.getCellVal(i, 20);// 发货地址
+			item.setSendAddress(sendAddress);
+
+			item.setImportTime(new Date());
+			item.setDistributeAttr("首次");
+			item.setHandleStatus("未处理");
+			item.setHangStatus("未挂账");
+			// item.setUnhangQuantity(item.getQuantity());
+
+			// item.setWwUnquantity(item.getQuantity());
+			list.add(new Record().setColumns(item));
+
+		}
+		int[] re = Db.batchSave("fy_business_order", list, 20);
+		int total = 0;
+		for (int i = 0; i < re.length; i++) {
+			total = total + re[i];
+		}
+		OrderUploadLog log = new OrderUploadLog();
+		log.setSucess(total);
+		log.save();
+		// Db.update(
+		// " update fy_business_order set warn_time = DATE_ADD(import_time,INTERVAL 2
+		// DAY) where warn_time is null");
+		return total;
 	}
 }

@@ -7,19 +7,50 @@
         <h4 class="modal-title" id="myModalLabel">分配订单</h4>
       </div>
       <div class="modal-body text-center">
-   			    <div class="form-group">
-                <label>分配流向</label>
-                <select class="form-control select2 text-center" style="width: 100%;" id="disTo">
-                  <option selected="selected" value="自产" >自产</option>
-                  <option value="委外" >委外</option>
-                   <option value="备货" >备货</option>
-                </select>
-              </div>
+      			<div >
+		   			    <div class="form-group">
+			                <label>分配流向</label>
+			                <select class="form-control select2 text-center" style="width: 100%;" id="disTo">
+			                  <option selected="selected" value="自产" >自产</option>
+			                  <option value="委外" >委外</option>
+			                   <option value="备货" >备货</option>
+			                </select>
+		              </div>
+             </div>
+             <script type="text/javascript">
+             	$(function(){
+             		$("#weiwai").hide();
+             		$("#disTo").change(function(){
+             			var val =	$("#disTo").val();
+                 		if("委外"==val){
+                 			$("#weiwai").show();
+                 		}else{
+                 			$("#weiwai").hide();
+                 		}
+             		});
+             	});
+             	
              
+             </script>
+             <div id="weiwai">
+             
+             	   <div class="form-group">
+			                <label>分配流向</label>
+			                <select class="form-control select2 text-center" style="width: 100%;" id="wwcate" >
+			                  <option  value="钣金" >钣金</option>
+			                  <option value="胶木" >胶木</option> 
+			                  <option value="机加" >机加</option>
+			                  <option value="数控车" >数控车</option>
+			                  <option value="CMC" >CMC</option>
+			                  <option value="针类" >针类</option>
+			                </select>
+		              </div>
+             
+             </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="doDistributBatch()">分配</button>
+        <button id="bt_distribute" type="button" class="btn btn-primary" ">分配</button>
       </div>
     </div>
   </div>
@@ -39,8 +70,8 @@ function selectDis(){
 	var ide =  model.data("id");
 	 $.ajax({
 		   type: "POST",
-		   url:"/fy/admin/biz/fyorder/distrubite",
-		   data:{id:ide,disTo:$("#disTo").val()},
+		   url:"/fy/admin/biz/fyorder/distribute/distributeBatch",
+		   data:{id:ide,disTo:$("#disTo").val(),cate:$("#wwcate").val()},
 		   success: function(ret){
 			   if (ret.state == "ok") {
 				   model.modal('hide');
@@ -79,8 +110,8 @@ function doDistributBatch(){
 
 	$.ajax({
 		   type: "POST",
-		   url:'/fy/admin/biz/fyorder/distrubiteBatch' ,
-		   data:{ids:ids,disTo:$("#disTo").val()},
+		   url:'/fy/admin/biz/fyorder/distribute/distributeBatch' ,
+		   data:{ids:ids,disTo:$("#disTo").val(),wwcate:$("#wwcate").val()},
 		   success: function(ret){
 			   if (ret.state == "ok") {
 					
@@ -98,5 +129,13 @@ function doDistributBatch(){
 		});
 
 }
+
+$(function(){
+	
+	$("#bt_distribute").one("click",function(){
+		doDistributBatch();
+	});
+});
+
 </script>
   

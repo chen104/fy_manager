@@ -68,6 +68,8 @@ public class _Generator {
 				modelOutputDir);
 		// 设置数据库方言
 		gen.setDialect(new MysqlDialect());
+		gen.setDataDictionaryOutputDir("E:\\tmp\\testjson");
+		gen.setGenerateDataDictionary(true);
 		// 添加不需要生成的表名
 		for (String table : excludedTable) {
 			gen.addExcludedTable(table);
@@ -75,7 +77,7 @@ public class _Generator {
 		// 设置是否在 Model 中生成 dao 对象
 		gen.setGenerateDaoInModel(false);
 		// 设置是否生成字典文件
-		gen.setGenerateDataDictionary(false);
+		// gen.setGenerateDataDictionary(false);
 		// 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非
 		// OscUser
 		gen.setRemovedTableNamePrefixes("fy_base");

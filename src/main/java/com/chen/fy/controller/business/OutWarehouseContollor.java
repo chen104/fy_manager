@@ -41,7 +41,12 @@ public class OutWarehouseContollor extends BaseController {
 			key = key.trim();
 		}
 		Page<FyBusinessOutWarehouse> modelPage = null;
-		keepPara("keyWord", "condition");
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
 		String select = "select w.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp ,file.id  fileId ,file.originalFileName filename";
 		String from = "from  fy_business_out_warehouse w left join fy_business_order o on w.order_id = o.id LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 
@@ -407,29 +412,36 @@ public class OutWarehouseContollor extends BaseController {
 			}
 
 			List<Record> list = new ArrayList<Record>();
-
+			List<FyBusinessOrder> orders = new ArrayList<FyBusinessOrder>();
 			for (int i = 0; i < out_id.length; i++) {
 				Record record = model.toRecord();
 				record.set("order_id", out_id[i]);
 				record.set("parent_id", out_id[i]);
 				FyBusinessOrder order = FyBusinessOrder.dao.findById(out_id[i]);
-				record.set("out_quantity", order.getStorageQuantity());
-				list.add(record);
-			}
-			int[] re = Db.batchSave("fy_business_out_warehouse", list, list.size());
-			int total = 0;
-			for (int i = 0; i < re.length; i++) {
-				total += re[i];
-			}
+				if (order.getOutQuantity() == null) {
+					order.setOutQuantity(new BigDecimal(0));
+				}
 
-			// 把订单库存清零
-			String update = "update fy_business_order o INNER JOIN \r\n"
-					+ "(select sum(out_quantity)  out_quantity ,order_id from fy_business_out_warehouse where order_id in  "
-					+ sb.toString() + ")  w\r\n" + "on o.id = w.order_id \r\n"
-					+ "set o.out_quantity = w.out_quantity ;";
-			Db.update(update);// 更新出库
-			Db.update("update fy_business_order  set storage_quantity = storage_quantity - out_quantity "
-					+ "where id in  " + sb.toString());
+				record.set("out_quantity", order.getStorageQuantity());
+
+				Double out_quantity = 0d;
+				out_quantity = order.getOutQuantity().doubleValue() + order.getStorageQuantity().doubleValue();
+				order.setOutQuantity(new BigDecimal(out_quantity));
+				order.setStorageQuantity(new BigDecimal("0"));
+				list.add(record);
+				orders.add(order);
+			}
+			Integer total = 0;
+			Db.tx(new IAtom() {
+
+				@Override
+				public boolean run() throws SQLException {
+					int[] re = Db.batchSave("fy_business_out_warehouse", list, list.size());
+					int[] res = Db.batchUpdate(orders, orders.size());
+					return re.length == res.length;
+				}
+			});
+
 			renderJson(Ret.ok().set("msg", "生成" + total + "条出库单"));
 		} catch (Exception e) {
 			e.printStackTrace();

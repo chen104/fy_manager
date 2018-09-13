@@ -30,20 +30,29 @@ public class WarehouseController extends BaseController {
 	 */
 	public void index() {
 		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
 		Page<FyBusinessInWarehouse> modelPage = null;
-		keepPara("keyWord", "condition");
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
 		String select = " select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,o.*,file.id  fileId ,file.originalFileName filename ";
 		String from = " from  fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id"
 				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 		if (StringUtils.isEmpty(key)) {
 			String where = " order by w.id desc ";
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select, from + where);
 
 		} else {
 			StringBuilder sb = new StringBuilder();
-			sb.append("where o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
+			sb.append("where o.").append(condition).append(" like '%").append(key).append("%' ");
 			String where = sb.toString() + " order by w.id desc";
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select, from + where);
 
 		}
 
@@ -83,22 +92,29 @@ public class WarehouseController extends BaseController {
 		if (StringUtils.isNotEmpty(key)) {
 			key = key.trim();
 		}
+		String condition = getPara("condition");
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
 		Page<FyBusinessInWarehouse> modelPage = null;
-		keepPara("keyWord", "condition");
+
 		String select = " select w.id wid ,in_time, real_in_quantity,in_from, check_create_time ,is_create_check,check_time,check_quantity,check_result,check_handle,is_create_quality,is_create_can_out,create_out_time,is_create_pay,pay_create_time,o.* ,file.id  fileId ,file.originalFileName filename";
 		String from = "from fy_business_in_warehouse w left join fy_business_order o on w.order_id = o.id "
 				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 
 		if (StringUtils.isEmpty(key)) {
 			String where = " where is_create_check =1 order by w.id desc";
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select, from + where
 
 			);
 		} else {
 			StringBuilder sb = new StringBuilder();
-			sb.append("and o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
+			sb.append("and o.").append(condition).append(" like '%").append(key).append("%' ");
 			String where = " where is_create_check =1 " + sb.toString() + " order by w.id desc";
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, select, from + where);
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select, from + where);
 		}
 		setAttr("modelPage", modelPage);
 		render("checkIn.html");
@@ -181,19 +197,28 @@ public class WarehouseController extends BaseController {
 
 	public void storage() {
 		String key = getPara("keyWord");
-		Page<FyBusinessInWarehouse> modelPage = null;
-		keepPara("keyWord", "condition");
-		// select w.id wid ,in_time, real_in_quantity,in_from, check_create_time
-		// ,is_create_check,check_time,check_quantity,check_result,check_handle,is_create_quality,is_create_can_out,create_out_time,is_create_pay,pay_create_time,o.*
+		if (key != null) {
+			key = key.trim();
+		}
 
+		Page<FyBusinessInWarehouse> modelPage = null;
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
+		String select = "select  o.*  ,f.originalFileName filename,f.id fileId ";
+		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id ";
+		String where = "  where storage_quantity > 0  ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_business_order where storage_quantity > 0  order by id desc");
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + " order by id desc");
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append("and o.").append(getPara("condition")).append(" like '%").append(key).append("%' ");
-			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from fy_business_order where storage_quantity > 0 " + sb.toString() + " order by id desc");
+			modelPage = FyBusinessInWarehouse.dao.paginate(getParaToInt("p", 1), pageSize, select,
+					from + where + sb.toString() + " order by id desc");
 		}
 		// from fy_business_in_warehouse w left join fy_business_order o on w.order_id =
 		// o.id where is_create_check =1 and check_result='合格' order by w.id desc

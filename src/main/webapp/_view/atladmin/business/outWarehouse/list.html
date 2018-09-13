@@ -13,7 +13,18 @@
 					<button class="btn btn-primary">下载</button>
 				</form>
 				<div class="box-tools">
-					<form action="/fy/admin/biz/whouse/outWhouse" class="form-inline">
+					<form action="/fy/admin/biz/outWhouse" class="form-inline">
+						<div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+					
 						<div class="form-group  input-group-sm">
 							<label for="condition"></label> <select id="condition"
 								class="form-control" name="condition">
@@ -149,7 +160,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/whouse/outWhouse?p=")</div>
+				"/fy/admin/biz/outWhouse?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

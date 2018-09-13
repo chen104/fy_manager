@@ -62,21 +62,30 @@ public class CommissionController extends BaseController {
 	 */
 	public void sumReceive() {
 		String key = getPara("keyWord");
-		Page<FyBizWwReceive> modelPage = null;
-		setAttr("keyWord", key);
-		keepPara("keyWord", "condition");
-		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_order o " + "LEFT JOIN payView p on o.id = p.order_id"
-							+ "  where Is_Distribute = 1 and dis_to = 1 order by id desc");
-		} else {
-			StringBuilder sb = new StringBuilder();
-			sb.append(" and o.").append(getPara("condition")).append(" like ").append("'%").append(key).append("%' ");
-
-			modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-					"from  fy_business_order o " + "LEFT JOIN payView p on o.id = p.order_id"
-							+ "  where Is_Distribute = 1 and dis_to = 1 " + sb.toString() + " order by id desc");
+		if (key != null) {
+			key = key.trim();
 		}
+		Page<FyBizWwReceive> modelPage = null;
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
+
+		StringBuilder conditionSb = new StringBuilder();
+		String select = " select * ,f.originalFileName filename,f.id fileId ";
+		String from = " from  fy_business_order o "
+				+ " LEFT JOIN payView p on o.id = p.order_id  left join fy_base_fyfile  f on o.draw = f.id ";
+		String desc = " order by o.id desc ";
+		conditionSb.append(" where Is_Distribute = 1 and dis_to = 1 ");
+		if (!StringUtils.isEmpty(key)) {
+			conditionSb.append(" and o.").append(getPara("condition")).append(" like ").append("'%").append(key)
+					.append("%' ");
+		}
+
+		modelPage = FyBizWwReceive.dao.paginate(getParaToInt("p", 1), pageSize, select,
+				from + conditionSb.toString() + desc);
+
 		setAttr("modelPage", modelPage);
 		render("sumReceive.html");
 	}
@@ -87,7 +96,15 @@ public class CommissionController extends BaseController {
 	public void oneSumCommission() {
 		String key = getPara("keyWord");
 		Page<FyBusinessPurchase> modelPage = null;
-		keepPara("keyWord", "condition");
+		if (key != null) {
+			key = key.trim();
+		}
+
+		keepPara("condition", "keyWord", "order_date");
+		Integer pageSize = getParaToInt("pageSize", 10);
+		setAttr("pageSize", pageSize);
+		setAttr("append", "&pageSize=" + pageSize);
+		setAttr("keyWord", key);
 		String purchase = "purchase_no,purchase_date,purchase_cost,purchase_account,discount,discount_account";
 		String supplier_name = ", bs.name supplier_name";
 		String select = "select o.*  ," + purchase + supplier_name + ",file.id  fileId ,file.originalFileName filename";
@@ -95,14 +112,14 @@ public class CommissionController extends BaseController {
 				+ " left join fy_base_supplier  bs on bs.id = p.supplier_id"
 				+ " LEFT JOIN fy_base_fyfile file on o.draw = file.id ";
 		if (StringUtils.isEmpty(key)) {
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, select,
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), pageSize, select,
 					from + " where dis_to = 1 order by id desc");
 
 		} else {
 			StringBuilder sb = new StringBuilder();
 			sb.append(" and o.").append(getPara("condition")).append(" like ").append("'%").append(key).append("%' ");
 
-			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10, select,
+			modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), pageSize, select,
 					from + " where dis_to = 1 " + sb.toString() + " order by id desc");
 
 			// modelPage = FyBusinessPurchase.dao.paginate(getParaToInt("p", 1), 10,

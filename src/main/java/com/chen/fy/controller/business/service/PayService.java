@@ -48,11 +48,11 @@ public class PayService {
 			List<FyBusinessPurchase> purchases = FyBusinessPurchase.dao
 					.find("select * from fy_business_purchase where order_id = ?", model.getOrderId());
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-			BigDecimal wwUnquantity = order.getWwUnquantity();// 委外未挂账金额
-			BigDecimal wwBigDecimal = order.getWwQuantity();// 委外挂账金额
+			// BigDecimal wwUnquantity = order.getWwUnquantity();// 委外未挂账金额
+			// BigDecimal wwBigDecimal = order.getWwQuantity();// 委外挂账金额
 			Double hangAmont = 0d;
-			order.setWwQuantity(wwBigDecimal.add(model.getRealInQuantity()));
-			order.setWwUnhangAmount(wwUnquantity.subtract(model.getRealInQuantity()));
+			// order.setWwQuantity(wwBigDecimal.add(model.getRealInQuantity()));
+			// order.setWwUnhangAmount(wwUnquantity.subtract(model.getRealInQuantity()));
 			for (int j = 0; j < purchases.size(); j++) {
 				FyBusinessPurchase purchase = purchases.get(j);
 				FyBusinessPay pay = new FyBusinessPay();
@@ -63,7 +63,7 @@ public class PayService {
 				pay.setCheckResult(model.getCheckResult());// 检测结果
 
 				pay.setCheckTime(model.getCheckTime());// 检测时间
-				pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
+				// pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
 				pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
 				pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
 				pay.setInFrom("采购");
@@ -110,8 +110,8 @@ public class PayService {
 
 			}
 			BigDecimal tem = new BigDecimal(hangAmont);
-			order.setWwHangAmount(order.getWwHangAmount().add(tem));
-			order.setWwUnquantity(order.getWwUnhangAmount().subtract(tem));
+			// order.setWwHangAmount(order.getWwHangAmount().add(tem));
+			// order.setWwUnquantity(order.getWwUnhangAmount().subtract(tem));
 
 			boolean re = Db.tx(new IAtom() {
 				public boolean run() throws SQLException {
