@@ -553,4 +553,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("total_map_no");
 	}
 
+	public void setOrderStatus(java.lang.Integer orderStatus) {
+		set("order_status", orderStatus);
+	}
+	
+	public java.lang.Integer getOrderStatus() {
+		return getInt("order_status");
+	}
+
 }

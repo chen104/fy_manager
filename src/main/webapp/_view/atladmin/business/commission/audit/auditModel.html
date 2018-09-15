@@ -1,0 +1,81 @@
+<!-- Modal -->
+<div class="modal fade" id="auditModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">采购审核</h4>
+	</div>
+	      <div class="modal-body">
+	      	<div class="row">
+	      	<div class="col-md-4"></div>
+	      		<div class="col-md-6">
+	      		
+	      			 <div class="form-group">
+			              <label>审核</label>
+			                <div class="input-group ">
+			
+			               		<select class="form-control pull-right" id="audit_status" name="audit_status">
+			               			<option>审核通过</option>
+			               		    <option>审核不通过</option>
+			               		</select>
+			               
+			                </div>
+			                <!-- /.input group -->
+			              </div>
+	      		
+	      		
+	      		</div>
+            
+			
+      	</div>
+      	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="bt_audit">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+$(function(){
+	
+	$("#bt_audit").click(function(){
+		var selectIds = $("input[name=selectId]:checked");
+		if(selectIds==null||selectIds.length ==0){
+			alert("没有选择订单");
+			return;
+		}
+
+		
+		var data = $("input[name=selectId]:checked,#audit_status").serialize();
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/commission/audit/auditPurchase' ,
+			   data:data,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					   $("#auditModel").modal("hide");
+					   window.location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		
+	});
+});
+
+  function audit(){
+		
+		}
+	  
+</script>

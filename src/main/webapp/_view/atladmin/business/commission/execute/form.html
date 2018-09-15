@@ -1,0 +1,180 @@
+
+<input hidden="hidden" value="#(model.audit_id??)" name="model.id"></input>
+<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">工作订单号</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  readonly="readonly"   placeholder="工作订单号"  value="#(model.work_order_no??)" >
+				</div>
+			</div>
+		</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="商品名称"  value="#(model.commodity_name??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+	
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  readonly="readonly"  placeholder="图号" value="#(model.map_no??)"   readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="总图号"  value="#(model.total_map_no??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="quantity"  placeholder="数量"  value="#(model.quantity??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单位" value="#(model.unit_tmp??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+<div class="row">
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">厂商编码</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.supplier_no??)" readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+	
+		<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">厂商名称</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off"    value="#(model.supplier_name??)" readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">采购单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   autocomplete="off"  id="purchase_cost"
+				name="model.purchase_cost" value="#(model.purchase_cost??)" >
+			
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">采购总价</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  autocomplete="off" id="purchase_account"   value="#(model.purchase_account??)" name="model.purchase_account">
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+<!--
+
+//-->
+	
+
+</script>
+	
+	
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   autocomplete="off"  id="purchase_single_weight"
+				name="model.purchase_single_weight" value="#(model.purchase_single_weight??)" >
+			
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总重</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  autocomplete="off" id="purchase_weight"   value="#(model.purchase_weight??)" name="model.purchase_weight">
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+<!--
+
+//-->
+	
+
+</script>
+	
+	
+</div>

@@ -1,0 +1,307 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			#include("upload.html")
+			<div class="box-header">
+			
+				<h3 class="box-title">采购表</h3>
+					<button class="btn btn-primary" id="download" ><span   >下载 </span></button>
+
+				<div class="box-tools">
+						<form action="/fy/admin/biz/commission/purchase/" class="form-inline">
+						
+							 <div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 	</div>
+						
+						
+							 <div class="form-group  input-group-sm">
+								    <label for="condition">条件</label>
+									    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()">
+									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">供应商</option>
+									    	<option #if(condition=="purchase_date") selected="selected" #end value="purchase_date">采购日期</option>
+									    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+									    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+									    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
+									    	<option #if(condition=="purchase_delivery_date") selected="selected" #end value="purchase_delivery_date">采购交货日期</option>
+									    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+									    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+									    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
+									    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
+									    </select>
+								  
+								  </div>
+								
+								   <div id="keyword_div" class="form-group  input-group-sm" >
+
+										<input id="keyWord" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+									  
+									  </div>
+									
+									  <div class="form-group  input-group-sm">
+									  	<button type="submit" class="btn btn-default">
+												<i class="fa fa-search"></i>
+											</button>
+									  </div>
+		
+							</form>
+				</div><!-- tools -->
+			</div> <!-- /.box-header -->
+<script type="text/javascript">
+  	$(function(){
+  		
+  		var val = $("#condition").val();
+  	
+  		if(val == "purchase_date"||val =="purchase_delivery_date"||val=="delivery_date"){
+  		
+  			$("#keyWord").datepicker({
+  		    	language:'zh-CN',
+    		      autoclose: true,
+    		      format:'yyyy-mm-dd',
+    		      todayBtn:'linked',
+    		      todayHighlight:true,
+    		       orientation:'bottom' 
+    		    });
+   	 	
+  		}else{
+  			
+  		}
+  		
+  	
+  		$("#download").click(function(){
+  			
+  		});
+  	});
+  	
+    function onselectCondition(){
+		  var val = $("#condition").val();
+		  $("#keyword_div").empty();
+		  var input='<input id="keyWord" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+			$("#keyword_div").append(input);
+	  
+	  	 if(val == "purchase_date"||val =="purchase_delivery_date"||val=="delivery_date"){
+	  			
+	  			$("#keyWord").datepicker({
+	  		    	language:'zh-CN',
+	    		      autoclose: true,
+	    		      format:'yyyy-mm-dd',
+	    		      todayBtn:'linked',
+	    		      todayHighlight:true,
+	    		       orientation:'bottom' 
+	    		    });
+	  		}
+	  }
+	
+    $("#download").click(function(){
+		console.info("log");
+		
+	    var select = $('input[name=selectId]:checked');
+	    if(select==null||select.length==0){
+	    	alert("你没有选择采购单");
+	    	return ;
+	    }
+	    
+	    if(select.length > 30){
+	    	alert("采购单一次最多下载30条");
+	    	return ;
+	    }
+	    /**
+	    	第一个为基准
+	    */
+	    var supplier_id = $(select[0]).data('supplier');
+	    var issame= true;
+	    for(var i =1 ; i < select.length ;i++ ){
+	    	if(supplier_id != $(select[i]).data('supplier')){
+	    		issame = false;
+	    		break;
+	    	}
+	    }
+	    if(!issame){
+	    	alert("选择供应商不一致");
+	    	return ;
+	    }
+	    
+	    for(var i =0 ; i < select.length ;i++ ){
+	    	 var s = $(select[i]).data('supplier');
+	    	 console.info(s);
+	    	if(! s){
+	    		issame = false;
+	    		break;
+	    	}
+	    }
+	    if(!issame){
+	    	alert("采购没有供应商");
+	    	return ;
+	    }
+	    
+	  
+	    var download =$("#form_download");
+	   $("#supplier_id").val(supplier_id);
+	  
+	    download.submit();
+	    download.remove("#supplier_id");
+	   
+	});
+</script>
+			
+			<div class="box-body table-responsive no-padding">
+					<form  id="form_download" method="post" action="/fy/admin/biz/commission/purchase/downloadPurchase">
+						<input hidden="hidden" name="supplier_id" id="supplier_id" >
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+								
+								<td><input name="selectAll" id="selectAll" type="checkbox" checked="checked"> </td>
+								<td>是否已下载</td>
+								<th>图号</th>
+								<th>总图号</th>
+								<th>品名</th>
+								<th>规格</th>
+								
+								<th>数量</th>
+								<th>单位</th>
+								<th>单件</th>
+								<th>总重</th>
+								
+								<th>单价</th>
+								<th>总金额</th>
+								<th>含税/未税</th>
+								<th>供应商</th>
+								<th>工作订单号</th>
+								<th>交货日期</th>
+					
+								<th>采购日期</th>
+								<th>采购订单号</th>
+							<!-- 	<th>图纸</th> -->
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked" data-order="#(x.order_id)" data-supplier="#(x.supplier_id)"></td>
+								<td>#if(x.is_download) 已下载   #else 未下载 #end</td>
+								<td>#(x.map_no)</td>
+								<td>#(x.total_map_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								
+								<td>#(x.purchase_single_weight)</td>
+								<td>#(x.purchase_weight)</td>
+								
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_account)</td>
+								<td>#(x.is_has_tax)</td>
+								
+								<td>#(x.supplier_name)</td>
+								
+								<td>#(x.work_order_no)</td>
+							
+								<td>#(x.purchase_delivery_date)</td>
+								<td>#(x.purchase_date)</td>
+								
+								<td>#(x.purchase_no)</td>
+								
+								
+							</tr>
+							#end
+						</tbody>
+						
+					<!-- 
+						<tfoot>
+							<tr>
+								<td colspan="23"> </td> <td>合计金额 </td><td>#(purchase_account)</td>
+							</tr>
+						</tfoot>
+						 -->
+					</table>
+				</form>
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/commission/purchase?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+
+function deletePurchase(a){
+	var issure = confirm("确定要删除   吗?")
+	if(issure){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	else{
+	
+		}
+	}
+	
+
+
+	$("#selectAll").click(function(){
+		var isChecked = $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[name=selectId]').each(function() {
+				$(this).attr('checked', true);
+				});
+		}else{
+			$('input[name=selectId]').each(function() {
+				$(this).attr('checked', false);
+			});
+		}
+		console.info('this');
+		
+	});
+	
+
+	/**
+			$("#download").click(function(){
+		
+       window.open("/fy/admin/biz/commission/")
+	});
+	
+	*/
+
+	
+</script>
+
+
+#end

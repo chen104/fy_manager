@@ -306,26 +306,29 @@ public class PayController extends BaseController {
 					pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
 					pay.setInFrom("采购");
 					pay.setInWarehouseTime(item.getInTime());// 为实际入库数
-					pay.setRealInQuantity(item.getRealInQuantity());
+					// pay.setRealInQuantity(item.getRealInQuantity());
 					BigDecimal PurchaseCost = purchase.getPurchaseCost();
-					BigDecimal InQuantity = item.getRealInQuantity();
+					// BigDecimal InQuantity = item.getRealInQuantity();
 
-					if (order.getQuantity().doubleValue() != pay.getRealInQuantity().doubleValue()) {
-						if (purchase.getDiscount() == null || purchase.getDiscount().doubleValue() == 0) {
-							pay.setDiscount(new BigDecimal("0"));// 折扣
-						} else {
-							Double discount = pay.getDiscount().doubleValue();// 采购折扣
-							Double tmp = (discount / purchase.getPurchaseQuantity().doubleValue());
-							discount = pay.getRealInQuantity().doubleValue() * tmp;
-							pay.setDiscount(new BigDecimal(discount));
-						}
-
-					} else {
-						pay.setDiscount(purchase.getDiscount());
-
-					}
-					pay.setShouldPay(PurchaseCost.multiply(InQuantity)
-							.subtract(pay.getDiscount() == null ? new BigDecimal("0") : pay.getDiscount()));// 应付实际金额
+					// if (order.getQuantity().doubleValue() !=
+					// pay.getRealInQuantity().doubleValue()) {
+					// if (purchase.getDiscount() == null || purchase.getDiscount().doubleValue() ==
+					// 0) {
+					// pay.setDiscount(new BigDecimal("0"));// 折扣
+					// } else {
+					// Double discount = pay.getDiscount().doubleValue();// 采购折扣
+					// Double tmp = (discount / purchase.getPurchaseQuantity().doubleValue());
+					// discount = pay.getRealInQuantity().doubleValue() * tmp;
+					// pay.setDiscount(new BigDecimal(discount));
+					// }
+					//
+					// } else {
+					// pay.setDiscount(purchase.getDiscount());
+					//
+					// }
+					// pay.setShouldPay(PurchaseCost.multiply(InQuantity)
+					// .subtract(pay.getDiscount() == null ? new BigDecimal("0") :
+					// pay.getDiscount()));// 应付实际金额
 					pay.setHangDate(now);
 					pay.setCreateTime(now);
 					pay.setCreateBy(getLoginAccountId());
@@ -335,8 +338,10 @@ public class PayController extends BaseController {
 					pay.setIsWw(true);// 来源是委外
 					pay.setPurchaseDate(purchase.getPurchaseDate());
 
-					purchase.setHangQuantity(purchase.getHangQuantity().add(pay.getRealInQuantity()));// 采购单 已挂账
-					purchase.setUnhangQuantity(purchase.getUnhangQuantity().subtract(pay.getRealInQuantity())); // 采购未挂账
+					// purchase.setHangQuantity(purchase.getHangQuantity().add(pay.getRealInQuantity()));//
+					// 采购单 已挂账
+					// purchase.setUnhangQuantity(purchase.getUnhangQuantity().subtract(pay.getRealInQuantity()));
+					// // 采购未挂账
 					if (purchase.getUnhangQuantity().doubleValue() > 0) {
 						purchase.setHangStatus("部分挂账");
 					} else {

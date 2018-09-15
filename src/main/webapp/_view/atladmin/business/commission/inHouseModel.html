@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">生成入库单</h4>
+        <h4 class="modal-title" id="myModalLabel">采购审核</h4>
       </div>
       <div class="modal-body">
       	<div class="row">
@@ -12,9 +12,14 @@
       		<div class="col-md-6">
       		
       			 <div class="form-group">
-		              <label>入库数量</label>
+		              <label>审核</label>
 		                <div class="input-group ">
-			               <input   type="text" class="form-control pull-right" id="inQuantity" name="inQuantity" >
+		
+		               		<select class="form-control pull-right" id="audit_status">
+		               			<option>审核通过</option>
+		               		    <option>审核不通过</option>
+		               		</select>
+		               
 		                </div>
 		                <!-- /.input group -->
 		              </div>
@@ -29,7 +34,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="toInWareHouse()">确定</button>
+        <button type="button" class="btn btn-primary" >确定</button>
       </div>
     </div>
   </div>
@@ -42,7 +47,7 @@
 	 		
 	  }
 
-  function toInWareHouse(){
+  function audit(){
 		$.ajax({
 			   type: "POST",
 			   url:'/fy/admin/biz/commission/toInWareHouse' ,

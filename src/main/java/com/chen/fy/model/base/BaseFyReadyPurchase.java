@@ -113,4 +113,44 @@ public abstract class BaseFyReadyPurchase<M extends BaseFyReadyPurchase<M>> exte
 		return getStr("purchase_title");
 	}
 
+	public void setWorkOrderNo(java.lang.String workOrderNo) {
+		set("work_order_no", workOrderNo);
+	}
+	
+	public java.lang.String getWorkOrderNo() {
+		return getStr("work_order_no");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setAuditStatus(java.lang.String auditStatus) {
+		set("audit_status", auditStatus);
+	}
+	
+	public java.lang.String getAuditStatus() {
+		return getStr("audit_status");
+	}
+
+	public void setAuditBy(java.lang.Integer auditBy) {
+		set("audit_by", auditBy);
+	}
+	
+	public java.lang.Integer getAuditBy() {
+		return getInt("audit_by");
+	}
+
+	public void setAuditTime(java.util.Date auditTime) {
+		set("audit_time", auditTime);
+	}
+	
+	public java.util.Date getAuditTime() {
+		return get("audit_time");
+	}
+
 }

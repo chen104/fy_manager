@@ -4,11 +4,14 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
+import com.chen.fy.model.FyBusinessPurchase;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -26,6 +29,7 @@ public class CommisionExecutController extends BaseController {
 		keepPara("condition", "weiwai_cate");
 		String condition = getPara("condition");
 		String weiwai_cate = getPara("weiwai_cate");
+
 		Page<FyBusinessOrder> modelPage = null;
 		modelPage = service.findPage(getPageSize(), getParaToInt("p", 1), condition, key, weiwai_cate);
 
@@ -88,6 +92,40 @@ public class CommisionExecutController extends BaseController {
 		}
 
 		render("askCostDownload.html");
+	}
+
+	public void edit() {
+		String order_id = getPara("order_id");
+		keepPara("path");
+		System.out.println(getPara("path"));
+		if (!NumberUtils.isNumber(order_id)) {
+			index();
+			return;
+		}
+		try {
+			Record model = service.findEdit(order_id);
+			setAttr("model", model);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		index();
+
+	}
+
+	public void update() {
+		FyBusinessPurchase model = getModel(FyBusinessPurchase.class, "model");
+		boolean re = model.update();
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok().set("msg", "更新成功");
+		} else {
+			ret = Ret.ok().set("msg", "更新失败");
+		}
+		renderJson(ret);
+		return;
 	}
 
 }

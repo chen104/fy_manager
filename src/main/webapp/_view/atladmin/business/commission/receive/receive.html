@@ -12,6 +12,10 @@
 				 </script>
 				<script type="text/javascript">
 				function receive(){
+					var re = confirm("确定要接收吗");
+					if(!re){
+						return;
+					}
 					var selectIds = $("input[name=selectId]:checked");
 					var ids =  new Array();
 					if(selectIds==null||selectIds.length == 0){
@@ -67,7 +71,7 @@
 										    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 										    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 										    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-										    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+										    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 										    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 										    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 										    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
@@ -122,57 +126,63 @@
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
-	
+					<form action="" method="post">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th style=""><input type="checkbox" checked="checked" id="selectAll"></th>
-								
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
 								<th>紧急状态</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
 								<th>工作订单号</th>
 								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>图号</th>
+								<th>名称</th>
 								<th>总图号</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
+								<th>型号</th>
+								<th>规格</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
 								<th>分配时间</th>
-
+								<th>分类</th>
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
-								<td>#(x.cate_tmp)</td>
+								
+								<td>#(x.cate_tmp)</td>  
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execuStatus)</td>
 								<td>#(x.urgentStatus)</td>
-								<td>#(x.order_date)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.work_order_no)</td>
+								<td>#(x.workOrderNo)</td>
 								<td>#(x.deliveryNo)</td>
+								<td  data-id="#(x.id)">
+										#(x.map_no) 
+								 </td>
 								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.total_map_no)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>	 
+								<td>#(x.model_no)</td>
+								<td>#(x.commodity_spec)</td>
 								<td>#(x.technology)</td>
 								<td>#(x.machiningRequire)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
+								<td>#date(x.orderDate,"yyyy-MM-dd")</td>
+								<td>#date(x.deliveryDate,"yyyy-MM-dd")</td>
 								<td>#(x.distribute_time)</td>
-								
+								<td>#(x.weiwai_cate)</td>
 							</tr>
 							#end
 						</tbody>
 					</table>
-		
+				</form>
 
 			</div>
 			<!-- /.box-body -->

@@ -44,11 +44,11 @@ import com.chen.fy.controller.business.GetPayController;
 import com.chen.fy.controller.business.OutWarehouseContollor;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProductOneSumController;
-import com.chen.fy.controller.business.PurchaseController;
 import com.chen.fy.controller.business.UploadGetpayController;
 import com.chen.fy.controller.business.WarehouseController;
 import com.chen.fy.controller.business.commission.audit.FyPurchaseAuditController;
 import com.chen.fy.controller.business.commission.execut.CommisionExecutController;
+import com.chen.fy.controller.business.commission.purchase.PurchaseController;
 import com.chen.fy.controller.business.commission.receive.ReceiveController;
 import com.chen.fy.controller.business.distribut.DistributController;
 import com.chen.fy.controller.business.order.OrderController;
@@ -63,7 +63,6 @@ import com.chen.fy.directive.TestDirective;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model._MappingKit;
 import com.chen.fy.task.DeleteFileTask;
-import com.jfinal.club.common.handler.UrlSeoHandler;
 import com.jfinal.club.common.kit.AssistNoKit;
 import com.jfinal.club.common.kit.DruidKit;
 import com.jfinal.club.common.kit.PurchaseNoKit;
@@ -169,6 +168,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/commission/audit", FyPurchaseAuditController.class,
 				"/_view/atladmin/business/commission/audit");
 
+		me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
+				"/_view/atladmin/business/commission/purchase");
+
 		me.add("fy/admin/biz/produce", ProduceController.class, "/_view/atladmin/business/produce");
 		me.add("fy/admin/biz/whouse", WarehouseController.class, "/_view/atladmin/business/warehouse");
 
@@ -179,8 +181,8 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/finance/pay", PayController.class, "/_view/atladmin/business/finance/pay");
 
 		me.add("fy/admin/biz/finance/getPay", GetPayController.class, "/_view/atladmin/business/finance/getpay");
-		me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
-				"/_view/atladmin/business/commission/purchase");
+		// me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
+		// "/_view/atladmin/business/commission/purchase");
 
 		me.add("fy/admin/biz/finance/upgetpay", UploadGetpayController.class,
 				"/_view/atladmin/business/finance/uploadpayget");
@@ -270,7 +272,7 @@ public class JFinalClubConfig extends JFinalConfig {
 
 	public void configHandler(Handlers me) {
 		me.add(DruidKit.getDruidStatViewHandler()); // druid 统计页面功能
-		me.add(new UrlSeoHandler()); // index、detail 两类 action 的 url seo
+		// me.add(new UrlSeoHandler()); // index、detail 两类 action 的 url seo
 	}
 
 	/**

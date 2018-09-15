@@ -26,11 +26,12 @@ public class CommisionExecutService {
 		Page<FyBusinessOrder> modelPage = null;
 
 		StringBuilder conditionSb = new StringBuilder();
-		String select = " select o.* ,f.originalFileName filename,f.id fileId ";
-		String from = " from  fy_business_order o "
-				+ " LEFT JOIN payView p on o.id = p.order_id  left join fy_base_fyfile  f on o.draw = f.id ";
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name ";
+		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
+				+ " left join fy_business_purchase audit on o.work_order_no = audit.work_order_no"
+				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no";
 		String desc = " order by receive_time  desc ";
-		String where = "  where Is_Distribute = 1 and dis_to = 1 ";
+		String where = "  where Is_Distribute = 1 and dis_to = 1  AND order_status=2 ";
 
 		if (StringUtils.isNotEmpty(weiwai_cate)) {
 			conditionSb.append(" AND weiwai_cate = '").append(weiwai_cate).append("' ");
@@ -49,15 +50,18 @@ public class CommisionExecutService {
 
 			if ("order_date".equals(condition)) {
 
-				conditionSb.append(String.format("AND order_date = '%s'", keyWord));
+				conditionSb.append(String.format(" AND order_date = '%s'", keyWord));
 
 			} else if ("delivery_date".equals(condition)) {
 
 				conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
 
+			} else if ("work_order_no".equals(condition)) {
+				conditionSb.append(" AND  o.work_order_no like  ");
+				conditionSb.append("'%").append(keyWord).append("%'");
 			} else if (StringUtils.isNotEmpty(keyWord)) {
 
-				conditionSb.append(String.format("AND  %s like  ", condition));
+				conditionSb.append(String.format(" AND  %s like  ", condition));
 				conditionSb.append("'%").append(keyWord).append("%'");
 
 			}
@@ -167,10 +171,10 @@ public class CommisionExecutService {
 			String commodity_name = item.getStr("commodity_name");
 			excel.setCellVal(row, 2, commodity_name);
 
-			String commodity_spec = item.getStr("commodity_spec");
+			String commodity_spec = item.getStr("map_no");
 			excel.setCellVal(row, 3, commodity_spec);
 
-			String filename = item.getStr("filename");
+			String filename = item.getStr("total_map_no");
 			excel.setCellVal(row, 4, filename);
 
 			Double quantity = item.getDouble("quantity");
@@ -179,17 +183,20 @@ public class CommisionExecutService {
 			String unit_tmp = item.getStr("unit_tmp");
 			excel.setCellVal(row, 6, unit_tmp);
 
-			String suppiler_no = item.getStr("suppiler_no");
-			excel.setCellVal(row, 7, suppiler_no);
+			// String delivery_date = item.getStr("delivery_date");
+			// excel.setCellVal(row, 7, delivery_date);
 
-			String supplier_name = item.getStr("supplier_name");
-			excel.setCellVal(row, 8, supplier_name);
-
-			Double purchase_cost = item.getDouble("purchase_cost");
-			excel.setCellVal(row, 9, purchase_cost);
-
-			Double purchase_account = item.getDouble("purchase_account");
-			excel.setCellVal(row, 10, purchase_account);
+			// String suppiler_no = item.getStr("suppiler_no");
+			// excel.setCellVal(row, 7, suppiler_no);
+			//
+			// String supplier_name = item.getStr("supplier_name");
+			// excel.setCellVal(row, 8, supplier_name);
+			//
+			// Double purchase_cost = item.getDouble("purchase_cost");
+			// excel.setCellVal(row, 9, purchase_cost);
+			//
+			// Double purchase_account = item.getDouble("purchase_account");
+			// excel.setCellVal(row, 10, purchase_account);
 
 			row++;
 		}
@@ -217,6 +224,15 @@ public class CommisionExecutService {
 		zipkip.close();
 		// FileUtils.forceDelete(dirFile);
 		return zipFile;
+	}
+
+	public Record findEdit(String order_id) throws Exception {
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no";
+		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
+				+ " left join  fy_business_purchase  audit on o.work_order_no = audit.work_order_no";
+		String where = " where o.id = " + order_id;
+		Record model = Db.findFirst(select + from + where);
+		return model;
 	}
 
 }

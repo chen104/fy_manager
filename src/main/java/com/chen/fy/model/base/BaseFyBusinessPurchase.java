@@ -89,22 +89,6 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getInt("supplier_id");
 	}
 
-	public void setDiscount(java.math.BigDecimal discount) {
-		set("discount", discount);
-	}
-	
-	public java.math.BigDecimal getDiscount() {
-		return get("discount");
-	}
-
-	public void setDiscountAccount(java.math.BigDecimal discountAccount) {
-		set("discount_account", discountAccount);
-	}
-	
-	public java.math.BigDecimal getDiscountAccount() {
-		return get("discount_account");
-	}
-
 	public void setPurchaseRemark(java.lang.String purchaseRemark) {
 		set("purchase_remark", purchaseRemark);
 	}
@@ -113,12 +97,12 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getStr("purchase_remark");
 	}
 
-	public void setCanDownload(java.lang.Boolean canDownload) {
-		set("can_download", canDownload);
+	public void setIsDownload(java.lang.Boolean isDownload) {
+		set("is_download", isDownload);
 	}
 	
-	public java.lang.Boolean getCanDownload() {
-		return get("can_download");
+	public java.lang.Boolean getIsDownload() {
+		return get("is_download");
 	}
 
 	public void setHangStatus(java.lang.String hangStatus) {
@@ -129,28 +113,28 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getStr("hang_status");
 	}
 
-	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
+	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
 		set("unhang_quantity", unhangQuantity);
 	}
 	
-	public java.math.BigDecimal getUnhangQuantity() {
-		return get("unhang_quantity");
+	public java.lang.Integer getUnhangQuantity() {
+		return getInt("unhang_quantity");
 	}
 
-	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
+	public void setHangQuantity(java.lang.Integer hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.math.BigDecimal getHangQuantity() {
-		return get("hang_quantity");
+	public java.lang.Integer getHangQuantity() {
+		return getInt("hang_quantity");
 	}
 
-	public void setPurchaseQuantity(java.math.BigDecimal purchaseQuantity) {
+	public void setPurchaseQuantity(java.lang.Integer purchaseQuantity) {
 		set("purchase_quantity", purchaseQuantity);
 	}
 	
-	public java.math.BigDecimal getPurchaseQuantity() {
-		return get("purchase_quantity");
+	public java.lang.Integer getPurchaseQuantity() {
+		return getInt("purchase_quantity");
 	}
 
 	public void setPurchaseTitle(java.lang.String purchaseTitle) {
@@ -161,12 +145,68 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getStr("purchase_title");
 	}
 
-	public void setPurchaseParent(java.lang.String purchaseParent) {
-		set("purchase_parent", purchaseParent);
+	public void setPurchaseDeliveryDate(java.util.Date purchaseDeliveryDate) {
+		set("purchase_delivery_date", purchaseDeliveryDate);
 	}
 	
-	public java.lang.String getPurchaseParent() {
-		return getStr("purchase_parent");
+	public java.util.Date getPurchaseDeliveryDate() {
+		return get("purchase_delivery_date");
+	}
+
+	public void setAuditStatus(java.lang.String auditStatus) {
+		set("audit_status", auditStatus);
+	}
+	
+	public java.lang.String getAuditStatus() {
+		return getStr("audit_status");
+	}
+
+	public void setAuditBy(java.lang.Integer auditBy) {
+		set("audit_by", auditBy);
+	}
+	
+	public java.lang.Integer getAuditBy() {
+		return getInt("audit_by");
+	}
+
+	public void setAuditTime(java.util.Date auditTime) {
+		set("audit_time", auditTime);
+	}
+	
+	public java.util.Date getAuditTime() {
+		return get("audit_time");
+	}
+
+	public void setWorkOrderNo(java.lang.String workOrderNo) {
+		set("work_order_no", workOrderNo);
+	}
+	
+	public java.lang.String getWorkOrderNo() {
+		return getStr("work_order_no");
+	}
+
+	public void setSupplierNo(java.lang.String supplierNo) {
+		set("supplier_no", supplierNo);
+	}
+	
+	public java.lang.String getSupplierNo() {
+		return getStr("supplier_no");
+	}
+
+	public void setAddStatus(java.lang.Integer addStatus) {
+		set("add_status", addStatus);
+	}
+	
+	public java.lang.Integer getAddStatus() {
+		return getInt("add_status");
+	}
+
+	public void setIsHasTax(java.lang.String isHasTax) {
+		set("is_has_tax", isHasTax);
+	}
+	
+	public java.lang.String getIsHasTax() {
+		return getStr("is_has_tax");
 	}
 
 }

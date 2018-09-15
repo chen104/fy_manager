@@ -1,7 +1,6 @@
 package com.chen.fy.controller.business.produce;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -261,8 +260,9 @@ public class ProduceController extends BaseController {
 		// renderJson(Ret.fail().set("msg", "失败，入库数量大于订单数量"));
 		// return;
 		// }
-		model.setRealInQuantity(new BigDecimal(inQuantity));// 入库单设置已入库实际数量
-		order.setHasInQuantity(order.getHasInQuantity().add(model.getRealInQuantity()));// 订单设置已经入库数量
+		// model.setRealInQuantity(new BigDecimal(inQuantity));// 入库单设置已入库实际数量
+		// order.setHasInQuantity(order.getHasInQuantity().add(model.getRealInQuantity()));//
+		// 订单设置已经入库数量
 
 		Ret ret = null;
 		boolean re = Db.tx(new IAtom() {

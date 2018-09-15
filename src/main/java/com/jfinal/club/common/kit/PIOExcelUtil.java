@@ -37,6 +37,7 @@ import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
@@ -230,6 +231,10 @@ public class PIOExcelUtil {
 		return cellStyle;
 	}
 
+	public DataFormat getDateFormat() {
+		return wb.createDataFormat();
+	}
+
 	/**
 	 * 单元格日期格式
 	 */
@@ -237,6 +242,15 @@ public class PIOExcelUtil {
 		CellStyle cellStyle = wb.createCellStyle();
 		DataFormat format = wb.createDataFormat();
 		cellStyle.setDataFormat(format.getFormat("yyyy年m月d日"));
+		return cellStyle;
+	}
+
+	/**
+	 * 单元格日期格式
+	 */
+	public CellStyle getCellType() {
+		CellStyle cellStyle = wb.createCellStyle();
+
 		return cellStyle;
 	}
 
@@ -474,6 +488,29 @@ public class PIOExcelUtil {
 	}
 
 	/**
+	 * 设置日期格式， parren为字符格式化
+	 * @param rownum
+	 * @param column
+	 * @param value
+	 * @param parren
+	 */
+	public void setCellVal(int rownum, int column, Date value, String parren) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (null == cell) {
+			cell = row.createCell(column);
+		}
+		if (value == null) {
+			return;
+		}
+		cell.getCellStyle().setDataFormat(wb.createDataFormat().getFormat(parren));
+		cell.setCellValue(value);
+	}
+
+	/**
 	 * 日期格式yyyy年x月x日
 	 * @param rownum
 	 * @param column
@@ -486,6 +523,25 @@ public class PIOExcelUtil {
 		Cell cell = row.getCell(column);
 		if (cell != null) {
 			cell.setCellStyle(getCellType4Date());
+		}
+
+	}
+
+	/**
+	 * 设置单元格格式，可以通过  getCellType() 获得实例
+	 * @param rownum
+	 * @param column
+	 * @param cellStyle
+	 */
+	public void setCellStyle(int rownum, int column, CellStyle cellStyle) {
+		Row row = sheet.getRow(rownum);
+
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (cell != null) {
+			cell.setCellStyle(cellStyle);
 		}
 
 	}
@@ -506,6 +562,28 @@ public class PIOExcelUtil {
 			DataFormat format = wb.createDataFormat();
 			cellStyle.setDataFormat(format.getFormat(parrent));
 			cell.setCellStyle(cellStyle);
+		}
+
+	}
+
+	/**
+	 * 日期格式yyyy年x月x日
+	 * @param rownum
+	 * @param column
+	 */
+	public void setDateCellStyle(int rownum, int column, String parrent, HorizontalAlignment horizontalAlignment) {
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (cell != null) {
+			CellStyle cellStyle = wb.createCellStyle();
+			DataFormat format = wb.createDataFormat();
+			cellStyle.setDataFormat(format.getFormat(parrent));
+			cellStyle.setAlignment(horizontalAlignment);
+			cell.setCellStyle(cellStyle);
+
 		}
 
 	}
@@ -678,6 +756,7 @@ public class PIOExcelUtil {
 
 				out = new FileOutputStream(newFilePath);
 				out.flush();
+
 				wb.write(out);
 			}
 		} catch (FileNotFoundException e) {

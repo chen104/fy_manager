@@ -4,12 +4,15 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
+			#include("upload.html")
 			<div class="box-header">
 				<h3 class="box-title">委外执行表</h3>
-					 <!-- 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button> -->
-					<a href="/fy/admin/biz/commission/execute/todownloadAskCost"><button class="btn btn-primary" >下载报目表</button></a>
+					 <!-- 	/fy/admin/biz/commission/execute/todownloadAskCost				<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button> -->
+					<button   id="downloadAskcost" class="btn btn-primary" >下载报目表 </button>
+					<button id="updateToAudit" class="btn btn-primary" >流转审核 </button>
+					<button id="editCost" class="btn btn-primary"  data-action="/fy/admin/biz/commission/execute/edit" >修改价格 </button><!-- order_id=(x.order_id) -->
 				<div class="box-tools">
-							<form action="/fy/admin/biz/commission/execute"  class="form-inline">
+					<form id="form_search" action="/fy/admin/biz/commission/execute"  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						 	    <label for="pageSize">显示</label>
 						 	   	<select id="pageSize" class="form-control" name="pageSize" >
@@ -26,7 +29,7 @@
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
@@ -46,63 +49,106 @@
 						  </div>
 						   
 						  <div class="form-group  input-group-sm">
-						  	<button type="submit" class="btn btn-default">
+						  	<button type="submit" id="bt_search" class="btn btn-default">
 									<i class="fa fa-search"></i>
 								</button>
 						  </div>
 						
-  <script type="text/javascript">
-	  function onselectCondition(){
-	  		var val = $("#condition").val();
-	  		var keyword_div = $("#keyword_div");
-	  			keyword_div.empty();
-	  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
-	  			keyword_div.append(input);
-	  		if("order_date"==val||"delivery_date"==val){
-	  			
-	  			$("#keyword").datepicker({
-	 	  		    	language:'zh-CN',
-	 	  		      autoclose: true,
-	 	  		      format:'yyyy-mm-dd',
-	 	  		      todayBtn:'linked',
-	 	  		      todayHighlight:true,
-	 	  		       orientation:'bottom' 
-	 	  		    });
-	 	 	 	
-	 	 		
-	  		}else{
-	  			
-	  		}
-	  }
-						  	
-</script>
-					</form>
+				  <script type="text/javascript">
+				  
+				  	$(function(){
+				  		$("#bt_search").click(function(){
+				  			var form = $("#form_search");
+				  			var val = $("[name='weiwai_cate'][class='active']");
+				  			var input='<input name="weiwai_cate" value="'+val.data("title")+'"></input>';
+				  			form.append(input);
+				  			form.submit();
+				  		});
+				  		
+				  		
+				  		$("#downloadAskcost").click(function(){
+				  			var outId = $('input[data-select=select]:checked');
+				  			if(outId.length==0){
+				  				alert("没有选择订单");
+				  				return;
+				  			}
+				  			$("#myForm").submit();
+				  		});
+				  		
+				  		
+				  		$("#editCost").click(function(){
+				  			var outId = $('input[data-select=select]:checked');
+				  			if(outId.length!=1){
+				  				alert("只能选择一条订单修改");
+				  				return;
+				  			}
+				  			var action = $(this).data('action');
+				  			var input='<input name="order_id" value="'+outId.val()+'" >'
+				  			var path='<input name="path" value="/fy/admin/biz/commission/execute" >'
+				  			var form  = $("<form></form>")
+					          form.attr('action',action)
+					          form.attr('method','post')
+				  			form.append(input);
+				  			form.append(path);
+				  		   form.appendTo("body")
+				  	        form.css('display','none')
+				  			form.submit();
+				  		});
+				  	});
+					  function onselectCondition(){
+					  		var val = $("#condition").val();
+					  		var keyword_div = $("#keyword_div");
+					  			keyword_div.empty();
+					  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+					  			keyword_div.append(input);
+					  		if("order_date"==val||"delivery_date"==val){
+					  			
+					  			$("#keyword").datepicker({
+					 	  		    	language:'zh-CN',
+					 	  		      autoclose: true,
+					 	  		      format:'yyyy-mm-dd',
+					 	  		      todayBtn:'linked',
+					 	  		      todayHighlight:true,
+					 	  		       orientation:'bottom' 
+					 	  		    });
+					 	 	 	
+					 	 		
+					  		}else{
+					  			
+					  		}
+					  }
+										  	
+				</script>
+									</form>
 				</div>
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding" style="margin-bottom: 0px;">
-	
+				<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/execute/downloadAskCost" method="post">     
+					
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th style="">序号</th>
-								<th style=""><input type="checkbox" id="selectAll">多选</th>
+								<th style=""><input type="checkbox" id="selectAll" checked="checked">多选</th> 
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
 								<th>紧急状态</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
 								<th>工作订单号</th>
 								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>图号</th>
+								<th>名称</th>
 								<th>总图号</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
-								
+								<th>型号</th>
+								<th>规格</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+										
 								<th>图纸</th>
 								
 								<th>分类</th>
@@ -110,7 +156,9 @@
 								<th>接收时间</th>
 								
 								<th>分配时间</th>
-								<!-- <th>处理状态</th> -->
+								
+								
+								<!-- <th>处理状态</th> 
 										
 								<th>入库数量</th>		
 									
@@ -118,35 +166,46 @@
 								<th>未挂账数量</th>	
 								<th>挂账金额</th>
 								<th>未挂账金额</th>
-								
-							
-								
+								-->
+								<th>厂商编码</th>
+								<th>厂商名称</th>
+								<th>采购单价</th>
+								<th>采购总价</th>
+								<th>含税/未税</th>
+								<th>单件</th>
+								<th>总重</th>
 								<th>操作 </th>
 							</tr>
 						</thead>
-					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/toCreatePurchase" method="post">     
-					
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td> #if(x.has_in_quantity.doubleValue()== 0) <input data-select='select' type="checkbox" name = "selectId"  value="#(x.id)"> #end  </td>
-								<td>#(x.cate_tmp)</td>
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
-								<td>#(x.order_date)</td>
-								<td>#(x.delivery_date)</td>
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.commodity_spec)</td>
-								<td>#(x.mapNo)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machining_require)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
 								
+								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.order_id)" checked="checked" data-audit="#(x.audit_id)"></td>
+								
+								
+							 	<td>#(x.cate_tmp)</td>  
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execuStatus)</td>
+								<td>#(x.urgentStatus)</td>
+								<td>#(x.workOrderNo)</td>
+								<td>#(x.deliveryNo)</td>
+								<td  data-id="#(x.id)">
+										#(x.map_no) 
+								 </td>
+								<td>#(x.commodityName)</td>
+								<td>#(x.total_map_no)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>	 
+								<td>#(x.model_no)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machiningRequire)</td>
+								<td>#date(x.orderDate,"yyyy-MM-dd")</td>
+								<td>#date(x.deliveryDate,"yyyy-MM-dd")</td>
+					
+					
 								<td> #if(x.filename) #(x.filename) 
 								 <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
 								 <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> #end</td>
@@ -157,7 +216,15 @@
 								<td>#(x.receive_time)</td>
 								<td>#(x.distribute_time)</td>
 								
+								<td>#(x.supplier_no)</td>
+								<td>#(x.supplier_name)</td>
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_account)</td>
+								<td>#(x.is_has_tax)</td>
 								
+								<td>#(x.purchase_single_weight)</td>
+								<td>#(x.purchase_weight)</td>
+								<!--  
 								
 								<td>#(x.has_in_quantity)</td>
 								
@@ -165,44 +232,135 @@
 								<td>#(x.ww_unquantity)</td>
 								<td>#(x.ww_hang_amount)</td>
 								<td>#(x.ww_unhang_amount)</td>
-								
+								-->
 								<td class="jfa-operation-button">
 							
 								
-								#if(x.has_in_quantity == 0)
 								
 								<a href="#" data-action="/fy/admin/biz/fyorder/distribute/rollBackOrder" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
 									<i class="fa fa-fw fa-mail-reply-all"></i>撤回 </a>
 									
 									<!--  
-								<a href="/fy/admin/biz/commission/purchase/toAddPurchase?id=#(x.id)"  onclick="" style="margin-left: 10px;"> 
-								<i class="glyphicon glyphicon-share-alt" title="生成采购单">生成询价单</i>
-								</a> 
+								
 									-->
-								#end
-								
-								
 								</td>
 							</tr>
 							#end
 						</tbody>
-						
-					</form>
+
 					</table>
+					</form>
 			</div>
+			<script type="text/javascript">
+				$(function(){
+					$("#selectAll").click(function(){
+						var isChecked =  $("#selectAll").is(":checked");
+						if( isChecked ){
+							$('input[data-select=select]').each(function() {
+								//$(this).attr('checked', true);
+								this.checked= true;
+								});
+						}else{
+							$('input[data-select=select]').each(function() {
+								//$(this).attr('checked', false);
+								this.checked= false;
+							});
+						}
+						console.info('this');
+						
+					});
+					
+					$("#updateToAudit").click(function(){
+						console.info("点击");
+						
+						var re = confirm("确定要流转到审核单吗？");
+						if(!re){
+							return;
+						}
+						
+						var select = $('input[data-select=select]:checked');
+						
+						
+			  			if(select.length==0){
+			  				alert("没有选择订单");
+			  				return;
+			  			}
+			  			
+			  			var select = $('input[data-select=select]:checked');
+			  			
+			  			var isall=true;
+			  			select.each(function(i){
+			  				var model =$(this);
+			  				console.info(i+"  "+model.val()+"   "+model.data("audit"));
+			  				if(model.data("audit")==null||model.data("audit")==""){
+			  					isall =false;
+			  					return false;
+			  				}else{
+			  					
+			  				}
+			  			});
+			  			
+			  			if(!isall){
+			  				alert("存在没有采购价格的订单")
+			  				return ;
+			  			}
+			  		
+						$.ajax({
+							   type: "POST",
+							   url:'/fy/admin/biz/commission/audit/batchUpdateStatus' ,
+							   data:select.serialize(),
+							   success: function(ret){
+								   if (ret.state == "ok") {
+									   alert(ret.msg);
+										location.reload();
+									}else{
+										
+									}
+								   
+							   },
+							   error:function (XMLHttpRequest, textStatus, errorThrown) {
+								    // 通常 textStatus 和 errorThrown 之中
+								    // 只有一个会包含信息
+								 //   this; // 调用本次AJAX请求时传递的options参数
+								   alert('网络异常');
+								}
+							});//ajax
+							
+					});//流转
+					
+					
+					
+					
+				});
+			
+			</script>
 			<nav aria-label="Page navigation" >
 					  <ul class="pagination" style="padding-top: 0px;margin-top: 0px">
 					    
-					    <li #if(!weiwai_cate) class="active" #end><a href="/fy/admin/biz/commission/execute">全部</a></li>
-					    <li #if(weiwai_cate=="钣金")  class="active" #end><a href="/fy/admin/biz/commission/execute?weiwai_cate=钣金">钣金</a></li>
-					    <li #if(weiwai_cate=="胶木")  class="active" #end ><a href="/fy/admin/biz/commission/execute?weiwai_cate=胶木">胶木</a></li>
-					    <li #if(weiwai_cate=="机加")  class="active" #end><a href="/fy/admin/biz/commission/execute?weiwai_cate=机加">机加</a></li>
-					    <li #if(weiwai_cate=="数控车")  class="active" #end><a href="/fy/admin/biz/commission/execute?weiwai_cate=数控车">数控车</a></li>
-					    <li #if(weiwai_cate=="CMC")  class="active" #end><a href="/fy/admin/biz/commission/execute?weiwai_cate=CMC">CMC</a></li>
-					    <li #if(weiwai_cate=="针类")  class="active" #end><a href="/fy/admin/biz/commission/execute?weiwai_cate=针类">针类</a></li>
+					    <li name="weiwai_cate"  #if(!weiwai_cate) class="active"  #end  data-title=""><a href="#" action="/fy/admin/biz/commission/execute">全部</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="钣金")  class="active" #end data-title="钣金" ><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=钣金">钣金</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="胶木") class="active" #end data-title="胶木" ><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=胶木">胶木</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="机加")  class="active" #end data-title="机加"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=机加">机加</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="数控车")  class="active" #end  data-title="数控车" ><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=数控车">数控车</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="CMC")  class="active" #end  data-title="CMC"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=CMC">CMC</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="针类")  class="active" #end  data-title="针类"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=针类">针类</a></li>
 					  </ul>
 					</nav>
 			<!-- /.box-body -->
+			<script type="text/javascript">
+				$(function(){
+					$("[name=weiwai_cate]").click(function(){
+						
+						var form = $("#form_search");
+			  			var val = $("[name='weiwai_cate'][class='active']");
+			  			var input='<input name="weiwai_cate" value="'+$(this).data("title")+'"></input>';
+			  			form.append(input);
+			  			form.submit();
+						
+					});
+				});
+				
+			</script>
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
@@ -214,27 +372,6 @@
 
 
 <script type="text/javascript">
-
-$(function(){
-	$("#selectAll").click(function(){
-		var isChecked =  $("#selectAll").is(":checked");
-		if( isChecked ){
-			$('input[data-select=select]').each(function() {
-				//$(this).attr('checked', true);
-				this.checked= true;
-				});
-		}else{
-			$('input[data-select=select]').each(function() {
-				//$(this).attr('checked', false);
-				this.checked= false;
-			});
-		}
-		console.info('this');
-		
-	});
-	
-	
-});
 
 function submit(){
 	var selectIds = $("input[name=selectId]:checked");

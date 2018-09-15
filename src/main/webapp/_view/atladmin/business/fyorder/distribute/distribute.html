@@ -7,6 +7,39 @@
 			<div class="box-header">
 				<h3 class="box-title">PCM分配表</h3>
 				<button  class="btn btn-primary" onclick="showDisToModel()">分配</button>
+				<button  class="btn btn-primary" id="bt_download" >下载</button>
+				<script type="text/javascript">
+					$(function(){
+						$("#bt_download").click(function(){
+							var outId = $('input[name=selectId]:checked');
+							if(outId.length==0){
+								alert("没有选择订单");
+								return;
+							}
+							$("#download").submit();
+						});
+						
+						
+						//初始化
+						$("#selectAll").click(function(){
+							var isChecked =  $("#selectAll").is(":checked");
+							if( isChecked ){
+								$('input[name=selectId]').each(function() {
+									//$(this).attr('checked', true);
+									this.checked= true;
+									});
+							}else{
+								$('input[name=selectId]').each(function() {
+									//$(this).attr('checked', false);
+									this.checked= false;
+								});
+							}
+							console.info('this');
+							
+						});
+						
+					});
+				</script>
 				<div class="box-tools">
 				
 					<form action="/fy/admin/biz/fyorder/distribute"  class="form-inline">
@@ -26,12 +59,11 @@
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
 							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
 							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
 							    </select>
@@ -81,29 +113,33 @@
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
-	
+					<form id="download" action="/fy/admin/biz/fyorder/distribute/downloadDistribut" method="post">
 					<table class="table table-bordered text-center"  style="white-space:nowrap">
 						<thead>
 							<tr >
 								<th style="">序号</th>
-								<th style="">
-									多选
+								<th>
+										 <input type="checkbox" id="selectAll"> 多选  
 								</th>
+							
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
 								<th>紧急状态</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
 								<th>工作订单号</th>
 								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>图号</th>
+								<th>名称</th>
 								<th>总图号</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
 								<th>数量</th>
 								<th>单位</th>
+								<th>型号</th>
+								<th>规格</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+							
 								<th>图纸</th>
 								
 								<th>分配属性</th>
@@ -118,23 +154,27 @@
 							#for(x : modelPage.getList())
 							<tr class="#orderColor("x")">
 								<td>#(for.index+1)</td>
-								<td> <input name="selectId" type="checkbox"  value="#(x.id)"> </td>
-								<td>#(x.cate_tmp)</td>
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
-								<td>#date(x.order_date,"yyyy-MM-dd")</td>
-								<td>#(x.delivery_date)</td>
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.commodity_spec)</td>
-								<td>#(x.map_no)</td>
+								<td> <input name="selectId" type="checkbox"   value="#(x.id)"> </td>
 								
-								<td>#(x.technology)</td>
-								<td>#(x.machining_require)</td>
+								<td>#(x.cate_tmp)</td>  
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execuStatus)</td>
+								<td>#(x.urgentStatus)</td>
+								<td>#(x.workOrderNo)</td>
+								<td>#(x.deliveryNo)</td>
+								<td >
+										#(x.map_no) 
+								 </td>
+								<td>#(x.commodityName)</td>
+								<td>#(x.total_map_no)</td>
 								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
+								<td>#(x.unit_tmp)</td>	 
+								<td>#(x.model_no)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machiningRequire)</td>
+								<td>#date(x.orderDate,"yyyy-MM-dd")</td>
+								<td>#date(x.deliveryDate,"yyyy-MM-dd")</td>
 								
 								<td data-id="#(x.id)"> 
 									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
@@ -143,27 +183,13 @@
 									</a>
 								</td>
 								
-								
-								
-								
 								<td>#(x.distribute_attr)</td>
 							
-								
-								<!--  <td>#date(x.receiveTime,"yyyy-MM-dd hh:mm:ss")</td>
-								<td>#(x.distribute_to)</td>
-									<td>#(x.distribute_time)</td>
-								<td class="jfa-operation-button"> 
-								#if(!x.distribute_time)
-								<a href="#" data-id="#(x.id)" onclick="showModel(this)" >
-									<i class="glyphicon glyphicon-share-alt" title="分配"></i>
-								</a>
-								#end
-								 </td> -->
 							</tr>
 							#end
 						</tbody>
 					</table>
-		
+		</form>
 
 			</div>
 			<!-- /.box-body -->

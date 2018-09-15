@@ -29,7 +29,7 @@
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
@@ -103,6 +103,7 @@
 								<th>总图号</th>
 								<th>数量</th>
 								<th>单位</th>
+								<th>图纸</th>
 								<th>型号</th>
 								<th>规格</th>
 								<th>技术条件</th>
@@ -117,6 +118,10 @@
 								<th>分配时间</th>
 								<th>分配流向</th>
 								<th>制造商</th>
+								
+								<th>采购单价</th>
+								<th>采购总价</th>
+								
 								<th>接收时间</th>
 								<th>投产时间</th>
 								<th>入库时间</th>
@@ -182,28 +187,21 @@
 								<td>#(x.deliveryNo)</td>
 								#end
 								
-								#fyColPerm("order","draw")
+							 
 								<td  data-id="#(x.id)">
-										#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>   #end 
-											
-											<!-- <a href="#" onclick=" selectMapFile(this)"> 
-												<i class="glyphicon glyphicon-th-large" title="选择图纸">选择图纸</i>
-											</a>
-											 -->
-		                               	
-		                             
+										#(x.map_no) 
 								 </td>
-								 #end
+								 
 								
 								
 								
 								#fyColPerm("order","commodity_name")
 								<td>#(x.commodityName)</td>
 								#end
-								
-								#fyColPerm("order","map_no")
-								<td>#(x.mapNo)</td>
-								#end
+								 
+								 
+								<td>#(x.total_map_no)</td>
+							
 								
 								
 								#fyColPerm("order","quantity")
@@ -214,7 +212,12 @@
 								<td>#(x.unit_tmp)</td>
 								#end
 								
-									 
+									
+								<td>
+								#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
+									
+								</td>		
+							
 								<td>#(x.model_no)</td>
 								
 								
@@ -269,6 +272,9 @@
 								<td> #(x.distribute_to)</td><!-- 分配流向 -->
 								<td> #(x.supplier_name)</td><!-- 制造商-->
 								
+								
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_account)</td>
 								
 								#fyColPerm("order","receive_time")
 								<td name="receiveTime">#(x.receive_time)</td>

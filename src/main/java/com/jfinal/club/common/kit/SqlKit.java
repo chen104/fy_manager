@@ -14,6 +14,7 @@
 
 package com.jfinal.club.common.kit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +69,20 @@ public class SqlKit {
 				ret.append(", ");
 			}
 			ret.append(id);
+		}
+		ret.append(")");
+	}
+
+	public static void joinIds(ArrayList<String> idList, StringBuilder ret) {
+		ret.append("(");
+		boolean isFirst = true;
+		for (String id : idList) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				ret.append(", ");
+			}
+			ret.append("'").append(id).append("'");
 		}
 		ret.append(")");
 	}

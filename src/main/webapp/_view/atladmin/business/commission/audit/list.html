@@ -7,9 +7,45 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">采购审核</h3>
-					 <!-- 					<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button> -->
+				<button  class="btn btn-primary" id="bt_show_audit">审核</button>
+				<button id="editCost" class="btn btn-primary"  data-action="/fy/admin/biz/commission/execute/edit" >修改价格 </button><!-- order_id=(x.order_id) -->
+			
+				<script type="text/javascript">
+					$(function(){
+						$("#bt_show_audit").click(function(){
+							var selectIds = $("input[name=selectId]:checked");
+							if(selectIds==null||selectIds.length ==0){
+								alert("没有选择订单");
+								return;
+							}
+							$("#auditModel").modal("show");
+						});
+						
+						
+				  		$("#editCost").click(function(){
+				  			var outId = $('input[name =selectId]:checked');
+				  			if(outId.length!=1){
+				  				alert("只能选择一条订单修改");
+				  				return;
+				  			}
+				  			var order_id = outId.data('orderid');
+				  			var action = $(this).data('action');
+				  			var input='<input name="order_id" value="'+order_id+'" >'
+				  			var path='<input name="path" value="/fy/admin/biz/commission/audit" >'
+				  			var form  = $("<form></form>")
+					          form.attr('action',action)
+					          form.attr('method','post')
+				  			form.append(input);
+				  			form.append(path);
+				  		   form.appendTo("body")
+				  	        form.css('display','none')
+				  			form.submit();
+				  		});
+						
+					});
+				</script>
 				<div class="box-tools">
-							<form action=""  class="form-inline">
+					<form action=""  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						 	    <label for="pageSize">显示</label>
 						 	   	<select id="pageSize" class="form-control" name="pageSize" >
@@ -86,50 +122,88 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>		
-								
+								<th><input type="checkbox" id="selectAll">多选</th>
 								<th>类别</th>
+								<th>计划员</th>
+								<th>执行状态</th>
+								<th>紧急状态</th>
 								<th>工作订单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>送货单号</th>
+								<th>图号</th>
+								<th>名称</th>
 								<th>总图号</th>
 								<th>数量</th>
 								<th>单位</th>
+								<th>型号</th>
+								<th>规格</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>订单日期</th>
+								<th>交货日期</th>
+								
 								<th>厂商编码</th>
 								<th>厂商名称</th>
 								<th>单价</th>
 								<th>总价</th>
+								
+								<th>含税/未税</th>
+								
+								<th>单件</th>
+								<th>总重</th>
+								<th>采购交货日期</th>
+							
+								
 								<th>审核状态</th>
 								<th>审核时间</th>
-								<th>操作 </th>
+								
 							</tr>
 						</thead>
-					<form class="form-horizontal" id="myForm" action="/fy/admin/biz/commission/purchase/toCreatePurchase" method="post">     
+					<form class="form-horizontal" id="myForm" action="" method="post">     
 					
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
+								<td> <input  type="checkbox" name = "selectId"  value="#(x.audit_id)"  data-orderid="#(x.id)"></td>
 								
 								<td>#(x.cate_tmp)</td>  
-								<td>#(x.work_order_no)</td> 
-								<td>#(x.commodity_name)</td> 
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td  data-id="#(x.id)">
+										#(x.map_no) 
+								 </td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.total_map_no)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>	 
+								<td>#(x.model_no)</td>
 								<td>#(x.commodity_spec)</td>
-								<td>
-									#(x.total_map_no)
-								</td>  
-								<td>#(x.quantity)</td> 
-								<td>#(x.unit_tmp)</td> 
-								<td>#(x.suppiler_no)</td> 
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
+								<td>#date(x.order_date,"yyyy-MM-dd")</td>
+								<td>#date(x.delivery_date,"yyyy-MM-dd")</td>
+							
+								<td>#(x.supplier_no)</td> 
+								
 								<td>#(x.supplier_name)</td> 		
 								<td>#(x.purchase_cost)</td> 
 								<td>#(x.purchase_account)</td> 
 								
+								<td>#(x.is_has_tax)</td>
+								
+								
+								<td>#(x.purchase_single_weight)</td>
+								<td>#(x.purchase_weight)</td>
+								<td>#(x.purchase_delivery_date)</td>
+								
+								
 								<td>#(x.audit_status)</td>
 								<td>#(x.audit_time)</td>
 							
-								<td class="jfa-operation-button">
 								
-								</td>
 							</tr>
 							#end
 						</tbody>
@@ -142,25 +216,25 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/commission/execute?p=")</div>
+				"/fy/admin/biz/commission/audit?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 
-
+#include("auditModel.html")
 <script type="text/javascript">
 
 $(function(){
 	$("#selectAll").click(function(){
 		var isChecked =  $("#selectAll").is(":checked");
 		if( isChecked ){
-			$('input[data-select=select]').each(function() {
+			$('input[name=selectId]').each(function() {
 				//$(this).attr('checked', true);
 				this.checked= true;
 				});
 		}else{
-			$('input[data-select=select]').each(function() {
+			$('input[name=selectId]').each(function() {
 				//$(this).attr('checked', false);
 				this.checked= false;
 			});
@@ -172,18 +246,6 @@ $(function(){
 	
 });
 
-function submit(){
-	var selectIds = $("input[name=selectId]:checked");
-	if(selectIds==null||selectIds.length ==0){
-		alert("没有选择供应商");
-		return;
-	}
-
-	 $("#myForm").submit();
-	 
-
-	
-}
 
  
     </script>

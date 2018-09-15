@@ -43,7 +43,7 @@
 								    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 								    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 								    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-								    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+								    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 								    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 								    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 								    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
@@ -121,6 +121,7 @@
 											<th>总图号</th>
 											<th>数量</th>
 											<th>单位</th>
+											<th>交货日期</th>
 											<th>厂商编码</th>
 											<th>厂商名称</th>
 											<th>单价</th>
@@ -145,6 +146,9 @@
 								</td>  
 								<td>#(x.quantity)</td> 
 								<td>#(x.unit_tmp)</td> 
+								
+								<td>#(x.delivery_date)</td> 
+								
 								<td>#(x.suppiler_no)</td> 
 								<td>#(x.supplier_name)</td> 		
 								<td>#(x.purchase_cost)</td> 

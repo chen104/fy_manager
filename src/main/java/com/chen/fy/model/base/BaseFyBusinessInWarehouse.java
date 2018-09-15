@@ -25,12 +25,12 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return get("in_time");
 	}
 
-	public void setRealInQuantity(java.math.BigDecimal realInQuantity) {
+	public void setRealInQuantity(java.lang.Integer realInQuantity) {
 		set("real_in_quantity", realInQuantity);
 	}
 	
-	public java.math.BigDecimal getRealInQuantity() {
-		return get("real_in_quantity");
+	public java.lang.Integer getRealInQuantity() {
+		return getInt("real_in_quantity");
 	}
 
 	public void setInFrom(java.lang.String inFrom) {

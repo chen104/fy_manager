@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.distribut;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class DistributController extends BaseController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void downloadDistribute() {
+
 	}
 
 	public void toDownload() {
@@ -150,6 +155,23 @@ public class DistributController extends BaseController {
 		} else {
 			renderJson(Ret.fail().set("msg", "撤回失败，请重试"));
 		}
+	}
+
+	/**
+	 * 下载
+	 */
+	public void downloadDistribut() {
+
+		String[] ids = getParaValues("selectId");
+		try {
+			File file = service.downloadDistrbut(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		index();
 	}
 
 }

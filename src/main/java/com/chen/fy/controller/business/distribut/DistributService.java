@@ -1,11 +1,22 @@
 package com.chen.fy.controller.business.distribut;
 
+import java.io.File;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.model.FyBusinessOrder;
+import com.jfinal.club.common.kit.PIOExcelUtil;
+import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.club.common.kit.ZipKit;
+import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 public class DistributService {
 	private static final Logger logger = LogManager.getLogger(DistributService.class);
@@ -53,6 +64,89 @@ public class DistributService {
 		}
 		modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select, from + where + desc);
 		return modelPage;
+	}
+
+	public File downloadDistrbut(String[] ids) throws Exception {
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,f.filename realName,f.filepath";
+		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  ";
+		String desc = "  order by o.id desc ";
+		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(ids, sb);
+		List<Record> list = Db.find(select + from + " where o.id in " + sb.toString() + desc);
+		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
+		if (!parentfile.exists()) {
+			parentfile.mkdirs();
+		}
+		String current = DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd");
+		File dirFile = new File(parentfile, "分配报目表" + current);
+
+		dirFile.mkdir();
+
+		File targetfile = new File(dirFile, "订单" + current + ".xlsx");
+
+		// 读取模板
+		String xlsx = this.getClass().getClassLoader().getResource("templet/download/order/distributAskcost.xlsx")
+				.getFile();
+		File sourceFile = new File(xlsx);
+		if (sourceFile.exists()) {
+			System.out.println(sourceFile.getName() + " 存在");
+		}
+		FileUtils.copyFile(sourceFile, targetfile);
+
+		PIOExcelUtil excel = null;
+		excel = new PIOExcelUtil(targetfile, 0);
+
+		int row = 1;
+		for (Record item : list) {
+			String cate_tmp = item.getStr("cate_tmp");
+			excel.setCellVal(row, 0, cate_tmp);
+
+			String work_order_no = item.getStr("work_order_no");
+			excel.setCellVal(row, 1, work_order_no);
+
+			String commodity_name = item.getStr("commodity_name");
+			excel.setCellVal(row, 2, commodity_name);
+
+			String commodity_spec = item.getStr("map_no");
+			excel.setCellVal(row, 3, commodity_spec);
+
+			String total_map_no = item.getStr("total_map_no");
+			excel.setCellVal(row, 4, total_map_no);
+
+			Double quantity = item.getDouble("quantity");
+			excel.setCellVal(row, 5, quantity);
+
+			String unit_tmp = item.getStr("unit_tmp");
+			excel.setCellVal(row, 6, unit_tmp);
+
+			String delivery_date = item.getStr("delivery_date");
+			excel.setCellVal(row, 7, delivery_date);
+			row++;
+		}
+
+		excel.save2File(targetfile);
+		excel.close();
+
+		/**
+		 * 拷贝图纸
+		 */
+		for (Record item : list) {
+			String filename = item.getStr("realName");
+			String originalFileName = item.getStr("filename");
+			String filepath = item.getStr("filepath");
+			if (filename != null && originalFileName != null && filepath != null) {
+				File sourcefile = new File(filepath, filename);
+				if (sourcefile.exists()) {
+					FileUtils.copyFile(sourcefile, new File(dirFile, originalFileName));
+				}
+			}
+		}
+		File zipFile = new File(dirFile.getParentFile(), dirFile.getName() + ".zip");
+		ZipKit zipkip = new ZipKit(zipFile);
+		zipkip.addDir(dirFile);
+		zipkip.close();
+		FileUtils.forceDelete(dirFile);
+		return zipFile;
 	}
 
 }

@@ -178,13 +178,14 @@ public class CommissionController extends BaseController {
 			return;
 		}
 
-		model.setRealInQuantity(new BigDecimal(inQuantity));// 入库单入库数量
+		// model.setRealInQuantity(new BigDecimal(inQuantity));// 入库单入库数量
 		Ret ret = null;
 
 		// 把入库数反写到订单
 		BigDecimal HasInQuantity = order.getHasInQuantity();
-		BigDecimal RealInQuantity = model.getRealInQuantity();
-		order.setHasInQuantity(HasInQuantity.add(RealInQuantity));// 更改入库数量，不修改库存，没有检测成功的 加入库存
+		// BigDecimal RealInQuantity = model.getRealInQuantity();
+		// order.setHasInQuantity(HasInQuantity.add(RealInQuantity));//
+		// 更改入库数量，不修改库存，没有检测成功的 加入库存
 
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
