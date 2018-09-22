@@ -46,6 +46,7 @@ public class _MappingKit {
 		arp.addMapping("fy_business_sum_paybill", "id", FyBusinessSumPaybill.class);
 		arp.addMapping("fy_business_warehouse", "id", FyBusinessWarehouse.class);
 		arp.addMapping("fy_complaint", "id", FyComplaint.class);
+		arp.addMapping("fy_exception_record", "id", FyExceptionRecord.class);
 		arp.addMapping("fy_pay_sum", "id", FyPaySum.class);
 		arp.addMapping("fy_ready_purchase", "id", FyReadyPurchase.class);
 		arp.addMapping("fy_supplier_category", "id", FySupplierCategory.class);

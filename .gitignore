@@ -4,9 +4,9 @@ target
 .classpath
 .project
 *.log
-.src/main/webapp/map/
-.src/main/webapp/upload/
-.src/main/webapp/download/
+.src/main/webapp/map/*
+.src/main/webapp/upload/*
+.src/main/webapp/download/*
 upload
 tomcatlog
 doc

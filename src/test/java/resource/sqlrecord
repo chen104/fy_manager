@@ -1,0 +1,5 @@
+删除入库
+
+update  fy_business_order o set o.has_in_quantity = 0,o.inhouse_status="未入库",inhouse_date = null ,o.storage_quantity = 0;
+DELETE from fy_business_in_warehouse;
+

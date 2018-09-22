@@ -2,7 +2,6 @@ package com.chen.fy.controller.business;
 
 import java.io.File;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,15 +56,15 @@ public class GetPayController extends BaseController {
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 
 		// 价格乘以数量，未税金额
-		BigDecimal untax = order.getUntaxedCost().multiply(model.getOutQuantity());
-		model.setUntaxGetpay(untax);
-		BigDecimal tax = untax.multiply(order.getTaxRate());// 税额
+		// BigDecimal untax = order.getUntaxedCost().multiply(model.getOutQuantity());
+		// model.setUntaxGetpay(untax);
+		// BigDecimal tax = untax.multiply(order.getTaxRate());// 税额
 
-		model.setTax(tax);
-		model.setHangAmount(untax.add(tax));// 挂账金额，应付金额
-		model.setCreateMonth(calendar.get(Calendar.MONTH));
-		calendar.add(Calendar.MONTH, 3);
-		model.setGetpayMonth(calendar.get(Calendar.MONTH));
+		// model.setTax(tax);
+		// model.setHangAmount(untax.add(tax));// 挂账金额，应付金额
+		// model.setCreateMonth(calendar.get(Calendar.MONTH));
+		// calendar.add(Calendar.MONTH, 3);
+		// model.setGetpayMonth(calendar.get(Calendar.MONTH));
 		setAttr("model", model);
 		setAttr("order", order);
 		setAttr("action", "save");
@@ -79,8 +78,8 @@ public class GetPayController extends BaseController {
 	public void save() {
 		FyBusinessOutWarehouse model = getBean(FyBusinessOutWarehouse.class, "model");
 
-		model.setIsCreateGetPay(true);
-		model.setCreateGetpayTime(new Date());
+		// model.setIsCreateGetPay(true);
+		// model.setCreateGetpayTime(new Date());
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		// // 挂账数量
 		// BigDecimal hangQuantity = order.getHangQuantity();
@@ -100,7 +99,7 @@ public class GetPayController extends BaseController {
 		// order.setHangStatus("部分挂账");
 		// }
 		// 挂账数量
-		order.setHangAccount(order.getHangAccount().add(model.getHangAmount()));
+		// order.setHangAccount(order.getHangAccount().add(model.getHangAmount()));
 
 		order.setHangTime(new Date());// 最后挂账时间
 

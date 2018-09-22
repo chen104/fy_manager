@@ -25,9 +25,14 @@ public class OrderController2 extends BaseController {
 		}
 
 		String condition = getPara("condition");
-		setAttr("append", "&keyWord=" + key + "&condition=" + condition);
-		keepPara("condition", "keyWord");
-		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1), getPageSize());
+		String order_date_start = getPara("order_date_start");
+		String order_date_end = getPara("order_date_end");
+
+		setAttr("append",
+				"&keyWord=" + (key == null ? "" : key) + "&condition=" + (condition == null ? "" : condition));
+		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
+		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1), getPageSize(),
+				order_date_start, order_date_end);
 		setAttr("modelPage", modelPage);
 		render("orderlist2.html");
 	}

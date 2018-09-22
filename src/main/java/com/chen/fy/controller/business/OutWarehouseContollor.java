@@ -1,7 +1,6 @@
 package com.chen.fy.controller.business;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -419,15 +418,15 @@ public class OutWarehouseContollor extends BaseController {
 				record.set("parent_id", out_id[i]);
 				FyBusinessOrder order = FyBusinessOrder.dao.findById(out_id[i]);
 				if (order.getOutQuantity() == null) {
-					order.setOutQuantity(new BigDecimal(0));
+					// order.setOutQuantity(new BigDecimal(0));
 				}
 
 				record.set("out_quantity", order.getStorageQuantity());
 
 				Double out_quantity = 0d;
 				out_quantity = order.getOutQuantity().doubleValue() + order.getStorageQuantity().doubleValue();
-				order.setOutQuantity(new BigDecimal(out_quantity));
-				order.setStorageQuantity(new BigDecimal("0"));
+				// order.setOutQuantity(new BigDecimal(out_quantity));
+				// order.setStorageQuantity(new BigDecimal("0"));
 				list.add(record);
 				orders.add(order);
 			}
@@ -471,14 +470,15 @@ public class OutWarehouseContollor extends BaseController {
 		System.out.println(model);
 
 		// 获取出库
-		BigDecimal outquantity = model.getOutQuantity();
+		// BigDecimal outquantity = model.getOutQuantity();
 		// 把出库添加到 库存
-		BigDecimal StorageQuantity = order.getStorageQuantity().add(model.getOutQuantity());
+		// BigDecimal StorageQuantity =
+		// order.getStorageQuantity().add(model.getOutQuantity());
 
-		order.setStorageQuantity(StorageQuantity);
-		BigDecimal hasout = order.getOutQuantity().subtract(outquantity);
-		order.setOutQuantity(hasout);
-		model.setIsCreateGetPay(false);
+		// order.setStorageQuantity(StorageQuantity);
+		// BigDecimal hasout = order.getOutQuantity().subtract(outquantity);
+		// order.setOutQuantity(hasout);
+		// model.setIsCreateGetPay(false);
 
 		// 应收信息
 		// BigDecimal zelo = new BigDecimal("0");

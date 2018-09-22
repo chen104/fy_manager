@@ -39,11 +39,11 @@ public class PayService {
 			StringBuilder sb = new StringBuilder();
 			FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);
 			model.setCreateTime(now);
-			model.setIsCreatePay(true);
+			// model.setIsCreatePay(true);
 			List<FyBusinessPay> createList = new ArrayList<FyBusinessPay>();
 			List<FyBusinessPurchase> updatePurchase = new ArrayList<FyBusinessPurchase>();
 
-			model.setPayCreateTime(now);
+			// model.setPayCreateTime(now);
 			model.setPayMonth(payperiod);
 			List<FyBusinessPurchase> purchases = FyBusinessPurchase.dao
 					.find("select * from fy_business_purchase where order_id = ?", model.getOrderId());

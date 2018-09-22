@@ -1,11 +1,9 @@
 package com.chen.fy.controller.business;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -68,7 +66,7 @@ public class WarehouseController extends BaseController {
 		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);// 入库单
 		Ret ret = null;
 		if (model != null) {
-			model.setIsCreateCheck(true);
+			// model.setIsCreateCheck(true);
 			model.setCheckCreateTime(new Date());
 			boolean re = model.update();
 			if (re) {
@@ -147,16 +145,17 @@ public class WarehouseController extends BaseController {
 		Ret ret = null;
 		if (model != null) {
 			model.setCheckTime(checkTime);
-			model.setCheckQuantity(NumberUtils.isNumber(checkQuantity) ? new BigDecimal(checkQuantity) : null);
+			// model.setCheckQuantity(NumberUtils.isNumber(checkQuantity) ? new
+			// BigDecimal(checkQuantity) : null);
 			model.setCheckResult(checkResult);
 			model.setCheckHandle(checkHandle);
 			if ("合格".equals(checkResult)) {
-				BigDecimal storage = order.getStorageQuantity();
-				if (storage == null) {
-					order.setStorageQuantity(new BigDecimal(checkQuantity));
-				} else {
-					order.setStorageQuantity(storage.add(new BigDecimal(checkQuantity)));
-				}
+				// BigDecimal storage = order.getStorageQuantity();
+				// if (storage == null) {
+				// // order.setStorageQuantity(new BigDecimal(checkQuantity));
+				// } else {
+				// // order.setStorageQuantity(storage.add(new BigDecimal(checkQuantity)));
+				// }
 
 			}
 
@@ -229,7 +228,7 @@ public class WarehouseController extends BaseController {
 
 	public void toGetPay() {
 		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(getParaToInt("id"));
-		model.setIsCreateGetPay(true);
+		// model.setIsCreateGetPay(true);
 
 		boolean re = model.update();
 		Ret ret = null;
@@ -249,8 +248,9 @@ public class WarehouseController extends BaseController {
 		Integer id = getParaToInt("id");
 		FyBusinessInWarehouse model = FyBusinessInWarehouse.dao.findById(id);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-		Double quantity = order.getHasInQuantity().doubleValue() - model.getRealInQuantity().doubleValue();
-		order.setHasInQuantity(new BigDecimal(quantity));
+		// Double quantity = order.getHasInQuantity().doubleValue() -
+		// model.getRealInQuantity().doubleValue();
+		// order.setHasInQuantity(new BigDecimal(quantity));
 		boolean re = Db.tx(new IAtom() {
 
 			@Override

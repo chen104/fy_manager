@@ -8,7 +8,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/outWhouse/batchSave" method="post">         
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/whouse/outhouse/batchSave" method="post">         
               <div class="box-body">
                 	<div class="row">
                 		<div class="box-body table-responsive no-padding text-center " style="margin-left: 30px;margin-right: 30px">
@@ -16,33 +16,62 @@
 							<table class="table table-bordered"  style="white-space:nowrap">
 								<thead>
 									<tr>
+										<th>序号</th>
+								
 										<th>类别</th>
 										<th>计划员</th>
+										<th>执行状态</th>
+										<th>紧急状态</th>
 										<th>工作订单号</th>
 										<th>送货单号</th>
-										<th>商品名称</th>
-										<th>商品规格</th>
+										<th>图号</th>
+										<th>名称</th>
 										<th>总图号</th>
 										<th>数量</th>
 										<th>单位</th>
+										<th>型号</th>
+										<th>规格</th>
+										<th>技术条件</th>
+										<th>质量等级</th>
+										<th>订单日期</th>
+										<th>交货日期</th>
+										<th>图纸</th>
 										<th>库存</th>
+
 									</tr>
 								</thead>
 								<tbody>
 									#for(x : modelList)
 										<tr>
-											<td>#(x.cate_tmp)</td>
-											<td>#(x.plan_tmp)</td>
-					
-											<td>#(x.work_order_no)</td>
-											<td>#(x.delivery_no)</td>
-											<td>#(x.commodity_name)</td>
-											<td>#(x.commodity_spec)</td>
-											<td>#(x.map_no)</td>
-											
-											<td>#(x.quantity)</td>
-											<td>#(x.unit_tmp)</td>
-											<td>#(x.storage_quantity)</td>
+												<td>#(for.index+1) <input hidden="hidden" name="selectId" value="#(x.id)" type="checkbox" checked="checked"></td>
+												 
+												<td>#(x.cate_tmp)</td>  
+												<td>#(x.plan_tmp)</td>
+												<td>#(x.execu_status)</td>
+												<td>#(x.urgent_status)</td>
+												<td>#(x.work_order_no)</td>
+												<td>#(x.delivery_no)</td>
+												<td >
+														#(x.map_no) 
+												 </td>
+												<td>#(x.commodity_name)</td>
+												<td>#(x.total_map_no)</td>
+												<td>#(x.quantity)</td>
+												<td>#(x.unit_tmp)</td>	 
+												<td>#(x.model_no)</td>
+												<td>#(x.commodity_spec)</td>
+												<td>#(x.technology)</td>
+												<td>#(x.machining_require)</td>
+												<td>#date(x.order_date,"yyyy-MM-dd")</td>
+												<td>#date(x.delivery_date,"yyyy-MM-dd")</td>
+												
+												<td>#if(x.filename) #(x.filename) 
+													<a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
+													<a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+													 #end
+													
+												</td>
+												<td>#(x.storage_quantity)</td>
 										</tr>
 									#end
 								
@@ -51,9 +80,7 @@
 							</div>
                 	</div>
                 	
-                		#for(x : modelList)
-                			<input hidden="hidden" name="order_ids" value="#(x.id)" type="checkbox" checked="checked">
-                		#end
+                	 
                 	<div class="row" style="margin-top: 40px">
 
 						<div class="col-md-6">

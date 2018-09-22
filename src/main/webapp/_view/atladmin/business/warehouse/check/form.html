@@ -1,0 +1,407 @@
+
+<input hidden="hidden" value="#(model.inhouse_id??)" name="model.id"></input>
+<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">类别</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  readonly="readonly"    value="#(model.cate_tmp??)" >
+				</div>
+			</div>
+		</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">计划员	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"     value="#(model.plan_tmp??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">执行状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    value="#(model.execu_status??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+	
+	
+	 <div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">紧急状态</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    value="#(model.urgent_status??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">工作订单号</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  readonly="readonly"   placeholder="工作订单号"  value="#(model.work_order_no??)" >
+				</div>
+			</div>
+		</div>
+
+
+		
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">送货单号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="商品名称"  value="#(model.delivery_no??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+	
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">图号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  readonly="readonly"  placeholder="图号" value="#(model.map_no??)"   readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="商品名称"  value="#(model.commodity_name??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	
+</div>
+
+
+
+<div class="row">
+
+		
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="总图号"  value="#(model.total_map_no??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+		
+		
+			
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">订单数量</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="quantity"  placeholder="数量"  value="#(model.quantity??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row">
+
+	
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">  待检测数量	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="quantity"   value="#(model.in_quantity??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单位" value="#(model.unit_tmp??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+<div class="row">
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">型号</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.model_no??)" readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+			
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" value="#(model.commodity_spec??)" readonly="readonly"   >
+			</div>
+		</div>
+	</div>
+	
+	
+
+</div>
+
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">技术条件</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"      readonly="readonly"
+				  value="#(model.technology??)" >
+			
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">质量等级</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"   autocomplete="off"  readonly="readonly"  value="#(model.machining_require??)" >
+			
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<div class="row">
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">订单日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"    readonly="readonly"  value="#date(model.order_date,"yyyy-MM-dd")" >
+			
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">交货日期</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control"  readonly="readonly"    value="#date(model.delivery_date,"yyyy-MM-dd")"  >
+			</div>
+		</div>
+	</div>
+</div>
+	<script type="text/javascript">
+<!--
+
+//-->
+	
+
+</script>
+	
+	
+
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">制造商	</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off"    value="#(model.supplier_name??)" readonly="readonly" >
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">检测日期</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off"    value="#date(now,"yyyy-MM-dd")" readonly="readonly" name="model.check_time" >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row"> 
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">合格数量</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off"    value="#(model.pass_quantity??)"  name="model.pass_quantity">
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">不合格数量</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off"    value="#(model.unpass_quantity??)" name="model.unpass_quantity" >
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">检测结果</label>
+
+			<div class="col-sm-9">
+				<select name="model.check_result"  class="form-control" >
+					<option #if(model.check_result?? == "合格") selected="selected" #end>合格</option>
+					<option  #if(model.check_result?? == "部分合格") selected="selected" #end >部分合格</option>
+					<option #if(model.check_result?? == "不合格") selected="selected" #end >不合格</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">不合格原因</label>
+
+			<div class="col-sm-9">
+
+				 <select   name="model.exception_reson" class="form-control"  >
+				 	<option class="form-control"  #if(model.exception_reson??=="孔距超差")  selected="selected" #end >孔距超差</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="孔边距超差") selected="selected" #end >孔边距超差</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="起台阶") selected="selected" #end >起台阶</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="毛刺/倒角") selected="selected" #end>毛刺/倒角</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="外观碰伤") selected="selected" #end >外观碰伤</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="精孔止规过") selected="selected" #end >精孔止规过</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="精孔通规止") selected="selected" #end>精孔通规止</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="未注公差尺寸超差") selected="selected" #end>未注公差尺寸超差</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="牙深不够") selected="selected" #end>牙深不够</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="牙螺纹拧不过") selected="selected" #end>牙螺纹拧不过</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="硬度超差") selected="selected" #end>硬度超差</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="产品变形") selected="selected" #end>产品变形</option>
+				 	<option class="form-control"  #if(model.exception_reson??=="平面度超差") selected="selected" #end>平面度超差</option>
+				 	
+				 	<option class="form-control"  #if(model.exception_reson??=="平行度超差") selected="selected" #end>平行度超差</option>
+					<option class="form-control"  #if(model.exception_reson??=="同心度超差") selected="selected" #end>同心度超差</option>
+					<option class="form-control"  #if(model.exception_reson??=="垂直度超差") selected="selected" #end >垂直度超差</option>
+
+					<option class="form-control"  #if(model.exception_reson??=="产品漏加工") selected="selected" #end>产品漏加工</option>
+					<option class="form-control"  #if(model.exception_reson??=="未做表处理") selected="selected" #end>未做表处理</option>
+					<option class="form-control"  #if(model.exception_reson??=="表处理加工错误")  selected="selected" #end >表处理加工错误</option>
+					<option class="form-control"  #if(model.exception_reson??=="孔深超差") selected="selected" #end >孔深超差</option>
+					<option class="form-control"  #if(model.exception_reson??=="光洁度超差") selected="selected" #end>光洁度超差</option>
+
+					<option class="form-control"  #if(model.exception_reson??=="产品脏污") selected="selected" #end>产品脏污</option>
+					<option class="form-control"  #if(model.exception_reson??=="生锈") selected="selected" #end>生锈</option>
+					<option class="form-control"  #if(model.exception_reson??=="电镀不良") selected="selected" #end>电镀不良</option>
+					<option class="form-control"  #if(model.exception_reson??=="标注公差尺寸超差") selected="selected" #end>标注公差尺寸超差</option>
+
+				 </select>
+			</div>
+		</div>
+	</div>
+	
+
+	
+</div>
+
+	<script type="text/javascript">
+<!--
+
+//-->
+	
+
+</script>
+<!--  -->
+<div class="row">
+	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">备注</label>
+
+			<div class="col-sm-9">
+				<textarea rows="3" cols="" class="form-control" name="model.check_remark"> #(model.check_remark??)</textarea>
+			 
+			</div>
+		</div>
+	</div>
+</div>
+	
+
+

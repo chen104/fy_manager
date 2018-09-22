@@ -69,11 +69,11 @@ public class DistributController extends BaseController {
 		if ("自产".equals(disTo)) {
 			// order.setDisTo(false);
 			sql.append("update fy_business_order set dis_to = 0 ,distribute_to =  '" + disTo
-					+ "' ,is_distribute = 1, distribute_time = now() , orderby = 1  where id in ");
+					+ "' ,is_distribute = 1, distribute_time = now() ,order_status=10,orderby = 1  where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		} else if ("委外".equals(disTo)) {
 			// order.setDisTo(true);
-			String str = "update fy_business_order set dis_to = 1 ,distribute_to = '%s' , is_distribute = 1, weiwai_cate ='%s' ,distribute_time = now()  , orderby = 1 where id in ";
+			String str = "update fy_business_order set dis_to = 1 ,distribute_to = '%s' , is_distribute = 1, weiwai_cate ='%s',order_status=1  ,distribute_time = now()  , orderby = 1 where id in ";
 			sql.append(String.format(str, disTo, wwcate));
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		} else {
@@ -172,6 +172,23 @@ public class DistributController extends BaseController {
 			e.printStackTrace();
 		}
 		index();
+	}
+
+	/**
+	 * 撤回委外，自产到分配表
+	 */
+	public void batchRollback() {
+		String[] selectid = getParaValues("selectId");
+		try {
+			Ret ret = service.rollBack(selectid);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+
+		renderJson(Ret.ok().set("msg", "撤回异常，请查看运行日志"));
 	}
 
 }

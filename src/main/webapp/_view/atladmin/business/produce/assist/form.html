@@ -1,0 +1,342 @@
+
+<input hidden="hidden" value="#(model.id??)" name="model.id"></input>
+<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+<input hidden="hidden" value="#(order.id??)" name="model.parentId"></input>
+
+
+
+
+<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">工作订单号</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  readonly="readonly"   placeholder="工作订单号"  value="#(order.work_order_no??)" >
+				</div>
+			</div>
+		</div>
+
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品名称 </label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="商品名称"  value="#(order.commodity_name??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">商品规格</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  readonly="readonly"  placeholder="商品规格" value="#(order.commodity_spec??)"   readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">总图号	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control"  placeholder="总图号"  value="#(order.map_tmp??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">质量等级</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="质量等级" value="#(order.machining_require??)"   readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">数量	</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" id="quantity"  placeholder="数量"  value="#(order.quantity??)"  readonly="readonly"  >
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">单位</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="单位" value="#(order.unit_tmp??)"  readonly="readonly" >
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+<div class="row">
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协日期</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" placeholder="外协日期" value="#(model.assist_date??)" name="model.assistDate"  data-type='datepicker' autocomplete="off" >
+			</div>
+		</div>
+	</div>
+	
+		<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序单价</label>
+
+			<div class="col-sm-9">
+				<input type="text" id = "assistCost" onblur="onExecutAssit()" class="form-control" autocomplete="off"  placeholder="外协工序单价"  value="#(model.assist_cost??)" name="model.assistCost">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">税率</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="taxStr" class="form-control" onclick="selectTax()"  placeholder="税率" autocomplete="off"  
+				name="model.taxStr" value="#taxRate(model.tax_rate??)" >
+				<input type="text" id ="taxRate" hidden="hidden" value="#(model.taxRate??)" name="model.taxRate">
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="assistAmount" class="form-control"  autocomplete="off" placeholder="外协工序金额"  value="#(model.assist_account??)" name="model.assistAccount">
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+		function onExecutAssit(){
+			var cost =  $("#assistCost").val();
+			var quantity = $("#quantity").val();
+			var assistamount = parseFloat(cost)*parseFloat(quantity);
+			if(assistamount!=null){
+				$("#assistAmount").val(assistamount);
+			}
+		}
+</script>
+
+	
+	
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">税额	</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="tax" onfocus="onexecutTax()" class="form-control" autocomplete="off" placeholder="税额" value="#(model.tax_amount??)" name="model.taxAmount" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">含税金额</label>
+
+			<div class="col-sm-9">
+				<input type="text" id="amount" class="form-control" onfocus="onexecutAmount()"  placeholder="含税金额"   autocomplete="off" value="#(model.tatol_amount??)" name="model.tatolAmount">
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+<!--
+
+//-->
+
+	function onexecutTax(){
+		var taxrate = $("#taxRate").data("math");
+		var assistAmount =  $("#assistAmount").val();//不含税金额
+		var tax = parseFloat(taxrate)*parseFloat(assistAmount);
+		if(tax!=null){
+			$("#tax").val(tax);
+		}
+		
+	}
+	
+	function onexecutAmount(){
+		var tax =$("#tax").val();
+		var untaxamount = $("#assistAmount").val();
+		var amount =parseFloat(tax)+parseFloat(untaxamount);
+		if(amount!=null){
+			$("#amount").val(amount);
+		}
+	}
+</script>
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协厂商</label>
+
+			<div class="col-sm-9">
+				<input id="supplier_name"  type="text" class="form-control" placeholder="外协厂商" autocomplete="off" value="#(model.supplier_name??)"   >
+				<input type="text"  hidden="hidden"  value="#(model.assist_supplier_id??)" name="model.assistSupplierId" id="supplier_id" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协工序</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off" placeholder="外协工序"  autocomplete="off"  value="#(model.assist_process??)" name="model.assistProcess">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协加工耗时</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off" placeholder="外协加工耗时"  autocomplete="off" value="#(model.run_time??)" name="model.runTime" >
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协回厂时间</label>
+
+			<div class="col-sm-9">
+				<input type="text" class="form-control" autocomplete="off"  data-type='datepicker'  autocomplete="off" placeholder="外协回厂时间"  value="#(model.backtime??)" name="model.backtime">
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div class="row">
+
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">外协回厂检测结果</label>
+
+			<div  class="col-sm-9">
+				<select  class="form-control" name="model.checkResult" >
+					<option></option>
+					<option #if(model.check_result=="合格") selected="selected" #end value="合格">合格</option>
+					<option #if(model.check_result=="不合格") selected="selected" #end  value="不合格"  >不合格</option>
+				</select>
+	
+				
+			</div>
+		</div>
+	</div>
+
+
+</div>
+	#include("../../../taxrate/taxSelectModel.html")													
+<script>
+function selectTax(){
+	var callback = function (isSelectUnit,unitId,unitStr,unitMath){
+		 console.debug(isSelectUnit+" "+ unitId);
+		if(isSelectUnit){
+			
+			$("#taxStr").val(unitStr);
+			$("#taxRate").val(unitMath);
+			$("#taxRate").data("math",unitMath);
+		}
+	}
+	var selecTaxRateModal  = new SelecTaxRateModal( callback );
+	selecTaxRateModal.show();
+}
+</script>
+	#include("../../../supplier/searchSupplier.html")
+	
+	<script>
+function selectSupplier(){
+	var callbacksu = function (isselect,id,name,unitMath){
+
+		if(isselect){
+			
+			$("#supplier_name").val(name);
+			$("#supplier_id").val(id);
+			
+		}
+	}
+	var selectSupplierModal  = new SelectSupplierModal( callbacksu );
+	selectSupplierModal.show();
+
+}
+
+$(function(){
+	$("#supplier_name").click(function(){
+		var callbacksu = function (isselect,id,name,unitMath){
+
+			if(isselect){
+				
+				$("#supplier_name").val(name);
+				$("#supplier_id").val(id);
+				
+			}
+		}
+		var selectSupplierModal  = new SelectSupplierModal( callbacksu );
+		selectSupplierModal.show();
+	});
+	
+	
+	
+});
+</script>	

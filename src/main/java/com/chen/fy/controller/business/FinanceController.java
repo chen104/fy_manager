@@ -78,14 +78,14 @@ public class FinanceController extends BaseController {
 	public void savebill() {
 		FyBusinessOutWarehouse tmp = getBean(FyBusinessOutWarehouse.class, "model");
 		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(tmp.getId());
-		model.setBillCreateTime(new Date());
-		model.setIsCreateBill(true);
-		model.setBillQuantity(tmp.getBillQuantity());
-		model.setHangStatus(tmp.getHangStatus());
-		model.setHangAmount(tmp.getHangAmount());
-		model.setHangTime(tmp.getHangTime());
-		model.setUnhangQuantity(tmp.getUnhangQuantity());
-		model.setHangQuantity(tmp.getHangQuantity());
+		// model.setBillCreateTime(new Date());
+		// model.setIsCreateBill(true);
+		// model.setBillQuantity(tmp.getBillQuantity());
+		// model.setHangStatus(tmp.getHangStatus());
+		// model.setHangAmount(tmp.getHangAmount());
+		// model.setHangTime(tmp.getHangTime());
+		// model.setUnhangQuantity(tmp.getUnhangQuantity());
+		// model.setHangQuantity(tmp.getHangQuantity());
 
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {

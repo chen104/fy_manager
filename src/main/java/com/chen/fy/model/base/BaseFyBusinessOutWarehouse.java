@@ -65,14 +65,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getStr("transport_no");
 	}
 
-	public void setIsCreateGetPay(java.lang.Boolean isCreateGetPay) {
-		set("is_create_get_pay", isCreateGetPay);
-	}
-	
-	public java.lang.Boolean getIsCreateGetPay() {
-		return get("is_create_get_pay");
-	}
-
 	public void setOutTime(java.util.Date outTime) {
 		set("out_time", outTime);
 	}
@@ -81,44 +73,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("out_time");
 	}
 
-	public void setOutQuantity(java.math.BigDecimal outQuantity) {
+	public void setOutQuantity(java.lang.Integer outQuantity) {
 		set("out_quantity", outQuantity);
 	}
 	
-	public java.math.BigDecimal getOutQuantity() {
-		return get("out_quantity");
-	}
-
-	public void setIsBackPay(java.lang.Boolean isBackPay) {
-		set("is_back_pay", isBackPay);
-	}
-	
-	public java.lang.Boolean getIsBackPay() {
-		return get("is_back_pay");
-	}
-
-	public void setBackReson(java.lang.String backReson) {
-		set("back_reson", backReson);
-	}
-	
-	public java.lang.String getBackReson() {
-		return getStr("back_reson");
-	}
-
-	public void setIsCreateAfterSale(java.lang.Boolean isCreateAfterSale) {
-		set("is_create_after_sale", isCreateAfterSale);
-	}
-	
-	public java.lang.Boolean getIsCreateAfterSale() {
-		return get("is_create_after_sale");
-	}
-
-	public void setAfterSaleCreateTime(java.util.Date afterSaleCreateTime) {
-		set("after_sale_create_time", afterSaleCreateTime);
-	}
-	
-	public java.util.Date getAfterSaleCreateTime() {
-		return get("after_sale_create_time");
+	public java.lang.Integer getOutQuantity() {
+		return getInt("out_quantity");
 	}
 
 	public void setOrderId(java.lang.Integer orderId) {
@@ -137,102 +97,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getInt("parent_id");
 	}
 
-	public void setIsCreateBill(java.lang.Boolean isCreateBill) {
-		set("is_create_bill", isCreateBill);
-	}
-	
-	public java.lang.Boolean getIsCreateBill() {
-		return get("is_create_bill");
-	}
-
-	public void setBillQuantity(java.lang.Integer billQuantity) {
-		set("bill_quantity", billQuantity);
-	}
-	
-	public java.lang.Integer getBillQuantity() {
-		return getInt("bill_quantity");
-	}
-
-	public void setBillCreateTime(java.util.Date billCreateTime) {
-		set("bill_create_time", billCreateTime);
-	}
-	
-	public java.util.Date getBillCreateTime() {
-		return get("bill_create_time");
-	}
-
-	public void setHangTime(java.util.Date hangTime) {
-		set("hang_time", hangTime);
-	}
-	
-	public java.util.Date getHangTime() {
-		return get("hang_time");
-	}
-
-	public void setHangStatus(java.lang.String hangStatus) {
-		set("hang_status", hangStatus);
-	}
-	
-	public java.lang.String getHangStatus() {
-		return getStr("hang_status");
-	}
-
-	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
-		set("hang_quantity", hangQuantity);
-	}
-	
-	public java.math.BigDecimal getHangQuantity() {
-		return get("hang_quantity");
-	}
-
-	public void setHangAmount(java.math.BigDecimal hangAmount) {
-		set("hang_amount", hangAmount);
-	}
-	
-	public java.math.BigDecimal getHangAmount() {
-		return get("hang_amount");
-	}
-
-	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
-		set("unhang_quantity", unhangQuantity);
-	}
-	
-	public java.lang.Integer getUnhangQuantity() {
-		return getInt("unhang_quantity");
-	}
-
-	public void setIsCreatePaybill(java.lang.Boolean isCreatePaybill) {
-		set("is_create_paybill", isCreatePaybill);
-	}
-	
-	public java.lang.Boolean getIsCreatePaybill() {
-		return get("is_create_paybill");
-	}
-
-	public void setPaybillCreateTime(java.util.Date paybillCreateTime) {
-		set("paybill_create_time", paybillCreateTime);
-	}
-	
-	public java.util.Date getPaybillCreateTime() {
-		return get("paybill_create_time");
-	}
-
-	public void setCreateMonth(java.lang.Integer createMonth) {
-		set("create_month", createMonth);
-	}
-	
-	public java.lang.Integer getCreateMonth() {
-		return getInt("create_month");
-	}
-
-	public void setGetpayMonth(java.lang.Integer getpayMonth) {
-		set("getpay_month", getpayMonth);
-	}
-	
-	public java.lang.Integer getGetpayMonth() {
-		return getInt("getpay_month");
-	}
-
 	public void setCanDownload(java.lang.Boolean canDownload) {
 		set("can_download", canDownload);
 	}
@@ -241,28 +105,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("can_download");
 	}
 
-	public void setCreateGetpayTime(java.util.Date createGetpayTime) {
-		set("create_getpay_time", createGetpayTime);
+	public void setOutStatus(java.lang.Integer outStatus) {
+		set("out_status", outStatus);
 	}
 	
-	public java.util.Date getCreateGetpayTime() {
-		return get("create_getpay_time");
-	}
-
-	public void setTax(java.math.BigDecimal tax) {
-		set("tax", tax);
-	}
-	
-	public java.math.BigDecimal getTax() {
-		return get("tax");
-	}
-
-	public void setUntaxGetpay(java.math.BigDecimal untaxGetpay) {
-		set("untax_getpay", untaxGetpay);
-	}
-	
-	public java.math.BigDecimal getUntaxGetpay() {
-		return get("untax_getpay");
+	public java.lang.Integer getOutStatus() {
+		return getInt("out_status");
 	}
 
 }

@@ -37,13 +37,21 @@ public class OrderService2 {
 	 * @param pageSize
 	 * @return
 	 */
-	public Page<FyBusinessOrder> find(String condition, String keyWord, Integer page, Integer pageSize) {
+	public Page<FyBusinessOrder> find(String condition, String keyWord, Integer page, Integer pageSize,
+			String order_date_start, String order_date_end) {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
 		String select = "select o.*,f.originalFileName filename,f.id fileId ";
 		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id ";
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
+
+		if (StringUtils.isNotEmpty(order_date_start)) {
+			conditionSb.append(String.format(" AND order_date > '%s'", order_date_start));
+		}
+		if (StringUtils.isNotEmpty(order_date_end)) {
+			conditionSb.append(String.format(" AND order_date < '%s'", order_date_end));
+		}
 
 		if ("delay_warn".equals(condition)) {
 			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 and out_quantity = 0 ";
@@ -54,22 +62,23 @@ public class OrderService2 {
 			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 ";
 			conditionSb.append(sql);
 		}
+		if ("delivery_date".equals(condition)) {
 
-		if ("order_date".equals(condition)) {
-
-			conditionSb.append(String.format("where order_date = '%s'", keyWord));
-
-		} else if ("delivery_date".equals(condition)) {
-
-			conditionSb.append(String.format("where delivery_date = '%s'", keyWord));
+			conditionSb.append(String.format(" AND  delivery_date = '%s'", keyWord));
 
 		} else if (StringUtils.isNotEmpty(keyWord)) {
 
-			conditionSb.append(String.format("where %s like  ", condition, keyWord));
+			conditionSb.append(String.format(" AND %s like  ", condition, keyWord));
 			conditionSb.append("'%").append(keyWord).append("%'");
 		}
+		if (conditionSb.length() > 0) {
+			List<FyBusinessOrder> list = FyBusinessOrder.dao
+					.find(select + from + where + conditionSb.toString() + desc);
+			modelPage = new Page<FyBusinessOrder>(list, 1, list.size(), 1, list.size());
+		} else {
+			modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select, from + where + desc);
 
-		modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select, from + conditionSb.toString() + desc);
+		}
 
 		return modelPage;
 	}

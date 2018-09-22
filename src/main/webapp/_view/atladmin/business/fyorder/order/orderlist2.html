@@ -1,6 +1,6 @@
 #@myLayout() #define main()
 
-
+  <link href="/assets/atl/sliber/css/bootstrap-slider.min.css" rel="stylesheet">
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -15,6 +15,13 @@
 			
 					<form action="/fy/admin/biz/fyorder/order2"  class="form-inline">
 						 <div class="form-group  input-group-sm">
+						 		<label for="order_date">订单日期</label>
+						 			
+						 		<input class="form-control " autocomplete="off" name="order_date_start" data-type='datepicker' style="width: 100px" value="#(order_date_start)" >
+						 		<label>到</label>
+						 		<input class="form-control"  autocomplete="off" name="order_date_end"  data-type='datepicker'  style="width: 100px" value="#(order_date_end)">
+						 	   
+						 	   
 						 	    <label for="pageSize">显示</label>
 						 	   	<select id="pageSize" class="form-control" name="pageSize" >
 						 	   			<option  value="10">10</option>
@@ -30,7 +37,6 @@
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
 							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
-							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
@@ -344,7 +350,7 @@
 						</tbody>
 					
 					</table>
-		
+			
 
 			</div>
 			<!-- /.box-body -->
@@ -355,6 +361,8 @@
 		</div>
 		<!-- /.box -->
 	</div>
+	
+	<div style="position:fixed ; bottom:0px;width:1002;right: 50px" > test </div>
 </div>
 
 #include("../../../file/listFileModel.html")

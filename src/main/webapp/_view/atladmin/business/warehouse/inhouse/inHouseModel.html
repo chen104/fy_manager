@@ -1,0 +1,93 @@
+<!-- Modal -->
+<div class="modal fade" id="inhouseModal" tabindex="-1" role="dialog" aria-labelledby="inhouseModalLabel" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="inhouseModalLabel">入库</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">
+      	<div class="col-md-4"></div>
+      		<div class="col-md-6">
+      		
+      			 <div class="form-group">
+		              <label>数量</label>
+		                <div class="input-group ">
+		
+		              		<input type="text" id="quantity" class="form-control" autocomplete="off" placeholder="入库数量"   >
+		               
+		                </div>
+		                
+		                
+		                <!-- /.input group -->
+		              </div>
+      		
+      		
+      		</div>
+	      		
+            
+			
+      	</div>
+      	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="inhouse" >确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+	$(function(){
+		$("#inhouse").click(function(){
+			
+			var quantity = 	$("#quantity").val();
+			$.ajax({
+				   type: "POST",
+				   url:'/fy/admin/biz/whouse/waitInhouse/inhouse' ,
+				   data:{id:$("#inhouseModal").data("id"),inQuantity:quantity},
+				   success: function(ret){
+					   if (ret.state == "ok") {
+							
+						   $("#inhouseModal").modal("hide");
+						   window.location.reload();
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
+					}
+				});
+			
+		});
+		
+	});
+
+  function audit(){
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/commission/inhouse' ,
+			   data:{id:$("#myModal").data("id"),inQuantity:$("#inQuantity").val()},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					   $("#myModal").modal("hide");
+					   window.location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+		}
+	  
+</script>

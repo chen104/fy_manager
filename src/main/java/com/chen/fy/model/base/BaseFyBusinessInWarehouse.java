@@ -25,28 +25,12 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return get("in_time");
 	}
 
-	public void setRealInQuantity(java.lang.Integer realInQuantity) {
-		set("real_in_quantity", realInQuantity);
-	}
-	
-	public java.lang.Integer getRealInQuantity() {
-		return getInt("real_in_quantity");
-	}
-
 	public void setInFrom(java.lang.String inFrom) {
 		set("in_from", inFrom);
 	}
 	
 	public java.lang.String getInFrom() {
 		return getStr("in_from");
-	}
-
-	public void setIsCreateCheck(java.lang.Boolean isCreateCheck) {
-		set("is_create_check", isCreateCheck);
-	}
-	
-	public java.lang.Boolean getIsCreateCheck() {
-		return get("is_create_check");
 	}
 
 	public void setCheckCreateTime(java.util.Date checkCreateTime) {
@@ -65,14 +49,6 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return get("check_time");
 	}
 
-	public void setCheckQuantity(java.math.BigDecimal checkQuantity) {
-		set("check_quantity", checkQuantity);
-	}
-	
-	public java.math.BigDecimal getCheckQuantity() {
-		return get("check_quantity");
-	}
-
 	public void setCheckResult(java.lang.String checkResult) {
 		set("check_result", checkResult);
 	}
@@ -89,44 +65,12 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return getStr("check_handle");
 	}
 
-	public void setIsCreateQuality(java.lang.Boolean isCreateQuality) {
-		set("is_create_quality", isCreateQuality);
-	}
-	
-	public java.lang.Boolean getIsCreateQuality() {
-		return get("is_create_quality");
-	}
-
 	public void setIsCreateCanOut(java.lang.Boolean isCreateCanOut) {
 		set("is_create_can_out", isCreateCanOut);
 	}
 	
 	public java.lang.Boolean getIsCreateCanOut() {
 		return get("is_create_can_out");
-	}
-
-	public void setCreateOutTime(java.util.Date createOutTime) {
-		set("create_out_time", createOutTime);
-	}
-	
-	public java.util.Date getCreateOutTime() {
-		return get("create_out_time");
-	}
-
-	public void setIsCreatePay(java.lang.Boolean isCreatePay) {
-		set("is_create_pay", isCreatePay);
-	}
-	
-	public java.lang.Boolean getIsCreatePay() {
-		return get("is_create_pay");
-	}
-
-	public void setPayCreateTime(java.util.Date payCreateTime) {
-		set("pay_create_time", payCreateTime);
-	}
-	
-	public java.util.Date getPayCreateTime() {
-		return get("pay_create_time");
 	}
 
 	public void setOrderId(java.lang.Integer orderId) {
@@ -159,6 +103,46 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 	
 	public java.util.Date getPayMonth() {
 		return get("pay_month");
+	}
+
+	public void setInQuantity(java.lang.Integer inQuantity) {
+		set("in_quantity", inQuantity);
+	}
+	
+	public java.lang.Integer getInQuantity() {
+		return getInt("in_quantity");
+	}
+
+	public void setPassQuantity(java.lang.Integer passQuantity) {
+		set("pass_quantity", passQuantity);
+	}
+	
+	public java.lang.Integer getPassQuantity() {
+		return getInt("pass_quantity");
+	}
+
+	public void setUnpassQuantity(java.lang.Integer unpassQuantity) {
+		set("unpass_quantity", unpassQuantity);
+	}
+	
+	public java.lang.Integer getUnpassQuantity() {
+		return getInt("unpass_quantity");
+	}
+
+	public void setExceptionReson(java.lang.String exceptionReson) {
+		set("exception_reson", exceptionReson);
+	}
+	
+	public java.lang.String getExceptionReson() {
+		return getStr("exception_reson");
+	}
+
+	public void setCheckRemark(java.lang.String checkRemark) {
+		set("check_remark", checkRemark);
+	}
+	
+	public java.lang.String getCheckRemark() {
+		return getStr("check_remark");
 	}
 
 }

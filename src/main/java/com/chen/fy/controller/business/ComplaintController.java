@@ -1,7 +1,6 @@
 package com.chen.fy.controller.business;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
@@ -78,8 +77,8 @@ public class ComplaintController extends BaseController {
 		FyComplaint model = getBean(FyComplaint.class, "model");
 		Integer id = model.getParentId();
 		FyBusinessOutWarehouse out = FyBusinessOutWarehouse.dao.findById(id);
-		out.setAfterSaleCreateTime(new Date());
-		out.setIsCreateAfterSale(true);
+		// out.setAfterSaleCreateTime(new Date());
+		// out.setIsCreateAfterSale(true);
 		Ret ret = null;
 
 		boolean re = Db.tx(new IAtom() {

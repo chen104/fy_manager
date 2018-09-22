@@ -1,6 +1,7 @@
 package com.chen.fy.controller.business.distribut;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -14,7 +15,9 @@ import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.club.common.kit.ZipKit;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -147,6 +150,40 @@ public class DistributService {
 		zipkip.close();
 		FileUtils.forceDelete(dirFile);
 		return zipFile;
+	}
+
+	public Ret rollBack(String[] ids) throws Exception {
+		/*
+		 * 需要修改的字段 order_status = 0 distribute_attr = null distribute_to = null
+		 * is_distribute = 1 plan_time =null plan_finsh_time =null plan_remark = null
+		 * distribute_time = null receive_time
+		 */
+		String update = " update fy_business_order set order_status = 0, distribute_attr = '撤回',\n"
+				+ " distribute_to = null,is_distribute = 1, plan_time =null, plan_finsh_time =null,\n"
+				+ "plan_remark = null, distribute_time = null,receive_time=null \n"
+				+ " where has_in_quantity = 0 AND id in ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+
+				int re = Db.update(update + idsb.toString());
+				Db.update(
+						"Insert into fy_business_purchase_callback select * from fy_business_purchase where order_id = "
+								+ idsb.toString());
+				Db.delete(" delete from fy_business_purchase where  order_id in " + idsb.toString());
+				return re == ids.length;
+			}
+		});
+		if (re) {
+
+			return Ret.ok().set("msg", "撤回完成");
+		} else {
+			return Ret.ok().set("msg", "撤回失败，刷新之后再撤回");
+		}
+
 	}
 
 }

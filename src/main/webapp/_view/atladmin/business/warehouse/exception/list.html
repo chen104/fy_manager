@@ -1,0 +1,209 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">异常记录表</h3>
+				<div class="box-tools">
+					<form action=""  class="form-inline">
+						 <div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+						 <div class="form-group  input-group-sm">
+						    <label for="condition">条件</label>
+							   
+							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
+							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
+							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
+							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
+							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
+							    </select>
+							   
+						  
+						  </div>
+						  
+						 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
+						  
+						  </div>
+						   
+						  <div class="form-group  input-group-sm">
+						  	<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+						  </div>
+						
+  <script type="text/javascript">
+	  function onselectCondition(){
+	  		var val = $("#condition").val();
+	  		var keyword_div = $("#keyword_div");
+	  			keyword_div.empty();
+	  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+	  			keyword_div.append(input);
+	  		if("order_date"==val||"delivery_date"==val){
+	  			
+	  			$("#keyword").datepicker({
+	 	  		    	language:'zh-CN',
+	 	  		      autoclose: true,
+	 	  		      format:'yyyy-mm-dd',
+	 	  		      todayBtn:'linked',
+	 	  		      todayHighlight:true,
+	 	  		       orientation:'bottom' 
+	 	  		    });
+	 	 	 	
+	 	 		
+	  		}else{
+	  			
+	  		}
+	  }
+						  	
+</script>
+					</form>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding">
+	
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th> </th>
+								<th>类别</th>
+								<th>计划员</th>
+								<th>工作订单号</th>
+								<th>图号</th>
+								<th>名称</th>
+								<th>总图号</th>
+								<th>数量</th>
+								<th>单位</th>
+								
+								<th>型号</th>
+								<th>规格</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								
+								<th>订单日期</th>
+								<th>分配流向</th>
+								<th>制造商</th>
+								<th>检测时间</th>
+								<th>不合格原因</th>
+								<th>备注</th>
+
+						
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+								<td>#(x.cate_tmp)</td>  
+								<td>#(x.plan_tmp)</td>
+
+								<td>#(x.work_order_no)</td>
+								
+								<td>#(x.map_no)  </td>
+								
+								<td>#(x.commodity_name)</td>
+								<td>#(x.total_map_no)</td>
+								<td>#(x.unpass_quantity)</td>
+								<td>#(x.unit_tmp)</td>	 
+								
+								<td>#(x.model_no)</td>
+								<td>#(x.commodity_spec)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
+								
+								
+								
+								<td>#date(x.order_date,"yyyy-MM-dd")</td>
+								<td>#(x.distribute_to)</td>
+								
+								<td>#(x.supplier_name)</td>
+								 <td>#date(x.check_time,"yyyy-MM-dd")</td>
+								<td>#(x.exception_reson)</td>
+								<td>#(x.check_remark)</td>
+								
+							</tr>
+							#end
+						</tbody>
+					</table>
+		
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/whouse?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function toCheck(a){
+
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+				
+					   //$(a).parent().empty();
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+
+	}
+	
+	function rollback(a){
+		$.ajax({
+			   type: "POST",
+			   url:$(a).data("action") ,
+			   data:{id:$(a).data("id")},
+			   success: function(ret){
+				   if (ret.state == "ok") {
+				
+					   alert(ret.msg);
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+
+	}
+    </script>
+
+#end

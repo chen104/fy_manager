@@ -1,7 +1,6 @@
 package com.chen.fy.controller.business;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -105,7 +104,7 @@ public class CommissionController extends BaseController {
 		setAttr("pageSize", pageSize);
 		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
-		String purchase = "purchase_no,purchase_date,purchase_cost,purchase_account,discount,discount_account";
+		String purchase = "purchase_no,purchase_date,purchase_cost,purchase_account";
 		String supplier_name = ", bs.name supplier_name";
 		String select = "select o.*  ," + purchase + supplier_name + ",file.id  fileId ,file.originalFileName filename";
 		String from = "from   fy_business_order   o  inner  join fy_business_purchase  p  on p.order_id =o.id left join fy_base_supplier s on p.supplier_id = s.id "
@@ -182,7 +181,7 @@ public class CommissionController extends BaseController {
 		Ret ret = null;
 
 		// 把入库数反写到订单
-		BigDecimal HasInQuantity = order.getHasInQuantity();
+		// BigDecimal HasInQuantity = order.getHasInQuantity();
 		// BigDecimal RealInQuantity = model.getRealInQuantity();
 		// order.setHasInQuantity(HasInQuantity.add(RealInQuantity));//
 		// 更改入库数量，不修改库存，没有检测成功的 加入库存

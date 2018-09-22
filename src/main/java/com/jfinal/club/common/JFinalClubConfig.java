@@ -36,24 +36,30 @@ import com.chen.fy.controller.base.SupplierController;
 import com.chen.fy.controller.base.TaxRateController;
 import com.chen.fy.controller.base.TempletController;
 import com.chen.fy.controller.base.UnitController;
-import com.chen.fy.controller.business.AssistController;
 import com.chen.fy.controller.business.CommissionController;
 import com.chen.fy.controller.business.ComplaintController;
-import com.chen.fy.controller.business.FinanceController;
 import com.chen.fy.controller.business.GetPayController;
-import com.chen.fy.controller.business.OutWarehouseContollor;
 import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProductOneSumController;
 import com.chen.fy.controller.business.UploadGetpayController;
-import com.chen.fy.controller.business.WarehouseController;
+import com.chen.fy.controller.business.assist.AssistController;
+import com.chen.fy.controller.business.check.CheckCollectController;
+import com.chen.fy.controller.business.check.CheckExceptionController;
+import com.chen.fy.controller.business.check.WaitCheckController;
 import com.chen.fy.controller.business.commission.audit.FyPurchaseAuditController;
+import com.chen.fy.controller.business.commission.collect.CommissionCollectController;
 import com.chen.fy.controller.business.commission.execut.CommisionExecutController;
 import com.chen.fy.controller.business.commission.purchase.PurchaseController;
 import com.chen.fy.controller.business.commission.receive.ReceiveController;
 import com.chen.fy.controller.business.distribut.DistributController;
 import com.chen.fy.controller.business.order.OrderController;
 import com.chen.fy.controller.business.order.OrderController2;
-import com.chen.fy.controller.business.produce.ProduceController;
+import com.chen.fy.controller.business.outhouse.OuthouseController;
+import com.chen.fy.controller.business.product.collect.PlanCollectController;
+import com.chen.fy.controller.business.product.plan.PlanController;
+import com.chen.fy.controller.business.product.receive.ProduceReceiveController;
+import com.chen.fy.controller.business.storage.StorageController;
+import com.chen.fy.controller.business.waitInhouse.WaitInhouseController;
 import com.chen.fy.controller.role.RoleAdminController;
 import com.chen.fy.directive.FyColPermDirective;
 import com.chen.fy.directive.FyPermissionDirective;
@@ -171,10 +177,47 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
 				"/_view/atladmin/business/commission/purchase");
 
-		me.add("fy/admin/biz/produce", ProduceController.class, "/_view/atladmin/business/produce");
-		me.add("fy/admin/biz/whouse", WarehouseController.class, "/_view/atladmin/business/warehouse");
+		me.add("fy/admin/biz/commission/collect", CommissionCollectController.class,
+				"/_view/atladmin/business/commission/collect");
 
-		me.add("fy/admin/biz/finance", FinanceController.class, "/_view/atladmin/business/finance");
+		me.add("fy/admin/biz/whouse/waitInhouse", WaitInhouseController.class,
+				"/_view/atladmin/business/warehouse/inhouse");
+
+		me.add("fy/admin/biz/whouse/check/exception", CheckExceptionController.class,
+				"/_view/atladmin/business/warehouse/exception");
+
+		me.add("fy/admin/biz/whouse/check/waitCheck", WaitCheckController.class,
+				"/_view/atladmin/business/warehouse/check");
+
+		me.add("fy/admin/biz/whouse/check/collect", CheckCollectController.class, // 检测一览表
+				"/_view/atladmin/business/warehouse/checkCollect");
+
+		me.add("fy/admin/biz/whouse/storage", StorageController.class, // 检测一览表
+				"/_view/atladmin/business/warehouse/storage");
+
+		me.add("fy/admin/biz/whouse/outhouse", OuthouseController.class, // 出库表
+				"/_view/atladmin/business/outWarehouse");
+
+		/**
+		 * 自产
+		 */
+
+		me.add("fy/admin/biz/product/receive", ProduceReceiveController.class, // 自产接收表
+				"/_view/atladmin/business/produce/receive");
+
+		me.add("fy/admin/biz/product/plan", PlanController.class, // 自产计划表
+				"/_view/atladmin/business/produce/plan");
+
+		me.add("fy/admin/biz/product/collect", PlanCollectController.class, // 自产计划表
+				"/_view/atladmin/business/produce/collect");
+
+		// me.add("fy/admin/biz/produce", ProduceController.class,
+		// "/_view/atladmin/business/produce");
+		// me.add("fy/admin/biz/whouse", WarehouseController.class,
+		// "/_view/atladmin/business/warehouse");
+
+		// me.add("fy/admin/biz/finance", FinanceController.class,
+		// "/_view/atladmin/business/finance");
 		me.add("fy/admin/biz/aftersale/complaint", ComplaintController.class, "/_view/atladmin/business/aftersale");
 		me.add("fy/admin/biz/commission", CommissionController.class, "/_view/atladmin/business/commission");
 
@@ -190,12 +233,13 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/addition/advisory", AdvisoryCostConllor.class, "/_view/atladmin/addition/advisory");
 		me.add("fy/admin/biz/addition/ready", ReadyController.class, "/_view/atladmin/addition/ready");
 
-		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/commission/assist");
+		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/produce/assist");
 
 		me.add("fy/admin/biz/addition/readyPurchase", ReadyPurchaseController.class,
 				"/_view/atladmin/addition/readypurchase");
 
-		me.add("/fy/admin/biz/outWhouse", OutWarehouseContollor.class, "/_view/atladmin/business/outWarehouse");
+		// me.add("/fy/admin/biz/outWhouse", OutWarehouseContollor.class,
+		// "/_view/atladmin/business/outWarehouse");
 
 		me.add("/fy/admin/base/supplierCate", SupplierCategoryController.class, " /_view/atladmin/supplierCategory");
 

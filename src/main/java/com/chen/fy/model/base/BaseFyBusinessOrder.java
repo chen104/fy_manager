@@ -417,20 +417,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("is_finish_purchase");
 	}
 
-	public void setStorageQuantity(java.math.BigDecimal storageQuantity) {
+	public void setStorageQuantity(java.lang.Integer storageQuantity) {
 		set("storage_quantity", storageQuantity);
 	}
 	
-	public java.math.BigDecimal getStorageQuantity() {
-		return get("storage_quantity");
+	public java.lang.Integer getStorageQuantity() {
+		return getInt("storage_quantity");
 	}
 
-	public void setOutQuantity(java.math.BigDecimal outQuantity) {
+	public void setOutQuantity(java.lang.Integer outQuantity) {
 		set("out_quantity", outQuantity);
 	}
 	
-	public java.math.BigDecimal getOutQuantity() {
-		return get("out_quantity");
+	public java.lang.Integer getOutQuantity() {
+		return getInt("out_quantity");
 	}
 
 	public void setCustomer(java.lang.Integer customer) {
@@ -441,12 +441,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getInt("customer");
 	}
 
-	public void setHasInQuantity(java.math.BigDecimal hasInQuantity) {
+	public void setHasInQuantity(java.lang.Integer hasInQuantity) {
 		set("has_in_quantity", hasInQuantity);
 	}
 	
-	public java.math.BigDecimal getHasInQuantity() {
-		return get("has_in_quantity");
+	public java.lang.Integer getHasInQuantity() {
+		return getInt("has_in_quantity");
 	}
 
 	public void setHangAccount(java.math.BigDecimal hangAccount) {
@@ -559,6 +559,22 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 	
 	public java.lang.Integer getOrderStatus() {
 		return getInt("order_status");
+	}
+
+	public void setInhouseStatus(java.lang.String inhouseStatus) {
+		set("inhouse_status", inhouseStatus);
+	}
+	
+	public java.lang.String getInhouseStatus() {
+		return getStr("inhouse_status");
+	}
+
+	public void setInhouseDate(java.util.Date inhouseDate) {
+		set("inhouse_date", inhouseDate);
+	}
+	
+	public java.util.Date getInhouseDate() {
+		return get("inhouse_date");
 	}
 
 }

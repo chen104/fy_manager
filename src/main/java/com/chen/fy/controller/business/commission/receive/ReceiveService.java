@@ -62,7 +62,8 @@ public class ReceiveService {
 	 * @throws Exception
 	 */
 	public int updateReceive(String[] ids) throws Exception {
-		StringBuilder updateSql = new StringBuilder(" update fy_business_order set receive_time = NOW() where id in ");
+		StringBuilder updateSql = new StringBuilder(
+				" update fy_business_order set receive_time = NOW() ,order_status = 2 where id in ");
 		SqlKit.joinIds(ids, updateSql);
 		return Db.update(updateSql.toString());
 	}

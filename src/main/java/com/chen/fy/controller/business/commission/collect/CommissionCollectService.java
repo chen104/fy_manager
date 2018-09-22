@@ -1,14 +1,69 @@
 package com.chen.fy.controller.business.commission.collect;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
 public class CommissionCollectService {
-	public final static CommissionCollectService service = new CommissionCollectService();
+	public final static CommissionCollectService me = new CommissionCollectService();
 
-	public Page<Record> findPage() {
-		Page<Record> page = null;
+	/**
+	 * 委外汇总表
+	 * @param pageSize
+	 * @param pageIndex
+	 * @param condition
+	 * @param keyWord
+	 * @return
+	 */
+	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword,
+			String inhouse_date_start, String inhouse_date_end) {
+		Page<Record> modelPage = null;
+		StringBuilder conditionSb = new StringBuilder();
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name ";
+		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
+				+ " Inner join fy_business_purchase audit on o.id = audit.order_id"
+				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no";
+		String desc = " order by o.id  desc ";
+		String where = "  where add_status=3 ";
+		String dateformat = "'%Y-%m-%d'";
+		if ("delay_warn".equals(condition)) {
+			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
+			conditionSb.append(sql);
+		} else
 
-		return page;
+		if ("delay".equals(condition)) {
+			String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
+			conditionSb.append(sql);
+
+		} else {
+
+			if ("order_date".equals(condition)) {
+
+				conditionSb.append(String.format(" AND DATE_FORMAT(order_date,%s) = '%s'", dateformat, keyword));
+
+			} else if ("delivery_date".equals(condition)) {
+
+				conditionSb.append(String.format("AND   DATE_FORMAT(delivery_date,%s)= '%s'", dateformat, keyword));
+
+			} else if ("work_order_no".equals(condition)) {
+				conditionSb.append(" AND  o.work_order_no like  ");
+				conditionSb.append("'%").append(keyword).append("%'");
+			} else if ("supplier".equals(condition)) {
+				conditionSb.append(" AND  s.name like  ");
+				conditionSb.append("'%").append(keyword).append("%'");
+			} else if (StringUtils.isNotEmpty(keyword)) {
+
+				conditionSb.append(String.format(" AND  %s like  ", condition));
+				conditionSb.append("'%").append(keyword).append("%'");
+
+			}
+
+		}
+
+		where = where + conditionSb.toString();
+		modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);
+		return modelPage;
 	}
 }

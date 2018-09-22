@@ -271,8 +271,8 @@ public class PayController extends BaseController {
 					.find("select * from fy_business_in_warehouse where id in " + sb);
 			Date d = new Date();
 			for (FyBusinessInWarehouse e : list) {
-				e.setIsCreatePay(true);
-				e.setPayCreateTime(d);
+				// e.setIsCreatePay(true);
+				// e.setPayCreateTime(d);
 			}
 			List<FyBusinessPay> createList = new ArrayList<FyBusinessPay>();
 			List<FyBusinessPurchase> updatePurchase = new ArrayList<FyBusinessPurchase>();
@@ -280,7 +280,7 @@ public class PayController extends BaseController {
 			for (int i = 0; i < inhouseId.length; i++) {
 
 				FyBusinessInWarehouse item = list.get(i);
-				item.setPayCreateTime(now);
+				// item.setPayCreateTime(now);
 				item.setPayMonth(shoupaypireod);
 				List<FyBusinessPurchase> purchases = FyBusinessPurchase.dao
 						.find("select * from fy_business_purchase where order_id = ?", item.getOrderId());
