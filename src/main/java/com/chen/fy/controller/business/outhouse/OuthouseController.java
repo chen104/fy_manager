@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.outhouse;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,13 @@ public class OuthouseController extends BaseController {
 		setAttr("keyWord", key);
 		keepPara("condition", "weiwai_cate");
 		String condition = getPara("condition");
-
+		String out_date_start = getPara("out_date_start");
+		String out_date_end = getPara("out_date_end");
+		keepPara("out_date_start", "out_date_end");
 		Page<Record> modelPage = null;
 		try {
-			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), condition, key);
+			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), condition, key, out_date_start,
+					out_date_end);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,6 +137,32 @@ public class OuthouseController extends BaseController {
 			renderJson(Ret.ok().set("msg", "生成  出库单 异常查看运行日志"));
 		}
 
+	}
+
+	/**
+	 * 下载出库单
+	 * @throws Exception
+	 */
+	public void downloadOut() throws Exception {
+		String[] ids = getParaValues("selectId");
+		File file = service.download(ids);
+		renderFile(file);
+	}
+
+	/**
+	 * 撤回出库
+	 */
+	public void rollbackOut() {
+		String[] outId = getParaValues("selectId");
+		try {
+			Ret ret = service.batchRollback(outId);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderJson(Ret.ok().set("msg", "运行异常，请查看日志"));
 	}
 
 }

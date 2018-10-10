@@ -34,7 +34,7 @@
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+					 				<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
 							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
 							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
 							    </select>
@@ -174,7 +174,7 @@
 								<th>含税/未税</th>
 								<th>单件</th>
 								<th>总重</th>
-								<th>操作 </th>
+							 
 							</tr>
 						</thead>
 						<tbody>
@@ -233,17 +233,7 @@
 								<td>#(x.ww_hang_amount)</td>
 								<td>#(x.ww_unhang_amount)</td>
 								-->
-								<td class="jfa-operation-button">
-							
-								
-								
-								<a href="#" data-action="/fy/admin/biz/fyorder/distribute/rollBackOrder" onclick="rollback(this)" data-id="#(x.id)" data-title="#(x.workOrderNo) #(x.commodityName)">
-									<i class="fa fa-fw fa-mail-reply-all"></i>撤回 </a>
-									
-									<!--  
-								
-									-->
-								</td>
+								 
 							</tr>
 							#end
 						</tbody>

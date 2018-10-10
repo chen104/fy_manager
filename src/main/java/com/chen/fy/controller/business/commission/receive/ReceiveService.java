@@ -16,7 +16,7 @@ public class ReceiveService {
 
 		String select = "select o.*,originalFileName filename,file.id fileId";
 		String from = "from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
-		String where = " where  Is_Distribute = 1 and dis_to = 1 and receive_time is null   ";
+		String where = " where  order_status = 1  and receive_time is null   ";
 		String desc = " order by distribute_time desc ";
 		StringBuilder conditionSb = new StringBuilder();
 

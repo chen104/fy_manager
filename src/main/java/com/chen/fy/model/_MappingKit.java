@@ -39,15 +39,15 @@ public class _MappingKit {
 		arp.addMapping("fy_business_order", "id", FyBusinessOrder.class);
 		arp.addMapping("fy_business_out_warehouse", "id", FyBusinessOutWarehouse.class);
 		arp.addMapping("fy_business_pay", "id", FyBusinessPay.class);
-		arp.addMapping("fy_business_paybill", "id", FyBusinessPaybill.class);
 		arp.addMapping("fy_business_produce", "id", FyBusinessProduce.class);
 		arp.addMapping("fy_business_purchase", "id", FyBusinessPurchase.class);
+		arp.addMapping("fy_business_purchase_callback", "id", FyBusinessPurchaseCallback.class);
 		arp.addMapping("fy_business_ready", "id", FyBusinessReady.class);
 		arp.addMapping("fy_business_sum_paybill", "id", FyBusinessSumPaybill.class);
 		arp.addMapping("fy_business_warehouse", "id", FyBusinessWarehouse.class);
 		arp.addMapping("fy_complaint", "id", FyComplaint.class);
 		arp.addMapping("fy_exception_record", "id", FyExceptionRecord.class);
-		arp.addMapping("fy_pay_sum", "id", FyPaySum.class);
+		arp.addMapping("fy_ready_add", "id", FyReadyAdd.class);
 		arp.addMapping("fy_ready_purchase", "id", FyReadyPurchase.class);
 		arp.addMapping("fy_supplier_category", "id", FySupplierCategory.class);
 		arp.addMapping("fy_upload_getpay", "id", FyUploadGetpay.class);

@@ -2,6 +2,7 @@ package com.chen.fy.controller.business.distribut;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.LogManager;
@@ -76,8 +77,8 @@ public class DistributController extends BaseController {
 			String str = "update fy_business_order set dis_to = 1 ,distribute_to = '%s' , is_distribute = 1, weiwai_cate ='%s',order_status=1  ,distribute_time = now()  , orderby = 1 where id in ";
 			sql.append(String.format(str, disTo, wwcate));
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
-		} else {
-			sql.append("update fy_business_order set dis_to = 3,distribute_to = '" + disTo
+		} else {// 备货
+			sql.append("update fy_business_order set dis_to = 3,order_status=30,distribute_to = '" + disTo
 					+ "' ,is_distribute = 1, distribute_time = now()  , orderby = 1 where id in ");
 			com.jfinal.club.common.kit.SqlKit.joinIds(ids, sql);
 		}
@@ -88,6 +89,16 @@ public class DistributController extends BaseController {
 		save = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
 				int update = Db.update(sql.toString());
+				if ("备货".equals(disTo)) {
+					Date now = new Date();
+					String insert = "insert fy_ready_add(add_order_id,create_time) VALUES (?, ?)\n";
+					Object[][] param = new Object[ids.length][2];
+					for (int i = 0; i < ids.length; i++) {
+						param[i][0] = ids[i];
+						param[i][1] = now;
+					}
+					Db.batch(insert, param, ids.length);
+				}
 				return update == ids.length;
 			}
 		});
@@ -130,7 +141,7 @@ public class DistributController extends BaseController {
 	 * `distribute_attr ，测回,is_distribute =1
 	 */
 	public void rollBackOrder() {
-		Integer id = getParaToInt("id");
+		Integer id = getParaToInt("selectId");
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
 		order.setDisTo(null);
 		order.setHandleStatus("未处理");

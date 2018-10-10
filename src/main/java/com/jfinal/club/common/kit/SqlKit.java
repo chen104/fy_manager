@@ -15,7 +15,9 @@
 package com.jfinal.club.common.kit;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * SqlKit
@@ -84,6 +86,22 @@ public class SqlKit {
 			}
 			ret.append("'").append(id).append("'");
 		}
+		ret.append(")");
+	}
+
+	public static void joinIds(Set<Integer> idList, StringBuilder ret) {
+		ret.append("(");
+		boolean isFirst = true;
+		Iterator<Integer> iterator = idList.iterator();
+		while (iterator.hasNext()) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				ret.append(", ");
+			}
+			ret.append("'").append(iterator.next()).append("'");
+		}
+
 		ret.append(")");
 	}
 }

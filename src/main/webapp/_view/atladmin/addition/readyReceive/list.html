@@ -13,9 +13,9 @@
 							    <select id="condition" class="form-control" name="condition"   ">
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">工作订单号</option>
 							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>  	
+							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option> 
+							    	<option #if(condition=="ready_status") selected="selected" #end value="ready_status">备货状态</option> 	
 							    </select>
-						  
 						  </div>
 						  
 						
@@ -51,7 +51,7 @@
 								<th>工作订单号</th>
 								<th>送货单号</th>
 								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>图号</th>
 								<th>总图号</th>
 								<th>技术条件</th>
 								<th>质量等级</th>
@@ -62,14 +62,8 @@
 								<th>分配属性</th>
 								<th>分配时间</th>
 								
-								<th>订单编码</th>
-								
-								<th>备货数量</th>
-								
-								<th>补单数量1</th>
-								<th>补单数量2</th>
-								<th>补单数量3</th>				
-									
+								<th>补单数量</th>
+								<th>未补单数量</th>
 								
 								<th>操作</th>
 							</tr>
@@ -81,18 +75,18 @@
 							
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.orderDate)</td>
-								<td>#(x.deliveryDate)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.commoditySpec)</td>
-								<td>#(x.mapNo)</td>
+								<td>#(x.execu_status)</td>
+								<td>#(x.urgent_status)</td>
+								<td>#(x.order_date)</td>
+								<td>#(x.delivery_date)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.map_no)</td>
+								<td>#(x.total_map_no)</td>
 								
 								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
+								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
 							
@@ -100,20 +94,20 @@
 								<td>#(x.distribute_attr)</td>
 								<td>#(x.distribute_time)</td>
 								
-								<td>#(x.order_no)</td>
+								<th>#(x.add_quantity)</th>
+								<th>#(x.unadd_quantity)</th>
 								
-								<td>#(x.ready_quantity)</td>
-								
-								<td>#(x.add_quantity1)</td>
-								<td>#(x.add_quantity2)</td>
-								<td>#(x.add_quantity3)</td>
 								<td>
-									#if(x.add_status!="已补单")
-									<a data-delete data-title="#escape(x.name)"
-									data-id="#(x.id)" onclick="onSelectReady(this)" > <i
-										class="glyphicon glyphicon-link" title="选择备货">选择备货</i>
+									#if(x.add_quantity!=x.quantity)
+									<a data-id="#(x.id)"  name="addquantiy"> <i
+										class="fa fa-hand-pointer-o" title="选择备货">补货</i>
 									</a>
 									#end
+									<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
+									data-id="#(x.id)" onclick="onSelectReady(this)" > <i
+										class="fa  fa-chain" title="选择备货">选择备货</i>
+									</a>
+								
 								</td>
 							</tr>
 							#end
@@ -126,35 +120,14 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/addition/ready/receiveReady?p=")</div>
+				"/fy/admin/biz/addition/readyReceive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 #include("searchReady.html")
 <script type="text/javascript">
-	function selectOrderToReady(order_id,ready_id){
-		$.ajax({
-			   type: "POST",
-			   url:'/fy/admin/biz/addition/ready/addOrderToReady' ,
-			   data:{order_id:order_id,ready_id:ready_id},
-			   success: function(ret){
-				   if (ret.state == "ok") {
-					   alert(ret.msg);
-					   location.reload();
-					}
-				   alert(ret.msg);
-			   },
-			   error:function (XMLHttpRequest, textStatus, errorThrown) {
-				    // 通常 textStatus 和 errorThrown 之中
-				    // 只有一个会包含信息
-				 //   this; // 调用本次AJAX请求时传递的options参数
-				   alert('网络异常');
-				}
-			});
-		}
-		
-
+	
 /**
  * 多个分配
  */
@@ -162,7 +135,24 @@
 		var callback =function(select,id,name){
 			console.info(select+" "+id+" "+name);
 			if(select){
-				selectOrderToReady($(a).data('id'),id);
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/addition/readyReceive/addToReady' ,
+					   data:{add_order_id:$("#ReadyKeyWord").data('id'),ready_order_id:id},
+					   success: function(ret){
+						   if (ret.state == "ok") {
+							
+							   location.reload();
+							}
+						   alert(ret.msg);
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
+						}
+					});
 			}else{
 				
 			}
@@ -176,5 +166,15 @@
 
 </script>
 
-
+#include("addquantityModel.html")
+<script type="text/javascript">
+	$(function(){
+		$("a[name='addquantiy']").click(function(){
+			var addquantityModal =$("#addquantityModal");
+			var order_id= $(this).data('id');
+			addquantityModal.data('id',order_id);
+			addquantityModal.modal("show");
+		});
+	});
+</script>
 #end

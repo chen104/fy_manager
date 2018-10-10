@@ -49,11 +49,13 @@
 			<version>3.4</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.0.29</version>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
+		    <version>1.1.11</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -229,5 +231,5 @@
 		</plugins>
 	</build>
 
-	<packaging>war</packaging>
+		<packaging>war</packaging>
 </project>

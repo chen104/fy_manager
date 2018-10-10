@@ -1,0 +1,5 @@
+update fy_business_assist a LEFT JOIN fy_business_pay p
+on a.id = p.parent_id and p.is_pourchase = 0 
+set a.is_create_pay = 0 
+where a.is_create_pay is null
+AND p.id in

@@ -34,11 +34,10 @@
 							console.info(formData);
 						}
 					, success: function(ret) {
+						alert(ret.msg);
 						if (ret.state == "ok") {
-							location.reload();
-						} else {
-							alert(ret.msg);
-						}
+							location.href="/fy/admin/biz/whouse/check/waitCheck";
+						} 
 					}
 					, error: function(ret) {alert(ret.statusText);}
 					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调

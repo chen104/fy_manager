@@ -1,4 +1,4 @@
-package com.chen.fy.controller.addition;
+package com.chen.fy.controller.addition.readypurchase;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

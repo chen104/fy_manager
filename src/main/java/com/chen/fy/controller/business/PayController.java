@@ -90,9 +90,9 @@ public class PayController extends BaseController {
 			if (e.getShouldPay() != null) {
 				should_pay += e.getShouldPay().doubleValue();
 			}
-			if (e.getWeiwaiAccount() != null) {
-				weiwai_account += e.getWeiwaiAccount().doubleValue();
-			}
+			// if (e.getWeiwaiAccount() != null) {
+			// weiwai_account += e.getWeiwaiAccount().doubleValue();
+			// }
 		}
 
 		setAttr("should_pay", should_pay);
@@ -143,7 +143,7 @@ public class PayController extends BaseController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		model.setShouldPay(model.getWeiwaiCost().multiply(model.getRealInQuantity()));
+		// model.setShouldPay(model.getWeiwaiCost().multiply(model.getRealInQuantity()));
 		System.out.println(model);
 		Ret ret = null;
 		boolean re = model.save();
@@ -302,8 +302,8 @@ public class PayController extends BaseController {
 					pay.setCheckResult(item.getCheckResult());// 检测结果
 					pay.setCheckTime(item.getCheckTime());// 检测时间
 					// pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
-					pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
-					pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
+					// pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
+					// pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
 					pay.setInFrom("采购");
 					pay.setInWarehouseTime(item.getInTime());// 为实际入库数
 					// pay.setRealInQuantity(item.getRealInQuantity());
@@ -334,8 +334,9 @@ public class PayController extends BaseController {
 					pay.setCreateBy(getLoginAccountId());
 					pay.setPayDate(shoupaypireod);
 
-					pay.setInHouseId(item.getId());// 入库Id
-					pay.setIsWw(true);// 来源是委外
+					pay.setParentId(item.getId());// 入库Id
+					pay.setIsPurchase(false);
+					;// 来源是委外
 					pay.setPurchaseDate(purchase.getPurchaseDate());
 
 					// purchase.setHangQuantity(purchase.getHangQuantity().add(pay.getRealInQuantity()));//

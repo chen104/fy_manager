@@ -169,4 +169,28 @@ public abstract class BaseFyUploadGetpay<M extends BaseFyUploadGetpay<M>> extend
 		return getStr("contract");
 	}
 
+	public void setIsSetlled(java.lang.Boolean isSetlled) {
+		set("is_setlled", isSetlled);
+	}
+	
+	public java.lang.Boolean getIsSetlled() {
+		return get("is_setlled");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setRemark(java.lang.String remark) {
+		set("remark", remark);
+	}
+	
+	public java.lang.String getRemark() {
+		return getStr("remark");
+	}
+
 }

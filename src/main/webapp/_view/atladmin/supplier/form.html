@@ -104,7 +104,12 @@
 			<label  class="col-sm-3 control-label">结算方式</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="结算方式" value="#(model.settlementType??)" name="model.settlementType">
+				<select name="model.settlementType" class="form-control" >
+					<option ></option>
+					<option #if(model.settlement_type?? == 1) selected="selected" #end value="1">现金</option>
+					<option #if(model.settlement_type?? == 2) selected="selected" #end  value="2">转账</option>
+					<option #if(model.settlement_type?? == 3) selected="selected" #end value="3">票据</option>
+				</select>
 			</div>
 		</div>
 	</div>
@@ -114,7 +119,13 @@
 			<label  class="col-sm-3 control-label">结算周期</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="结算周期" value="#(model.settlementCycle??)" name="model.settlementCycle">
+			
+				<select name="model.settlementCycle" class="form-control" >
+					<option ></option>
+					<option #if(model.settlement_cycle?? == 1) selected="selected" #end value="1">月结30天</option>
+					<option #if(model.settlement_cycle?? == 2) selected="selected" #end value="2">月结60天</option>
+					<option #if(model.settlement_cycle?? == 3) selected="selected" #end value="3">现结</option>
+				</select>
 			</div>
 		</div>
 	</div>

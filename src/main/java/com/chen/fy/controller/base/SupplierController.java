@@ -182,10 +182,24 @@ public class SupplierController extends BaseController {
 					item.setBankNo(bank_no);
 
 					String settlement_type = excel.getCellVal(i, 6);// 结算方式
-					item.setSettlementType(settlement_type);
 
-					String settlement_ycle = excel.getCellVal(i, 7);// 结算周期
-					item.setSettlementCycle(settlement_ycle);
+					if ("现金".equals(settlement_type)) {
+						item.setSettlementType(1);
+					} else if ("转账".equals(settlement_type)) {
+						item.setSettlementType(2);
+					} else if ("票据".equals(settlement_type)) {
+						item.setSettlementType(3);
+					}
+
+					String settlement_cycle = excel.getCellVal(i, 7);// 结算周期
+
+					if ("月结30天".equals(settlement_cycle)) {
+						item.setSettlementCycle(1);
+					} else if ("月结60天".equals(settlement_cycle)) {
+						item.setSettlementCycle(2);
+					} else if ("现结".equals(settlement_cycle)) {
+						item.setSettlementCycle(3);
+					}
 
 					String contect_peple = excel.getCellVal(i, 8);// 联系人
 					item.setContactPerson(contect_peple);

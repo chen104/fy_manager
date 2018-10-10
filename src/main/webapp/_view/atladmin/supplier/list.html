@@ -80,8 +80,10 @@
 								<th>开户行</th>
 								<th>银行账号</th>
 								<th>结算方式</th>
+								<th>结算周期</th>
 								<th>联系人</th>
 								<th>联系方式</th>
+								
 								<th>备注</th>
 								<th>附件</th>
 								<th>操作</th>
@@ -99,7 +101,26 @@
 								<td>#(x.phone)</td>
 								<td>#(x.bankAccount)</td>
 								<td>#(x.bankNo)</td>
-								<td>#(x.settlementType)</td>
+								<td>
+								
+									#if(x.settlement_type == 1)
+										现金
+									#else if(x.settlement_type == 2)
+										转账
+									#else if(x.settlement_type == 3)
+										票据
+									#end
+								</td>
+								<td>
+									#if(x.settlement_cycle == 1)
+										月结30天
+									#else if(x.settlement_cycle == 2)
+										月结60天
+									#else if(x.settlement_cycle == 3)
+										现金
+									#end
+								
+								</td>
 								<td>#(x.contactPerson)</td>	
 								<td>#(x.contactType)</td>	
 								<td>#(x.remark)</td>

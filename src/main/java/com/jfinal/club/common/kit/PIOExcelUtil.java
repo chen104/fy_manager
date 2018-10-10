@@ -428,6 +428,29 @@ public class PIOExcelUtil {
 	 * @param column
 	 * @param value
 	 */
+	public void setCellVal(int rownum, int column, Integer value) {
+		if (value == null) {
+			return;
+		}
+		Row row = sheet.getRow(rownum);
+		if (null == row) {
+			row = sheet.createRow(rownum);
+		}
+		Cell cell = row.getCell(column);
+		if (null == cell) {
+			cell = row.createCell(column);
+		}
+		cell.setCellStyle(getCellType4Number());
+		cell.setCellValue(value);
+	}
+
+	/**
+	 * 设置单元格数据 下标从0开使
+	 * 
+	 * @param rownum
+	 * @param column
+	 * @param value
+	 */
 	public void setCellVal(int rownum, int column, Double value) {
 		Row row = sheet.getRow(rownum);
 		if (null == row) {
@@ -440,6 +463,7 @@ public class PIOExcelUtil {
 		if (value == null) {
 			return;
 		}
+		cell.setCellStyle(getCellType4Number());
 		cell.setCellValue(value);
 	}
 
@@ -506,7 +530,10 @@ public class PIOExcelUtil {
 		if (value == null) {
 			return;
 		}
-		cell.getCellStyle().setDataFormat(wb.createDataFormat().getFormat(parren));
+		CellStyle cellStyle = wb.createCellStyle();
+		DataFormat format = wb.createDataFormat();
+		cellStyle.setDataFormat(format.getFormat(parren));
+		cell.setCellStyle(cellStyle);
 		cell.setCellValue(value);
 	}
 

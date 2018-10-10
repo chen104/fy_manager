@@ -5,7 +5,7 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<h3 class="box-title">委外接收表</h3>
+				<h3 class="box-title">自产接收表</h3>
 				 <span class="btn btn-primary"  id="bt_receive">接收 </span> 
 				 <script type="text/javascript">
 				 	
@@ -56,7 +56,7 @@
 				
 				</script>
 				<div class="box-tools">
-							<form action="/fy/admin/biz/commission/receive"  class="form-inline">
+							<form action="/fy/admin/biz/product/receive"  class="form-inline">
 									 <div class="form-group  input-group-sm">
 									 	    <label for="pageSize">显示</label>
 									 	   	<select id="pageSize" class="form-control" name="pageSize" >
@@ -77,8 +77,8 @@
 										    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 										    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 										    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
-										    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-										    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+
+												<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
 										    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
 										    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
 										    </select>
@@ -192,7 +192,7 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/commission/receive?p=")</div>
+				"/fy/admin/biz/product/receive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>

@@ -65,20 +65,20 @@ public abstract class BaseSupplier<M extends BaseSupplier<M>> extends Model<M> i
 		return getStr("bank_no");
 	}
 
-	public void setSettlementType(java.lang.String settlementType) {
+	public void setSettlementType(java.lang.Integer settlementType) {
 		set("settlement_type", settlementType);
 	}
 	
-	public java.lang.String getSettlementType() {
-		return getStr("settlement_type");
+	public java.lang.Integer getSettlementType() {
+		return getInt("settlement_type");
 	}
 
-	public void setSettlementCycle(java.lang.String settlementCycle) {
+	public void setSettlementCycle(java.lang.Integer settlementCycle) {
 		set("settlement_cycle", settlementCycle);
 	}
 	
-	public java.lang.String getSettlementCycle() {
-		return getStr("settlement_cycle");
+	public java.lang.Integer getSettlementCycle() {
+		return getInt("settlement_cycle");
 	}
 
 	public void setContactPerson(java.lang.String contactPerson) {

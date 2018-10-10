@@ -24,8 +24,9 @@ import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
 import com.chen.fy.controller.addition.ReadyController;
-import com.chen.fy.controller.addition.ReadyPurchaseController;
 import com.chen.fy.controller.addition.advisory.AdvisoryCostConllor;
+import com.chen.fy.controller.addition.readypurchase.ReadyPurchaseController;
+import com.chen.fy.controller.addition.receive.ReadyReceiveController;
 import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
 import com.chen.fy.controller.base.DepartmentController;
@@ -38,10 +39,7 @@ import com.chen.fy.controller.base.TempletController;
 import com.chen.fy.controller.base.UnitController;
 import com.chen.fy.controller.business.CommissionController;
 import com.chen.fy.controller.business.ComplaintController;
-import com.chen.fy.controller.business.GetPayController;
-import com.chen.fy.controller.business.PayController;
 import com.chen.fy.controller.business.ProductOneSumController;
-import com.chen.fy.controller.business.UploadGetpayController;
 import com.chen.fy.controller.business.assist.AssistController;
 import com.chen.fy.controller.business.check.CheckCollectController;
 import com.chen.fy.controller.business.check.CheckExceptionController;
@@ -52,8 +50,12 @@ import com.chen.fy.controller.business.commission.execut.CommisionExecutControll
 import com.chen.fy.controller.business.commission.purchase.PurchaseController;
 import com.chen.fy.controller.business.commission.receive.ReceiveController;
 import com.chen.fy.controller.business.distribut.DistributController;
-import com.chen.fy.controller.business.order.OrderController;
+import com.chen.fy.controller.business.finance.pay.PayController;
+import com.chen.fy.controller.business.finance.paybill.PayBillController;
+import com.chen.fy.controller.business.getpay.UploadGetpayController;
+import com.chen.fy.controller.business.getpaybill.UploadGetpayBillController;
 import com.chen.fy.controller.business.order.OrderController2;
+import com.chen.fy.controller.business.order.OrderDeleteBackController;
 import com.chen.fy.controller.business.outhouse.OuthouseController;
 import com.chen.fy.controller.business.product.collect.PlanCollectController;
 import com.chen.fy.controller.business.product.plan.PlanController;
@@ -156,8 +158,9 @@ public class JFinalClubConfig extends JFinalConfig {
 
 		// business
 
-		me.add("fy/admin/biz/fyorder/order", OrderController.class, "/_view/atladmin/business/fyorder");
 		me.add("fy/admin/biz/fyorder/order2", OrderController2.class, "/_view/atladmin/business/fyorder/order");
+		me.add("fy/admin/biz/fyorder/back", OrderDeleteBackController.class,
+				"/_view/atladmin/business/fyorder/backorder");
 
 		me.add("fy/admin/biz/fyorder/distribute", DistributController.class,
 				"/_view/atladmin/business/fyorder/distribute");
@@ -222,16 +225,23 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.add("fy/admin/biz/commission", CommissionController.class, "/_view/atladmin/business/commission");
 
 		me.add("fy/admin/biz/finance/pay", PayController.class, "/_view/atladmin/business/finance/pay");
+		me.add("fy/admin/biz/finance/paybill", PayBillController.class, "/_view/atladmin/business/finance/paybill");
 
-		me.add("fy/admin/biz/finance/getPay", GetPayController.class, "/_view/atladmin/business/finance/getpay");
-		// me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
+		// me.add("fy/admin/biz/finance/getPay", GetPayController.class,
+		// "/_view/atladmin/business/finance/getpay");
+		// // me.add("fy/admin/biz/commission/purchase", PurchaseController.class,
 		// "/_view/atladmin/business/commission/purchase");
 
 		me.add("fy/admin/biz/finance/upgetpay", UploadGetpayController.class,
 				"/_view/atladmin/business/finance/uploadpayget");
+		me.add("fy/admin/biz/finance/upgetpaybill", UploadGetpayBillController.class,
+				"/_view/atladmin/business/finance/uploadgetpaybill");
 
-		me.add("fy/admin/biz/addition/advisory", AdvisoryCostConllor.class, "/_view/atladmin/addition/advisory");
+		// 备货
 		me.add("fy/admin/biz/addition/ready", ReadyController.class, "/_view/atladmin/addition/ready");
+		me.add("fy/admin/biz/addition/advisory", AdvisoryCostConllor.class, "/_view/atladmin/addition/advisory");
+		me.add("fy/admin/biz/addition/readyReceive", ReadyReceiveController.class,
+				"/_view/atladmin/addition/readyReceive");
 
 		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/produce/assist");
 

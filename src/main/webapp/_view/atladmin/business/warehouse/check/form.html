@@ -241,7 +241,7 @@
 			<label  class="col-sm-3 control-label">订单日期</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"    readonly="readonly"  value="#date(model.order_date,"yyyy-MM-dd")" >
+				<input type="text" class="form-control"    readonly="readonly"  value="#date(model.order_date??,"yyyy-MM-dd")" >
 			
 			</div>
 		</div>
@@ -252,7 +252,7 @@
 			<label  class="col-sm-3 control-label">交货日期</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control"  readonly="readonly"    value="#date(model.delivery_date,"yyyy-MM-dd")"  >
+				<input type="text"  class="form-control"  readonly="readonly"    value="#date(model.delivery_date??,"yyyy-MM-dd")"  >
 			</div>
 		</div>
 	</div>
@@ -342,6 +342,7 @@
 			<div class="col-sm-9">
 
 				 <select   name="model.exception_reson" class="form-control"  >
+				 	<option class="form-control" > </option>
 				 	<option class="form-control"  #if(model.exception_reson??=="孔距超差")  selected="selected" #end >孔距超差</option>
 				 	<option class="form-control"  #if(model.exception_reson??=="孔边距超差") selected="selected" #end >孔边距超差</option>
 				 	<option class="form-control"  #if(model.exception_reson??=="起台阶") selected="selected" #end >起台阶</option>

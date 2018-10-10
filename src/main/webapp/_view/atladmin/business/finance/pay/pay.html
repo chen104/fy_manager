@@ -6,7 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">应付明细表</h3>
-				<a href="/fy/admin/biz/finance/pay/todownload"><button class="btn btn-primary">下载</button></a>
+				<button class="btn btn-primary" id="bt_downlad">下载</button>
+				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
+				<button class="btn btn-primary" id="bt_to_bill" >已结算</button>
 				<div class="box-tools">
 				<form action="/fy/admin/biz/finance/pay/pay"  class="form-inline">
 				
@@ -25,10 +27,10 @@
 						    <label for="condition"></label>
 							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()" >
 							    	
-							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
-							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no">送货单号</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-							   		<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
+							    	<option #if(condition=="supplier") selected="selected" #end value="supplier" >厂商</option>
+							    	<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
+							    	<option #if(condition=="pay_date") selected="selected" #end value="pay_date">付账期间</option>
+							  
 							    </select>
 						  
 						  </div>
@@ -48,7 +50,7 @@
 						</div>
 			  <script type="text/javascript">
 			  	$(function(){
-					#if(condition =="hang_date")
+					#if(condition =="hang_date"|| "pay_date" == val)
 			  			
 			  			$("#keyword").datepicker({
 			 	  		    	language:'zh-CN',
@@ -62,6 +64,77 @@
 			 	  		    });
 			  			
 			  		#end
+			  		
+			  	///fy/admin/biz/finance/pay/rollback
+			  	$("#bt_rollback").click(function(){
+			  		var selectIds = $("input[name=selectId]:checked");
+					if(selectIds==null||selectIds.length ==0){
+						alert("没有选择应付单");
+						return;
+					}
+					$.ajax({
+						   type: "POST",
+						   url:'/fy/admin/biz/finance/pay/rollback' ,
+						   data:selectIds.serialize(),
+						   success: function(ret){
+							   alert(ret.msg);
+							   if (ret.state == "ok") {
+									location.reload();
+								
+								}
+						
+							  
+						   },
+						   error:function (XMLHttpRequest, textStatus, errorThrown) {
+							    // 通常 textStatus 和 errorThrown 之中
+							    // 只有一个会包含信息
+							 //   this; // 调用本次AJAX请求时传递的options参数
+							   alert('网络异常');
+							}
+						});
+			  	});
+			  		
+			  		$("#bt_downlad").click(function(){
+			  			var selectIds = $("input[name=selectId]:checked");
+						if(selectIds==null||selectIds.length ==0){
+							alert("没有选择应付单");
+							return;
+						}
+			  			$("#download_pay").submit();
+			  		});
+			  		
+			  		
+			  		/**
+			  			更新生成应付结算单
+			  		*/
+			  		$("#bt_to_bill").click(function(){
+			  			var selectIds = $("input[name=selectId]:checked");
+						if(selectIds==null||selectIds.length ==0){
+							alert("没有选择应付单");
+							return;
+						}
+						$.ajax({
+							   type: "POST",
+							   url:'/fy/admin/biz/finance/pay/toBill' ,
+							   data:selectIds.serialize(),
+							   success: function(ret){
+								   alert(ret.msg);
+								   if (ret.state == "ok") {
+										location.reload();
+									
+									}
+							
+								  
+							   },
+							   error:function (XMLHttpRequest, textStatus, errorThrown) {
+								    // 通常 textStatus 和 errorThrown 之中
+								    // 只有一个会包含信息
+								 //   this; // 调用本次AJAX请求时传递的options参数
+								   alert('网络异常');
+								}
+							});
+			  		});
+			  		
 			  	});
 			  		
 			  
@@ -71,7 +144,7 @@
 				  			keyword_div.empty();
 				  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
 				  			keyword_div.append(input);
-				  		if("hang_date"==val ){
+				  		if("hang_date"==val || "pay_date" == val){
 				  			
 				  			$("#keyword").datepicker({
 				 	  		    	language:'zh-CN',
@@ -96,18 +169,18 @@
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding text-center">
-	
+				<form action="/fy/admin/biz/finance/pay/downloadPay" method="post" target="_blank" id="download_pay">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th style="">序号</th>
-							<!--  <th><input id="selectAll" type="checkbox" data-select="selectAll"> </th>-->	
+							 	<th><input id="selectAll"   type="checkbox" data-select="selectAll"> </th> 
 								<th>类别</th>
 								<th>计划员</th>
 								<th>工作订单号</th>
 								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>名称</th>
+								<th>图号</th>
 								<th>总图号</th>
 								<th>技术条件</th>
 								<th>质量等级</th>
@@ -139,16 +212,16 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-							<!--  <td> <input name="payId" value="#(x.id)" type="checkbox" data-select='select' >  </td> -->	
+							 <td> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
 								<td>#(x.cate_tmp)</td>
 								
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.work_order_no)</td>
 								<td>#(x.delivery_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.commodity_spec)</td>
-								
+								<td>#(x.purchase_name)</td>
 								<td>#(x.map_no)</td>
+								
+								<td>#(x.total_map_no)</td>
 								<td>#(x.technology)</td>
 								<td>#(x.machining_require)</td>
 								<td>#(x.quantity)</td>
@@ -158,19 +231,19 @@
 								<td>#(x.check_result)</td>
 								<td>#(x.supplier_name)</td>
 								
-								<td>#(x.order_no)</td>
-								<td>#(x.weiwai_quantity)</td>
-								<td>#(x.weiwai_cost)</td>
-								<td>#(x.weiwai_account)</td>
+								<td>#(x.purchase_no)</td>
+								<td>#(x.quantity)  <!-- (x.purchase_quantity)  --></td>
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_amount)</td>
 							<!--  
 								<td>#(x.tatol_amount)</td>
 								<td>#(x.quality_deduction)</td>
-									-->
-								<td>#(x.discount)</td>	
+								
+								<td>#(x.discount)</td>	 	-->
 								
 								<td>#(x.in_warehouse_time)</td>
 								<td>#(x.in_from)</td>
-								<td>#(x.real_in_quantity)</td>
+								<td>#(x.pay_quantity)</td>
 								<td>#(x.check_time)</td>
 								<td>#(x.should_pay)</td>
 								<td>#date(x.hang_date,"yyyy年MM月") </td>
@@ -189,11 +262,11 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="17"></td> <td>合计金额</td><td>#(weiwai_account)</td><td colspan="4"></td> <td>金额合计</td><td>#(weiwai_account)</td>
+								<td colspan="18"></td> <td>合计金额</td><td>#number(weiwai_account,"###.##")</td><td colspan="3"></td> <td>金额合计</td><td>#number(should_pay,"###.##")</td>
 							</tr>
 						</tfoot>
 					</table>
-		
+				</form>
 
 			</div>
 			<!-- /.box-body -->

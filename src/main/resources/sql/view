@@ -1,0 +1,14 @@
+inhouse
+select `fy_business_in_warehouse`.`order_id` AS `order_id`,sum(`fy_business_in_warehouse`.`pass_quantity`) AS `pass_quantity`,max(`fy_business_in_warehouse`.`in_time`) AS `in_time`,max(`fy_business_in_warehouse`.`check_time`) AS `check_time`,min(`fy_business_in_warehouse`.`check_result`) AS `check_result` from `fy_business_in_warehouse` group by `fy_business_in_warehouse`.`order_id`
+
+
+out_house
+SELECT order_id,max(out_time) out_tim,sum(out_quantity) out_quantity,max(transport_no) transport_no,max(transport_company) transport_company from  fy_business_out_warehouse GROUP BY order_id
+
+getpay
+select  delivery_no,sum(hang_amount),sum(quantity) from  fy_upload_getpay  GROUP BY delivery_no
+
+
+pay
+SELECT order_id ,min(check_result) check_result,sum(pay_quantity) pay_quantity,max(hang_date) hang_date,max(pay_date)  pay_date from fy_business_pay GROUP BY order_id
+

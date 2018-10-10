@@ -1,0 +1,278 @@
+#@myLayout() #define main()
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">应付计算单</h3>
+				<button class="btn btn-primary" id="bt_downlad">下载</button>
+				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
+				 
+				<div class="box-tools">
+				<form action="/fy/admin/biz/finance/paybill"  class="form-inline">
+				
+				 		<div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+				
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()" >
+							    	
+							    	<option #if(condition=="supplier") selected="selected" #end value="supplier" >厂商</option>
+							    	<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
+							    	<option #if(condition=="pay_date") selected="selected" #end value="pay_date">付账期间</option>
+							  
+							    </select>
+						  
+						  </div>
+					 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
+						  
+						  </div>
+					
+						<div class="input-group input-group-sm" >
+							
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+			  <script type="text/javascript">
+			  	$(function(){
+					#if(condition =="hang_date"|| "pay_date" == val)
+			  			
+			  			$("#keyword").datepicker({
+			 	  		    	language:'zh-CN',
+			 	  		      autoclose: true,
+			 	  		      format:'yyyy-mm',
+			 	  		      todayBtn:'linked',
+			 	  		      todayHighlight:true,
+			 	  		       orientation:'bottom' ,
+			 	  		    startView:1,
+			 		    	minViewMode:1
+			 	  		    });
+			  			
+			  		#end
+			  		
+			  	///fy/admin/biz/finance/pay/rollback
+			  	$("#bt_rollback").click(function(){
+			  		var selectIds = $("input[name=selectId]:checked");
+					if(selectIds==null||selectIds.length ==0){
+						alert("没有选择应付单");
+						return;
+					}
+					$.ajax({
+						   type: "POST",
+						   url:'/fy/admin/biz/finance/paybill/rollback' ,
+						   data:selectIds.serialize(),
+						   success: function(ret){
+							   alert(ret.msg);
+							   if (ret.state == "ok") {
+									location.reload();
+								
+								}
+						
+							  
+						   },
+						   error:function (XMLHttpRequest, textStatus, errorThrown) {
+							    // 通常 textStatus 和 errorThrown 之中
+							    // 只有一个会包含信息
+							 //   this; // 调用本次AJAX请求时传递的options参数
+							   alert('网络异常');
+							}
+						});
+			  	});
+			  		
+			  		$("#bt_downlad").click(function(){
+			  			var selectIds = $("input[name=selectId]:checked");
+						if(selectIds==null||selectIds.length ==0){
+							alert("没有选择应付单");
+							return;
+						}
+			  			$("#download_pay").submit();
+			  		});
+			  		
+			  		
+			  		 
+			  		
+			  	});
+			  		
+			  
+				  function onselectCondition(){
+				  		var val = $("#condition").val();
+				  		var keyword_div = $("#keyword_div");
+				  			keyword_div.empty();
+				  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+				  			keyword_div.append(input);
+				  		if("hang_date"==val || "pay_date" == val){
+				  			
+				  			$("#keyword").datepicker({
+				 	  		    	language:'zh-CN',
+				 	  		      autoclose: true,
+				 	  		      format:'yyyy-mm',
+				 	  		      todayBtn:'linked',
+				 	  		      todayHighlight:true,
+				 	  		       orientation:'bottom' ,
+				 	  		    startView:1,
+				 		    	minViewMode:1
+				 	  		    });
+				 	 	 	
+				 	 		
+				  		}else{
+				  			
+				  		}
+				  }
+									  	
+			</script>
+					</form>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body table-responsive no-padding text-center">
+				<form action="/fy/admin/biz/finance/paybill/downloadPay" method="post" target="_blank" id="download_pay">
+					<table class="table table-bordered"  style="white-space:nowrap">
+						<thead>
+							<tr>
+								<th style="">序号</th>
+							 	<th><input id="selectAll"   type="checkbox" data-select="selectAll"> </th> 
+								<th>类别</th>
+								<th>计划员</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>名称</th>
+								<th>图号</th>
+								<th>总图号</th>
+								<th>技术条件</th>
+								<th>质量等级</th>
+								<th>数量</th>
+								<th>单位</th>
+								<th>采购时间</th>
+								<th>检测结果</th>
+								<th>厂商</th>
+								<th>订单编号</th>
+								<th>委外数量</th>
+								<th>委外单价</th>
+								<th>委外金额</th>
+								<!--
+								<th>含税金额</th>
+								<th>质量扣款</th>
+								  -->
+								<th>入库时间</th>
+								<th>入库来源</th>
+								<th>实际入库数量</th>
+								<th>检测时间</th>
+								<th>应付总额</th>
+								<th>挂账期间</th>
+								<th>应付期间</th>
+								<th>操作</th>
+							
+							</tr>
+						</thead>
+						<tbody>
+							#for(x : modelPage.getList())
+							<tr>
+								<td>#(for.index+1)</td>
+							 <td> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+								<td>#(x.cate_tmp)</td>
+								
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.purchase_name)</td>
+								<td>#(x.map_no)</td>
+								
+								<td>#(x.total_map_no)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								<td>#(x.purchase_date)</td>
+								
+								<td>#(x.check_result)</td>
+								<td>#(x.supplier_name)</td>
+								
+								<td>#(x.purchase_no)</td>
+								<td>#(x.purchase_quantity)</td>
+								<td>#(x.purchase_cost)</td>
+								<td>#(x.purchase_amount)</td>
+							<!--  
+								<td>#(x.tatol_amount)</td>
+								<td>#(x.quality_deduction)</td>
+								
+								<td>#(x.discount)</td>	 	-->
+								
+								<td>#(x.in_warehouse_time)</td>
+								<td>#(x.in_from)</td>
+								<td>#(x.pay_quantity)</td>
+								<td>#(x.check_time)</td>
+								<td>#(x.should_pay)</td>
+								<td>#date(x.hang_date,"yyyy年MM月") </td>
+								<td>#date(x.pay_date,"yyyy年MM月")</td>
+							
+								<td class="jfa-operation-button"><a href="/fy/admin/biz/finance/pay/edit?id=#(x.id)" style="margin-left: 14px;"> 
+								<i class="fa fa-pencil" title="修改"></i>
+								</a>
+								<!--  <a data-delete data-title="#escape(x.name)"
+									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+										class="glyphicon glyphicon-share-alt" title="删除"></i>
+								</a> -->
+								</td>
+							</tr>
+							#end
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="18"></td> <td>合计金额</td><td>#number(weiwai_account,"###.##")</td><td colspan="3"></td> <td>金额合计</td><td>#number(should_pay,"###.##")</td>
+							</tr>
+						</tfoot>
+					</table>
+				</form>
+
+			</div>
+			<!-- /.box-body -->
+
+			<div class="box-footer clearfix">
+				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
+				"/fy/admin/biz/finance/paybill?p=")</div>
+		</div>
+		<!-- /.box -->
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked = $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+
+    </script>
+
+#end

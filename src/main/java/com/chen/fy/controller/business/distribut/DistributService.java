@@ -30,8 +30,8 @@ public class DistributService {
 		Page<FyBusinessOrder> modelPage = null;
 
 		String select = "select o.*,originalFileName filename,file.id fileId";
-		String from = "from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
-		String where = " where distribute_to is null ";
+		String from = " from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
+		String where = " where distribute_to is null AND order_status = 0";
 		String desc = " order by o.id desc,is_distribute desc ";
 		StringBuilder conditionSb = new StringBuilder();
 
@@ -49,15 +49,15 @@ public class DistributService {
 
 			if ("order_date".equals(condition)) {
 
-				conditionSb.append(String.format("AND order_date = '%s'", keyWord));
+				conditionSb.append(String.format(" AND order_date = '%s'", keyWord));
 
 			} else if ("delivery_date".equals(condition)) {
 
-				conditionSb.append(String.format("and  delivery_date = '%s'", keyWord));
+				conditionSb.append(String.format(" AND  delivery_date = '%s'", keyWord));
 
 			} else if (StringUtils.isNotEmpty(keyWord)) {
 
-				conditionSb.append(String.format("and  %s like  ", condition));
+				conditionSb.append(String.format(" AND  %s like  ", condition));
 				conditionSb.append("'%").append(keyWord).append("%'");
 
 			}
@@ -152,15 +152,22 @@ public class DistributService {
 		return zipFile;
 	}
 
+	/**
+	 * 把已分配的单据，撤回到待分配中
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
 	public Ret rollBack(String[] ids) throws Exception {
 		/*
 		 * 需要修改的字段 order_status = 0 distribute_attr = null distribute_to = null
 		 * is_distribute = 1 plan_time =null plan_finsh_time =null plan_remark = null
 		 * distribute_time = null receive_time
 		 */
+
 		String update = " update fy_business_order set order_status = 0, distribute_attr = '撤回',\n"
 				+ " distribute_to = null,is_distribute = 1, plan_time =null, plan_finsh_time =null,\n"
-				+ "plan_remark = null, distribute_time = null,receive_time=null \n"
+				+ "plan_remark = null, distribute_time = null,receive_time=null \n," + "dis_to = null "
 				+ " where has_in_quantity = 0 AND id in ";
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(ids, idsb);
@@ -174,6 +181,7 @@ public class DistributService {
 						"Insert into fy_business_purchase_callback select * from fy_business_purchase where order_id = "
 								+ idsb.toString());
 				Db.delete(" delete from fy_business_purchase where  order_id in " + idsb.toString());
+				Db.delete("delete from fy_ready_add where add_order_id in " + idsb.toString());
 				return re == ids.length;
 			}
 		});

@@ -30,8 +30,9 @@
 									    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()">
 									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">供应商</option>
 									    	<option #if(condition=="purchase_date") selected="selected" #end value="purchase_date">采购日期</option>
-									    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
-									    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
+									    <!-- 	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
+									    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option> -->	
+									    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
 									    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 									    	<option #if(condition=="purchase_delivery_date") selected="selected" #end value="purchase_delivery_date">采购交货日期</option>
 									    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
@@ -182,6 +183,7 @@
 								<th>交货日期</th>
 					
 								<th>采购日期</th>
+								<th>采购交货日期</th>
 								<th>采购订单号</th>
 							<!-- 	<th>图纸</th> -->
 								
@@ -212,9 +214,9 @@
 								
 								<td>#(x.work_order_no)</td>
 							
-								<td>#(x.purchase_delivery_date)</td>
+								<td>#(x.delivery_date)</td>
 								<td>#(x.purchase_date)</td>
-								
+								<td>#(x.purchase_delivery_date)</td>
 								<td>#(x.purchase_no)</td>
 								
 								

@@ -97,12 +97,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getInt("parent_id");
 	}
 
-	public void setCanDownload(java.lang.Boolean canDownload) {
-		set("can_download", canDownload);
+	public void setIsDownload(java.lang.Boolean isDownload) {
+		set("is_download", isDownload);
 	}
 	
-	public java.lang.Boolean getCanDownload() {
-		return get("can_download");
+	public java.lang.Boolean getIsDownload() {
+		return get("is_download");
 	}
 
 	public void setOutStatus(java.lang.Integer outStatus) {
@@ -111,6 +111,14 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 	
 	public java.lang.Integer getOutStatus() {
 		return getInt("out_status");
+	}
+
+	public void setOutRemark(java.lang.String outRemark) {
+		set("out_remark", outRemark);
+	}
+	
+	public java.lang.String getOutRemark() {
+		return getStr("out_remark");
 	}
 
 }

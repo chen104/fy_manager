@@ -64,29 +64,30 @@ public class PayService {
 
 				pay.setCheckTime(model.getCheckTime());// 检测时间
 				// pay.setWeiwaiQuantity(order.getQuantity());// 委外数量 ,
-				pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
-				pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
-				pay.setInFrom("采购");
+				// pay.setWeiwaiCost(purchase.getPurchaseCost()); // 委外单价
+				// pay.setWeiwaiAccount(purchase.getPurchaseAccount()); // 委外金额
+				// pay.setInFrom("采购");
 				pay.setInWarehouseTime(model.getInTime());// 为实际入库数
 				// pay.setRealInQuantity(model.getRealInQuantity());
 				BigDecimal PurchaseCost = purchase.getPurchaseCost();
 				// BigDecimal InQuantity = model.getRealInQuantity();
 
-				if (order.getQuantity().doubleValue() != pay.getRealInQuantity().doubleValue()) {
-					// if (purchase.getDiscount() == null || purchase.getDiscount().doubleValue() ==
-					// 0) {
-					// pay.setDiscount(new BigDecimal("0"));// 折扣
-					// } else {
-					// Double discount = pay.getDiscount().doubleValue();// 采购折扣
-					// Double tmp = (discount / purchase.getPurchaseQuantity().doubleValue());
-					// discount = pay.getRealInQuantity().doubleValue() * tmp;
-					// pay.setDiscount(new BigDecimal(discount));
-					// }
+				// if (order.getQuantity().doubleValue() !=
+				// pay.getRealInQuantity().doubleValue()) {
+				// if (purchase.getDiscount() == null || purchase.getDiscount().doubleValue() ==
+				// 0) {
+				// pay.setDiscount(new BigDecimal("0"));// 折扣
+				// } else {
+				// Double discount = pay.getDiscount().doubleValue();// 采购折扣
+				// Double tmp = (discount / purchase.getPurchaseQuantity().doubleValue());
+				// discount = pay.getRealInQuantity().doubleValue() * tmp;
+				// pay.setDiscount(new BigDecimal(discount));
+				// }
 
-				} else {
-					// pay.setDiscount(purchase.getDiscount());
+				// } else {
+				// pay.setDiscount(purchase.getDiscount());
 
-				}
+				// }
 				// pay.setShouldPay(PurchaseCost.multiply(InQuantity)
 				// .subtract(pay.getDiscount() == null ? new BigDecimal("0") :
 				// pay.getDiscount()));// 应付实际金额
@@ -96,8 +97,8 @@ public class PayService {
 				pay.setCreateBy(loginID);
 				pay.setPayDate(payperiod);
 
-				pay.setInHouseId(model.getId());// 入库Id
-				pay.setIsWw(true);// 来源是委外
+				// pay.setInHouseId(model.getId());// 入库Id
+				// pay.setIsWw(true);// 来源是委外
 				pay.setPurchaseDate(purchase.getPurchaseDate());
 
 				// purchase.setHangQuantity(purchase.getHangQuantity().add(pay.getRealInQuantity()));//

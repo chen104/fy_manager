@@ -1,18 +1,25 @@
 package com.chen.fy.controller.business.assist;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessAssist;
 import com.chen.fy.model.FyBusinessOrder;
+import com.jfinal.club.common.kit.AssistNoKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 
 public class AssistController extends BaseController {
+	AssistService service = AssistService.me;
+	private static final Logger logger = LogManager.getLogger(AssistService.class);
+
 	public void toAddassist() {
 		Integer id = getParaToInt("selectId");
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
@@ -40,6 +47,8 @@ public class AssistController extends BaseController {
 
 	public void saveAssist() {
 		FyBusinessAssist model = getBean(FyBusinessAssist.class, "model");
+		model.setAssistNo(AssistNoKit.getNo());
+		model.setCreateTime(new Date());
 		// 更细委外未挂账金额
 		// FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 
@@ -53,7 +62,7 @@ public class AssistController extends BaseController {
 		});
 		Ret ret = null;
 		if (re) {
-			ret = Ret.ok().set("msg", "生成入库单成功");
+			ret = Ret.ok().set("msg", "生成外协加工单成功");
 		} else {
 			ret = Ret.fail().set("msg", "生成失败");
 		}
@@ -110,11 +119,12 @@ public class AssistController extends BaseController {
 		String condition = getPara("condition");
 
 		String oTable = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
-				+ ",s.name supplier_name";
+				+ ",s.name supplier_name ,p.create_time pay_create_time";
 		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
 		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "
 				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id ";
+				+ " left join fy_base_fyfile  f on o.draw = f.id"
+				+ " LEFT JOIN fy_business_pay p ON p.is_purchase =0 AND p.parent_id = a.id ";
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), pageSize, select,
 					from + " order by id desc");
@@ -166,6 +176,20 @@ public class AssistController extends BaseController {
 			ret = Ret.fail().set("msg", "删除失败");
 		}
 		renderJson(ret);
+	}
+
+	public void createPay() {
+		String[] ids = getParaValues("selectId");
+		Ret ret;
+		try {
+			ret = service.createPay(ids);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderJson(Ret.ok().set("msg", "请查看运行日志"));
 	}
 
 }

@@ -94,6 +94,12 @@ public class FyPurchaseAuditService {
 		return dao.findById(id);
 	}
 
+	/**
+	 * 上传报目表
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
 	public Integer uploadRuqest(File file) throws Exception {
 
 		PIOExcelUtil excel = new PIOExcelUtil(file, 0);
@@ -112,6 +118,11 @@ public class FyPurchaseAuditService {
 				continue;
 			}
 			workorderno.add(work_no);
+
+			String purchase_quantity = excel.getCellVal(i, 5);// 采购数量
+			item.setPurchaseQuantity(
+					NumberUtils.isNumber(purchase_quantity) ? Integer.valueOf(purchase_quantity) : null);
+
 			String purchaseSingleWeight = excel.getCellVal(i, 7);// 单件
 			item.setPurchaseSingleWeight(
 					NumberUtils.isNumber(purchaseSingleWeight) ? new BigDecimal(purchaseSingleWeight) : null);
@@ -145,7 +156,7 @@ public class FyPurchaseAuditService {
 		 * 删除已有的价格的单据
 		 */
 		StringBuilder delete = new StringBuilder(
-				" delete from fy_business_purchase where  add_status = 1 AND work_order_no in  ");
+				" delete from fy_business_purchase where  add_status = 0 AND work_order_no in  ");
 
 		SqlKit.joinIds(workorderno, delete);
 

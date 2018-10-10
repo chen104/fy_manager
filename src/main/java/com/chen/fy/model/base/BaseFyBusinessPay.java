@@ -41,52 +41,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("order_no");
 	}
 
-	public void setWeiwaiQuantity(java.math.BigDecimal weiwaiQuantity) {
-		set("weiwai_quantity", weiwaiQuantity);
-	}
-	
-	public java.math.BigDecimal getWeiwaiQuantity() {
-		return get("weiwai_quantity");
-	}
-
-	public void setWeiwaiCost(java.math.BigDecimal weiwaiCost) {
-		set("weiwai_cost", weiwaiCost);
-	}
-	
-	public java.math.BigDecimal getWeiwaiCost() {
-		return get("weiwai_cost");
-	}
-
-	public void setWeiwaiAccount(java.math.BigDecimal weiwaiAccount) {
-		set("weiwai_account", weiwaiAccount);
-	}
-	
-	public java.math.BigDecimal getWeiwaiAccount() {
-		return get("weiwai_account");
-	}
-
-	public void setTaxRate(java.math.BigDecimal taxRate) {
-		set("tax_rate", taxRate);
-	}
-	
-	public java.math.BigDecimal getTaxRate() {
-		return get("tax_rate");
-	}
-
 	public void setTatolAmount(java.math.BigDecimal tatolAmount) {
 		set("tatol_amount", tatolAmount);
 	}
 	
 	public java.math.BigDecimal getTatolAmount() {
 		return get("tatol_amount");
-	}
-
-	public void setDiscount(java.math.BigDecimal discount) {
-		set("discount", discount);
-	}
-	
-	public java.math.BigDecimal getDiscount() {
-		return get("discount");
 	}
 
 	public void setQualityDeduction(java.math.BigDecimal qualityDeduction) {
@@ -113,44 +73,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("in_from");
 	}
 
-	public void setRealInQuantity(java.math.BigDecimal realInQuantity) {
-		set("real_in_quantity", realInQuantity);
+	public void setPayQuantity(java.lang.Integer payQuantity) {
+		set("pay_quantity", payQuantity);
 	}
 	
-	public java.math.BigDecimal getRealInQuantity() {
-		return get("real_in_quantity");
-	}
-
-	public void setCheckTime(java.util.Date checkTime) {
-		set("check_time", checkTime);
-	}
-	
-	public java.util.Date getCheckTime() {
-		return get("check_time");
-	}
-
-	public void setIsCreateBill(java.lang.Boolean isCreateBill) {
-		set("is_create_bill", isCreateBill);
-	}
-	
-	public java.lang.Boolean getIsCreateBill() {
-		return get("is_create_bill");
-	}
-
-	public void setBillCreateTime(java.util.Date billCreateTime) {
-		set("bill_create_time", billCreateTime);
-	}
-	
-	public java.util.Date getBillCreateTime() {
-		return get("bill_create_time");
-	}
-
-	public void setSupplierName(java.lang.String supplierName) {
-		set("supplier_name", supplierName);
-	}
-	
-	public java.lang.String getSupplierName() {
-		return getStr("supplier_name");
+	public java.lang.Integer getPayQuantity() {
+		return getInt("pay_quantity");
 	}
 
 	public void setParentId(java.lang.Integer parentId) {
@@ -169,44 +97,28 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getInt("order_id");
 	}
 
-	public void setCreateMonth(java.lang.Integer createMonth) {
-		set("create_month", createMonth);
+	public void setCreateTime(java.util.Date createTime) {
+		set("create_time", createTime);
 	}
 	
-	public java.lang.Integer getCreateMonth() {
-		return getInt("create_month");
+	public java.util.Date getCreateTime() {
+		return get("create_time");
 	}
 
-	public void setPayMonth(java.lang.Integer payMonth) {
-		set("pay_month", payMonth);
+	public void setIsDownload(java.lang.Boolean isDownload) {
+		set("is_download", isDownload);
 	}
 	
-	public java.lang.Integer getPayMonth() {
-		return getInt("pay_month");
+	public java.lang.Boolean getIsDownload() {
+		return get("is_download");
 	}
 
-	public void setCanDownload(java.lang.Boolean canDownload) {
-		set("can_download", canDownload);
+	public void setIsPurchase(java.lang.Boolean isPurchase) {
+		set("is_purchase", isPurchase);
 	}
 	
-	public java.lang.Boolean getCanDownload() {
-		return get("can_download");
-	}
-
-	public void setIsWw(java.lang.Boolean isWw) {
-		set("is_ww", isWw);
-	}
-	
-	public java.lang.Boolean getIsWw() {
-		return get("is_ww");
-	}
-
-	public void setInHouseId(java.lang.Integer inHouseId) {
-		set("in_house_id", inHouseId);
-	}
-	
-	public java.lang.Integer getInHouseId() {
-		return getInt("in_house_id");
+	public java.lang.Boolean getIsPurchase() {
+		return get("is_purchase");
 	}
 
 	public void setShouldPay(java.math.BigDecimal shouldPay) {
@@ -215,14 +127,6 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 	
 	public java.math.BigDecimal getShouldPay() {
 		return get("should_pay");
-	}
-
-	public void setRealAccount(java.math.BigDecimal realAccount) {
-		set("real_account", realAccount);
-	}
-	
-	public java.math.BigDecimal getRealAccount() {
-		return get("real_account");
 	}
 
 	public void setHangDate(java.util.Date hangDate) {
@@ -257,20 +161,68 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("remark");
 	}
 
-	public void setCreateTime(java.util.Date createTime) {
-		set("create_time", createTime);
-	}
-	
-	public java.util.Date getCreateTime() {
-		return get("create_time");
-	}
-
 	public void setCreateBy(java.lang.Integer createBy) {
 		set("create_by", createBy);
 	}
 	
 	public java.lang.Integer getCreateBy() {
 		return getInt("create_by");
+	}
+
+	public void setCheckTime(java.util.Date checkTime) {
+		set("check_time", checkTime);
+	}
+	
+	public java.util.Date getCheckTime() {
+		return get("check_time");
+	}
+
+	public void setPurchaseName(java.lang.String purchaseName) {
+		set("purchase_name", purchaseName);
+	}
+	
+	public java.lang.String getPurchaseName() {
+		return getStr("purchase_name");
+	}
+
+	public void setPurchaseQuantity(java.lang.Integer purchaseQuantity) {
+		set("purchase_quantity", purchaseQuantity);
+	}
+	
+	public java.lang.Integer getPurchaseQuantity() {
+		return getInt("purchase_quantity");
+	}
+
+	public void setPurchaseCost(java.math.BigDecimal purchaseCost) {
+		set("purchase_cost", purchaseCost);
+	}
+	
+	public java.math.BigDecimal getPurchaseCost() {
+		return get("purchase_cost");
+	}
+
+	public void setPurchaseNo(java.lang.String purchaseNo) {
+		set("purchase_no", purchaseNo);
+	}
+	
+	public java.lang.String getPurchaseNo() {
+		return getStr("purchase_no");
+	}
+
+	public void setPurchaseAmount(java.math.BigDecimal purchaseAmount) {
+		set("purchase_amount", purchaseAmount);
+	}
+	
+	public java.math.BigDecimal getPurchaseAmount() {
+		return get("purchase_amount");
+	}
+
+	public void setIsSetlled(java.lang.Boolean isSetlled) {
+		set("is_setlled", isSetlled);
+	}
+	
+	public java.lang.Boolean getIsSetlled() {
+		return get("is_setlled");
 	}
 
 }

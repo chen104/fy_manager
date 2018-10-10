@@ -2,6 +2,8 @@ package com.chen.fy.controller.business.order;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +22,10 @@ import com.jfinal.club.common.kit.ContextKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.ICallback;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -286,6 +291,12 @@ public class OrderService2 {
 			String transport_no = item.getStr("transport_no");// 物流单号
 			excel.setCellVal(row, 33, transport_no);
 
+			String is_finsh_product = item.getStr("is_finsh_product");// 物流单号
+			if (StringUtils.isNotEmpty(is_finsh_product)) {
+				is_finsh_product = is_finsh_product.trim();
+				excel.setCellVal(row, 34, is_finsh_product);
+			}
+
 			row++;
 		}
 
@@ -321,7 +332,7 @@ public class OrderService2 {
 			item.setUrgentStatus(urgentStatus);
 
 			String workid = excel.getCellVal(i, 4);// 工作订单号
-			if (StringUtils.isEmpty(workid)) {
+			if (StringUtils.isEmpty(workid) && (!"备货".equals(excustatu))) {
 				System.out.println(item);
 				continue;
 			}
@@ -403,11 +414,46 @@ public class OrderService2 {
 		OrderUploadLog log = new OrderUploadLog();
 		log.setSucess(total);
 		log.save();
-		// Db.update(
-		// " update fy_business_order set warn_time = DATE_ADD(import_time,INTERVAL 2
-		// DAY) where warn_time is null");
+		Db.update("update  fy_business_order set order_status = 40 where execu_status ='备货' AND order_status = 0 ");
 		return total;
 
+	}
+
+	public Ret delteOrder(String[] ids) throws Exception {
+		Ret ret = null;
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		String sql = "insert INTO fy_business_order_delete SELECT * from  fy_business_order where id in   "
+				+ idsb.toString();
+		String delete = " delete from fy_business_order where id in " + idsb.toString();
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+
+				Object o = Db.execute(new ICallback() {
+
+					@Override
+					public Object call(Connection conn) throws SQLException {
+						int in = conn.createStatement().executeUpdate(sql);
+						int dnum = conn.createStatement().executeUpdate(delete);
+						return in == dnum;
+					}
+				});
+				if (o instanceof Boolean) {
+					return (Boolean) o;
+				}
+
+				return false;
+			}
+		});
+
+		if (re) {
+			ret = Ret.ok().set("msg", "删除完成");
+		} else {
+			ret = Ret.ok().set("msg", "删除失败");
+		}
+		return ret;
 	}
 
 }

@@ -10,38 +10,144 @@
 			
 				<h3 class="box-title">应收</h3>
 
-				
+				<button class="btn btn-primary" id="bt_to_bill" >已结算</button>
 					
 				<div class="box-tools">
-						<!-- 
-						<form action="/fy/admin/base/person" class="form-inline">
-						
-								 <div class="form-group  input-group-sm">
-								    <label for="condition">条件</label>
-									    <select id="condition" class="form-control" name="condition" >
-									    	<option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">状态</option>
-									    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >姓名</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">入职天数</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">部门</option>
-									    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">寝室号</option>
-									    
-									    </select>
-								  
-								  </div>
+					
+					<form action="/fy/admin/biz/finance/upgetpay"  class="form-inline">
+				
+				 		<div class="form-group  input-group-sm">
+						 	    <label for="pageSize">显示</label>
+						 	   	<select id="pageSize" class="form-control" name="pageSize" >
+						 	   			<option  value="10">10</option>
+						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
+						 	   			<option  value="30" #if(pageSize == 30) selected="selected" #end >30</option>
+						 	   			<option  value="50" #if(pageSize == 50) selected="selected" #end >50</option>
+						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
+						 	   	</select>
+						 </div>
+				
+						 <div class="form-group  input-group-sm">
+						    <label for="condition"></label>
+							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()" >
+							    	
+							    	<option #if(condition=="supplier") selected="selected" #end value="supplier" >厂商</option>
+							    	<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
+							    	<option #if(condition=="pay_date") selected="selected" #end value="pay_date">付账期间</option>
+							  
+							    </select>
+						  
+						  </div>
+					 <div id="keyword_div" class="form-group  input-group-sm"  >
+								<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  value="#(keyWord)">
+							
+						  
+						  </div>
+					
+						<div class="input-group input-group-sm" >
+							
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+			  <script type="text/javascript">
+			 
+	
+			  
+				  function onselectCondition(){
+				  		var val = $("#condition").val();
+				  		var keyword_div = $("#keyword_div");
+				  			keyword_div.empty();
+				  			var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
+				  			keyword_div.append(input);
+				  		if("hang_date"==val || "pay_date" == val){
+				  			
+				  			$("#keyword").datepicker({
+				 	  		    	language:'zh-CN',
+				 	  		      autoclose: true,
+				 	  		      format:'yyyy-mm',
+				 	  		      todayBtn:'linked',
+				 	  		      todayHighlight:true,
+				 	  		       orientation:'bottom' ,
+				 	  		    startView:1,
+				 		    	minViewMode:1
+				 	  		    });
+				 	 	 	
+				 	 		
+				  		}else{
+				  			
+				  		}
+				  }
+							
+				  
+				 	$(function(){
+						#if(condition =="hang_date"|| "pay_date" == val)
+				  			
+				  			$("#keyword").datepicker({
+				 	  		    	language:'zh-CN',
+				 	  		      autoclose: true,
+				 	  		      format:'yyyy-mm',
+				 	  		      todayBtn:'linked',
+				 	  		      todayHighlight:true,
+				 	  		       orientation:'bottom' ,
+				 	  		    startView:1,
+				 		    	minViewMode:1
+				 	  		    });
+				  			
+				  		#end
+				  		
+				  		$("#selectAll").click(function(){
+							var isChecked = $("#selectAll").is(":checked");
+							if( isChecked ){
+								$('input[data-select=select]').each(function() {
+									//$(this).attr('checked', true);
+									this.checked= true;
+									});
+							}else{
+								$('input[data-select=select]').each(function() {
+									//$(this).attr('checked', false);
+									this.checked= false;
+								});
+							}
+							console.info('this');
+							
+						});
+				  		
+				  		$("#bt_to_bill").click(function(){
+				  			var selectIds = $("input[name=selectId]:checked");
+							if(selectIds==null||selectIds.length ==0){
+								alert("没有选择应付单");
+								return;
+							}
+							$.ajax({
+								   type: "POST",
+								   url:'/fy/admin/biz/finance/upgetpay/toBill' ,
+								   data:selectIds.serialize(),
+								   success: function(ret){
+									   alert(ret.msg);
+									   if (ret.state == "ok") {
+											location.reload();
+										
+										}
 								
-								<div class="input-group input-group-sm" style="width: 150px;">
-									<input type="text" name="keyWord" class="form-control pull-right" autocomplete="off"
-										placeholder="Search" value="#(keyWord)">
-		
-									<div class="input-group-btn">
-										<button type="submit" class="btn btn-default" >
-											<i class="fa fa-search"></i>
-										</button>
-									</div>
-								</div>
-		
-							</form>
-							 -->
+									  
+								   },
+								   error:function (XMLHttpRequest, textStatus, errorThrown) {
+									    // 通常 textStatus 和 errorThrown 之中
+									    // 只有一个会包含信息
+									 //   this; // 调用本次AJAX请求时传递的options参数
+									   alert('网络异常');
+									}
+								});
+				  		});
+
+				  	});
+			</script>
+					</form>
+					
+					
 				</div>
 				
 			</div>
@@ -52,8 +158,7 @@
 						<thead>
 							<tr>
 								<th style="">序号</th>
-								
-									
+								<th> <input id="selectAll"   type="checkbox" data-select="selectAll">  </th>
 								<th>挂账日期	</th>
 								<th>发票号</th>
 								<th>料号	</th>
@@ -71,6 +176,7 @@
 								<th>送货单号	</th>
 								<th>送货单序号	</th>
 								<th>合同编号</th>
+								<th>备注</th>
 								<th>操作</th>
 								
 
@@ -80,7 +186,7 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								
+								 <td> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
 								<td>#(x.hang_date)</td>
 								<td>#(x.invoice_no)</td>
 								
@@ -101,6 +207,7 @@
 								<td>#(x.delivery_no)</td>
 								<td>#(x.delivery_index)</td>
 								<td>#(x.contract)</td>
+								<td>#(x.remark)</td>
 								<td>
 								
 									<a href="/fy/admin/biz/finance/upgetpay/edit?id=#(x.id)" style="margin-left: 14px;"> 
@@ -110,6 +217,7 @@
 										class="fa fa-trash" title="删除"></i>
 								</a>
 								</td>
+								
 							</tr>
 							#end
 						</tbody>
@@ -117,7 +225,7 @@
 						
 							<tr>
 							
-								<td colspan="12"></td><td>合计金额</td><td>#(hang_amount)</td>
+								<td colspan="13"></td><td>合计金额</td><td>#(hang_amount)</td>
 						
 							</tr>
 						</tfoot>

@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 import com.chen.fy.model.FyBusinessPurchase;
 import com.chen.fy.model.Supplier;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.PurchaseNoKit;
 import com.jfinal.club.common.kit.SqlKit;
@@ -52,7 +53,7 @@ public class PurchaseService {
 
 				if ("purchase_delivery_date".equals(condition)) {
 
-					conditionSb.append(String.format(" AND order_date = '%s'", keyWord));
+					conditionSb.append(String.format(" AND purchase_delivery_date = '%s'", keyWord));
 
 				} else if ("supplier_name".equals(condition)) {
 					conditionSb.append(" AND s.name like '%").append(keyWord).append("%' ");
@@ -62,7 +63,14 @@ public class PurchaseService {
 
 					conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
 
-				} else if ("work_order_no".equals(condition)) {
+				} else if ("order_date".equals(condition)) {
+
+					conditionSb.append(String.format("AND  DATE_FORMAT(order_date,%s) = '%s'",
+							Constant.mysql_date_format, keyWord));
+
+				}
+
+				else if ("work_order_no".equals(condition)) {
 					conditionSb.append(" AND  o.work_order_no like  ");
 					conditionSb.append("'%").append(keyWord).append("%'");
 				} else if (StringUtils.isNotEmpty(keyWord)) {

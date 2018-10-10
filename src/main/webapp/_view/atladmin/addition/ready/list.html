@@ -4,31 +4,18 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-		#include("upload.html")
 			<div class="box-header">
-				
-			
-				<h3 class="box-title">备货</h3>
-
-				<a href="/fy/admin/biz/addition/ready/add"><button type="submit"
-						class="btn btn-primary">添加记录</button></a>
-				<a class="btn btn-info" href="/fy/admin/biz/addition/ready/toDownload" > <i class="glyphicon glyphicon-download-alt"></i>下载</a>
+				<h3 class="box-title">备货 </h3>
 				<div class="box-tools">
-			
 					<form action="/fy/admin/biz/addition/ready"  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						    <label for="condition">条件</label>
-							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()">
+							    <select id="condition" class="form-control" name="condition"   ">
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no">工作订单号</option>
 							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">产品名称</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>
-							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
-							    	<option #if(condition=="cutomer") selected="selected" #end value="cutomer" >客户</option>
-							    	<option #if(condition=="supplier") selected="selected" #end value="supplier">厂商</option>
-						
-							    	
+							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option> 
+							    	<option #if(condition=="ready_status") selected="selected" #end value="ready_status">图号</option> 	
 							    </select>
-						  
 						  </div>
 						  
 						
@@ -44,288 +31,66 @@
 									<i class="fa fa-search"></i>
 								</button>
 						  </div>
-						
-  <script type="text/javascript">
-  	$(function(){
-  		
-  		var val = $("#condition").val();
-  		if(val == "order_date"){
-  			
-  			$("#keyword").datepicker({
-  		    	language:'zh-CN',
-    		      autoclose: true,
-    		      format:'yyyy-mm-dd',
-    		      todayBtn:'linked',
-    		      todayHighlight:true,
-    		       orientation:'bottom' 
-    		    });
-   	 	
-  		}
-  		
-  	
-  		
-  	});
-  
-	  function onselectCondition(){
-		  var value = $("#condition").val();
-		  $("#keyword_div").empty();
-		  var input='<input id="keyword" type="text" name="keyWord" autocomplete="off" class="form-control"  >';
-			$("#keyword_div").append(input);
-	  		if("cutomer"== value ){
-	  			
-	  			$("#keyword").click(selectCustomer);
-	  		}else if("supplier"==value){
-	  			
-	  			$("#keyword").click(selectCustomer);
-	  		}else if(value == "order_date"){
-	  			
-	  			$("#keyword").datepicker({
-	  		    	language:'zh-CN',
-	    		      autoclose: true,
-	    		      format:'yyyy-mm-dd',
-	    		      todayBtn:'linked',
-	    		      todayHighlight:true,
-	    		       orientation:'bottom' 
-	    		    });
-	  		}
-	  }
-						  	
-</script>
-					</form>
-			
+						 </form>
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding text-center">
+			<div class="box-body table-responsive no-padding">
 	
-					<table class="table table-bordered"  style="white-space:nowrap">
+					<table class="table table-bordered text-center"  style="white-space:nowrap">
 						<thead>
-							<tr>
+							<tr >
 								<th style="">序号</th>
 								<th>客户</th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
-								<th>导入时间</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
-								
-								<th>工作订单号1</th>
-								<th>送货单号1</th>
-								
-								<th>工作订单号1</th>
-								<th>送货单号1</th>
-								
-								<th>工作订单号1</th>
-								<th>送货单号1</th>
-								
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>工作订单号</th>
+								<th>送货单号</th>
+								<th>名称</th>
+								<th>图号</th>
 								<th>总图号</th>
 								<th>技术条件</th>
-								<th>质量等级</th>
+								<th>加工要求</th>
 								<th>订单数量</th>
 								<th>单位</th>
-								<th>未税单价</th>
 								<th>补单状态</th>
-								
-								<th>补单数量1</th>
-								<th>补单数量2</th>
-								<th>补单数量3</th>
-								
 								<th>厂商</th>
 								<th>订单编码</th>
-								<th>数量</th>
+								<th>备货数量</th>
 								<th>单位</th>
-								<th>单价</th>
-								<th>金额</th>
-								<th>折扣</th>
-								<th>折扣后金额</th>
 								
-								<th>检测时间</th>
-								<th>检测结果</th>
-								
-								<th>库存</th>
-								<th>入库数量1</th>
-								<th>入库时间1</th>
-	
-								<th>入库数量2</th>
-								<th>入库时间2</th>
-								
-								<th>入库数量3</th>
-								<th>入库时间3</th>
-								
-								
-								<th>入库数量4</th>
-								<th>入库时间4</th>
-								
-								<th>入库数量5</th>
-								<th>入库时间5</th>
-								
-								<th>出库数量1</th>
-								<th>出库时间1</th>
-								
-								
-								<th>出库数量2</th>
-								<th>出库时间2</th>
-								
-								<th>出库数量3</th>
-								<th>出库时间3</th>
-								
-								
-								<th>出库数量4</th>
-								<th>出库时间4</th>
-								
-								<th>出库数量5</th>
-								<th>出库时间5</th>
-								
-								
-								<th>挂账数量1</th>
-								<th>挂账金额1</th>
-								<th>挂账日期1</th>
-								
-								<th>挂账数量2</th>
-								<th>挂账金额2</th>
-								<th>挂账日期2</th>
-								
-								<th>挂账数量3</th>
-								<th>挂账金额3</th>
-								<th>挂账日期3</th>
-								
-								<th>挂账数量4</th>
-								<th>挂账金额4</th>
-								<th>挂账日期4</th>
-								
-								<th>挂账数量5</th>
-								<th>挂账金额5</th>
-								<th>挂账日期5</th>
-								<th>操作</th>
+								<th>备注</th>
+								 
 							</tr>
 						</thead>
 						<tbody>
 							#for(x : modelPage.getList())
-							<tr>
-							<td>#(for.index)</td> 
-							<td>#(x.customer_name)</td> 
-							  <td>#(x.category_name)</td> 
-							  <td>#(x.planer_name)</td> 
-							  <td>#(x.execu_status)</td> 
-							
-							  <td>#(x.import_time)</td>
-							  <td>#(x.order_date) </td>
-							  <td>#(x.delivery_date)</td>
-							  
-							  <td>#(x.work_order_no1)</td> 
-							  <td>#(x.delivery_no1)</td> 
-							  <td>#(x.work_order_no2)</td> 
-							  <td>#(x.delivery_no2)</td> 
-							  <td>#(x.work_order_no3)</td> 
-							  <td>#(x.delivery_no3)</td> 
-							  
-							  <td>#(x.commodity_name)</td> 
-							  <td>#(x.commodity_spec)</td>
-							  <td>#(x.map_no)</td>
-							  <td>#(x.technology)</td>
-							  <td>#(x.machining_require)</td>
-							  <td>#(x.quantity)</td>
-							  <td>#(x.unit_name)</td> 
-							  <td>#(x.untaxed_cost)</td>
-							  <td>#(x.add_status)</td> 
-							  
-							  <td>#(x.add_quantity1)</td>
-							  <td>#(x.add_quantity2)</td>
-							  <td>#(x.add_quantity3)</td>
-							  
-							  <td> #(x.supplier_name) </td> 
-							  <td>#(x.order_no)</td>
-							  	  
-							  <td>#(x.purchase_quanity)</td>
-							  <td>#(x.purchase_unit)</td>
-							  
-							  <td>#(x.cost)</td>
-							  <td>#(x.amount)</td>
-							  <td>#(x.discount)</td>
-							  <td>#(x.discount_amount)</td>
-							
-							  <td>#(x.check_time)</td>
-							  <td>#(x.check_result)</td>
-							
-							  
-							  <td>#(x.storage)</td>
-							
-							   
-							   
-							  <td>#(x.in_quantity1)</td>	
-							  <td>#(x.in_date1)</td>
-							  
-							  <td>#(x.in_quantity2)</td>	
-							  <td>#(x.in_date2)</td>
-							  
-							  <td>#(x.in_quantity3)</td>	
-							  <td>#(x.in_date3)</td>
-							  
-							 <td>#(x.in_quantity4)</td>	
-							  <td>#(x.in_date4)</td>
-							  
-							  
-							  <td>#(x.in_quantity5)</td>	
-							  <td>#(x.in_date5)</td>
-							  
-							  <td>#(x.out_quantity1)</td>
-							  <td>#(x.out_date1)</td>
-							  
-						
-							  <td>#(x.out_quantity2)</td>
-							  <td>#(x.out_date2)</td>
-							  
-							 
-							  
-							  
-							  <td>#(x.out_quantity3)</td>
-							  <td>#(x.out_date3)</td>
-							  
-							 
-							  <td>#(x.out_quantity4)</td>
-							  <td>#(x.out_date4)</td>
-							  
-							 
-							  <td>#(x.out_quantity5)</td>
-							  <td>#(x.out_date5)</td>
-							  
-							  
-							  <td>#(x.hang_quantity1)</td>
-							  <td>#(x.hang_account1)</td>
-							  <td>#(x.hang_date1)</td>
-							  				
-							   <td>#(x.hang_quantity2)</td>
-							  <td>#(x.hang_account2)</td>
-							  <td>#(x.hang_date2)</td>
-							  
-							  <td>#(x.hang_quantity3)</td>
-							  <td>#(x.hang_account3)</td>
-							  <td>#(x.hang_date3)</td>
+							<tr >
+								<td>#(for.index+1)</td>
+								<td>#(x.customer_name)</td>
+								<td>#(x.cate_tmp)</td>
+								<td>#(x.plan_tmp)</td>
+								<td>#(x.execu_status)</td>
+								 
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.commodity_name)</td>
+								<td>#(x.map_no)</td>
+								<td>#(x.total_map_no)</td>
 								
-							  <td>#(x.hang_quantity4)</td>
-							  <td>#(x.hang_account4)</td>
-							  <td>#(x.hang_date4)</td>
-							  
-							  <td>#(x.hang_quantity5)</td>
-							  <td>#(x.hang_account5)</td>
-							  <td>#(x.hang_date5)</td>
+								<td>#(x.technology)</td>
+								<td>#(x.machining_require)</td>
 								
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/addition/ready/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> 
-								#if(!x.is_create_purchase)
-								<a href="/fy/admin/biz/addition/readyPurchase/add?id=#(x.id)" style="margin-left: 14px;"> 
-									<i class="glyphicon glyphicon-plus" title="添加">新建采购单</i>
-								</a> 
-								#end
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
 								
-								<a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/biz/addition/ready/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								<td>#(x.add_status)</td>
+								<td>#(x.supplier_name)</td>
+								<th>#(x.order_no)</th>
+								<td>#(x.quantity)</td>
+								<td>#(x.unit_tmp)</td>
+								<th>#(x.ready_remark)</th>
 							</tr>
 							#end
 						</tbody>
@@ -337,24 +102,21 @@
 
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/addition/ready?p=")</div>
+				"/fy/admin/biz/addition/readyReceive?p=")</div>
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 
-
 <script type="text/javascript">
-function deleteperson(a){
-	var issure = confirm("确定要删除  "+ $(a).data("title") +" 吗?")
-	if(issure){
-
+	function selectOrderToReady(order_id,ready_id){
 		$.ajax({
 			   type: "POST",
-			   url:$(a).data("action") ,
+			   url:'/fy/admin/biz/addition/ready/addOrderToReady' ,
+			   data:{order_id:order_id,ready_id:ready_id},
 			   success: function(ret){
 				   if (ret.state == "ok") {
-			
+					   alert(ret.msg);
 					   location.reload();
 					}
 				   alert(ret.msg);
@@ -367,39 +129,28 @@ function deleteperson(a){
 				}
 			});
 		}
-	else{
-	
-		}
-	}
-    </script>
-#include("../../customer/searchCustomer.html")
-#include("../../supplier/searchSupplier.html")
-<script type="text/javascript">
-var selectCustomer =function selectCustomer(){
-		var callback = function (isSelect,id,name){
-
-			if(isSelect){
-				$("#keyword").val(name);
-				$("#modelId").val(id);
-			}
-			
-		}
-		var showcustomer  = new ShowCustomerModel( callback );
-		showcustomer.show();
-	}
-
-	var selectSurpplier =function(){
-		var callback = function (isSelect,id,name){
-
-			if(isSelect){
-				$("#keyword").val(name);
-				$("#modelId").val(id);
-			}
-			
-		}
-		var  select   = new SelectSupplierModal( callback );
-		select.show();
 		
+
+/**
+ * 多个分配
+ */
+ 	function onSelectReady(a){
+		var callback =function(select,id,name){
+			console.info(select+" "+id+" "+name);
+			if(select){
+				selectOrderToReady($(a).data('id'),id);
+			}else{
+				
+			}
+		};
+		new SelectReadyModal(callback,a).show();
+	
 	}
+	
+	
+
+
 </script>
+
+
 #end

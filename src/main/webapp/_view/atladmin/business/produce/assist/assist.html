@@ -6,6 +6,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">外协加工单</h3>
+				<button class="btn btn-info"  id="bt_create_pay">生成应付单</button>
 				<div class="box-tools">
 					<form action="/fy/admin/biz/assist"  class="form-inline">
 							 <div class="form-group  input-group-sm">
@@ -44,12 +45,65 @@
 					</form>
 				</div>
 			</div>
+<script type="text/javascript">
+
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[name="selectId"]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[name="selectId"]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	$("#bt_create_pay").click(function(){
+		var selectIds = $("input[name=selectId]:checked");
+		
+		if(selectIds==null||selectIds.length == 0){
+			alert("没有选择外协单");
+			return ; 
+		}
+		$.ajax({
+			   type: "POST",
+			   url:'/fy/admin/biz/assist/createPay' ,
+			   data:selectIds.serialize(),
+			   success: function(ret){
+				   if (ret.state == "ok") {
+			
+					   location.reload();
+					}
+				   alert(ret.msg);
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   alert('网络异常');
+				}
+			});
+	});
+	
+	
+});
+
+
+</script>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding text-center">
-	
+			<form action="/fy/admin/biz/assist/createPay" method="post" id="select_form">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
+								<th style=""><input type="checkbox" checked="checked" id="selectAll"></th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -69,6 +123,7 @@
 							
 								<th>图纸</th>
 								
+								<th>外协编号</th>
 								
 								<th>外协工序单价</th>
 								<th>外协工序金额</th>
@@ -80,7 +135,7 @@
 								<th>外协加工耗时</th>
 								<th>外协回厂时间</th>
 								<th>外协回厂检测结果</th>
-								<th>是否生成应付明细表</th>
+								<th>是否已生成应付单</th>
 								<th>生成时间</th>
 								<th>操作</th>
 							</tr>
@@ -88,7 +143,11 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
-								
+								<td>
+								#if(!x.is_create_pay&&"合格".equals(x.check_result))
+								 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
+								 #end
+								 </td>
 								<td>#(x.cate_tmp)</td>  
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
@@ -116,6 +175,8 @@
 								
 								</td>
 							
+								<td>#(x.assist_no)</td>
+								
 								<td>#(x.assist_cost)</td>
 								<td>#(x.assist_account)</td>
 								<td>#taxRate(x.tax_rate)</td>
@@ -127,33 +188,29 @@
 								<td>#(x.run_time)</td>
 								<td>#(x.backtime)</td>
 								<td>#(x.check_result)</td>
+								<!--  -->
 								<td>#if(x.is_create_pay)
-									已生成应付明细
-									#else
-									#if(x.check_result=="合格")
-									<a href="/fy/admin/biz/finance/pay/addpay?id=#(x.id)" > 
-										<i class="fa fa-pencil" title="生成应付明细表"></i>
-										</a>
-										#end
-									#end
+									已生成应付单
+								#end
 								</td>
-								<td>#(x.pay_create_time)</td>
+								<td>#(x.pay_create_time)</td> 
 								
 								<td class="jfa-operation-button">
 								
 								<a href="/fy/admin/biz/assist/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
 								</a>
-								
+								#if(!x.is_create_pay)
 									<a data-action="/fy/admin/biz/assist/delete?id=#(x.id)" style="margin-left: 14px;color: red" onclick="deleteAssist(this)"> 
 									<i class="fa fa-trash" title="删除"></i>
 								</a>
+								#end
 								</td>
 							</tr>
 							#end
 						</tbody>
 					</table>
-		
+		</form>
 
 			</div>
 			<!-- /.box-body -->

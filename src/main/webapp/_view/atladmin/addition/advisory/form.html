@@ -154,19 +154,36 @@
 		</div>
 	</div>
 	
-	<div class="col-md-6">
 
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">客户利润总价</label>
-
-			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="客户利润总价" value="#(model.customer_profit_amount??)" name="model.customerProfitAmount" autocomplete="off">
-			</div>
-		</div>
-	</div>
 
 
 </div>
+
+
+
+<div class="row">	
+	<div class="col-md-6">
+	
+		<div class="form-group">
+				<label  class="col-sm-3 control-label">客户利润单价</label>
+	
+				<div class="col-sm-9">
+					<input type="text"  class="form-control"  placeholder="客户利润单价" value="#(model.customer_profit_cost??)" name="model.customerProfitCost" autocomplete="off">
+				</div>
+			</div>
+		</div>
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">客户利润总价</label>
+	
+				<div class="col-sm-9">
+					<input type="text"  class="form-control"  placeholder="客户利润总价" value="#(model.customer_profit_amount??)" name="model.customerProfitAmount" autocomplete="off">
+				</div>
+			</div>
+	</div>
+</div>
+
+
 #include("../../person/searchPerson.html")
 #include("../../unit/unitSelectModel.html")
 <script>

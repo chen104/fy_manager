@@ -577,4 +577,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("inhouse_date");
 	}
 
+	public void setIsFinshProduct(java.lang.String isFinshProduct) {
+		set("is_finsh_product", isFinshProduct);
+	}
+	
+	public java.lang.String getIsFinshProduct() {
+		return getStr("is_finsh_product");
+	}
+
 }

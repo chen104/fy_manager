@@ -12,14 +12,19 @@
 			</div>
 			<div class="modal-body">
 				
+				<div style="padding-bottom:5px"> 
+					<input class="myinput" id="ReadyKeyWord" > <button class="btn" onclick="getTaxRateFromServer()">查找</button>
+				</div>
+				
 				<div style="overflow-y:scroll">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th></th>
-								<th>客户名称</th>
-								<th>商品名称</th>
-								<th>商品规格</th>
+								<th>名称</th>
+								<th>图号</th>
+					
+								<th>数量</th>
 							</tr>
 						</thead>
 						<tbody id="ptbody">
@@ -56,19 +61,26 @@
 </div>
 <!-- /.modal -->
 
+
+
 <script type="text/javascript">
 
 
 function SelectReadyModal(callback,a){
-	
-	
+	var key = $(a).data('map');
+	var input =$("#ReadyKeyWord");
+	input.val(key);
+	input.data('id',$(a).data('id'))
 	this.callback = callback;
+
 	$("#Ready_bt_onSelect").click(function(){
 		/**
 			获得选择值
 		*/
+		var select = $("input[name='selectReady']:checked");
 		 var a = $("input[name='selectReady']:checked").val();
   		 if(a!=null){
+  			$(this).unbind( "click" );
   			 var vals = 	a.split("_");
   			 if(callback!=null){
   				callback(true,vals[0],vals[1]);
@@ -79,9 +91,10 @@ function SelectReadyModal(callback,a){
   	  		 
   	  	}else{
 			alert("没有选择备货");
+			
 			return;
   	    }
-  	
+  		 
   		
 	});
 	
@@ -101,6 +114,7 @@ function SelectReadyModal(callback,a){
 			
 	}
 	
+	
 
 }
 
@@ -112,18 +126,19 @@ function checknull(value){
 
 function getReadyFromServer(pageNumer , order_id){
 	
-	$.get("/fy/admin/biz/addition/ready/searchReadyJson", { keyWord: $("#ReadyKeyWord").val(), p : pageNumer,order_id:order_id},
+	$.get("/fy/admin/biz/addition/readyReceive/findReadyJosn", { keyWord: $("#ReadyKeyWord").val(), p : pageNumer,order_id:order_id},
 		  function(data){
 			plist = 	data.list;
 			var	ptbody = $("#ptbody");
 			ptbody.empty();
 		for(x in plist){
-				console.debug(plist[x].name);
+				console.info(plist);
+				console.debug(plist[x].id+"  "+plist[x].commodity_name);
 				
-				var tr='<tr><td class="text-center"><input type="radio" name="selectReady" value="'+plist[x].id+'_'+plist[x].commodityName+'"></td>'+
-				'<td>'+checknull(plist[x].customerName)+'</td>'+
-				'<td>'+plist[x].commodityName+'</td>'+
-				'<td>'+plist[x].commoditySpec+'</td></tr>';
+				var tr='<tr><td class="text-center"><input type="radio" name="selectReady" value="'+plist[x].id+'_'+plist[x].commodity_name+'"></td>'+
+				'<td>'+checknull(plist[x].commodity_name)+'</td>'+
+				'<td>'+plist[x].map_no+'</td>'+
+				'<td>'+plist[x].quantity+'</td></tr>';
 				ptbody.append(tr);
 			}
 

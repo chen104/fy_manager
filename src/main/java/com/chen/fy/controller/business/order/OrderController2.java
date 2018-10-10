@@ -83,14 +83,27 @@ public class OrderController2 extends BaseController {
 		if (ufile != null) {
 			try {
 				total = service.uploadOrder(ufile.getFile());
+				ufile.getFile().delete();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		ufile.getFile().deleteOnExit();
+
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
 
 	}
 
+	public void delete() {
+		String[] ids = getParaValues("selectId");
+		try {
+			Ret ret = service.delteOrder(ids);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderJson(Ret.fail("msg", "查看运行日志"));
+	}
 }

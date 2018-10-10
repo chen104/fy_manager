@@ -72,15 +72,13 @@
 		<ul class="treeview-menu #(fyorder)">
 	
 			<li><a href="/fy/admin/biz/fyorder/order2"><i class="fa fa-circle-o">订单管理</i></a></li>
-			<!--  
-			#fypermession("receive")
-			<li><a href="/fy/admin/biz/fyorder/receive"><i class="fa fa-circle-o"></i>订单接收表</a></li>
-			#end-->
+			 
+			<li><a href="/fy/admin/biz/fyorder/back"><i class="fa fa-circle-o"></i>订单删除表</a></li>
+			 
 			#fypermession("distrbut")
 			<li><a href="/fy/admin/biz/fyorder/distribute"><i class="fa fa-circle-o"></i>分配表</a></li>
 			#end
-			<!--  <li><a href="/fy/admin/biz/fyorder/productOneSum"><i class="fa fa-circle-o"></i>制造一览表</a></li>
-			-->
+			 
 		</ul>
 	</li>
 	
@@ -122,12 +120,7 @@
 			#fypermession("product_receive")
 			<li><a href="/fy/admin/biz/product/receive"><i class="fa fa-circle-o"></i>自产接收表</a></li>
 			#end
-			<!-- 
-			fypermession("product_sum")
-			
-			<li><a href="/fy/admin/biz/produce/sumprod"><i class="fa fa-circle-o"></i>自产汇总表</a></li>
-			
-			end
+			 
 			 -->
 			#fypermession("product_plan")
 			<li><a href="/fy/admin/biz/product/plan"><i class="fa fa-circle-o"></i>生产计划表</a></li>
@@ -176,13 +169,17 @@
 			#fypermession("upgetpay")
 			<li><a href="/fy/admin/biz/finance/upgetpay"><i class="fa fa-circle-o">  应收明细表</i></a></li>
 			#end
+			<li><a href="/fy/admin/biz/finance/upgetpaybill"><i class="fa fa-circle-o">  应收一览表</i></a></li>
 			<!-- 
 			<li><a href="/fy/admin/biz/finance/getbill"><i class="fa fa-circle-o"></i>应收结算单</a></li>
 			<li><a href="/fy/admin/biz/finance/getpaybill"><i class="fa fa-circle-o"></i>应收汇总表</a></li>
 			 -->
 			#fypermession("pay")
-			<li><a href="/fy/admin/biz/finance/pay/pay"><i class="fa fa-circle-o">应付明细表</i></a></li>
+			<li><a href="/fy/admin/biz/finance/pay"><i class="fa fa-circle-o">应付明细表</i></a></li>
 			#end
+			<li><a href="/fy/admin/biz/finance/paybill"><i class="fa fa-circle-o">应付一览表</i></a></li>
+			
+			
 			<!-- 
 			<li><a href="/fy/admin/biz/finance/paybill"><i class="fa fa-circle-o"></i>应付结算单</a></li>
 			<li><a href="/fy/admin/biz/finance/sumpaybill"><i class="fa fa-circle-o"></i>应付汇总表</a></li>
@@ -214,13 +211,11 @@
 			<li><a href="/fy/admin/biz/addition/advisory"><i class="fa fa-circle-o">价格查询表</i></a></li>
 			#end
 			
-			<li><a href="/fy/admin/biz/addition/ready/receiveReady"><i class="fa fa-circle-o">备货接收表</i></a></li>
+			<li><a href="/fy/admin/biz/addition/readyReceive"><i class="fa fa-circle-o">备货接收表</i></a></li>
 			#fypermession("ready")
 			<li><a href="/fy/admin/biz/addition/ready"><i class="fa fa-circle-o">备货</i></a></li>
 			#end
-			#fypermession("readyPurchase")
-			<li><a href="/fy/admin/biz/addition/readyPurchase"><i class="fa fa-circle-o">备货采购单</i></a></li>
-			#end
+			
 		
 		</ul>
 	</li>

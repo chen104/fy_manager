@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.check;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -46,6 +48,16 @@ public class CheckExceptionController extends BaseController {
 		// }
 		setAttr("append", append.toString());
 		render("list.html");
+	}
+
+	/**
+	 * 下载文件
+	 * @throws Exception
+	 */
+	public void downloadException() throws Exception {
+		String[] ids = getParaValues("selectId");
+		File file = service.download(ids);
+		renderFile(file);
 	}
 
 }

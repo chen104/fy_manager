@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.commission.collect;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.jfinal.plugin.activerecord.Db;
@@ -37,7 +39,27 @@ public class CommissionCollectService {
 			String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
 			conditionSb.append(sql);
 
-		} else {
+		}
+		if ("inhouse_status".equals(condition)) {
+			if ("un_in".equals(keyword)) {
+				conditionSb.append(" AND o.has_in_quantity = 0  ");
+			} else if ("part_in".equals(keyword)) {
+				conditionSb.append(" AND o.has_in_quantity  <  o.quantity AND o.has_in_quantity <> 0  ");
+			} else if ("all_in".equals(keyword)) {
+				conditionSb.append(" AND o.has_in_quantity  = o.quantity  ");
+			}
+		}
+
+		if ("inhouse_date".equals(condition)) {
+			if (StringUtils.isNotEmpty(inhouse_date_start)) {
+				conditionSb.append(" AND o.inhouse_date  > '").append(inhouse_date_start).append("' ");
+			}
+			if (StringUtils.isNotEmpty(inhouse_date_end)) {
+				conditionSb.append(" AND o.inhouse_date  < '").append(inhouse_date_end).append("' ");
+			}
+		}
+
+		else {
 
 			if ("order_date".equals(condition)) {
 
@@ -62,8 +84,14 @@ public class CommissionCollectService {
 
 		}
 
-		where = where + conditionSb.toString();
-		modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);
+		if (conditionSb.length() > 0) {
+			where = where + conditionSb.toString();
+			List<Record> list = Db.find(select + from + where + desc);
+			modelPage = new Page<Record>(list, 1, list.size(), 1, list.size());
+		} else {
+			modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);
+		}
+
 		return modelPage;
 	}
 }

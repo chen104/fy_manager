@@ -1,10 +1,16 @@
 package com.chen.fy.controller.business.check;
 
+import java.sql.SQLException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -36,7 +42,8 @@ public class CheckCollectService {
 
 			if ("order_date".equals(condition)) {
 
-				conditionSb.append(String.format(" AND order_date = '%s'", keyword));
+				conditionSb.append(
+						String.format(" AND DATE_FORMAT(order_date,%s) = '%s'", Constant.mysql_date_format, keyword));
 
 			} else if ("delivery_date".equals(condition)) {
 
@@ -57,5 +64,34 @@ public class CheckCollectService {
 		modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);
 
 		return modelPage;
+	}
+
+	/**
+	 * 需要测回的入库单;
+	 * 检测单与入库单同表，记录检查情况，撤回操作，清空检测数据，检测结果，通过数量，未通过数量，删除应付单
+	 * @param inhouseId
+	 * @return
+	 */
+	public Ret rollback(String[] inhouseId) throws Exception {
+		Ret ret = null;
+		String update = " update fy_business_in_warehouse set check_result = null,pass_quantity = 0,unpass_quantity = 0 ,exception_reson = null,check_remark = null where id in ";
+		String deletePay = " delete from fy_business_pay WHERE is_purchase = 1 AND is_parent_id  in ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(inhouseId, idsb);
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				int up = Db.update(update + idsb.toString());
+				int de = Db.delete(deletePay + idsb.toString());
+				return up == de;
+			}
+		});
+		if (re) {
+			ret = Ret.ok().set("msg", "撤回成功");
+		} else {
+			ret = Ret.ok().set("msg", "撤回失败，刷新后在在试");
+		}
+		return ret;
 	}
 }

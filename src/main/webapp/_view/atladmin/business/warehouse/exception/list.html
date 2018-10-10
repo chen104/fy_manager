@@ -6,10 +6,46 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">异常记录表</h3>
+				<button class="btn btn-info" id="bt_download">下载</button>
+				<script type="text/javascript">
+					$(function(){
+						//初始化
+						$("#selectAll").click(function(){
+							var isChecked =  $("#selectAll").is(":checked");
+							if( isChecked ){
+								$('input[name=selectId]').each(function() {
+									//$(this).attr('checked', true);
+									this.checked= true;
+									});
+							}else{
+								$('input[name=selectId]').each(function() {
+									//$(this).attr('checked', false);
+									this.checked= false;
+								});
+							}
+							console.info('this');
+							
+						});
+						
+						//下载事件
+						$("#bt_download").click(function(){
+							var outId = $('input[name=selectId]:checked');
+							if(outId.length==0){
+								alert("没有选择数据");
+								return;
+							}
+							$("#download_form").submit();
+						});
+					});
+					
+				
+				</script>
+				
 				<div class="box-tools">
 					<form action=""  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						 	    <label for="pageSize">显示</label>
+						 	
 						 	   	<select id="pageSize" class="form-control" name="pageSize" >
 						 	   			<option  value="10">10</option>
 						 	   			<option  value="20" #if(pageSize == 20) selected="selected" #end >20</option>
@@ -24,12 +60,11 @@
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
-							    	<!-- <option #if(condition=="dis_warn") selected="selected" #end value="commodity_spec">分配预警</option>  -->
+							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
 							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
 							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
 							    </select>
@@ -79,11 +114,12 @@
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body table-responsive no-padding">
-	
+				<form action="/fy/admin/biz/whouse/check/exception/downloadException" target="_blank" method="post" id="download_form">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
-								<th> </th>
+								<th>  <input type="checkbox" id="selectAll"> 多选     </th>
+								<th>序号</th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>工作订单号</th>
@@ -111,6 +147,7 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
+								<td>    <input name="selectId" type="checkbox"   value="#(x.inhouse_id)">  </td>
 								<td>#(for.index+1)</td>
 								<td>#(x.cate_tmp)</td>  
 								<td>#(x.plan_tmp)</td>
@@ -143,7 +180,7 @@
 							#end
 						</tbody>
 					</table>
-		
+		</form>
 
 			</div>
 			<!-- /.box-body -->

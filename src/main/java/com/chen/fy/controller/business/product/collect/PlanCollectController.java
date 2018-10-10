@@ -20,11 +20,12 @@ public class PlanCollectController extends BaseController {
 		if (key != null) {
 			key = key.trim();
 		}
+		setAttr("keyWord", key);
 		String condition = getPara("condition");
 		try {
 			Page<FyBusinessOrder> modelPage = service.findPage(getPageSize(), getParaToInt("p", 1), condition, key);
 
-			keepPara("keyWord", "condition");
+			keepPara("condition");
 
 			setAttr("modelPage", modelPage);
 

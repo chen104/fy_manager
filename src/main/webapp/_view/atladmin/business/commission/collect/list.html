@@ -80,7 +80,9 @@
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
-							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">商品规格</option>
+							    	
+							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
+							    	
 							    	<option #if(condition=="delay_warn") selected="selected" #end value="delay_warn">交货预警</option>
 							    	<option #if(condition=="delay") selected="selected" #end value="delay">拖期</option>
 							    </select>
@@ -108,10 +110,33 @@
 
 <script id="inhouse_status" type="text/x-jquery-tmpl">
 		<select id="keyword"  name="keyWord"  class="form-control" >
-			<option value="un_in">未入库</option>
-			<option  value="part_in">部分入库</option>
-			<option value="all_in" >已入库</option>
+			<option #if(keyWord == "un_in") selected="selected" #end  value="un_in">未入库</option>
+			<option #if(keyWord == "part_in") selected="selected" #end  value="part_in">部分入库</option>
+			<option #if(keyWord == "all_in") selected="selected" #end   value="all_in" >已入库</option>
 	  	</select>
+</script>
+<script type="text/javascript">
+	$(function(){
+		#if(condition=="inhouse_status")
+			var keyword_div = $("#keyword_div");
+			keyword_div.empty();
+			$("#inhouse_status").tmpl("").appendTo(keyword_div);
+		#else if(condition=="inhouse_date")
+			var keyword_div = $("#keyword_div");
+			keyword_div.empty();
+			$("#inhouse_dateRang").tmpl("").appendTo(keyword_div);
+			
+			$("[datatype='date']").datepicker({
+	  		    	language:'zh-CN',
+	  		      autoclose: true,
+	  		      format:'yyyy-mm-dd',
+	  		      todayBtn:'linked',
+	  		      todayHighlight:true,
+	  		       orientation:'bottom' 
+	  		    });
+	 	 	
+		#end
+	});
 </script>
 
   <script type="text/javascript">

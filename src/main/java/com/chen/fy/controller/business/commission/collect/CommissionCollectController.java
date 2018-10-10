@@ -18,7 +18,7 @@ public class CommissionCollectController extends BaseController {
 			key = key.trim();
 		}
 		setAttr("keyWord", key);
-		keepPara("condition", "weiwai_cate");
+		keepPara("condition", "weiwai_cate", "inhouse_date_start", "inhouse_date_end");
 		String condition = getPara("condition");
 		String order_date_start = getPara("order_date_start");
 		String order_date_end = getPara("order_date_end");

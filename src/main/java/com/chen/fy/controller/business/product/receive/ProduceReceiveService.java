@@ -3,6 +3,7 @@ package com.chen.fy.controller.business.product.receive;
 import org.apache.commons.lang3.StringUtils;
 
 import com.chen.fy.model.FyBusinessOrder;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -34,7 +35,8 @@ public class ProduceReceiveService {
 
 			if ("order_date".equals(condition)) {
 
-				conditionSb.append(String.format("AND order_date = '%s'", keyWord));
+				conditionSb.append(
+						String.format("AND  DATE_FORMAT(order_date,%s) = '%s'", Constant.mysql_date_format, keyWord));
 
 			} else if ("delivery_date".equals(condition)) {
 

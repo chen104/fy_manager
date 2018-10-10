@@ -94,3 +94,6 @@ CREATE TABLE `column_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+update fy_business_order o INNER JOIN fy_business_out_warehouse ou 
+on o.id = ou.order_id set out_house_date =null, o.out_quantity  = o.out_quantity - ou.out_quantity ,o.storage_quantity=o.storage_quantity+ou.out_quantity
+where ou.id = 10

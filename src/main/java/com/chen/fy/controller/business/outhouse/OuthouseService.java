@@ -1,10 +1,14 @@
 package com.chen.fy.controller.business.outhouse;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -12,7 +16,9 @@ import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.jfinal.club.common.kit.CommonKit;
 import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -23,16 +29,23 @@ public class OuthouseService {
 	public final static OuthouseService me = new OuthouseService();
 	private static final Logger logger = LogManager.getLogger(OuthouseService.class);
 
-	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
-			throws Exception {
+	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword,
+			String out_date_start, String out_date_end) throws Exception {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = " select o.* ,f.originalFileName filename,f.id fileId,ou.*  ";
+		String select = " select o.* ,f.originalFileName filename,f.id fileId,ou.* ,ou.id out_id ";
 		String from = " from  fy_business_order o " + " INNER JOIN fy_business_out_warehouse ou on ou.order_id = o.id"
 				+ "   left join fy_base_fyfile  f on o.draw = f.id ";
 
 		String desc = " order by o.id  desc ";
 		String where = "  where  1=1  ";
+
+		if (StringUtils.isNotEmpty(out_date_start)) {
+			conditionSb.append(" AND ou.out_time > '").append(out_date_start).append("' ");
+		}
+		if (StringUtils.isNotEmpty(out_date_end)) {
+			conditionSb.append(" AND ou.out_time < '").append(out_date_end).append("' ");
+		}
 
 		if ("delay_warn".equals(condition)) {
 			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
@@ -142,16 +155,104 @@ public class OuthouseService {
 	}
 
 	/**
-	 * 撤回出库单
+	 * 撤回
+	 * @param id
+	 * @return
+	 * @throws Exception
 	 */
-	public void rollback(Integer id) {
-		FyBusinessOutWarehouse model = FyBusinessOutWarehouse.dao.findById(id);
-		Integer oder_id = model.getOrderId();
-		FyBusinessOrder order = FyBusinessOrder.dao.findById(oder_id);
-		Integer storage = order.getStorageQuantity();
-		storage += model.getOutQuantity();
-		order.setStorageQuantity(storage);
+	public Ret batchRollback(String[] id) throws Exception {
+		String update = "update fy_business_order o INNER JOIN fy_business_out_warehouse ou \r\n"
+				+ "on o.id = ou.order_id set out_house_date =null, o.out_quantity  = o.out_quantity - ou.out_quantity ,o.storage_quantity=o.storage_quantity+ou.out_quantity\r\n"
+				+ "where ou.id = ";
+		int total = 0;
+		for (String outId : id) {
+			boolean re = Db.tx(new IAtom() {
 
+				@Override
+				public boolean run() throws SQLException {
+					int re = Db.update(update + outId);
+					int d = Db.delete("delete from  fy_business_out_warehouse where id = " + outId);
+					return re == 1 && d == 1;
+				}
+			});
+			if (re) {
+				total++;
+			}
+		}
+
+		return Ret.ok().set("msg", "撤回出库完成，共撤回" + total + " 条 出库");
+	}
+
+	/**
+	 * 下载出库单
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
+	public File download(String[] ids) throws Exception {
+		String select = " select o.* ,ou.*  ";
+		String from = " from  fy_business_order o " + " INNER JOIN fy_business_out_warehouse ou on ou.order_id = o.id";
+
+		String where = " where ou.id in ";
+		String desc = " order by ou.id desc ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+
+		List<Record> list = Db.find(select + from + where + idsb.toString() + desc);
+
+		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
+		if (!parentfile.exists()) {
+			parentfile.mkdirs();
+		}
+		File targetfile = new File(parentfile,
+				"出库单" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
+
+		// 读取模板
+		String xlsx = this.getClass().getClassLoader().getResource("templet/download/whouse/outhouse.xlsx").getFile();
+		File sourceFile = new File(xlsx);
+		if (sourceFile.exists()) {
+			System.out.println(sourceFile.getName() + " 存在");
+		}
+		FileUtils.copyFile(sourceFile, targetfile);
+
+		PIOExcelUtil excel = null;
+		excel = new PIOExcelUtil(targetfile, 0);
+
+		int row = 1;
+		for (Record item : list) {
+			String map_tmp = item.getStr("map_tmp");// 类别
+			excel.setCellVal(row, 0, map_tmp);
+
+			String plan_tmp = item.getStr("plan_tmp");// 计划员
+			excel.setCellVal(row, 1, plan_tmp);
+
+			String work_order_no = item.getStr("work_order_no");
+			excel.setCellVal(row, 2, work_order_no);
+
+			String map_no = item.getStr("map_no");// 图号
+			excel.setCellVal(row, 3, map_no);
+
+			String commodity_name = item.getStr("commodity_name");// 名称
+			excel.setCellVal(row, 4, commodity_name);
+
+			String total_map_no = item.getStr("total_map_no");// 总图号
+			excel.setCellVal(row, 5, total_map_no);
+
+			Integer out_quantity = item.getInt("out_quantity");
+			excel.setCellVal(row, 6, out_quantity);
+
+			Date out_time = item.getDate("out_time");// 出货日期
+			excel.setCellVal(row, 7, out_time, "yyyy-MM-dd");
+
+			String out_remark = item.getStr("out_remark");// 备注
+			excel.setCellVal(row, 8, out_remark);
+
+			row++;
+		}
+
+		excel.save2File(targetfile);
+		Db.update(" update  fy_business_out_warehouse set is_download = 1 where id in " + idsb.toString());
+		return targetfile;
 	}
 
 }
