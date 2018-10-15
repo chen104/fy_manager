@@ -125,7 +125,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div id="div_table" class="box-body table-responsive no-padding">
 					<form action="" method="post">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -190,6 +190,38 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/commission/receive?p=")</div>
+				
+				
+			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
 		</div>
 		<!-- /.box -->
 	</div>

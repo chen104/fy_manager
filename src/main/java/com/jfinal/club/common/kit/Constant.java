@@ -6,4 +6,8 @@ public class Constant {
 	 * yyyy-MM-dd
 	 */
 	public final static String mysql_date_format = "'%Y-%m-%d'";
+
+	public final static String pageIndex = "pageNumber";
+	public final static String pagePageSize = "pageSize";
+	public final static String pageTotalRow = "totalPage";
 }

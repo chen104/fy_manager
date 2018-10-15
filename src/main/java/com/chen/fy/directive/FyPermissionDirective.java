@@ -21,16 +21,6 @@ public class FyPermissionDirective extends Directive {
 		if (account.hasPermission(key)) {
 			stat.exec(env, scope, writer);
 		}
-		// if (account.getId() == 1) {// 管理员
-		// stat.exec(env, scope, writer);
-		// } else {
-		// if (account != null) {
-		// List<String> list = FyAuthService.me.getPermession(account.getId());
-		// if (list.contains(key)) {
-		// stat.exec(env, scope, writer);
-		// }
-		// }
-		// }
 
 	}
 

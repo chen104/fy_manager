@@ -1,13 +1,18 @@
 package com.chen.fy.controller.base;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.base.service.CustomerService;
 import com.chen.fy.model.Customer;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 
 public class CustomerController extends BaseController {
+	CustomerService service = CustomerService.me;
+
 	public void index() {
 		String key = getPara("keyWord");
 		Page<Customer> personPage = null;
@@ -88,5 +93,10 @@ public class CustomerController extends BaseController {
 
 		}
 		renderJson(personPage);
+	}
+
+	public void download() throws Exception {
+		File file = service.download();
+		renderFile(file);
 	}
 }

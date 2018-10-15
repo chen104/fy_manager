@@ -43,6 +43,7 @@ public class CommisionExecutController extends BaseController {
 			append.append("&weiwai_cate=").append(weiwai_cate);
 		}
 		setAttr("append", append.toString());
+		// setAttr("action", "updatePurchaseCost");
 		render("list.html");
 
 	}
@@ -126,6 +127,10 @@ public class CommisionExecutController extends BaseController {
 		}
 		renderJson(ret);
 		return;
+	}
+
+	public void updatePurchaseCost() {
+
 	}
 
 }

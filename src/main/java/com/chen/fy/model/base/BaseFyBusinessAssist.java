@@ -89,12 +89,12 @@ public abstract class BaseFyBusinessAssist<M extends BaseFyBusinessAssist<M>> ex
 		return getStr("assist_process");
 	}
 
-	public void setRunTime(java.lang.Integer runTime) {
+	public void setRunTime(java.lang.Double runTime) {
 		set("run_time", runTime);
 	}
 	
-	public java.lang.Integer getRunTime() {
-		return getInt("run_time");
+	public java.lang.Double getRunTime() {
+		return getDouble("run_time");
 	}
 
 	public void setBacktime(java.util.Date backtime) {

@@ -153,8 +153,9 @@ public class WaitCheckService {
 		pay.setCheckTime(model.getCheckTime());// 检测s时间
 		pay.setInWarehouseTime(model.getCheckTime());// 入库时间
 
-		FyBusinessPurchase purchase = FyBusinessPurchase.dao
-				.findFirst("select * from fy_business_purchase where order_id = " + order_id);
+		FyBusinessPurchase purchase = FyBusinessPurchase.dao.findFirst(
+				"select *,settlement_cycle from fy_business_purchase p LEFT JOIN fy_base_supplier s ON s.id= p.supplier_id  where order_id = "
+						+ order_id);
 
 		pay.setSupplierId(purchase.getSupplierId());// 厂商
 		pay.setPurchaseName(order.getCommodityName());// 采购名称
@@ -167,6 +168,30 @@ public class WaitCheckService {
 		pay.setShouldPay(pay.getPurchaseCost().multiply(new BigDecimal(pay.getPayQuantity())));
 		pay.setInFrom("采购");
 		pay.setHangDate(pay.getCheckTime());// 挂账时间
+		int settlement_cycle = purchase.getInt("settlement_cycle");// 结算周期
+		if (settlement_cycle == 1) {// 月结30天
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(pay.getHangDate());
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			if (day > 25) {
+				calendar.add(Calendar.MONTH, 2);
+			} else {
+				calendar.add(Calendar.MONTH, 1);
+			}
+			pay.setPayDate(calendar.getTime());
+		} else if (settlement_cycle == 2) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(pay.getHangDate());
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			if (day > 25) {
+				calendar.add(Calendar.MONTH, 3);
+			} else {
+				calendar.add(Calendar.MONTH, 2);
+			}
+			pay.setPayDate(calendar.getTime());
+		} else if (settlement_cycle == 3) {
+			pay.setPayDate(pay.getHangDate());
+		}
 		Calendar calender = Calendar.getInstance();
 		calender.setTime(pay.getCheckTime());// 当前时间
 		calender.add(Calendar.MONTH, 2);// 相隔2个月

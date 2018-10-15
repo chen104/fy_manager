@@ -15,6 +15,7 @@
 package com.jfinal.club.common;
 
 import java.sql.Connection;
+import java.util.Date;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
@@ -71,6 +72,7 @@ import com.chen.fy.directive.TestDirective;
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model._MappingKit;
 import com.chen.fy.task.DeleteFileTask;
+import com.jfinal.club.common.converter.MyDateConverter;
 import com.jfinal.club.common.kit.AssistNoKit;
 import com.jfinal.club.common.kit.DruidKit;
 import com.jfinal.club.common.kit.PurchaseNoKit;
@@ -83,6 +85,7 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
+import com.jfinal.core.converter.TypeConverter;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.Prop;
@@ -133,6 +136,11 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.setErrorView(404, "/_view/atladmin/error/404.html");
 		me.setErrorView(500, "/_view/atladmin/error/500.html");
 		me.setMaxPostSize(1024 * 1024 * 104);
+		try {
+			TypeConverter.me().regist(Date.class, new MyDateConverter());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	/**

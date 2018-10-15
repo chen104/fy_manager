@@ -52,6 +52,13 @@ public class AssistService {
 		Ret ret = null;
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(assistId, idsb);
+
+		Record model = Db.findFirst(
+				" select  id from fy_business_pay  where  is_purchase = 0 AND  parent_id in " + idsb.toString());
+		if (model != null) {
+			return Ret.fail().set("msg", " 已存在应付单 ");
+		}
+
 		List<FyBusinessAssist> modelList = FyBusinessAssist.dao.find(
 				"select a.*,o.quantity quantity from fy_business_assist a LEFT JOIN  fy_business_order o on o.id = a.order_id where a.id in "
 						+ idsb.toString());

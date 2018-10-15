@@ -43,8 +43,8 @@ public class ReadyService {
 	 */
 	public Page<Record> findPage(Integer pageIndex, Integer pageSize, String condition, String key) {
 		Page<Record> modelPage = null;
-		String select = "select * ";
-		String from = "  from fy_business_order o   ";
+		String select = "select * ,add_quantity";
+		String from = "  from fy_business_order o  left join ready_view on o.id = ready_order_id ";
 		String where = " where  execu_status ='备货' ";
 		String orderby = " order by  id desc ";
 		if (StringUtils.isEmpty(key)) {

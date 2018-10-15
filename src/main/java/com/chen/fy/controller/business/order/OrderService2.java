@@ -6,7 +6,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +19,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.chen.fy.model.Account;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.OrderUploadLog;
 import com.jfinal.club.common.kit.ContextKit;
@@ -33,6 +37,11 @@ public class OrderService2 {
 	private static final Logger logger = LogManager.getLogger(OrderService2.class);
 
 	public final static OrderService2 me = new OrderService2();
+	public static HashMap<String, Integer> colhash;
+
+	public OrderService2() {
+
+	}
 
 	/**
 	 * 首页查找
@@ -47,7 +56,10 @@ public class OrderService2 {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
 		String select = "select o.*,f.originalFileName filename,f.id fileId ";
-		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id ";
+		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id"
+				+ " LEFT JOIN in_house on  in_house.order_id = o.id "
+				+ " LEFT JOIN out_view on out_view.order_id = o.id "
+				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no ";
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
 
@@ -336,6 +348,7 @@ public class OrderService2 {
 				System.out.println(item);
 				continue;
 			}
+			System.out.println(workid);
 			item.setWorkOrderNo(workid);
 
 			String DeliveryId = excel.getCellVal(i, 5);// 送货单号
@@ -406,16 +419,38 @@ public class OrderService2 {
 			list.add(new Record().setColumns(item));
 
 		}
-		int[] re = Db.batchSave("fy_business_order", list, 20);
-		int total = 0;
-		for (int i = 0; i < re.length; i++) {
-			total = total + re[i];
-		}
-		OrderUploadLog log = new OrderUploadLog();
-		log.setSucess(total);
-		log.save();
+		StringBuilder sb = new StringBuilder();
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				int total = 0;
+				try {
+					int[] re = Db.batchSave("fy_business_order", list, 20);
+
+					for (int i = 0; i < re.length; i++) {
+						total = total + re[i];
+					}
+					OrderUploadLog log = new OrderUploadLog();
+					log.setSucess(total);
+					log.save();
+					if (total == list.size()) {
+						sb.append(total);
+						return true;
+					} else {
+						return false;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(e.getMessage());
+					return false;
+				}
+
+			}
+		});
+
 		Db.update("update  fy_business_order set order_status = 40 where execu_status ='备货' AND order_status = 0 ");
-		return total;
+		return Integer.valueOf(sb.toString());
 
 	}
 
@@ -454,6 +489,74 @@ public class OrderService2 {
 			ret = Ret.ok().set("msg", "删除失败");
 		}
 		return ret;
+	}
+
+	public Integer executWidth(Account account) {
+		// if (colhash == null) {
+		colhash = new HashMap<String, Integer>();
+		// 序号 50
+		colhash.put("category_id", 60);
+		colhash.put("planer_id", 60);
+		colhash.put("execu_status", 100);
+		colhash.put("urgent_status", 100);
+		colhash.put("work_bill_no", 100);
+		colhash.put("delivery_no", 120);
+
+		colhash.put("map_no", 150);
+		colhash.put("commodity_name", 130);
+		colhash.put("total_map_no", 550);
+		colhash.put("quantity", 100);
+		colhash.put("unit", 35);
+		colhash.put("draw", 300);
+		colhash.put("model_no", 200);
+		colhash.put("commodity_spec", 200);
+
+		colhash.put("technology", 200);
+		colhash.put("machining_require", 80);
+		colhash.put("order_date", 100);
+		colhash.put("delivery_date", 100);
+		colhash.put("un_tax_cost", 100);
+
+		colhash.put("amount", 100);
+		colhash.put("taxrate", 100);
+		colhash.put("tax", 100);
+		colhash.put("tatol_amount", 100);
+		colhash.put("un_tax_cost", 100);
+		colhash.put("distribute_time", 100);
+
+		colhash.put("distribute_to", 100);
+		colhash.put("supplier", 300);
+		colhash.put("purchase_cost", 100);
+		colhash.put("purchase_amount", 100);
+		colhash.put("receive_time", 100);
+		colhash.put("begin_time", 100);
+
+		colhash.put("in_time", 100);
+		colhash.put("check_time", 300);
+		colhash.put("out_time", 100);
+		colhash.put("out_status", 100);
+		colhash.put("send_address", 100);
+		colhash.put("transport_company", 100);
+
+		colhash.put("transport_no", 100);
+		colhash.put("hang_date", 300);
+		colhash.put("hang_status", 100);
+		colhash.put("hang_quantity", 100);
+		colhash.put("hang_amount", 100);
+		colhash.put("unhang_quantity", 100);
+
+		colhash.put("is_finsh_product", 80);
+		colhash.put("order_update", 60);
+		// }
+		Set<String> keys = colhash.keySet();
+		Iterator<String> it = keys.iterator();
+		Integer width = new Integer("110");// 序号50
+		while (it.hasNext()) {
+			String key = it.next();
+			Integer w = colhash.get(key);
+			width += w;
+		}
+		return width;
 	}
 
 }

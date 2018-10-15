@@ -27,6 +27,9 @@ public class OrderColorDirective extends Directive {
 				long importTime = model.getImportTime().getTime();
 				long now = System.currentTimeMillis();
 				long dirDay = now - importTime;
+				if (model.getOrderDate() == null) {
+					return;
+				}
 				long orderDate = model.getOrderDate().getTime();
 				dirDay = dirDay / 1000 / 60 / 60 / 24;// 天的参数
 				long order_dir = (now - orderDate) / 1000 / 60 / 60 / 24;// 天的参数

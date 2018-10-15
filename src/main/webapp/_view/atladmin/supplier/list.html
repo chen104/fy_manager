@@ -43,10 +43,73 @@
 			<div class="box-header">
 			
 				<h3 class="box-title">厂商管理</h3>
-
+				<button   	class="btn btn-primary" id="bt_delete">删除厂商</button>
 				<a href="/fy/admin/base/supplier/add"><button type="submit"
 						class="btn btn-primary">添加厂商</button></a>
+				<button type="submit" 	class="btn btn-primary" id="bt_download">下载厂商</button>
+				<form action="/fy/admin/base/supplier/download" target="_blank" id='download'>
+				
+				</form>
+<script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[name=selectId]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[name=selectId]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	$("#bt_delete").click(function(){
+		var outId = $('input[name=selectId]:checked');
+		if(outId.length==0){
+			alert("没有选择供应商");
+			return;
+		}
+		var issure = confirm("确定要删除 吗?")
+		if(issure){
 
+			$.ajax({
+				   type: "POST",
+				   url:'/fy/admin/base/supplier/deleteBatch',
+				   data: outId.serialize(),
+				   success: function(ret){
+					   if (ret.state == "ok") {
+				
+						   location.reload();
+						}
+					   alert(ret.msg);
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   alert('网络异常');
+					}
+				});
+			}
+		
+	});
+	
+	$("#bt_download").click(function(){
+		$("#download").submit();
+	});
+	 
+	
+	
+});
+
+
+</script>
 
 				<div class="box-tools">
 					<form action="/fy/admin/base/supplier">
@@ -70,7 +133,8 @@
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
-								<th style="">序号</th>
+								<th style="">序号   </th>
+								<th><input type="checkbox" id="selectAll"> </th>
 								<th>分类</th>
 								<th>厂商编码</th>
 								<th>厂商名称</th>
@@ -92,7 +156,8 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr>
-								<td>#(for.index+1)</td>
+								<td>#(for.index+1) </td>
+								<td><input name="selectId" type="checkbox"   value="#(x.id)"></td>
 								 <td>#(x.category_name)</td>
 								<td>#(x.supplier_no)</td>
 								<td>#(x.name)</td>

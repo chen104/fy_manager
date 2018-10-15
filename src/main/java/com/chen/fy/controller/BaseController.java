@@ -77,22 +77,28 @@ public class BaseController extends Controller {
 	}
 
 	public Integer getPageSize() {
-		Integer pageSize = getParaToInt("pageSize", 10);
+		Integer pageSize = getParaToInt("pageSize");
 		{
 			// Integer userId = getLoginAccount().getId();
 			// Object obj = CacheKit.get("pageSize", userId);
 			// System.out.println(obj);
 		}
 
-		if (pageSize != 10) {
-			CacheKit.put("pageSize", getLoginAccount().getId(), pageSize);
-		} else {
+		if (pageSize == null) {
+
 			Integer userId = getLoginAccount().getId();
 			Object obj = CacheKit.get("pageSize", userId);
 			if (obj != null && NumberUtils.isNumber(obj.toString())) {
 				pageSize = Integer.valueOf(obj.toString());
+			} else {
+				pageSize = 30;
+				CacheKit.put("pageSize", getLoginAccount().getId(), pageSize);
 			}
+
+		} else {
+			CacheKit.put("pageSize", getLoginAccount().getId(), pageSize);
 		}
+
 		setAttr("pageSize", pageSize);
 		return pageSize;
 	}

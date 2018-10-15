@@ -188,11 +188,14 @@ public class PayBillSerivce {
 			Double should_pay = item.getDouble("should_pay");// 应付金额
 			excel.setCellVal(row, 22, should_pay);
 
+			String remark = item.getStr("remark");// 采购编号
+			excel.setCellVal(row, 23, remark);
+
 			Date hang_date = item.getDate("hang_date");// 挂账日期
-			excel.setCellVal(row, 23, hang_date, "yyyy年MM月");
+			excel.setCellVal(row, 24, hang_date, "yyyy年MM月");
 
 			Date pay_date = item.getDate("pay_date");// 应付期间
-			excel.setCellVal(row, 24, pay_date, "yyyy年MM月");
+			excel.setCellVal(row, 25, pay_date, "yyyy年MM月");
 
 			row++;
 		}

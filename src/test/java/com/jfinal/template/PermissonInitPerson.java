@@ -13,7 +13,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.chen.fy.model.ColPermision;
 import com.jfinal.String.TestString;
@@ -66,9 +65,8 @@ public class PermissonInitPerson {
 		}
 	}
 
-	@Test
 	public void initPermisson() throws IOException {
-		InputStream input = TestString.class.getClassLoader().getResourceAsStream("personPerm.init");
+		InputStream input = TestString.class.getClassLoader().getResourceAsStream("permission/colperm");
 
 		BufferedReader read = new BufferedReader(new InputStreamReader(input));
 		String line = read.readLine();

@@ -101,8 +101,19 @@
 								<label class="col-sm-3 control-label">运输方式</label>
 					
 								<div class="col-sm-9">
-									<input type="text" class="form-control" placeholder="运输方式" autocomplete="off"   value="#(waybill.transport_type??)"  
-										name="out.transportType">
+									<select id="transportType"   name="out.transportType"  class="form-control"    >
+										 	<option >物流</option>
+										 	<option >快递</option>
+										 	<option>空运</option>
+										 	<option>自配</option>
+									</select>
+									<script type="text/javascript">
+										$(function(){
+											var trantype= '#if(model.transport_type??)  value="#(model.transport_type??)" #else value="#(waybill.transport_type??)" #end';
+											trantype=trantype.trim();
+											
+										})
+									</script>
 										<div style="color: red">#(transport_type_msg)</div>
 								</div>
 							</div>

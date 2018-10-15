@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div  id="div_table"  class="box-body table-responsive no-padding">
 	
 					<table class="table table-bordered text-center"  style="white-space:nowrap">
 						<thead>
@@ -54,7 +54,8 @@
 								<th>加工要求</th>
 								<th>订单数量</th>
 								<th>单位</th>
-								<th>补单状态</th>
+								<th>已补数量</th>
+								<th>未补数量</th>
 								<th>厂商</th>
 								<th>订单编码</th>
 								<th>备货数量</th>
@@ -85,7 +86,8 @@
 								<td>#(x.quantity)</td>
 								<td>#(x.unit_tmp)</td>
 								
-								<td>#(x.add_status)</td>
+								<td>#(x.add_quantity)   </td>
+								<td> #if(x.add_quantity) #(x.quantity - x.add_quantity ) #else #(x.quantity) #end </td>
 								<td>#(x.supplier_name)</td>
 								<th>#(x.order_no)</th>
 								<td>#(x.quantity)</td>
@@ -103,6 +105,38 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/addition/readyReceive?p=")</div>
+				
+				
+				<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
 		</div>
 		<!-- /.box -->
 	</div>

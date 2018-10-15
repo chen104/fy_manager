@@ -38,7 +38,9 @@
 			#end
 			
 			
+			#fypermession("supplierCate")
 			<li><a href="/fy/admin/base/supplierCate"><i class="fa fa-circle-o"></i>厂商分类管理</a></li>
+			#end
 			
 			#fypermession("customer")
 			<li><a href="/fy/admin/base/customer"><i class="fa fa-circle-o"></i>客户管理</a></li>
@@ -70,12 +72,19 @@
 		</span>
 	</a>
 		<ul class="treeview-menu #(fyorder)">
-	
+			#fypermession("order")
 			<li><a href="/fy/admin/biz/fyorder/order2"><i class="fa fa-circle-o">订单管理</i></a></li>
-			 
+			#end
+			<!--   	 -->
+			<li><a href="/fy/admin/biz/fyorder/order2/findtable"><i class="fa fa-circle-o">订单管理</i></a></li>
+		
+			
+			
+			#fypermession("order_delete_list")
 			<li><a href="/fy/admin/biz/fyorder/back"><i class="fa fa-circle-o"></i>订单删除表</a></li>
+			 #end
 			 
-			#fypermession("distrbut")
+			#fypermession("distribut")
 			<li><a href="/fy/admin/biz/fyorder/distribute"><i class="fa fa-circle-o"></i>分配表</a></li>
 			#end
 			 
@@ -92,19 +101,19 @@
 			#fypermession("commission")
 			<li><a href="/fy/admin/biz/commission/receive"><i class="fa fa-circle-o"></i>委外接收表</a></li>
 			#end
-			#fypermession("commission_sum")
+			#fypermession("execut")
 			<li><a href="/fy/admin/biz/commission/execute"><i class="fa fa-circle-o"></i>委外执行表</a></li>
 			#end
-			
+			#fypermession("audit")
 			<li><a href="/fy/admin/biz/commission/audit"><i class="fa fa-circle-o"></i>采购审核</a></li>
-			
+			#end
 			
 			
 			#fypermession("purchase")
 			<li><a href="/fy/admin/biz/commission/purchase"><i class="fa fa-circle-o"></i>采购单</a></li>
 			#end
 			
-			#fypermession("commission_one_sum")
+			#fypermession("commision_collect")
 			<li><a href="/fy/admin/biz/commission/collect"><i class="fa fa-circle-o"></i>委外一览表</a></li>
 			 #end
 		</ul>
@@ -117,21 +126,23 @@
 	</a>
 		<ul class="treeview-menu">
 		
-			#fypermession("product_receive")
+			#fypermession("product")
 			<li><a href="/fy/admin/biz/product/receive"><i class="fa fa-circle-o"></i>自产接收表</a></li>
 			#end
 			 
-			 -->
+			 
 			#fypermession("product_plan")
 			<li><a href="/fy/admin/biz/product/plan"><i class="fa fa-circle-o"></i>生产计划表</a></li>
 			#end
 			
-			#fypermession("assist")
-			<li><a href="/fy/admin/biz/assist"><i class="fa fa-circle-o"></i>外协加工单</a></li>
+
+			#fypermession("product_collect")
+			<li><a href="/fy/admin/biz/product/collect"><i class="fa fa-circle-o"></i>生产一览表</a></li>
 			#end
 			
-			#fypermession("product_one_sum")
-			<li><a href="/fy/admin/biz/product/collect"><i class="fa fa-circle-o"></i>生产一览表</a></li>
+			
+			#fypermession("assist")
+			<li><a href="/fy/admin/biz/assist"><i class="fa fa-circle-o"></i>外协加工单</a></li>
 			#end
 			
 			
@@ -144,18 +155,24 @@
 		</span>
 	</a>
 		<ul class="treeview-menu">
-		
+			#fypermession("wait_inhouse")
 			<li><a href="/fy/admin/biz/whouse/waitInhouse"><i class="fa fa-circle-o"></i>待入库</a></li>
-			
+			#end
+			#fypermession("wait_check")
 			<li><a href="/fy/admin/biz/whouse/check/waitCheck"><i class="fa fa-circle-o"></i>待检测表</a></li>
+			#end
+			#fypermession("wait_check_collect")
 			<li><a href="/fy/admin/biz/whouse/check/collect"><i class="fa fa-circle-o"></i>检测汇总表</a></li>
+			#end
+			#fypermession("exception")
 			<li><a href="/fy/admin/biz/whouse/check/exception"><i class="fa fa-circle-o"></i>异常记录表</a></li>
-			
+			#end
+			#fypermession("storage")
 			<li><a href="/fy/admin/biz/whouse/storage"><i class="fa fa-circle-o"></i>库存表</a></li>
-			
+			#end
+			#fypermession("storage_out")
 			<li><a href="/fy/admin/biz/whouse/outhouse"><i class="fa fa-circle-o"></i>出库表</a></li>
-			
-
+			#end
 		</ul>
 	</li>
 
@@ -166,24 +183,23 @@
 		</span>
 	</a>
 		<ul class="treeview-menu">
-			#fypermession("upgetpay")
+			#fypermession("getpay")
 			<li><a href="/fy/admin/biz/finance/upgetpay"><i class="fa fa-circle-o">  应收明细表</i></a></li>
 			#end
+			#fypermession("getpay_bill")
 			<li><a href="/fy/admin/biz/finance/upgetpaybill"><i class="fa fa-circle-o">  应收一览表</i></a></li>
-			<!-- 
-			<li><a href="/fy/admin/biz/finance/getbill"><i class="fa fa-circle-o"></i>应收结算单</a></li>
-			<li><a href="/fy/admin/biz/finance/getpaybill"><i class="fa fa-circle-o"></i>应收汇总表</a></li>
-			 -->
+			#end
 			#fypermession("pay")
 			<li><a href="/fy/admin/biz/finance/pay"><i class="fa fa-circle-o">应付明细表</i></a></li>
 			#end
+			
+		
+			#fypermession("paybill")
 			<li><a href="/fy/admin/biz/finance/paybill"><i class="fa fa-circle-o">应付一览表</i></a></li>
+			#end
+		
 			
-			
-			<!-- 
-			<li><a href="/fy/admin/biz/finance/paybill"><i class="fa fa-circle-o"></i>应付结算单</a></li>
-			<li><a href="/fy/admin/biz/finance/sumpaybill"><i class="fa fa-circle-o"></i>应付汇总表</a></li>
-			 -->
+		
 		</ul>
 	</li>
 	
@@ -201,22 +217,32 @@
 	</li>
 	
 	
+	
+	<li class="treeview #(addition)"><a href="#"> <i class="fa fa-dashboard"></i>
+			<span>备货</span> <span class="pull-right-container"> <i
+				class="fa fa-angle-left pull-right"></i>
+		</span>
+	</a>
+		<ul class="treeview-menu">
+			#fypermession("readyReceive")
+			<li><a href="/fy/admin/biz/addition/readyReceive"><i class="fa fa-circle-o">备货接收表</i></a></li>
+			#end
+			#fypermession("ready")
+			<li><a href="/fy/admin/biz/addition/ready"><i class="fa fa-circle-o">备货</i></a></li>
+			#end
+		</ul>
+	</li>
+	
+	
+	#fypermession("advisory")
 	<li class="treeview #(addition)"><a href="#"> <i class="fa fa-dashboard"></i>
 			<span>自用</span> <span class="pull-right-container"> <i
 				class="fa fa-angle-left pull-right"></i>
 		</span>
 	</a>
 		<ul class="treeview-menu">
-			#fypermession("advisory")
 			<li><a href="/fy/admin/biz/addition/advisory"><i class="fa fa-circle-o">价格查询表</i></a></li>
-			#end
-			
-			<li><a href="/fy/admin/biz/addition/readyReceive"><i class="fa fa-circle-o">备货接收表</i></a></li>
-			#fypermession("ready")
-			<li><a href="/fy/admin/biz/addition/ready"><i class="fa fa-circle-o">备货</i></a></li>
-			#end
-			
-		
 		</ul>
 	</li>
+	#end
 </ul>

@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import com.chen.fy.model.Permission;
 import com.jfinal.String.TestString;
@@ -67,7 +68,7 @@ public class PermissonInit {
 
 	public void readPermisson() throws IOException {
 		String parent = TestString.class.getClassLoader().getResource("").getFile();
-		File init = new File(parent, "init.txt");
+		File init = new File(parent, "permission/base.txt");
 		if (!init.exists()) {
 			init.createNewFile();
 		}
@@ -84,8 +85,10 @@ public class PermissonInit {
 
 	}
 
+	@Test
+
 	public void initPermisson() throws IOException {
-		InputStream input = TestString.class.getClassLoader().getResourceAsStream("addpermisson.txt");
+		InputStream input = PermissonInit.class.getClassLoader().getResourceAsStream("permission/menuPerssion.txt");//
 		if (input == null) {
 			return;
 		}

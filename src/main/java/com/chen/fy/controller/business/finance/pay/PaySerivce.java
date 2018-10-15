@@ -190,11 +190,14 @@ public class PaySerivce {
 			Double should_pay = item.getDouble("should_pay");// 应付金额
 			excel.setCellVal(row, 22, should_pay);
 
+			String remark = item.getStr("remark");// 采购编号
+			excel.setCellVal(row, 23, remark);
+
 			Date hang_date = item.getDate("hang_date");// 挂账日期
-			excel.setCellVal(row, 23, hang_date, "yyyy年MM月");
+			excel.setCellVal(row, 24, hang_date, "yyyy年MM月");
 
 			Date pay_date = item.getDate("pay_date");// 应付期间
-			excel.setCellVal(row, 24, pay_date, "yyyy年MM月");
+			excel.setCellVal(row, 25, pay_date, "yyyy年MM月");
 
 			row++;
 		}
@@ -313,5 +316,19 @@ public class PaySerivce {
 		}
 		return ret;
 
+	}
+
+	/**
+	 * 根据pay id查找单据 
+	 * @param payid
+	 * @return
+	 */
+	public Record findPayModel(String payid) {
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String select = " select p.*, s.name supplier_name ," + sql;
+		String from = " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
+		String where = " WHERE  p.id = " + payid;
+		Record model = Db.findFirst(select + from + where);
+		return model;
 	}
 }

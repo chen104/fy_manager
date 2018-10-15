@@ -9,7 +9,18 @@
 
 				<a href="/fy/admin/base/customer/add"><button type="submit"
 						class="btn btn-primary">添加客户</button></a>
-
+				<button type="submit" 	class="btn btn-primary" id="bt_download">下载</button>
+				<form action="/fy/admin/base/customer/download" target="_blank" id='download'>
+				
+				</form>
+				<script type="text/javascript">
+					$(function(){
+						$("#bt_download").click(function(){
+							$("#download").submit();
+						});
+					})
+					
+				</script>
 
 				<div class="box-tools">
 					<form action="/fy/admin/base/customer">

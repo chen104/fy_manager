@@ -66,6 +66,23 @@ public class PersonController extends BaseController {
 
 	public void update() {
 		Person person = getBean(Person.class, "model");
+		Date adjustDate1 = getParaToDate("model.adjustDate1");
+		person.setAdjustDate1(adjustDate1);
+		Date adjustDate2 = getParaToDate("model.adjustDate2");
+		person.setAdjustDate2(adjustDate2);
+		Date adjustDate3 = getParaToDate("model.adjustDate3");
+		person.setAdjustDate3(adjustDate3);
+		Date adjustDate4 = getParaToDate("model.adjustDate4");
+		person.setAdjustDate4(adjustDate4);
+		Date adjustDate5 = getParaToDate("model.adjustDate5");
+		person.setAdjustDate5(adjustDate5);
+		Date adjustDate6 = getParaToDate("model.adjustDate6");
+		person.setAdjustDate6(adjustDate6);
+		Date adjustDate7 = getParaToDate("model.adjustDate7");
+		person.setAdjustDate7(adjustDate7);
+		Date adjustDate8 = getParaToDate("model.adjustDate8");
+		person.setAdjustDate8(adjustDate8);
+
 		boolean re = person.update();
 		Ret ret = null;
 		if (re) {

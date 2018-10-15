@@ -117,6 +117,7 @@
 			<label  class="col-sm-3 control-label">外协工序单价</label>
 
 			<div class="col-sm-9">
+				
 				<input type="text" id = "assistCost" onblur="onExecutAssit()" class="form-control" autocomplete="off"  placeholder="外协工序单价"  value="#(model.assist_cost??)" name="model.assistCost">
 			</div>
 		</div>
@@ -143,7 +144,10 @@
 			<label  class="col-sm-3 control-label">外协工序金额</label>
 
 			<div class="col-sm-9">
+
 				<input type="text" id="assistAmount" class="form-control"  autocomplete="off" placeholder="外协工序金额"  value="#(model.assist_account??)" name="model.assistAccount">
+			
+			
 			</div>
 		</div>
 	</div>
@@ -231,7 +235,40 @@
 			<label  class="col-sm-3 control-label">外协工序</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" autocomplete="off" placeholder="外协工序"  autocomplete="off"  value="#(model.assist_process??)" name="model.assistProcess">
+			
+				<select id="select"  class="form-control">
+					<option #if(model.assist_process?? =="表处理-镀铬" ) selected="selected" #end>表处理-镀铬</option>
+					<option  #if(model.assist_process?? =="表处理-镀镍" ) selected="selected" #end >表处理-镀镍</option>
+					<option #if(model.assist_process?? =="表处理-镀金" ) selected="selected" #end >表处理-镀金</option>
+					<option #if(model.assist_process?? =="表处理-镀银" ) selected="selected" #end>表处理-镀银</option>
+					<option #if(model.assist_process?? =="表处理-镀锌" ) selected="selected" #end>表处理-镀锌</option>
+					<option #if(model.assist_process?? =="表处理-发黑" ) selected="selected" #end>表处理-发黑</option>
+					<option #if(model.assist_process?? =="表处理-本色氧化" ) selected="selected" #end>表处理-本色氧化</option>
+					<option #if(model.assist_process?? =="表处理-彩虹色氧化" ) selected="selected" #end>表处理-彩虹色氧化</option>
+					<option #if(model.assist_process?? =="表处理-硬质阳极化" ) selected="selected" #end>表处理-硬质阳极化</option>
+					<option #if(model.assist_process?? =="表处理-喷粉" ) selected="selected" #end>表处理-喷粉</option>
+					<option #if(model.assist_process?? =="热处理-普通" ) selected="selected" #end>热处理-普通</option>
+					<option #if(model.assist_process?? =="热处理-真空" ) selected="selected" #end>热处理-真空</option>
+					<option #if(model.assist_process?? =="热处理-光亮" ) selected="selected" #end>热处理-光亮</option>
+					<option #if(model.assist_process?? =="电火花" ) selected="selected" #end>电火花</option>
+					<option #if(model.assist_process?? =="线割" ) selected="selected" #end>线割</option>
+					<option #if(model.assist_process?? =="其他" ) selected="selected" #end>其他</option>
+				</select>
+			
+		
+				<input id="assist_process" type="text" class="form-control" autocomplete="off" placeholder="外协工序"  autocomplete="off"  value="#(model.assist_process??)" name="model.assistProcess">
+			
+				<script type="text/javascript">
+				
+					$("#select").change(function(){
+							var val = $(this).val();
+							if("其他" != val){
+								$("#assist_process").val(val);
+							}
+					});
+					
+				</script>
+			
 			</div>
 		</div>
 	</div>

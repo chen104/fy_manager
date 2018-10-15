@@ -36,7 +36,7 @@ public class AccountAdminService {
 	private Account dao = new Account().dao();
 
 	public Page<Account> paginate(int pageNum) {
-		return dao.paginate(pageNum, 10, "select *", "from account order by id desc");
+		return dao.paginate(pageNum, 10, "select *", "from account where id <> 1 order by id desc");
 	}
 
 	public Account findById(int accountId) {

@@ -195,8 +195,22 @@
 			<label class="col-sm-3 control-label">运输方式</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="运输方式" autocomplete="off" #if(model.transport_type??)  value="#(model.transport_type??)" #else value="#(waybill.transport_type??)" #end
-					name="out.transportType">
+		
+						<select id="transportType"   name="out.transportType"  class="form-control"    >
+						 	<option >物流</option>
+						 	<option >快递</option>
+						 	<option>空运</option>
+						 	<option>自配</option>
+					</select>
+					<script type="text/javascript">
+						$(function(){
+							var trantype= '#if(model.transport_type??)  value="#(model.transport_type??)" #else value="#(waybill.transport_type??)" #end';
+							trantype=trantype.trim();
+							if(''!= trantype){
+								$("#transportType").val(trantype);
+							}
+						})
+					</script>
 			</div>
 		</div>
 	</div>
@@ -245,6 +259,9 @@
 
 				<input type="text" class="form-control"  #if(model.transport_no??) value="#(model.transport_no??)" #else value="#(waybill.transport_no??)"  #end
 					placeholder="运输单号" name="out.transportNo">
+				
+				 
+				
 			</div>
 		</div>
 	</div>

@@ -77,9 +77,9 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div  id="div_table"  class="box-body table-responsive no-padding">
 	
-					<table class="table table-bordered"  style="white-space:nowrap">
+					<table  class="table table-bordered"  style="white-space:nowrap">
 						<thead>
 							<tr>
 								<th> </th>
@@ -91,11 +91,15 @@
 								<th>送货单号</th>
 								<th>图号</th>
 								<th>名称</th>
+								
+								<th>制造商</th>
+								<th>检测</th>
+								
 								<th>总图号</th>
 								
 								<th>订单数量</th>
 								
-								<th>待检测数量</th>
+								<th>入库数量(应检测)</th>
 								
 								<th>单位</th>
 								<th>型号</th>
@@ -104,8 +108,7 @@
 								<th>质量等级</th>
 								<th>订单日期</th>
 								<th>交货日期</th>
-								<th>制造商</th>
-								<th>检测</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -121,6 +124,15 @@
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.map_no)  </td>
 								<td>#(x.commodity_name)</td>
+								
+								<td>#(x.supplier_name)</td>
+								
+								<td>
+								
+									<a data-action="inhouse" data-id="#(x.id)" href="/fy/admin/biz/whouse/check/waitCheck/editCheck?id=#(x.inhouse_id)"><i class="fa fa-star-half-o" title="检测">检测</i></a>
+								 
+								</td>
+								
 								<td>#(x.total_map_no)</td>
 								
 								<td>#(x.quantity)</td>
@@ -136,13 +148,7 @@
 								<td>#date(x.order_date,"yyyy-MM-dd")</td>
 								<td>#date(x.delivery_date,"yyyy-MM-dd")</td>
 								
-								<td>#(x.supplier_name)</td>
 								
-								<td>
-								
-									<a data-action="inhouse" data-id="#(x.id)" href="/fy/admin/biz/whouse/check/waitCheck/editCheck?id=#(x.inhouse_id)"><i class="fa fa-star-half-o" title="检测">检测</i></a>
-								 
-								</td>
 								
 							</tr>
 							#end
@@ -156,6 +162,39 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/whouse/check/waitCheck?p=")</div>
+				
+				
+			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
+				
 		</div>
 		<!-- /.box -->
 	</div>

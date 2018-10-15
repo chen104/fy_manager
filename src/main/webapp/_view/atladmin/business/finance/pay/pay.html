@@ -8,7 +8,7 @@
 				<h3 class="box-title">应付明细表</h3>
 				<button class="btn btn-primary" id="bt_downlad">下载</button>
 				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
-				<button class="btn btn-primary" id="bt_to_bill" >已结算</button>
+				<button class="btn btn-primary" id="bt_to_bill" >确认挂账</button>
 				<div class="box-tools">
 				<form action="/fy/admin/biz/finance/pay/pay"  class="form-inline">
 				
@@ -168,7 +168,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding text-center">
+			<div id="div_table" class="box-body table-responsive no-padding text-center">
 				<form action="/fy/admin/biz/finance/pay/downloadPay" method="post" target="_blank" id="download_pay">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -202,6 +202,7 @@
 								<th>实际入库数量</th>
 								<th>检测时间</th>
 								<th>应付总额</th>
+								<th>备注</th>
 								<th>挂账期间</th>
 								<th>应付期间</th>
 								<th>操作</th>
@@ -246,6 +247,7 @@
 								<td>#(x.pay_quantity)</td>
 								<td>#(x.check_time)</td>
 								<td>#(x.should_pay)</td>
+								<td>#(x.remark)</td>
 								<td>#date(x.hang_date,"yyyy年MM月") </td>
 								<td>#date(x.pay_date,"yyyy年MM月")</td>
 							
@@ -274,6 +276,39 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/finance/pay/pay?p=")</div>
+				
+				
+			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
+				
 		</div>
 		<!-- /.box -->
 	</div>

@@ -77,7 +77,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding">
+			<div id="div_table" class="box-body table-responsive no-padding">
 	
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -91,6 +91,10 @@
 								<th>送货单号</th>
 								<th>图号</th>
 								<th>名称</th>
+								
+								<th>制造商</th>
+								<th>确认入库</th>
+								
 								<th>总图号</th>
 								
 								<th>订单数量</th>
@@ -105,8 +109,7 @@
 								<th>订单日期</th>
 								<th>交货日期</th>
 								<th>来源</th>
-								<th>制造商</th>
-								<th>确认入库</th>
+							
 							</tr>
 						</thead>
 						<tbody>
@@ -122,6 +125,15 @@
 								<td>#(x.deliveryNo)</td>
 								<td>#(x.map_no)  </td>
 								<td>#(x.commodity_name)</td>
+								
+								<td>#(x.supplier_name)</td>
+								
+								<td>
+								#if(x.has_in_quantity < x.quantity)
+								 <a data-action="inhouse" data-id="#(x.order_id)" > 入库<i class="fa fa-sign-in" title="入库"></i></a>
+								#end
+								</td>
+								
 								<td>#(x.total_map_no)</td>
 								
 								
@@ -142,13 +154,7 @@
 								
 								<td>#(x.distribute_to)</td>
 								
-								<td>#(x.supplier_name)</td>
 								
-								<td>
-								#if(x.has_in_quantity < x.quantity)
-								 <a data-action="inhouse" data-id="#(x.order_id)" > 入库<i class="fa fa-sign-in" title="入库"></i></a>
-								#end
-								</td>
 								
 							</tr>
 							#end
@@ -162,6 +168,37 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/whouse/waitInhouse?p=")</div>
+				
+				<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
 		</div>
 		<!-- /.box -->
 	</div>

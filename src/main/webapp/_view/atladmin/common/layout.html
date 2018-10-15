@@ -35,6 +35,8 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="/assets/atl/dist/css/skins/_all-skins.min.css">
+ <link rel="stylesheet" href="/assets/atl/sliber/css/bootstrap-slider.min.css">
+	
 	<style type="text/css">
 	
 	/**
@@ -65,7 +67,27 @@
 		
 	.tip-msg{
 	margin-left:auto;margin-right: auto;color: red}
+
+	tr{
+		padding: 2px;
+	}
 	</style>
+	
+	<style type="text/css">
+	td {
+		 
+		font-size:15px;
+		border-bottom-color: 1px;
+		border-color: black;
+			 border-color: black;
+   	 	border-style: solid;
+    	border-width: 1px;
+	}
+	th{
+		padding: 3px !important;
+		font-size:10px;
+	}
+</style>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -152,12 +174,12 @@
 <!-- ./wrapper -->
 
 
-<!-- jQuery UI 1.11.4 -->
-<script src="/assets/atl/bower_components/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!-- jQuery UI 1.11.4  <script src="/assets/atl/bower_components/jquery-ui/jquery-ui.min.js"></script>-->
+
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip 
 <script>
   $.widget.bridge('uibutton', $.ui.button);
-</script>
+</script>-->
 <!-- Bootstrap 3.3.7 -->
 <script src="/assets/atl/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -198,7 +220,9 @@
 <!--  -->
 <script src="/assets/atl/validator/validator.min.js"></script>
  
+ <script src="/assets/atl/sliber/js/bootstrap-slider.min.js"></script>
  
+<script src="/assets/atl/fixedhead/jquery.fixedheadertable.min.js"></script>
  <script type="text/javascript">
  
 		$.fn.datepicker.dates['zh-CN'] = {
@@ -248,6 +272,7 @@
  		});
       			
 </script>
+
 </body>
 </html>
 #end

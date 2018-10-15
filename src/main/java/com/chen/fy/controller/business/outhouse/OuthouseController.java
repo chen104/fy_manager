@@ -112,13 +112,13 @@ public class OuthouseController extends BaseController {
 				renderJson(Ret.fail().set("msg", "运输公司不能为空"));
 				return;
 			}
-			if (StringUtils.isEmpty(model.getTransportNo())) {
-				renderJson(Ret.fail().set("msg", "运输单号不能为空"));
-				return;
-			}
+			// if (StringUtils.isEmpty(model.getTransportNo())) {
+			// renderJson(Ret.fail().set("msg", "运输单号不能为空"));
+			// return;
+			// }
 			if (model.getOutTime() == null) {
 
-				renderJson(Ret.fail().set("msg", "出库单号不能为空"));
+				renderJson(Ret.fail().set("msg", "出库时间不能为空"));
 				return;
 			}
 			Map<String, Object> Waybill = CacheKit.get("outWarehouse", "Waybill");

@@ -1,11 +1,14 @@
 package com.chen.fy.controller.business.finance.pay;
 
 import java.io.File;
+import java.util.Date;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.model.FyBusinessPay;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -85,6 +88,38 @@ public class PayController extends BaseController {
 			logger.error(e.getMessage());
 		}
 		renderJson(Ret.fail("msg", "请查看运行日志"));
+	}
+
+	public void edit() {
+		String id = getPara("id");
+		Record model = service.findPayModel(id);
+		setAttr("model", model);
+		setAttr("action", "update");
+		render("edit.html");
+	}
+
+	public void update() {
+		FyBusinessPay model = getBean(FyBusinessPay.class, "model");
+		String pay_date_s = getPara("pay_date");
+		String hang_date_s = getPara("hang_date");
+		try {
+			Date paydate = DateUtils.parseDate(pay_date_s, "yyyy-MM");
+			model.setPayDate(paydate);
+			Date hangdate = DateUtils.parseDate(hang_date_s, "yyyy-MM");
+			model.setHangDate(hangdate);
+		} catch (Exception e) {
+			renderJson(Ret.fail().set("msg", "挂账或付款期间格式不对"));
+			return;
+		}
+		boolean re = model.update();
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok().set("msg", "修改成功");
+		} else {
+			ret = Ret.fail().set("msg", "修改失败");
+		}
+		renderJson(ret);
+
 	}
 
 }

@@ -1,0 +1,218 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr class="#orderColor("x")">
+	<td width="50" >#(for.index  +  n + 1 ) </td>
+	<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>
+	
+	#if(account.hasColPermission("order","category_id"))
+	<td width="#(colMap.category_id)">#(x.cate_tmp)</td>  
+	#end
+	
+	#if(account.hasColPermission("order","planer_id"))
+	<td width="#(colMap.planer_id)">#(x.plan_tmp)</td>
+	#end
+	
+	#if(account.hasColPermission("order","execu_status"))
+	<td width="#(colMap.execu_status)">#(x.execuStatus)</td>
+	#end
+	
+	#if(account.hasColPermission("order","urgent_status"))
+	<td  width="#(colMap.urgent_status)">#(x.urgentStatus)</td>
+	#end
+	
+	#if(account.hasColPermission("order","work_bill_no"))
+	<td width="#(colMap.work_bill_no)">#(x.workOrderNo)</td>
+	#end
+	
+
+	#if(account.hasColPermission("order","delivery_no"))
+	<td width="#(colMap.delivery_no)">#(x.deliveryNo)</td>
+	#end
+	
+ 	#if(account.hasColPermission("order","map_no"))
+	<td  data-id="#(x.id)" width="#(colMap.map_no)">
+			#(x.map_no) 
+	 </td>
+	 #end
+	
+	
+	
+	#if(account.hasColPermission("order","commodity_name"))
+	<td width="#(colMap.commodity_name)">#(x.commodityName)</td>
+	#end
+	 
+	 #if(account.hasColPermission("order","total_map_no"))
+	<td width="#(colMap.total_map_no)">#(x.total_map_no)</td>
+	#end
+	
+	
+	#if(account.hasColPermission("order","quantity"))
+	<td width="#(colMap.quantity)">#(x.quantity)</td>
+	#end
+	
+	#if(account.hasColPermission("order","unit"))
+	<td width="#(colMap.unit)">#(x.unit_tmp)</td>
+	#end
+	
+	#if(account.hasColPermission("order","draw"))
+	<td width="#(colMap.draw)">
+	#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
+		
+	</td>		
+	#end
+
+	#if(account.hasColPermission("order","model_no"))
+	<td width="#(colMap.model_no)">#(x.model_no)</td>
+	#end
+	
+	
+	#if(account.hasColPermission("order","commodity_spec"))
+	<td  width="#(colMap.commodity_spec)">#(x.commodity_spec)</td>
+	#end
+	
+
+	
+	#if(account.hasColPermission("order","technology"))
+	<td width="#(colMap.technology)">#(x.technology)</td>
+	#end
+	
+	#if(account.hasColPermission("order","machining_require"))
+	<td  width="#(colMap.machining_require)">#(x.machiningRequire)</td>
+	#end
+	
+	
+	#if(account.hasColPermission("order","order_date"))
+		<td width="#(colMap.order_date)">#date(x.orderDate,"yyyy-MM-dd")</td>
+	#end
+	
+	#if(account.hasColPermission("order","delivery_date"))
+		<td  width="#(colMap.delivery_date)">#date(x.deliveryDate,"yyyy-MM-dd")</td>
+	#end
+
+	#if(account.hasColPermission("order","un_tax_cost"))
+	<td width="#(colMap.un_tax_cost)">#(x.untaxed_cost)</td>
+	#end
+	
+	#if(account.hasColPermission("order","amount"))
+	<td  width="#(colMap.amount)">#(x.amount)</td>
+	#end
+	
+	#if(account.hasColPermission("order","tax"))
+	<td width="#(colMap.tax)">#taxRate(x.tax_rate)</td>
+	#end
+	
+	#if(account.hasColPermission("order","tax_amount"))
+	<td width="#(colMap.tax_amount)">#(x.tax_amount)</td>
+	#end
+	
+	#if(account.hasColPermission("order","tatol_amount"))
+	<td width="#(colMap.tatol_amount)">#(x.tatolAmount)</td>
+	#end
+	
+	#if(account.hasColPermission("order","distribute_time"))
+	<td width="#(colMap.distribute_time)">#(x.distributeTime)</td>
+	#end
+	
+	#if(account.hasColPermission("order","distribute_to"))
+	<td width="#(colMap.distribute_to)"> #(x.distribute_to)</td><!-- 分配流向 -->
+	#end 
+	
+	#if(account.hasColPermission("order","supplier"))
+	<td width="#(colMap.supplier)"> #(x.supplier_name)</td><!-- 制造商-->
+	#end 
+	
+	#if(account.hasColPermission("order","purchase_cost"))
+	<td width="#(colMap.purchase_cost)">#(x.purchase_cost)</td>
+	#end 
+	
+	#if(account.hasColPermission("order","purchase_amount"))
+	<td  width="#(colMap.purchase_amount)" >#(x.purchase_account)</td>
+	#end 
+	 
+	#if(account.hasColPermission("order","receive_time"))
+	<td name="receiveTime" width="#(colMap.receive_time)" >#(x.receive_time)</td>
+	#end
+	
+	#if(account.hasColPermission("order","begin_time"))
+	<td  width="#(colMap.begin_time)" > #date(x.plan_time,"yyyy-MM-dd")</td><!-- 投产时间-->
+	#end
+	
+	#if(account.hasColPermission("order","in_time"))
+	<td width="#(colMap.in_time)" > #date(x.in_time,"yyyy-MM-dd")</td><!-- 入库时间-->
+	 #end
+	 
+	#if(account.hasColPermission("order","check_time"))
+	<td width="#(colMap.check_time)"> #date(x.in_check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
+	 #end
+	 
+	#if(account.hasColPermission("order","out_time"))
+	
+	<td width="#(colMap.out_time)"> #date(x.out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
+	#end
+	
+	#if(account.hasColPermission("order","out_status"))
+	<td width="#(colMap.out_status)"> 
+		#if(x.quantity?? == x.v_out_quantity??)
+		已出库
+		#else if(x.v_out_quantity?? == null)
+		未出库
+		#else  
+		部分出库
+		#end
+	 </td><!-- 出库状态-->
+	#end
+
+	
+	#if(account.hasColPermission("order","send_address"))
+	<td width="#(colMap.send_address)">#(x.send_address)</td>
+	#end
+	#if(account.hasColPermission("order","transport_company"))
+	<td width="#(colMap.transport_company)"> #(x.transport_company)</td><!-- 物流公司名称-->
+	#end
+	#if(account.hasColPermission("order","transport_no"))
+	<td width="#(colMap.transport_no)"> #(x.transport_no)</td><!-- 物流单号-->
+	#end
+	
+	#if(account.hasColPermission("order","hang_date"))
+	<td width="#(colMap.hang_date)">#date(x.gp_hang_date,"yyyy-MM-dd")</td> <!-- 挂账时间 -->
+	#end
+	
+	#if(account.hasColPermission("order","hang_status"))
+	<td width="#(colMap.hang_status)"> #if(x.quantity?? == x.gp_hang_quantity??)
+		已挂账
+		#else if(x.gp_hang_quantity?? == null)
+		未挂账
+		#else  
+		部分挂账
+		#end
+	 </td>
+	#end
+	
+	#if(account.hasColPermission("order","hang_quantity"))
+	<td  width="#(colMap.hang_quantity)">#(x.gp_hang_quantity)</td> <!-- 挂账数量 -->
+	#end
+	
+	 
+	 #if(account.hasColPermission("order","hang_amount"))
+	<td width="#(colMap.hang_amount)">#(x.gp_hang_amount)</td><!-- 挂账金额 -->
+	 #end
+	
+	#if(account.hasColPermission("order","unhang_quantity"))
+	<td  width="#(colMap.unhang_quantity)">#(x.quantity?? - x.gp_hang_quantity??)</td> <!-- 未挂账金数量-->
+	#end
+	#if(account.hasColPermission("order","is_finsh_product"))
+	<td width="#(colMap.is_finsh_product)">
+	#(x.is_finsh_product)
+	</td> 
+	#end
+	
+	#if(account.hasColPermission("order","order_update"))
+	<td class="jfa-operation-button" width="#(colMap.order_update)">
+	<a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
+		<i class="glyphicon glyphicon-pencil" title="修改"></i>
+	</a> 
+	</td>
+		 #end
+	
+</tr>
+#end

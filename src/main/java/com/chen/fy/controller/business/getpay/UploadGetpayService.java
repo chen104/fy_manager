@@ -119,15 +119,15 @@ public class UploadGetpayService {
 		 * 
 		 */
 
-		List<String> delino = splitdeliveryNoSet(deliveryNoSet);
-		for (String e : delino) {
-			String sql = String.format(Db.getSql("upgetpay.updateorder"), e);
-			System.out.println(sql);
-			Db.update(sql);
-		}
-
-		String updateHangStatus = Db.getSql("upgetpay.updateHangStatus");
-		Db.update(updateHangStatus);
+//		List<String> delino = splitdeliveryNoSet(deliveryNoSet);
+//		for (String e : delino) {
+//			String sql = String.format(Db.getSql("upgetpay.updateorder"), e);
+//			System.out.println(sql);
+//			Db.update(sql);
+//		}
+//
+//		String updateHangStatus = Db.getSql("upgetpay.updateHangStatus");
+//		Db.update(updateHangStatus);
 
 		for (int i = 0; i < re.length; i++) {
 			total = total + re[i];

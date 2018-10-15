@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.controller.base.service.SupplierService;
 import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SupplierNoKit;
@@ -18,6 +19,8 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class SupplierController extends BaseController {
+	SupplierService service = SupplierService.me;
+
 	public void index() {
 		findAllCate();
 		String key = getPara("keyWord");
@@ -223,5 +226,23 @@ public class SupplierController extends BaseController {
 		}
 		ufile.getFile().deleteOnExit();
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
+	}
+
+	public void download() {
+		try {
+			File file = service.Download();
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderText("下载失败");
+	}
+
+	public void deleteBatch() {
+		String[] ids = getParaValues("selectId");
+		Ret ret = service.deleteBatch(ids);
+		renderJson(ret);
 	}
 }

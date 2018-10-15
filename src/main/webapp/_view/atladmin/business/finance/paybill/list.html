@@ -5,7 +5,7 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<h3 class="box-title">应付计算单</h3>
+				<h3 class="box-title">应付结算单</h3>
 				<button class="btn btn-primary" id="bt_downlad">下载</button>
 				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
 				 
@@ -139,7 +139,7 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div class="box-body table-responsive no-padding text-center">
+			<div id="div_table" class="box-body table-responsive no-padding text-center">
 				<form action="/fy/admin/biz/finance/paybill/downloadPay" method="post" target="_blank" id="download_pay">
 					<table class="table table-bordered"  style="white-space:nowrap">
 						<thead>
@@ -245,6 +245,38 @@
 			<div class="box-footer clearfix">
 				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
 				"/fy/admin/biz/finance/paybill?p=")</div>
+				
+					
+			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
+				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
+			 <script type="text/javascript">
+			 //data-slider-max="100"
+				 $(function(){
+					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
+					var ex6 =  $("#ex6");
+					ex6.slider({
+						max:lenth
+					});
+					 $("#ex6").on("slide", function(slideEvt) {
+						 var withSize = $("#div_table").width();
+						 $("#div_table").scrollLeft(slideEvt.value);
+					 	  
+					 	
+					 });
+					 
+					 var div_table=  $("#div_table");
+					 div_table.scroll(function(){
+ 
+						var scrollLeft =  $(this).scrollLeft();
+						 console.info("scrollLeft : "+ scrollLeft);
+						$("#ex6").slider('setValue', scrollLeft);
+					 
+					 });
+				 });
+			
+			 </script>
+			 </div>
+				
 		</div>
 		<!-- /.box -->
 	</div>
