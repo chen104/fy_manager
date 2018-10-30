@@ -17,12 +17,20 @@ public abstract class BaseFyComplaint<M extends BaseFyComplaint<M>> extends Mode
 		return getInt("id");
 	}
 
-	public void setCustomerName(java.lang.Integer customerName) {
+	public void setCustomerId(java.lang.Integer customerId) {
+		set("customer_id", customerId);
+	}
+	
+	public java.lang.Integer getCustomerId() {
+		return getInt("customer_id");
+	}
+
+	public void setCustomerName(java.lang.String customerName) {
 		set("customer_name", customerName);
 	}
 	
-	public java.lang.Integer getCustomerName() {
-		return getInt("customer_name");
+	public java.lang.String getCustomerName() {
+		return getStr("customer_name");
 	}
 
 	public void setComplaintDate(java.util.Date complaintDate) {

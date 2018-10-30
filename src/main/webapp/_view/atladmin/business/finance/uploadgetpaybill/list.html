@@ -4,16 +4,11 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				
-			
-				<h3 class="box-title">应收结算单</h3>
-
-				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
-					
-				<div class="box-tools">
-					
-					<form action="/fy/admin/biz/finance/upgetpay"  class="form-inline">
+			<div>
+				<span class="box-title" style="margin-left: 10px;">应收结算单</span>
+				<button class="btn btn-primary" id="bt_rollback" style="margin-right: 50px" >撤回</button>
+				<div class="box-tools" style="display: inline-block;margin-right: 50px ">	
+					<form action="/fy/admin/biz/finance/upgetpaybill"  class="form-inline">
 				
 				 		<div class="form-group  input-group-sm">
 						 	    <label for="pageSize">显示</label>
@@ -30,7 +25,7 @@
 						    <label for="condition"></label>
 							    <select id="condition" class="form-control" name="condition"  onchange="onselectCondition()" >
 							    	
-							    	<option #if(condition=="supplier") selected="selected" #end value="supplier" >送货单号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no" >送货单号</option>
 							    	<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
 							    
 							  
@@ -153,118 +148,95 @@
 				
 			</div>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding">
-	
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style="">序号</th>
-								<th> <input id="selectAll"   type="checkbox" data-select="selectAll">  </th>
-								<th>挂账日期	</th>
-								<th>发票号</th>
-								<th>料号	</th>
-								<th>名称	</th>
-								<th>牌号	</th>
-								<th>规格	
-								<th>项目编号	</th>
-								<th>单位	</th>
-								<th>数量	</th>
-								<th>单价	</th>
-								<th>已挂数量	</th>
-								<th>发票挂账状态	</th>
-								<th>挂账金额	</th>
-								<th>采购员	</th>
-								<th>送货单号	</th>
-								<th>送货单序号	</th>
-								<th>合同编号</th>
-								<th>备注</th>
+			<div class="box-body table-responsive no-padding">
+				<div>
+					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
+						<table style="width:2310px" class="text-center table-bordered">
+							<tbody>
+								<tr>
+									<td width="50">序号</td>
+									<td width="50"> <input id="selectAll"   type="checkbox" data-select="selectAll">  </td>
+									<td width="100">挂账日期	</td>
+									<td width="100">发票号</td>
+									<td  width="200" >料号	</td>
+									<td  width="200">名称	</td>
+									<td width="100">牌号	</td>
+									<td width="100">规格	
+									<td width="100">项目编号	</td>
+									<td width="100">单位	</td>
+									<td width="100">数量	</td>
+									<td width="100">单价	</td>
+									<td width="100">已挂数量	</td>
+									<td width="100">发票挂账状态	</td>
+									<td width="100">挂账金额	</td>
+									<td  width="60">采购员	</td>
+									<td width="150">送货单号	</td>
+									<td width="100">送货单序号	</td>
+									<td width="100">合同编号</td>
+									<td width="300">备注</td>
+								
+								</tr>
+							</tbody>
+						</table>
 							
-								
-
-							</tr>
-						</thead>
-						<tbody>
-							#for(x : modelPage.getList())
-							<tr>
-								<td>#(for.index+1)</td>
-								 <td> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
-								<td>#(x.hang_date)</td>
-								<td>#(x.invoice_no)</td>
-								
-								<td>#(x.materials)</td>
-								<td>#(x.commodity_name )</td>
-								<td>#(x.Brand_no )</td>
-								<td>#(x.spec)</td>
-								<td>#(x.project_no)</td>
-								<td>#(x.unit)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.cost)</td>
-								<td>#(x.hang_quantity)</td>
-								<td>#(x.invoice_stat)</td>
-								<td>#(x.hang_amount)</td>
-								
-								
-								<td>#(x.perchase_person)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.delivery_index)</td>
-								<td>#(x.contract)</td>
-								 
-								<td>#(x.remark)</td>
-							</tr>
-							#end
-						</tbody>
-						<tfoot>
-						
-							<tr>
-							
-								<td colspan="13"></td><td>合计金额</td><td>#(hang_amount)</td>
-						
-							</tr>
-						</tfoot>
+					</div>
+					<div id="div_table" style="overflow: scroll;height: 600px;display: block; ">
+						<table class=" table-bordered text-center"  style="width: 2310px" >
+							<tbody id="table">
+								#for(x : modelPage.getList())
+								<tr>
+									<td width="50">#(for.index+1)</td>
+									 <td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+									<td  width="100">#(x.hang_date)</td>
+									<td  width="100">#(x.invoice_no)</td>
+									
+									<td width="200">#(x.materials)</td>
+									<td width="200">#(x.commodity_name )</td>
+									<td  width="100">#(x.Brand_no )</td>
+									<td  width="100">#(x.spec)</td>
+									<td  width="100">#(x.project_no)</td>
+									<td  width="100">#(x.unit)</td>
+									<td  width="100">#(x.quantity)</td>
+									<td  width="100">#(x.cost)</td>
+									<td  width="100">#(x.hang_quantity)</td>
+									<td  width="100">#(x.invoice_stat)</td>
+									<td  width="100">#(x.hang_amount)</td>
+									
+									
+									<td  width="60" >#(x.perchase_person)</td>
+									<td width="150">#(x.delivery_no)</td>
+									<td width="100">#(x.delivery_index)</td>
+									<td width="100">#(x.contract)</td>
+									 
+									<td width="300">#(x.remark)</td>
+								</tr>
+								#end
+							</tbody>
+					 
 					</table>
-  
+					</div>
+						<div style="text-align: center;">
+								<span hidden="hidden" ><span> 加载数 </span> <span id="rownumber">#(modelPage.getList().size()) </span> </span>
+								<span style="margin-left: 100px">金额合计 : </span><span id="hang_amount">#(hang_amount)</span>
+							</div>
+				</div>
+					
 			</div>
 			<!-- /.box-body -->
-
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/finance/upgetpay?p=")</div>
-				
-				<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
 				
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 
 <script type="text/javascript">
 function deletegetpay(a){
@@ -293,6 +265,70 @@ function deletegetpay(a){
 	
 		}
 	}
+	
+$(function(){
+	$("#div_table").scroll(function(){
+		
+		
+		var div_table = document.getElementById("div_table");
+		var offsetHeight1 = div_table.offsetHeight;
+		var scrollHeight1 = div_table.scrollHeight;
+		var clientHeight1 = div_table.clientHeight;
+		//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+		console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+	 
+		var xs= $(this).scrollLeft();
+		var scroll = $(this).scrollTop();
+		 
+		$("#div_head").scrollLeft(xs);
+	
+		if((scrollHeight1-clientHeight1)-scroll <100){
+			$("#param").text($("[searchItem='ajax']").serialize());
+			if($("#currentPage").val() != $("#totalpage").val()){
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/finance/upgetpaybill/findJsonPage',
+					   data:$("[searchItem='ajax']").serialize(),
+					   async:false,
+					   success: function(ret){
+						   if (ret.state == "ok") {
+								$("#table").append(ret.data);
+								$("#currentPage").val(ret.pageNumber);
+								var rownumebr = $("#rownumber").text();
+								var row =  new Number(rownumebr) + ret.listSize;
+								$("#rownumber").text(row);
+								
+								var weiwai_account =$("#hang_amount").text();
+								var amount = ret.hang_amount + new Number(hang_amount);
+								$("#hang_amount").text(amount);
+								/*
+								var weiwai_account =$("#weiwai_account").text();
+								var amount = ret.weiwai_account + new Number(weiwai_account);
+								$("#weiwai_account").text(amount);
+								var should_pay = $("#should_pay").text();
+								var payAcount = new Number(amount) 
+								var pay = new Number(should_pay) + ret.should_pay; 
+								$("#should_pay").text(pay);
+								*/
+							//	var amount = $("#amount_tatol").text();
+								//var total =  new Number(amount) + ret.amount;
+								//$("#amount_tatol").text(total);
+							}
+						 
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
+						}
+					});
+				
+			}
+		}
+		 
+	});
+});
     </script>
 
 #end

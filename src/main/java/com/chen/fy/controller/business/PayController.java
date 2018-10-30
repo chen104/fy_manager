@@ -52,7 +52,7 @@ public class PayController extends BaseController {
 		Integer pageSize = getParaToInt("pageSize", 10);
 		setAttr("pageSize", pageSize);
 		setAttr("append", "&pageSize=" + pageSize);
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no";
 		String select = "select p.*, s.name supplier_name ," + sql;
 		String from = "from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String desc = " order by id desc";
@@ -435,7 +435,7 @@ public class PayController extends BaseController {
 			if (!StringUtils.isEmpty(supplier)) {
 				sb.append(" and supplier_id=").append(supplier).append("  ");
 			}
-			String sql = "select p.* ,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status,s.name supplier_name"
+			String sql = "select p.* ,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no,s.name supplier_name"
 					+ " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id"
 					+ " left join fy_base_supplier s on  p.supplier_id = s.id " + sb.toString() + " order by id desc";
 			List<FyBusinessPay> models = FyBusinessPay.dao.find(sql);

@@ -2,19 +2,72 @@ package com.chen.fy.controller.business.getpaybill;
 
 import java.util.ArrayList;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyUploadGetpay;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.template.Engine;
 import com.jfinal.upload.UploadFile;
 
 public class UploadGetpayBillController extends BaseController {
 	private static final Logger logger = LogManager.getLogger(FyLoginSessionInterceptor.class);
 	UploadGetpayBillService service = UploadGetpayBillService.me;
+
+	Engine engine;
+
+	public UploadGetpayBillController() {
+		engine = new Engine();
+		engine.setToClassPathSourceFactory();
+		engine.addDirective("orderColor", OrderColorDirective.class);
+		engine.addDirective("taxRate", TaxRateDirective.class);
+	}
+
+	public void findJsonPage() {
+		String key = getPara("keyWord");
+		String condition = getPara("condition");
+		if (key != null) {
+			key = key.trim();
+		}
+		Page<FyUploadGetpay> modelPage = null;
+		try {
+			modelPage = service.findpage(getParaToInt("p", 1) + 1, getPageSize(), condition, key);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			logger.error(e1.getMessage());
+		}
+		if (modelPage == null) {
+			modelPage = new Page<>(new ArrayList<FyUploadGetpay>(), 1, 10, 0, 0);
+		}
+		Double hang_amount = 0d;
+		for (FyUploadGetpay e : modelPage.getList()) {
+			if (e.getHangAmount() != null) {
+				hang_amount += e.getHangAmount().doubleValue();
+			}
+		}
+		Ret ret = Ret.ok("msg", "加载数据");
+		HashedMap<String, Object> data = new HashedMap<String, Object>();
+		data.put("modelPage", modelPage);
+		data.put("pageSize", getPageSize());
+		String str = engine.getTemplate("stringTemplet/financ/getpay/list.jf").renderToString(data);
+		ret.set("data", str);
+		ret.set(Constant.pageIndex, modelPage.getPageNumber());
+		ret.set(Constant.pagePageSize, modelPage.getPageSize());
+		ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
+		ret.set(Constant.pageListSize, modelPage.getList().size());
+		// ret.set("should_pay", should_pay);
+		ret.set("hang_amount", hang_amount);
+
+		renderJson(ret);
+	}
 
 	public void index() {
 

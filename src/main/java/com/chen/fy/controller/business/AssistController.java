@@ -111,7 +111,7 @@ public class AssistController extends BaseController {
 		setAttr("keyWord", key);
 		String condition = getPara("condition");
 
-		String oTable = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+		String oTable = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 				+ ",s.name supplier_name";
 		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
 		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "

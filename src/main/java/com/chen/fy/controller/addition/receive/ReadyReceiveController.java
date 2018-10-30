@@ -70,4 +70,15 @@ public class ReadyReceiveController extends BaseController {
 		renderJson(Ret.fail("msg", "请查看运行日志"));
 	}
 
+	/**
+	 * 撤回备货
+	 */
+	public void rollback() {
+
+		Integer[] order_id = getParaValuesToInt("order_id");
+		logger.info(" 撤回 备货 " + StringUtils.join(order_id, ","));
+		Ret ret = service.rollback(order_id);
+		renderJson(ret);
+
+	}
 }

@@ -1,0 +1,29 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td width="50">#(for.index+1)</td>
+	 <td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+	<td  width="100">#(x.hang_date)</td>
+	<td  width="100">#(x.invoice_no)</td>
+	
+	<td width="200">#(x.materials)</td>
+	<td width="200">#(x.commodity_name )</td>
+	<td  width="100">#(x.Brand_no )</td>
+	<td  width="100">#(x.spec)</td>
+	<td  width="100">#(x.project_no)</td>
+	<td  width="100">#(x.unit)</td>
+	<td  width="100">#(x.quantity)</td>
+	<td  width="100">#(x.cost)</td>
+	<td  width="100">#(x.hang_quantity)</td>
+	<td  width="100">#(x.invoice_stat)</td>
+	<td  width="100">#(x.hang_amount)</td>
+	
+	
+	<td  width="60" >#(x.perchase_person)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td width="100">#(x.delivery_index)</td>
+	<td width="100">#(x.contract)</td>
+	 
+	<td width="300">#(x.remark)</td>
+</tr>
+#end

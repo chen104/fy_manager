@@ -1,25 +1,23 @@
 #@myLayout() #define main()
- <link href="/assets/atl/sliber/css/bootstrap-slider.min.css" rel="stylesheet">
-<link href="/assets/atl/fixedhead/css/defaultTheme.css" rel="stylesheet" media="screen" />   
-<link href="/assets/atl/fixedhead/css/myTheme.css" rel="stylesheet" media="screen" /> 
- <style type="text/css">
- 		 
- </style>
-<div class="row">
-	<div class="col-xs-12">
-		<div class="box">
+<div>
+	<div  >
+		<div class="box"  style="padding-top: 0px;margin-top: 0px">
+			
+			<div  style="padding-top: 0px;margin-top: 0px">
+		 
 			#fypermession("order_upload")
 					#include("upload2.html")
 				#end
-			<div class="box-header">
-		 
-				<h3 class="box-title text-center" >订单管理</h3>
+			
+				<span style="top: 0px">
+				<span class="box-title text-center" style="padding-top: 0px;margin-top: 0px" >订单管理</span>
+				#fypermession("order_download")
 				<a href="/fy/admin/biz/fyorder/order2/toDownload"><button class="btn btn-primary">下载</button> </a>
-				<button class="btn btn-primary" id="bt_delete">删除</button> 
-			
-			
-				<div class="box-tools">
-			
+				#end
+				
+				#fypermession("order_delete")
+					<button class="btn btn-primary" id="bt_delete">删除</button> 
+				#end	
 					<form action="/fy/admin/biz/fyorder/order2/findtable"  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						 		<label for="order_date">订单日期</label>
@@ -42,6 +40,7 @@
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
 							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
+							    	<option #if(condition=="delivery_no") selected="selected" #end value="delivery_no" >送货单号</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">图号</option>
@@ -145,7 +144,7 @@
 				</script>
 									</form>
 					
-				</div>
+				</span>
 			</div>
 			<!-- /.box-header -->
 			
@@ -153,11 +152,13 @@
 				<div style="">
 					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
 						
-						<table id="table_head" style="width:#(width)px" >
+						<table class="table-bordered"  id="table_head" style="width:#(width)px" >
 							<tbody>
 								<tr>
 								<td width="50" >序号</td>
+								#fyColPerm("order","select_order")
 								<td  width="60" >  <input type="checkbox" id="selectAll"> 多选   </td>
+								#end
 								#fyColPerm("order","category_id")
 								<td width="#(colMap.category_id)">类别</td>
 								#end
@@ -167,8 +168,8 @@
 								#fyColPerm("order","execu_status")
 								<td width="#(colMap.execu_status)">执行状态</td>
 								#end
-								#fyColPerm("order","urgent_status")
-								<td width="#(colMap.urgent_status)">紧急状态</td>
+								#fyColPerm("order","customer_no")
+								<td width="#(colMap.customer_no)">客户编码</td>
 								#end
 								#fyColPerm("order","work_bill_no")
 								<td width="#(colMap.work_bill_no)" >工作订单号</td>
@@ -289,9 +290,9 @@
 								<td   width="#(colMap.unhang_quantity)" >未挂账数量</td>
 								#end
 								
-								 
+								 #fyColPerm("order","is_finsh_product")
 								<td width="#(colMap.is_finsh_product)">是否成品</td>
-							 
+							 	#end
 							
 								#fyColPerm("order","order_update")
 								<td width="#(colMap.order_update)">操作</td>
@@ -302,159 +303,17 @@
 					</div>
 					
 				
-					<div id="div_table" style="overflow: scroll;height: 500px; " >
-						<table id="table" style="width: #(width)px">
-							<!--  
-							<thead>
-								<tr  >
-								<th width="50" >序号</th>
-								<th  width="60" >  <input type="checkbox" id="selectAll"> 多选   </th>
-								#fyColPerm("order","category_id")
-								<th width="#(colMap.category_id)">类别</th>
-								#end
-								#fyColPerm("order","planer_id")
-								<th width="#(colMap.planer_id)" >计划员</th>
-								#end
-								#fyColPerm("order","execu_status")
-								<th width="#(colMap.execu_status)">执行状态</th>
-								#end
-								#fyColPerm("order","urgent_status")
-								<th width="#(colMap.urgent_status)">紧急状态</th>
-								#end
-								#fyColPerm("order","work_bill_no")
-								<th width="#(colMap.work_bill_no)" >工作订单号</th>
-								#end
-								#fyColPerm("order","delivery_no")
-								<th  width="#(colMap.delivery_no)"  >送货单号</th>
-								#end
-								#fyColPerm("order","map_no")
-								<th  width="#(colMap.map_no)"  >图号</th>
-								#end
-								#fyColPerm("order","commodity_name")
-								<th   width="#(colMap.commodity_name)">名称</th>
-								#end
-								#fyColPerm("order","total_map_no")
-								<th  width="#(colMap.total_map_no)">总图号</th>
-								#end
-								#fyColPerm("order","quantity")
-								<th  width="#(colMap.quantity)" >数量</th>
-								#end
-								#fyColPerm("order","unit")
-								<th width="#(colMap.unit)">单位</th>
-								#end
-								#fyColPerm("order","draw")
-								<th width="#(colMap.draw)">图纸</th>
-								#end
-								#fyColPerm("order","model_no")
-								<th  width="#(colMap.model_no)">型号</th>
-								#end
-								#fyColPerm("order","commodity_spec")
-								<th   width="#(colMap.commodity_spec)">规格</th>
-								#end
-								#fyColPerm("order","technology")
-								<th  width="#(colMap.technology)" >技术条件</th>
-								#end
-								#fyColPerm("order","machining_require")
-								<th  width="#(colMap.machining_require)" >质量等级</th>
-								#end
-								#fyColPerm("order","order_date")
-								<th  width="#(colMap.order_date)" >订单日期</th>
-								#end
-								#fyColPerm("order","delivery_date")
-								<th  width="#(colMap.delivery_date)">交货日期</th>
-								#end
-								#fyColPerm("order","un_tax_cost")
-								<th  width="#(colMap.un_tax_cost)">未税单价</th>
-								#end
-								#fyColPerm("order","amount")
-								<th   width="#(colMap.amount)">金额</th>
-								#end
-								#fyColPerm("order","taxrate")
-								<th  width="#(colMap.taxrate)"  >税率</th>
-								#end
-								#fyColPerm("order","tax")
-								<th  width="#(colMap.tax)"  >税额</th>
-								#end
-								#fyColPerm("order","tatol_amount")
-								<th  width="#(colMap.tatol_amount)"  >含税金额</th>
-								#end
-								#fyColPerm("order","distribute_time")
-								<th  width="#(colMap.distribute_time)">分配时间</th>
-								#end
-								#fyColPerm("order","distribute_to")
-								<th  width="#(colMap.distribute_to)" >分配流向</th>
-								#end
-								#fyColPerm("order","supplier")
-								<th   width="#(colMap.supplier)"  >制造商</th>
-								#end
-								#fyColPerm("order","purchase_cost")
-								<th  width="#(colMap.purchase_cost)" >采购单价</th>
-								#end
-								#fyColPerm("order","purchase_amount")
-								<th  width="#(colMap.purchase_amount)" >采购总价</th>
-								#end
-								#fyColPerm("order","receive_time")
-								<th   width="#(colMap.receive_time)" >接收时间</th>
-								#end
-								#fyColPerm("order","begin_time")
-								<th  width="#(colMap.begin_time)">投产时间</th>
-								#end
-								#fyColPerm("order","in_time")
-								<th  width="#(colMap.in_time)" >入库时间</th>
-								#end
-								#fyColPerm("order","check_time")
-								<th  width="#(colMap.check_time)" >检测时间</th>
-								#end
-								#fyColPerm("order","out_time")
-								<th  width="#(colMap.out_time)" >出库时间</th>
-								#end
-								#fyColPerm("order","out_status")
-								<th  width="#(colMap.out_status)" >出库状态</th>
-								#end
-								#fyColPerm("order","send_address")
-								<th   width="#(colMap.send_address)">发货地址</th>
-								#end
-								#fyColPerm("order","transport_company")
-								<th   width="#(colMap.transport_company)" >物流名称</th>
-								#end
-								#fyColPerm("order","transport_no")
-								<th  width="#(colMap.transport_no)" >物流单号</th>
-								#end
-								#fyColPerm("order","hang_date")
-								<th  width="#(colMap.hang_date)" >挂账时间</th>
-								#end
-								
-								#fyColPerm("order","hang_status")
-								<th  width="#(colMap.hang_status)" >挂账状态</th>
-								#end
-								
-								#fyColPerm("order","hang_quantity")
-								<th   width="#(colMap.hang_quantity)" >挂账数量</th>
-								#end
-								
-								#fyColPerm("order","hang_amount")
-								<th   width="#(colMap.hang_amount)" >挂账金额</th>
-								#end
-								
-								#fyColPerm("order","unhang_quantity")
-								<th   width="#(colMap.unhang_quantity)" >未挂账数量</th>
-								#end
-								
-								 
-								<th width="#(colMap.is_finsh_product)">是否成品</th>
-							 
+					<div id="div_table" style="overflow: scroll;height: 600px; " >
+						<table id="table" class="table-bordered"  style="width: #(width)px">
 							
-								#fyColPerm("order","order_update")
-								<th width="#(colMap.order_update)">操作</th>
-								#end
-								</tr>
-							</thead>
-							-->
 							<tbody>
 						#for(x : modelPage.getList())
 							<tr class="#orderColor("x")">
+							 
 								<td width="50">#(for.index+1) </td>
+								#fyColPerm("order","select_order")
 								<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>
+								#end
 								
 								#fyColPerm("order","category_id")
 								<td width="#(colMap.category_id)">#(x.cate_tmp)</td>  
@@ -465,11 +324,11 @@
 								#end
 								
 								#fyColPerm("order","execu_status")
-								<td width="#(colMap.execu_status)">#(x.execuStatus)</td>
+								<td width="#(colMap.execu_status)">#(x.execu_status)</td>
 								#end
 								
-								#fyColPerm("order","urgent_status")
-								<td  width="#(colMap.urgent_status)">#(x.urgentStatus)</td>
+								#fyColPerm("order","customer_no")
+								<td  width="#(colMap.customer_no)">#(x.customer_no)</td>
 								#end
 								
 								#fyColPerm("order","work_bill_no")
@@ -562,7 +421,7 @@
 								#end
 								
 								#fyColPerm("order","distribute_time")
-								<td width="#(colMap.distribute_time)">#(x.distributeTime)</td>
+								<td width="#(colMap.distribute_time)">#date(x.distribute_time,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","distribute_to")
@@ -582,7 +441,7 @@
 								#end 
 								 
 								#fyColPerm("order","receive_time")
-								<td name="receiveTime" width="#(colMap.receive_time)" >#(x.receive_time)</td>
+								<td name="receiveTime" width="#(colMap.receive_time)" >#date(x.receive_time,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","begin_time")
@@ -599,7 +458,7 @@
 								 
 								#fyColPerm("order","out_time")
 								
-								<td width="#(colMap.out_time)"> #date(x.out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
+								<td width="#(colMap.out_time)"> #date(x.v_out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
 								#end
 								
 								#fyColPerm("order","out_status")
@@ -630,12 +489,15 @@
 								#end
 								
 								#fyColPerm("order","hang_status")
-								<td width="#(colMap.hang_status)"> #if(x.quantity?? == x.gp_hang_quantity??)
-									已挂账
-									#else if(x.gp_hang_quantity?? == null)
-									未挂账
+								<td width="#(colMap.hang_status)"> 
+								 	#if(x.gp_hang_quantity??0  == 0)
+								 		未挂账
+								 	#else if(x.quantity??0 == x.gp_hang_quantity??0)
+								 		已挂账
+									#else if(x.gp_hang_quantity??0 < x.quantity??0)
+										 部分挂账
 									#else  
-									部分挂账
+										挂账数量异常
 									#end
 								 </td>
 								#end
@@ -650,10 +512,13 @@
 								 #end
 								
 								#fyColPerm("order","unhang_quantity")
-								<td  width="#(colMap.unhang_quantity)">#(x.quantity?? - x.gp_hang_quantity??)</td> <!-- 未挂账金数量-->
+								<td  width="#(colMap.unhang_quantity)">#(x.quantity??0 - x.gp_hang_quantity??0)</td> <!-- 未挂账金数量-->
 								#end
 								
+								#fyColPerm("order","is_finsh_product")
 								<td width="#(colMap.is_finsh_product)">
+								#end
+								
 								#(x.is_finsh_product)
 								</td> 
 								#fyColPerm("order","order_update")
@@ -672,7 +537,9 @@
 					<div>
 						<span>共加载 : <span id="rownumber">#(pageSize)</span> </span> <span style="margin-left: 20px" >金额合计:<span id="amount_tatol">#(amount)</span> </span>
 					</div>
-				
+					<div hidden="">
+						  <span id="param"> </span>
+					</div>
 				</div>
 				
 			</div>
@@ -732,6 +599,9 @@
 <input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
 <input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
 <input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 </form>
 
 <script type="text/javascript">
@@ -831,7 +701,7 @@
 			 console.info((scrollHeight1-clientHeight1)+" "+ scroll);
 	
 			if((scrollHeight1-clientHeight1)-scroll <100){
-				
+				$("#param").text($("[searchItem='ajax']").serialize());
 				if($("#currentPage").val() != $("#totalpage").val()){
 					$.ajax({
 						   type: "POST",
@@ -843,7 +713,7 @@
 									$("#table").append(ret.data);
 									$("#currentPage").val(ret.pageNumber);
 									var rownumebr = $("#rownumber").text();
-									var row =  new Number(rownumebr) + ret.pageSize;
+									var row =  new Number(rownumebr) + ret.listSize;
 									$("#rownumber").text(row);
 									
 									var amount = $("#amount_tatol").text();

@@ -45,7 +45,7 @@ public class ReadyService {
 		Page<Record> modelPage = null;
 		String select = "select * ,add_quantity";
 		String from = "  from fy_business_order o  left join ready_view on o.id = ready_order_id ";
-		String where = " where  execu_status ='备货' ";
+		String where = " where  execu_status ='备货' "; // customer_no ='备货'
 		String orderby = " order by  id desc ";
 		if (StringUtils.isEmpty(key)) {
 			modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
@@ -87,7 +87,6 @@ public class ReadyService {
 			if (quantity1.doubleValue() == 0 && StringUtils.isEmpty(workNo1)) {
 				model.setWorkOrderNo1(order.getWorkOrderNo());
 				model.setDeliveryNo1(order.getDeliveryNo());
-				// model.setAddQuantity1(order.getQuantity());
 				model.setExecuStatus("备货");
 				model.setAddStatus("部分补单");
 			} else if (quantity2.doubleValue() == 0 && StringUtils.isEmpty(workNo2)) {
@@ -131,7 +130,7 @@ public class ReadyService {
 			}
 
 			model.setExecuStatus(order.getExecuStatus());
-			model.setUrgentStatus(order.getUrgentStatus());
+			// model.setUrgentStatus(order.getUrgentStatus());
 			model.setOrderDate(order.getOrderDate());
 			model.setDeliveryDate(order.getDeliveryDate());
 
@@ -156,6 +155,7 @@ public class ReadyService {
 			return Ret.ok().set("msg", "补单失败 ，请查看日志");
 		}
 	}
+
 
 	public Integer getCategory(String cateName) {
 		Category model = Category.dao.findFirst("select * from fy_base_category where  name =? ", cateName.trim());

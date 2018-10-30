@@ -1,0 +1,65 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+ 
+#for(x : modelPage.getList())
+<tr>
+	<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.order_id)" checked="checked"></td>
+	
+	<td width="50">#(for.index+1+n)</td>
+	<td width="60">#(x.cate_tmp)</td>
+	<td width="60">#(x.plan_tmp)</td>
+	<td width="100">#(x.execu_status)</td>
+	<td width="100">#(x.customer_no)</td>
+
+	<td width="100">#(x.work_order_no)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td  width="150">#(x.map_no)</td>
+	<td width="200">#(x.commodity_name)</td>
+	<td width="300">#(x.total_map_no)</td>
+	<td width="100">#(x.quantity)</td>
+	<td width="35">#(x.unit_tmp)</td>
+	<td width="200">#(x.model_no)</td>
+	<td  width="200">#(x.commodity_spec)</td>
+
+	<td width="200">#(x.technology)</td>
+	<td width="100" >#(x.purchase_cost)</td>
+	<td width="100">#(x.purchase_account)</td>
+	 <td width="100">#(x.is_has_tax)</td>
+	<td  width="80">#(x.machining_require)</td>
+	
+	<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
+	<td width="100">#(x.delivery_date)</td>
+		
+	
+	<td width="200">#(x.supplier_name)</td>		
+	<td width="100">#(x.purchase_no)</td>		
+	
+	<td  width="200">#date(x.receive_time,"yyyy-MM-dd")</td>
+	<td  width="100">#date(x.plan_time,"yyyy-MM-dd")</td>	
+							
+	<td  width="100">#(x.has_in_quantity)</td>
+	<td width="100">
+	#(x.inhouse_status)
+	</td>
+	<td  width="100">#(x.inhouse_date)</td>
+	<td  width="100">#(x.check_result)</td>
+
+
+	<td  width="100">#(x.pv_pay_quantity)</td>	
+	<td  width="100"> 
+		
+		#if(x.pv_pay_quantity??0  == 0)
+	 		未挂账
+	 	#else if(x.quantity??0 == x.pv_pay_quantity??0)
+	 		已挂账
+		#else if(x.pv_pay_quantity??0 < x.quantity??0)
+			 部分挂账
+		#else  
+			挂账数量异常
+		#end
+	
+	</td>	
+	<td  width="100">#date(x.pv_hang_date,"yyyy-MM")</td>	
+	<td  width="100">#date(x.pv_pay_date,"yyyy-MM")</td>	
+		
+</tr>
+#end

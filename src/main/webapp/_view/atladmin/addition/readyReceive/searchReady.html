@@ -13,7 +13,7 @@
 			<div class="modal-body">
 				
 				<div style="padding-bottom:5px"> 
-					<input class="myinput" id="ReadyKeyWord" > <button class="btn" onclick="getTaxRateFromServer()">查找</button>
+					<input class="myinput" id="ReadyKeyWord" > <button class="btn" onclick="getReadyFromServer(1 , null)">查找</button>
 				</div>
 				
 				<div style="overflow-y:scroll">
@@ -66,6 +66,9 @@
 <script type="text/javascript">
 
 
+/**
+ * 选择备货
+ */
 function SelectReadyModal(callback,a){
 	var key = $(a).data('map');
 	var input =$("#ReadyKeyWord");
@@ -99,13 +102,16 @@ function SelectReadyModal(callback,a){
 	});
 	
 	var noselect= function(){
-	
+		$('#readyModel').modal("hide");
 		callback(false,null,null,null);
 	
 	};
 	
 	$("#Ready_bt_onCancel").click(noselect);
 	$("#ready_bt_onclose").click(noselect);
+	
+	
+	
 	
 	this.show=show;
 	function show(){
@@ -124,6 +130,9 @@ function checknull(value){
 	
 }
 
+/*
+ * 加载备货
+ */
 function getReadyFromServer(pageNumer , order_id){
 	
 	$.get("/fy/admin/biz/addition/readyReceive/findReadyJosn", { keyWord: $("#ReadyKeyWord").val(), p : pageNumer,order_id:order_id},

@@ -10,7 +10,13 @@ select  delivery_no,max(hang_date) gp_hang_date,sum(hang_amount) gp_hang_amount 
 
 
 pay
-SELECT order_id ,min(check_result) pay_check_result,sum(pay_quantity) pay_quantity,max(hang_date) pay_hang_date,max(pay_date)  pay_date from fy_business_pay GROUP BY order_id
+SELECT 
+order_id ,parent_id,is_purchase,
+min(check_result) pay_check_result,
+sum(pay_quantity) pay_quantity,
+max(hang_date) pay_hang_date,max(pay_date)  pay_date
+ from fy_business_pay 
+GROUP BY order_id,parent_id,is_purchase
 
 
 ready_view

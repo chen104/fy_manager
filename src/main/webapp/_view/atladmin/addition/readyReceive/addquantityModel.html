@@ -40,34 +40,38 @@
 </div>
 <script type="text/javascript">
 
-	$(function(){
-		$("#bt_addquantity").one('click',function(){
-			
-			var quantity = 	$("#quantity").val();
-			$.ajax({
-				   type: "POST",
-				   url:'/fy/admin/biz/addition/readyReceive/addQuantity' ,
-				   data:{order_id:$("#addquantityModal").data("id"),addquantity:quantity},
-				   success: function(ret){
-					   if (ret.state == "ok") {
-							
-						   $("#addquantityModal").modal("hide");
-						   window.location.reload();
+	function AddQauntityModel(callback,order_id){
+		this.show=show;
+		function show(){
+			console.info(" 1234 ");
+			//绑定事件
+			$("#bt_addquantity").one('click',function(){
+				
+				var quantity = 	$("#quantity").val();
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/addition/readyReceive/addQuantity' ,
+					   data:{order_id:order_id,addquantity:quantity},
+					   success: function(ret){
+						   if (ret.state == "ok") {
+								$("#addquantityModal").modal("hide");
+								window.location.reload();
+								callback();
+							}
+						   alert(ret.msg);
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
 						}
-					   alert(ret.msg);
-				   },
-				   error:function (XMLHttpRequest, textStatus, errorThrown) {
-					    // 通常 textStatus 和 errorThrown 之中
-					    // 只有一个会包含信息
-					 //   this; // 调用本次AJAX请求时传递的options参数
-					   alert('网络异常');
-					}
-				});
+					});
+			});
+			$("#addquantityModal").modal("show");
 			
-		});
-		
-	});
-
+		}
+	}
 
 	  
 </script>

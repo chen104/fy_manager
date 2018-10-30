@@ -41,12 +41,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("execu_status");
 	}
 
-	public void setUrgentStatus(java.lang.String urgentStatus) {
-		set("urgent_status", urgentStatus);
+	public void setCustomerNo(java.lang.String customerNo) {
+		set("customer_no", customerNo);
 	}
 	
-	public java.lang.String getUrgentStatus() {
-		return getStr("urgent_status");
+	public java.lang.String getCustomerNo() {
+		return getStr("customer_no");
 	}
 
 	public void setOrderDate(java.util.Date orderDate) {

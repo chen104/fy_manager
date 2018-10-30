@@ -67,17 +67,18 @@
 
 
 	<li class="treeview  #(fyorder)"><a href="#"> <i class="fa fa-dashboard"></i>
-			<span>PCM执行表</span> <span class="pull-right-container"> <i
+			<span>计划</span> <span class="pull-right-container"> <i
 				class="fa fa-angle-left pull-right"></i>
 		</span>
 	</a>
 		<ul class="treeview-menu #(fyorder)">
-			#fypermession("order")
-			<li><a href="/fy/admin/biz/fyorder/order2"><i class="fa fa-circle-o">订单管理</i></a></li>
-			#end
-			<!--   	 -->
-			<li><a href="/fy/admin/biz/fyorder/order2/findtable"><i class="fa fa-circle-o">订单管理</i></a></li>
 		
+				<!-- <li><a href="/fy/admin/biz/fyorder/order2"><i class="fa fa-circle-o">订单管理</i></a></li>
+			
+		  	 -->
+		  	 	#fypermession("order")
+			<li><a href="/fy/admin/biz/fyorder/order2/findtable"><i class="fa fa-circle-o">订单管理</i></a></li>
+			#end
 			
 			
 			#fypermession("order_delete_list")
@@ -150,7 +151,7 @@
 	</li>
 
 	<li class="treeview #(whouse)"><a href="#"> <i class="fa fa-dashboard"></i>
-			<span>仓库管理</span> <span class="pull-right-container"> <i
+			<span>仓储及检测</span> <span class="pull-right-container"> <i
 				class="fa fa-angle-left pull-right"></i>
 		</span>
 	</a>
@@ -236,7 +237,7 @@
 	
 	#fypermession("advisory")
 	<li class="treeview #(addition)"><a href="#"> <i class="fa fa-dashboard"></i>
-			<span>自用</span> <span class="pull-right-container"> <i
+			<span>报价</span> <span class="pull-right-container"> <i
 				class="fa fa-angle-left pull-right"></i>
 		</span>
 	</a>

@@ -31,7 +31,8 @@ public class PaySerivce {
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, String start_date,
 			String end_date) throws Exception {
 		Page<Record> modelPage = null;
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,\n"
+				+ "order_date,delivery_date,execu_status,customer_no,total_map_no \n";
 		String select = "select p.*, s.name supplier_name ," + sql;
 		String from = "from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String desc = " order by id desc";
@@ -91,9 +92,12 @@ public class PaySerivce {
 	 * @throws Exception 
 	 */
 	public File downloadPay(String[] ids) throws Exception {
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name, \n "
+				+ "commodity_spec,map_no,quantity,unit_tmp,technology,\n "
+				+ "machining_require,untaxed_cost,order_date,delivery_date, \n" + "execu_status,customer_no";
 		String select = "select p.*, s.name supplier_name ," + sql;
-		String from = " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
+		String from = " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  \n "
+				+ "left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String where = " where  p.id in ";
 		String desc = " order by id desc";
 		StringBuilder idsb = new StringBuilder();
@@ -300,11 +304,22 @@ public class PaySerivce {
 		StringBuilder paySb = new StringBuilder();
 		SqlKit.joinIds(payId, paySb);
 		String update = " UPDATE  fy_business_pay SET is_setlled = 1 where id in ";
+		List<Record> list = Db.find("select DISTINCT order_id from fy_business_pay  where id in " + paySb.toString());
+
+		ArrayList<String> order_ids = new ArrayList<String>();
+		for (Record e : list) {
+			order_ids.add(e.getStr("order_id"));
+		}
+		StringBuilder order_idSb = new StringBuilder();
+		SqlKit.joinIds(order_ids, order_idSb);
+
 		boolean re = Db.tx(new IAtom() {
 
 			@Override
 			public boolean run() throws SQLException {
 				int re = Db.update(update + paySb.toString());
+				String update = Db.getSql("order.updatepayInfo");
+				Db.update(String.format(update, order_idSb.toString(), order_idSb.toString()));
 				return re == payId.length;
 			}
 		});
@@ -324,7 +339,9 @@ public class PaySerivce {
 	 * @return
 	 */
 	public Record findPayModel(String payid) {
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec, \n"
+				+ "map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost, \n"
+				+ "order_date,delivery_date,execu_status,customer_no \n";
 		String select = " select p.*, s.name supplier_name ," + sql;
 		String from = " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String where = " WHERE  p.id = " + payid;

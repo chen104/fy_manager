@@ -33,8 +33,8 @@ import com.jfinal.plugin.activerecord.tx.Tx;
  *   `id`  ,
   `category_id`   '关联基础资料类别',
   `planer_id`   '关联人员',
-  `execu_status` varchar(20)  '执行状态',
-  `urgent_status` varchar(20)  '紧急状态',
+  `customer_no` varchar(20)  '执行状态',
+  `customer_no` varchar(20)  '紧急状态',
   `order_date`   '订单日期',
   `delivery_date` date  '交货日期',
   `work_order_no` varchar(20) NOT NULL COMMENT '工作订单号',
@@ -364,8 +364,8 @@ public class ProduceController extends BaseController {
 				String execu_status = item.getStr("execu_status");// 执行状态
 				excel.setCellVal(row, 3, execu_status);
 
-				String urgent_status = item.getStr("urgent_status");// 紧急状态
-				excel.setCellVal(row, 4, urgent_status);
+				String customer_no = item.getStr("customer_no");// 紧急状态
+				excel.setCellVal(row, 4, customer_no);
 
 				Date order_date = item.getDate("order_date");// 订单日期
 				excel.setCellVal(row, 5, order_date);

@@ -1,0 +1,43 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td width="50" >#(for.index+1)</td>
+ 	<td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+	<td width="60">#(x.cate_tmp)</td>
+	
+	<td width="60">#(x.plan_tmp)</td>
+	<td width="100">#(x.work_order_no)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td  width="200">#(x.purchase_name)</td>
+	<td width="150">#(x.map_no)</td>
+	
+	<td width="300">#(x.total_map_no)</td>
+	<td width="200">#(x.technology)</td>
+	<td width="100">#(x.machining_require)</td>
+	<td width="100">#(x.quantity)</td>
+	<td width="100">#(x.unit_tmp)</td>
+	<td width="100">#(x.purchase_date)</td>
+	
+	<td width="100">#(x.check_result)</td>
+	<td width="300">#(x.supplier_name)</td>
+	
+	<td width="100">#(x.purchase_no)</td>
+	<td width="100">#(x.purchase_quantity)</td>
+	<td width="100">#(x.purchase_cost)</td>
+	<td width="100">#(x.purchase_amount)</td>
+
+	<td width="100">#date(x.in_warehouse_time,"yyyy-MM-dd")</td>
+	<td width="100">#(x.in_from)</td>
+	<td width="100">#(x.pay_quantity)</td>
+	<td width="100">#date(x.check_time,"yyyy-MM-dd")</td>
+	<td width="100">#(x.should_pay)</td>
+	<td width="100">#date(x.hang_date,"yyyy年MM月") </td>
+	<td width="100">#date(x.pay_date,"yyyy年MM月")</td>
+
+	<td  width="100" class="jfa-operation-button"><a href="/fy/admin/biz/finance/pay/edit?id=#(x.id)" style="margin-left: 14px;"> 
+	<i class="fa fa-pencil" title="修改"></i>
+	</a>
+	
+	</td>
+</tr>
+#end

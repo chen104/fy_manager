@@ -1,6 +1,9 @@
 package com.chen.fy.controller;
 
+import java.util.Calendar;
 import java.util.List;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.chen.fy.model.Account;
 import com.chen.fy.model.Role;
@@ -12,6 +15,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 public class AccountController extends BaseController {
 
@@ -153,8 +157,54 @@ public class AccountController extends BaseController {
 		Integer delay = Db.queryInt(
 				" select  count(1) num  from fy_business_order where out_quantity =0  and DATEDIFF(CURDATE(),import_time) > 30 ");
 		setAttr("delay", delay);
+
+		/**
+		 * 需要传递参数年份，如 2018
+		 */
+		String findTotal = Db.getSql("order.findTotal");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		// calendar.add(Calendar.YEAR, -1);
+		String yyyy = DateFormatUtils.format(calendar, "yyyy");
+		List<Record> list = Db.find(findTotal, yyyy);
+		setAttr("yyyy", yyyy);
+		Double totale = 0d;
+		for (Record e : list) {
+			Double tem = e.getDouble("amount");
+			totale += tem == null ? 0d : tem;
+			Double item_total = totale;
+			e.set("item_total", item_total);
+		}
+		setAttr("totalList", list);
 		render("../index.html");
 
 	}
 
+	@ActionKey("/fy/admin/total")
+	public void findTotal() {
+		/**
+		 * 需要传递参数年份，如 2018
+		 */
+		try {
+			String findTotal = Db.getSql("order.findTotal");
+			String year = getPara("yyyy");
+			// calendar.add(Calendar.YEAR, -1);
+			List<Record> list = Db.find(findTotal, year);
+			Double totale = 0d;
+			for (Record e : list) {
+				Double tem = e.getDouble("amount");
+				totale += tem == null ? 0d : tem;
+				Double item_total = totale;
+				e.set("item_total", item_total);
+			}
+			Ret ret = Ret.ok().set("msg", "查找完成");
+			ret.set("data", list);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Ret ret = Ret.fail().set("msg", "查找完成");
+		renderJson(ret);
+	}
 }

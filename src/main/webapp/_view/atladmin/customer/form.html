@@ -15,30 +15,43 @@
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">统一社会代码</label>
+			<label  class="col-sm-3 control-label">客户编码</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="统一社会代码"  value="#(model.code??)" name="model.code">
+				<input type="text" class="form-control"  placeholder="客户编码"  value="#(model.customer_no??)" name="model.customerNo">
 			</div>
 		</div>
 	</div>
 
 </div>
+<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">统一社会代码</label>
+	
+				<div class="col-sm-9">
+					<input type="text" class="form-control"  placeholder="统一社会代码"  value="#(model.code??)" name="model.code">
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+
+			<div class="form-group">
+				<label  class="col-sm-3 control-label">地址</label>
+	
+				<div class="col-sm-9">
+					
+					<input type="text" class="form-control"  placeholder="地址"  value="#(model.address??)" name="model.address">
+				</div>
+			</div>
+		</div>
+</div>
 
 
 <div class="row">
 
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">地址</label>
-
-			<div class="col-sm-9">
-				
-				<input type="text" class="form-control"  placeholder="地址"  value="#(model.address??)" name="model.address">
-			</div>
-		</div>
-	</div>
+	
 
 	<div class="col-md-6">
 		<div class="form-group">
@@ -49,11 +62,6 @@
 			</div>
 		</div>
 	</div>
-
-</div>
-
-
-<div class="row">
 
 	<div class="col-md-6">
 
@@ -66,14 +74,32 @@
 		</div>
 	</div>
 
+</div>
+
+
+<div class="row">
+
+	
+
 	<div class="col-md-6">
 		<div class="form-group">
 			<label  class="col-sm-3 control-label">银行账号</label>
 
 			<div class="col-sm-9">
 			
-					<input type="text" class="form-control pull-right"   placeholder="银行账号"  value="#(model.bankNo??)" name="model.bankNo">
+					<input type="text" class="form-control pull-right"  autocomplete="off"  placeholder="银行账号"  value="#(model.bankNo??)" name="model.bankNo">
 		
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">结算方式</label>
+
+			<div class="col-sm-9">
+				<input type="text"  class="form-control" autocomplete="off" placeholder="结算方式" value="#(model.settlementType??)" name="model.settlementType">
 			</div>
 		</div>
 	</div>
@@ -84,16 +110,7 @@
 
 <div class="row">
 
-	<div class="col-md-6">
-
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">结算方式</label>
-
-			<div class="col-sm-9">
-				<input type="text"  class="form-control"  placeholder="结算方式" value="#(model.settlementType??)" name="model.settlementType">
-			</div>
-		</div>
-	</div>
+	
 
 	<div class="col-md-6">
 		<div class="form-group">

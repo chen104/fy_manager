@@ -104,4 +104,5 @@ public class SqlKit {
 
 		ret.append(")");
 	}
+
 }

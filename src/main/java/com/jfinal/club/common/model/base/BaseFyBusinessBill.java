@@ -34,19 +34,19 @@ public abstract class BaseFyBusinessBill<M extends BaseFyBusinessBill<M>> extend
 	}
 
 	public void setExecuStatus(java.lang.String execuStatus) {
-		set("execu_status", execuStatus);
+		set("customer_no", execuStatus);
 	}
 	
 	public java.lang.String getExecuStatus() {
-		return getStr("execu_status");
+		return getStr("customer_no");
 	}
 
 	public void setUrgentStatus(java.lang.String urgentStatus) {
-		set("urgent_status", urgentStatus);
+		set("customer_no", urgentStatus);
 	}
 	
 	public java.lang.String getUrgentStatus() {
-		return getStr("urgent_status");
+		return getStr("customer_no");
 	}
 
 	public void setBillDate(java.util.Date billDate) {

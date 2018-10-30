@@ -1,0 +1,34 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td width="50">    <input name="selectId" type="checkbox"   value="#(x.inhouse_id)">  </td>
+	<td width="50">#(for.index+1+n)</td>
+	<td width="60">#(x.cate_tmp)</td>  
+	<td width="60">#(x.plan_tmp)</td>
+
+	<td width="100">#(x.work_order_no)</td>
+	
+	<td  width="150">#(x.map_no)  </td>
+	
+	<td  width="200">#(x.commodity_name)</td>
+	<td  width="300">#(x.total_map_no)</td>
+	<td width="100">#(x.unpass_quantity)</td>
+	<td width="35">#(x.unit_tmp)</td>	 
+	
+	<td width="200">#(x.model_no)</td>
+	<td width="200">#(x.commodity_spec)</td>
+	<td width="200">#(x.technology)</td>
+	<td width="100">#(x.machining_require)</td>
+	
+	
+	
+	<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
+	<td  width="100">#(x.distribute_to)</td>
+	
+	<td  width="250">#(x.supplier_name)</td>
+	 <td   width="100">#date(x.check_time,"yyyy-MM-dd")</td>
+	<td  width="200">#(x.exception_reson)</td>
+	<td width="200">#(x.check_remark)</td>
+	
+</tr>
+#end

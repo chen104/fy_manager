@@ -1,8 +1,11 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
 <tr class="#orderColor("x")">
+	 
 	<td width="50" >#(for.index  +  n + 1 ) </td>
+	#if(account.hasColPermission("order","select_order"))
 	<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>
+ 	#end
 	
 	#if(account.hasColPermission("order","category_id"))
 	<td width="#(colMap.category_id)">#(x.cate_tmp)</td>  
@@ -13,11 +16,11 @@
 	#end
 	
 	#if(account.hasColPermission("order","execu_status"))
-	<td width="#(colMap.execu_status)">#(x.execuStatus)</td>
+	<td width="#(colMap.execu_status)">#(x.execu_status)</td>
 	#end
 	
-	#if(account.hasColPermission("order","urgent_status"))
-	<td  width="#(colMap.urgent_status)">#(x.urgentStatus)</td>
+	#if(account.hasColPermission("order","customer_no"))
+	<td  width="#(colMap.customer_no)">#(x.customer_no)</td>
 	#end
 	
 	#if(account.hasColPermission("order","work_bill_no"))
@@ -110,7 +113,7 @@
 	#end
 	
 	#if(account.hasColPermission("order","distribute_time"))
-	<td width="#(colMap.distribute_time)">#(x.distributeTime)</td>
+	<td width="#(colMap.distribute_time)">#date(x.distribute_time,"yyyy-MM-dd")</td>
 	#end
 	
 	#if(account.hasColPermission("order","distribute_to"))
@@ -130,7 +133,7 @@
 	#end 
 	 
 	#if(account.hasColPermission("order","receive_time"))
-	<td name="receiveTime" width="#(colMap.receive_time)" >#(x.receive_time)</td>
+	<td name="receiveTime" width="#(colMap.receive_time)" >#date(x.receive_time,"yyyy-MM-dd")</td>
 	#end
 	
 	#if(account.hasColPermission("order","begin_time"))
@@ -178,12 +181,15 @@
 	#end
 	
 	#if(account.hasColPermission("order","hang_status"))
-	<td width="#(colMap.hang_status)"> #if(x.quantity?? == x.gp_hang_quantity??)
-		已挂账
-		#else if(x.gp_hang_quantity?? == null)
-		未挂账
+	<td width="#(colMap.hang_status)"> 
+		#if(x.gp_hang_quantity??0  == 0)
+	 		未挂账
+	 	#else if(x.quantity??0 == x.gp_hang_quantity??0)
+	 		已挂账
+		#else if(x.gp_hang_quantity??0 < x.quantity??0)
+			 部分挂账
 		#else  
-		部分挂账
+			挂账数量异常
 		#end
 	 </td>
 	#end
@@ -198,7 +204,7 @@
 	 #end
 	
 	#if(account.hasColPermission("order","unhang_quantity"))
-	<td  width="#(colMap.unhang_quantity)">#(x.quantity?? - x.gp_hang_quantity??)</td> <!-- 未挂账金数量-->
+	<td  width="#(colMap.unhang_quantity)">#(x.quantity??0 - x.gp_hang_quantity??0)</td> <!-- 未挂账金数量-->
 	#end
 	#if(account.hasColPermission("order","is_finsh_product"))
 	<td width="#(colMap.is_finsh_product)">

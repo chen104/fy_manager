@@ -92,12 +92,16 @@ public class PurchaseService {
 
 	public File downloadPurchase(String[] ids, String supplier_id) throws Exception {
 		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(ids, sb);
+
+		Db.queryInt("  select COUNT(1) num from fy_business_purchase where is_download = 1 AND id IN " + sb.toString());
+
 		String select = " select o.* ,p.*";
 		String from = " from   fy_business_purchase  p LEFT JOIN   fy_business_order o  on  p.order_id = o.id  "
 				+ " where p.id in ";
 		String desc = " order by  p.id desc ";
 		Supplier suplier = Supplier.dao.findById(supplier_id);
-		SqlKit.joinIds(ids, sb);
+
 		List<Record> list = Db.find(select + from + sb.toString() + desc);
 		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
 		if (!parentfile.exists()) {
@@ -146,42 +150,58 @@ public class PurchaseService {
 
 		int row = 11;
 		DataFormat dataformat = excel.getDateFormat();
+		CellStyle borderstyle1 = excel.getCellType();
+		borderstyle1.setBorderLeft(BorderStyle.THIN);
+		borderstyle1.setBorderRight(BorderStyle.THIN);
+		borderstyle1.setAlignment(HorizontalAlignment.LEFT);
+
 		for (Record item : list) {
 			String map_no = item.getStr("map_no");
 			excel.setCellVal(row, 0, map_no);// 图号
+			excel.setCellStyle(row, 0, borderstyle1);
 
 			String commodity_name = item.getStr("commodity_name");// 名称
 			excel.setCellVal(row, 6, commodity_name);
+			excel.setCellStyle(row, 6, borderstyle1);
 
 			String commodity_spec = item.getStr("commodity_spec");// 规格
 			excel.setCellVal(row, 10, commodity_spec);
+			excel.setCellStyle(row, 10, borderstyle1);
 			//
 			// String filename = item.getStr("total_map_no");
 			// excel.setCellVal(row, 4, filename);
 
 			Double quantity = item.getDouble("quantity");// 数量
 			excel.setCellVal(row, 13, quantity);
+			excel.setCellStyle(row, 13, borderstyle1);
 
 			String unit_tmp = item.getStr("unit_tmp");
 			excel.setCellVal(row, 15, unit_tmp);
+			excel.setCellStyle(row, 15, borderstyle1);
 
 			String suppiler_no = item.getStr("purchase_single_weight");
 			excel.setCellVal(row, 17, suppiler_no);
+			excel.setCellStyle(row, 17, borderstyle1);
 
 			String purchase_weight = item.getStr("purchase_weight");
 			excel.setCellVal(row, 18, purchase_weight);
+			excel.setCellStyle(row, 18, borderstyle1);
 
 			Double purchase_cost = item.getDouble("purchase_cost");
 			excel.setCellVal(row, 19, purchase_cost);
+			excel.setCellStyle(row, 19, borderstyle1);
 
 			Double purchase_account = item.getDouble("purchase_account");
 			excel.setCellVal(row, 20, purchase_account);
+			excel.setCellStyle(row, 20, borderstyle1);
 
 			String is_has_tax = item.getStr("is_has_tax");
 			excel.setCellVal(row, 21, is_has_tax);
+			excel.setCellStyle(row, 21, borderstyle1);
 
 			String work_order_no = item.getStr("work_order_no");
 			excel.setCellVal(row, 22, work_order_no);
+			excel.setCellStyle(row, 22, borderstyle1);
 
 			Date purchase_delivery_date = item.getDate("purchase_delivery_date");
 			excel.setCellVal(row, 23, purchase_delivery_date);

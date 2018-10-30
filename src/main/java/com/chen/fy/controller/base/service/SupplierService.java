@@ -31,7 +31,7 @@ public class SupplierService {
 			parentfile.mkdirs();
 		}
 		File targetfile = new File(parentfile,
-				"应付单" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
+				"供应商信息" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
 
 		// 读取模板
 		String xlsx = this.getClass().getClassLoader().getResource("templet/download/base/supplier_templet.xlsx")

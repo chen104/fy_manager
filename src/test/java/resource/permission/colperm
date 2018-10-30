@@ -1,7 +1,7 @@
 类别,category_id,order
 计划员,planer_id,order
 执行状态,execu_status,order
-紧急状态,urgent_status,order
+客户编码,customer_no,order
 工作订单号,work_bill_no,order
 送货单号,delivery_no,order
 图号,map_no,order
@@ -40,3 +40,5 @@
 挂账数量,hang_quantity,order
 挂账金额,hang_amount,order
 未挂账数量,unhang_quantity,order
+是否成品,is_finsh_product,order
+订单选择,order_select,order

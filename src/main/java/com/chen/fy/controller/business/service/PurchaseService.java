@@ -32,7 +32,7 @@ public class PurchaseService {
 		// calendar.add(Calendar.MONTH, 1);
 		String purchase_date = DateFormatUtils.format(purchase, "yyyy-MM-dd");
 		try {
-			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 					+ ",can_download";
 			List<Record> list = Db.find("select p.*," + sql
 					+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where    p.supplier_id = "
@@ -52,7 +52,7 @@ public class PurchaseService {
 			Supplier supplier = Supplier.dao.findById(supplier_id);
 			StringBuilder sb = new StringBuilder();
 			SqlKit.joinIds(ids, sb);
-			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 					+ " ,can_download";
 			List<Record> list = Db.find("select p.*," + sql
 					+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where  p.id in "

@@ -116,22 +116,23 @@ public class OuthouseService {
 	 * @return
 	 */
 	public Ret batchSave(Integer[] order_ids, FyBusinessOutWarehouse model) throws Exception {
+		logger.debug("出库 订单id " + StringUtils.join(order_ids, ","));
 		List<Record> list = new ArrayList<Record>();
 		List<FyBusinessOrder> orders = new ArrayList<FyBusinessOrder>();
 		for (int i = 0; i < order_ids.length; i++) {
-			Record record = model.toRecord();
+			Record record = model.toRecord();// 获取一个新的对象存储对象
 			record.set("order_id", order_ids[i]);
 			record.set("parent_id", order_ids[i]);
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(order_ids[i]);
 
-			Integer storagequantity = order.getStorageQuantity();
+			Integer storagequantity = order.getStorageQuantity();// 获取库存
 
-			record.set("out_quantity", storagequantity);
+			record.set("out_quantity", storagequantity);// 出库
 
 			Integer out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
 			out_quantity = out_quantity + order.getStorageQuantity();
-			order.setOutQuantity(out_quantity);
-			order.setStorageQuantity(0);
+			order.setOutQuantity(out_quantity);// 出库数量
+			order.setStorageQuantity(0);// 出库完毕
 			list.add(record);
 			orders.add(order);
 		}
@@ -147,10 +148,45 @@ public class OuthouseService {
 			}
 		});
 		if (re) {
+			//
+			try {
+				updateOrderOutInfo(order_ids);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.warn(e.getMessage());
+			}
+
 			return Ret.ok().set("msg", "新建出库完成 新建" + total.toString() + " 条 出库信息 ");
 		} else {
 			return Ret.fail().set("msg", " 出库失败 ");
 		}
+
+	}
+
+	/**
+	 * 更新订单出库情况
+	 * @param order_ids
+	 * @throws Exception
+	 */
+	private void updateOrderOutInfo(Integer[] order_ids) throws Exception {
+		logger.debug("更新 订单 出库信息反写订单 的id " + StringUtils.join(order_ids, ","));
+		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(order_ids, sb);
+		String sql = Db.getSql("order.updateOutInfoQuantity");
+		String update = String.format(sql, sb.toString());
+		logger.debug(" 运行==> " + update + " ");
+		int r = Db.update(update);
+		logger.debug(" 更新 ==>   " + r);
+		sql = Db.getSql("order.updateOutInfoTransport_no");// 更新出库单信息
+		update = String.format(sql, sb.toString(), sb.toString());
+		logger.debug(" 运行==> " + update + " ");
+		r = Db.update(update);
+		if (r == 0) {// 没有出库单，这更新出库信息为null
+			String up = Db.getSql("order.updateOrderOutIsNull");
+			Db.update(String.format(up, sb.toString()));
+			logger.debug(" 没有找到出库单 则 更新" + up);
+		}
+		logger.debug(" 更新 ==>   " + r);
 
 	}
 
@@ -161,26 +197,62 @@ public class OuthouseService {
 	 * @throws Exception
 	 */
 	public Ret batchRollback(String[] id) throws Exception {
-		String update = "update fy_business_order o INNER JOIN fy_business_out_warehouse ou \r\n"
-				+ "on o.id = ou.order_id set out_house_date =null, o.out_quantity  = o.out_quantity - ou.out_quantity ,o.storage_quantity=o.storage_quantity+ou.out_quantity\r\n"
-				+ "where ou.id = ";
-		int total = 0;
-		for (String outId : id) {
-			boolean re = Db.tx(new IAtom() {
+		/*
+		 * String update =
+		 * "update fy_business_order o INNER JOIN fy_business_out_warehouse ou \r\n" +
+		 * "on o.id = ou.order_id set out_house_date =null, o.out_quantity  = o.out_quantity - ou.out_quantity ,o.storage_quantity=o.storage_quantity+ou.out_quantity\r\n"
+		 * + "where ou.id = "; int total = 0; for (String outId : id) { boolean re =
+		 * Db.tx(new IAtom() {
+		 * 
+		 * @Override public boolean run() throws SQLException { int re =
+		 * Db.update(update + outId); int d =
+		 * Db.delete("delete from  fy_business_out_warehouse where id = " + outId);
+		 * return re == 1 && d == 1; } }); if (re) { total++; } }
+		 */
+		StringBuilder outsb = new StringBuilder();
+		SqlKit.joinIds(id, outsb);
+		int[] num = new int[1];
+		num[0] = 0;
+		boolean re = Db.tx(new IAtom() {
 
-				@Override
-				public boolean run() throws SQLException {
-					int re = Db.update(update + outId);
-					int d = Db.delete("delete from  fy_business_out_warehouse where id = " + outId);
-					return re == 1 && d == 1;
+			@Override
+			public boolean run() throws SQLException {
+				try {
+					logger.debug("撤回出库 " + StringUtils.join(id, ","));
+
+					// 删除之前 更新库存
+					String ustorage = Db.getSql("order.updateOutStorage");
+					Db.update(String.format(ustorage, outsb.toString()));
+
+					// 删除出库
+					String delete = "delete from fy_business_out_warehouse where id  in ";
+
+					num[0] = Db.delete(delete + outsb.toString());
+					logger.debug("撤回出库 " + num[0] + "条记录");
+					List<Record> list = Db
+							.find(" SELECT DISTINCT order_id FROM fy_business_out_warehouse WHERE  id IN   " + outsb);
+					ArrayList<Integer> idarray = new ArrayList<Integer>();
+					for (Record e : list) {
+						idarray.add(e.getInt("order_id"));
+					}
+					// 更新出库信息
+					updateOrderOutInfo((Integer[]) idarray.toArray());
+
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.warn(e.getMessage());
 				}
-			});
-			if (re) {
-				total++;
+				return false;
 			}
+		});
+		if (re) {
+			return Ret.ok().set("msg", "撤回出库完成，共撤回" + num[0] + " 条 出库");
+		} else {
+
+			return Ret.fail().set("msg", "撤回失败");
 		}
 
-		return Ret.ok().set("msg", "撤回出库完成，共撤回" + total + " 条 出库");
 	}
 
 	/**
@@ -246,6 +318,9 @@ public class OuthouseService {
 
 			String out_remark = item.getStr("out_remark");// 备注
 			excel.setCellVal(row, 8, out_remark);
+
+			String is_finsh_product = item.getStr("is_finsh_product");// 是否成品
+			excel.setCellVal(row, 9, is_finsh_product);
 
 			row++;
 		}

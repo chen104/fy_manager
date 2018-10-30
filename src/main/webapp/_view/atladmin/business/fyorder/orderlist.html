@@ -100,11 +100,11 @@
 								<th>计划员</th>
 								#end
 								
-								#fyColPerm("order","execu_status")
+								#fyColPerm("order","customer_no")
 								<th>执行状态</th>
 								#end
 								
-								#fyColPerm("order","urgent_status")
+								#fyColPerm("order","customer_no")
 								<th>紧急状态</th>
 								#end
 								
@@ -232,12 +232,12 @@
 								<td>#(x.plan_tmp)</td>
 								#end
 								
-								#fyColPerm("order","execu_status")
-								<td>#(x.execuStatus)</td>
+								#fyColPerm("order","customer_no")
+								<td>#(x.customer_no)</td>
 								#end
 								
-								#fyColPerm("order","urgent_status")
-								<td>#(x.urgentStatus)</td>
+								#fyColPerm("order","customer_no")
+								<td>#(x.customer_no)</td>
 								#end
 								
 								#fyColPerm("order","bill_date")

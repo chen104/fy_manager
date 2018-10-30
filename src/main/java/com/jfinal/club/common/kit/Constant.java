@@ -10,4 +10,5 @@ public class Constant {
 	public final static String pageIndex = "pageNumber";
 	public final static String pagePageSize = "pageSize";
 	public final static String pageTotalRow = "totalPage";
+	public final static String pageListSize = "listSize";
 }

@@ -49,8 +49,13 @@ public class JunitFinalTest {
 
 	public void totest() {
 		List<Record> list = Db.find("select * from fy_business_purchase ");
-		Date l = list.get(0).getDate("purchase_date");
-		System.out.println(l.getTime());
+		if (list.size() > 0) {
+			Date l = list.get(0).getDate("purchase_date");
+
+			System.out.println(l.getTime());
+		}
+		String sql = Db.getSql("order.updateGetpayInfo");
+		System.out.println(sql);
 	}
 
 	/**

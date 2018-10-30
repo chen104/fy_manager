@@ -4,9 +4,12 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				<h3 class="box-title">委外一览表</h3>
+			<div >
+				
+				<span class="box-title" style="margin-left: 10px;margin-right: 10px">委外一览表</span>
+				#fypermession("commision_collect_rollback")
 				<button class="btn btn-info"  id="bt_rollback">撤回</button>
+				#end
 				<!--  <a href="/fy/admin/biz/commission/toDownloadOneSum"><button class="btn btn-primary" >下载</button></a> -->	
 				<script type="text/javascript">
 					$(function(){
@@ -42,7 +45,7 @@
 				</script>
 				
 				
-				<div class="box-tools">
+				<span >
 				  	
 					
 					<form action="/fy/admin/biz/commission/collect"  class="form-inline">
@@ -184,151 +187,155 @@
 </script>
 					</form>
 					
-				</div>
+				</span>
 			</div>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding">
-	
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th ><input type="checkbox" checked="checked" id="selectAll"></th>
-								<th  >序号</th>
-								<th>类别</th>
-								<th>计划员</th>
-								<th>执行状态</th>
-								<th>紧急状态</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>图号</th>
-								<th>名称</th>
-								<th>总图号</th>
-								<th>数量</th>
-								<th>单位</th>
-								<th>型号</th>
-								<th>规格</th>
-								<th>技术条件</th>
-								
-								<th>采购单价</th>
-								<th>采购总价</th>
-								<th>含税/未税</th>
-								<th>质量等级</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
-								<th>制造商</th>
-								<th>订单编码</th>
-								<th>接收时间</th>
-								<th>采购时间</th>
-								<th>入库数量</th>
-								<th>入库状态</th>
-								<th>入库时间</th>
-								<th>检验结果</th>
-															
-							</tr>
-						</thead>
-						<tbody>
-							#for(x : modelPage.getList())
-							<tr>
-								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.order_id)" checked="checked"></td>
-								
-								<td>#(for.index+1)</td>
-								<td>#(x.cate_tmp)</td>
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
-							
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.map_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.total_map_no)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
-								<td>#(x.model_no)</td>
-								<td>#(x.commodity_spec)</td>
-							
-								<td>#(x.technology)</td>
-								<td>#(x.purchase_cost)</td>
-								<td>#(x.purchase_account)</td>
-								 <td>#(x.is_has_tax)</td>
-								<td>#(x.machining_require)</td>
-								
-								<td>#(x.order_date)</td>
-								<td>#(x.delivery_date)</td>
+			<div class="box-body table-responsive no-padding">
+					<div>
+							<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
+								<table  class="text-center table-bordered"  id="table_head" style="width:4135px">
+									<tbody>
+											<tr>
+									<td width="50" ><input type="checkbox" checked="checked" id="selectAll"></td>
+									<td width="50" >序号</td>
+									<td  width="60" >类别</td>
+									<td width="60">计划员</td>
+									<td width="100">执行状态</td>
+									<td width="100">客户编码</td>
+									<td width="100">工作订单号</td>
 									
-								
-								<td>#(x.supplier_name)</td>		
-								<td>#(x.purchase_no)</td>		
-								
-								<td>#(x.receive_time)</td>	
-								<td>#(x.plan_time)</td>	
-														
-								<td>#(x.has_in_quantity)</td>
-								
-								<td>
-								#(x.inhouse_status)
-								</td>
-								<td>#(x.inhouse_date)</td>
-								<td>#(x.check_result)</td>
+									<td  width="150">送货单号</td>
+									<td width="150">图号</td>
+									<td width="200">名称</td>
+									
+									<td width="300">总图号</td>
+									<td width="100">数量</td>
+									<td width="35">单位</td>
+									<td width="200">型号</td>
+									<td width="200">规格</td>
+									
+									<td width="200">技术条件</td>
+									
+									<td  width="100" >采购单价</td>
+									<td width="100">采购总价</td>
+									<td width="100">含税/未税</td>
+									<td width="80">质量等级</td>
+									<td  width="100">订单日期</td>
+									<td  width="100">交货日期</td>
+									<td  width="300">制造商</td>
+									<td  width="100">订单编码</td>
+									<td  width="200">接收时间</td>
+									<td  width="100">采购时间</td>
+									<td  width="100">入库数量</td>
+									<td  width="100">入库状态</td>
+									<td  width="100">入库时间</td>
+									<td  width="100">检验结果</td>
+									
+									<td  width="100">挂账数量</td>	
+									<td  width="100">挂账状态</td>	
+									<td  width="100">挂账时间</td>	
+									<td  width="100">应付期间</td>							
+								</tr>
+									</tbody>
+							</table>
 							
+							</div>
+							
+							
+							
+						<div  id="div_table"   style="overflow: scroll;height: 600px; ">
+								<table class=" table-bordered text-center"  style="width: 4135px">
+									<tbody id="table">
+										#for(x : modelPage.getList())
+										<tr>
+											<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.order_id)" checked="checked"></td>
+											
+											<td width="50">#(for.index+1)</td>
+											<td width="60">#(x.cate_tmp)</td>
+											<td width="60">#(x.plan_tmp)</td>
+											
+											<td width="100">#(x.execu_status)</td>
+											<td width="100">#(x.customer_no)</td>
+										
+											<td width="100">#(x.work_order_no)</td>
+											<td width="150">#(x.delivery_no)</td>
+											<td  width="150">#(x.map_no)</td>
+											<td width="200">#(x.commodity_name)</td>
+											<td width="300">#(x.total_map_no)</td>
+											<td width="100">#(x.quantity)</td>
+											<td width="35">#(x.unit_tmp)</td>
+											<td width="200">#(x.model_no)</td>
+											<td  width="200">#(x.commodity_spec)</td>
+										
+											<td width="200">#(x.technology)</td>
+											<td width="100" >#(x.purchase_cost)</td>
+											<td width="100">#(x.purchase_account)</td>
+											 <td width="100">#(x.is_has_tax)</td>
+											<td  width="80">#(x.machining_require)</td>
+											
+											<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
+											<td width="100">#(x.delivery_date)</td>
+												
+											
+											<td width="300">#(x.supplier_name)</td>		
+											<td width="100">#(x.purchase_no)</td>		
+											
+											<td  width="200">#date(x.receive_time,"yyyy-MM-dd")</td>	
+											<td  width="100">#date(x.plan_time,"yyyy-MM-dd")</td>	
+																	
+											<td  width="100">#(x.has_in_quantity)</td>
+											
+											<td width="100">
+											#(x.inhouse_status)
+											</td>
+											<td  width="100">#(x.inhouse_date)</td>
+											
+											<td  width="100">#(x.check_result)</td>
 								
-							<!--  
-								<td>#(x.in_time) </td>
-								<td>#(x.real_in_quantity) </td>
-								<td class="jfa-operation-button"><a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> </td>
-								-->
 								
-							</tr>
-							#end
-						</tbody>
-					</table>
-		
+											<td  width="100">#(x.pv_pay_quantity)</td>	
+											<td  width="100"> 
+												
+												#if(x.pv_pay_quantity??0  == 0)
+											 		未挂账
+											 	#else if(x.quantity??0 == x.pv_pay_quantity??0)
+											 		已挂账
+												#else if(x.pv_pay_quantity??0 < x.quantity??0)
+													 部分挂账
+												#else  
+													挂账数量异常
+												#end
+											
+											</td>	
+											<td  width="100">#date(x.pv_hang_date,"yyyy-MM")</td>	
+											<td  width="100">#date(x.pv_pay_date,"yyyy-MM")</td>		
+										</tr>
+										#end
+									</tbody>
+								</table>
+						</div>
+						<div>
+							<span hidden="">共加载 : <span id="rownumber">#(pageSize)</span>   </span>
+						</div>
+					</div>
+				
 
 			</div>
 			<!-- /.box-body -->
 
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/commission/collect?p=")</div>
-				
-				
-			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
-				
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
 
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 <script type="text/javascript">
 		$(function(){
 			$("#selectAll").click(function(){
@@ -348,6 +355,61 @@
 				
 			});
 			
+			
+		});
+		
+		$(function(){
+			
+
+			$("#div_table").scroll(function(){
+
+			
+				var div_table = document.getElementById("div_table");
+				var offsetHeight1 = div_table.offsetHeight;
+				var scrollHeight1 = div_table.scrollHeight;
+				var clientHeight1 = div_table.clientHeight;
+				//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+				console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+			 
+				var xs= $(this).scrollLeft();
+				var scroll = $(this).scrollTop();
+				 
+				$("#div_head").scrollLeft(xs);
+
+				if((scrollHeight1-clientHeight1)-scroll <100){
+					$("#param").text($("[searchItem='ajax']").serialize());
+					if($("#currentPage").val() != $("#totalpage").val()){
+						$.ajax({
+							   type: "POST",
+							   url:'/fy/admin/biz/commission/collect/findJsonPage',
+							   data:$("[searchItem='ajax']").serialize(),
+							   async:false,
+							   success: function(ret){
+								   if (ret.state == "ok") {
+										$("#table").append(ret.data);
+										$("#currentPage").val(ret.pageNumber);
+										var rownumebr = $("#rownumber").text();
+										var row =  new Number(rownumebr) + ret.listSize;
+										$("#rownumber").text(row);
+										
+									//	var amount = $("#amount_tatol").text();
+										//var total =  new Number(amount) + ret.amount;
+										//$("#amount_tatol").text(total);
+									}
+								 
+							   },
+							   error:function (XMLHttpRequest, textStatus, errorThrown) {
+								    // 通常 textStatus 和 errorThrown 之中
+								    // 只有一个会包含信息
+								 //   this; // 调用本次AJAX请求时传递的options参数
+								   alert('网络异常');
+								}
+							});
+						
+					}
+				}
+				 
+			});
 			
 		});
 </script>

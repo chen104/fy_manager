@@ -112,7 +112,7 @@ public class WaitCheckService {
 	 */
 	public synchronized Ret checkInhouse(FyBusinessInWarehouse model) throws Exception {
 		Integer pass_quantity = model.getPassQuantity();
-		if (pass_quantity == null || pass_quantity == 0) {
+		if (pass_quantity == null) {
 			return Ret.fail().set("msg", "通过数量不能为空或为0");
 		}
 
@@ -153,9 +153,14 @@ public class WaitCheckService {
 		pay.setCheckTime(model.getCheckTime());// 检测s时间
 		pay.setInWarehouseTime(model.getCheckTime());// 入库时间
 
+
 		FyBusinessPurchase purchase = FyBusinessPurchase.dao.findFirst(
 				"select *,settlement_cycle from fy_business_purchase p LEFT JOIN fy_base_supplier s ON s.id= p.supplier_id  where order_id = "
 						+ order_id);
+
+		if (purchase.getSupplierId() == null) {
+			return Ret.fail().set("msg", "厂商不能为空");
+		}
 
 		pay.setSupplierId(purchase.getSupplierId());// 厂商
 		pay.setPurchaseName(order.getCommodityName());// 采购名称
@@ -169,6 +174,7 @@ public class WaitCheckService {
 		pay.setInFrom("采购");
 		pay.setHangDate(pay.getCheckTime());// 挂账时间
 		int settlement_cycle = purchase.getInt("settlement_cycle");// 结算周期
+		pay.setUnpassQuantity(model.getUnpassQuantity());
 		if (settlement_cycle == 1) {// 月结30天
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(pay.getHangDate());
@@ -197,6 +203,7 @@ public class WaitCheckService {
 		calender.add(Calendar.MONTH, 2);// 相隔2个月
 		pay.setPayDate(calender.getTime());// 应付期间
 		pay.setParentId(model.getId());// 上有单据 ,入库单id
+
 		boolean re = Db.tx(new IAtom() {
 
 			@Override

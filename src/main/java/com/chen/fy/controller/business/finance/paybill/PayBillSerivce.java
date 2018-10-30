@@ -2,6 +2,7 @@ package com.chen.fy.controller.business.finance.paybill;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,10 @@ public class PayBillSerivce {
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, String start_date,
 			String end_date) throws Exception {
 		Page<Record> modelPage = null;
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no, \n"
+				+ "commodity_name,commodity_spec,map_no,quantity, \n"
+				+ "unit_tmp,technology,machining_require,untaxed_cost, \n"
+				+ "order_date,delivery_date,execu_status,customer_no \n";
 		String select = "select p.*, s.name supplier_name ," + sql;
 		String from = "from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String desc = " order by id desc";
@@ -89,7 +93,10 @@ public class PayBillSerivce {
 	 * @throws Exception 
 	 */
 	public File downloadPay(String[] ids) throws Exception {
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status";
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no, \n "
+				+ "commodity_name,commodity_spec,map_no,quantity,unit_tmp,\n"
+				+ "technology,machining_require,untaxed_cost,order_date,\n "
+				+ "delivery_date,execu_status,customer_no \n";
 		String select = "select p.*, s.name supplier_name ," + sql;
 		String from = " from  fy_business_pay p left join fy_business_order o on o.id= p.order_id  left join fy_base_supplier s on  p.supplier_id = s.id ";
 		String where = " where  p.id in ";
@@ -217,11 +224,21 @@ public class PayBillSerivce {
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(payIds, idsb);
 		String update = " UPDATE  fy_business_pay SET is_setlled = 0 where id in ";
+		List<Record> list = Db.find("select DISTINCT order_id from fy_business_pay  where id in " + idsb.toString());
+
+		ArrayList<String> order_ids = new ArrayList<String>();
+		for (Record e : list) {
+			order_ids.add(e.getStr("order_id"));
+		}
+		StringBuilder order_idSb = new StringBuilder();
+		SqlKit.joinIds(order_ids, order_idSb);
 		boolean re = Db.tx(new IAtom() {
 
 			@Override
 			public boolean run() throws SQLException {
 				int re = Db.update(update + idsb.toString());
+				String update = Db.getSql("order.updatepayInfo");
+				Db.update(String.format(update, order_idSb.toString(), order_idSb.toString()));
 				return re == payIds.length;
 			}
 		});

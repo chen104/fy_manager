@@ -51,7 +51,7 @@ public class PurchaseController extends BaseController {
 		Page<FyBusinessPurchase> modelPage = null;
 		keepPara("keyWord", "condition", "p");
 
-		String select = "select p.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+		String select = "select p.*,cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 				+ ",s.name supplier_name,f.originalFileName filename,f.id fileId ";
 		String from = " from  fy_business_purchase p" + " left join  fy_business_order o on p.order_id =o.id "
 				+ " left join fy_base_supplier s on p.supplier_id = s.id"
@@ -405,7 +405,7 @@ public class PurchaseController extends BaseController {
 		calendar.add(Calendar.MONTH, 1);
 		String end = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
 
-		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 				+ "";
 		List<Record> list = Db.find("select p.*," + sql
 				+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where can_download = 1 and  p.supplier_id = "
@@ -558,7 +558,7 @@ public class PurchaseController extends BaseController {
 			calendar.add(Calendar.MONTH, 1);
 			String end = DateFormatUtils.format(calendar.getTime(), "yyyy-MM-dd");
 
-			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,execu_status,urgent_status"
+			String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 					+ "";
 			List<Record> list = Db.find("select p.*," + sql
 					+ " from  fy_business_purchase p left join  fy_business_order o on p.order_id = o.id where can_download = 1 and  p.supplier_id = "

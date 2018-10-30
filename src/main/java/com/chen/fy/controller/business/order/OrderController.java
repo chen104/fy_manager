@@ -369,8 +369,8 @@ public class OrderController extends BaseController {
 			businessDistribute.setCategoryTmp(order.getCateTmp());
 			businessDistribute.setPlanerId(order.getPlanerId());
 			businessDistribute.setPlanTmp(order.getPlanTmp());
-			businessDistribute.setExecuStatus(order.getExecuStatus());
-			businessDistribute.setUrgentStatus(order.getUrgentStatus());
+			businessDistribute.setExecuStatus(order.getCustomerNo());
+			// businessDistribute.setUrgentStatus(order.getUrgentStatus());
 			businessDistribute.setOrderDate(order.getOrderDate());
 
 			businessDistribute.setDeliveryDate(order.getDeliveryDate());

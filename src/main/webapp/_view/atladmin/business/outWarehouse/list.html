@@ -4,11 +4,11 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				<h3 class="box-title">出库表</h3>
+			<div >
+				<span class="box-title" style="margin-left: 10px;margin-right:10px ">出库表</span>
 					<button class="btn btn-primary" id="bt_download">下载</button>
 					<button class="btn btn-primary" id="bt_rollback">撤回</button>
-			
+					<button class="btn btn-primary" id="bt_complain">生成投诉单</button>
 				<script type="text/javascript">
 					$(function(){
 						
@@ -68,14 +68,26 @@
 								});
 						});
 						
+						$("#bt_complain").click(function(){ 
+							var outId = $('input[name=selectId]:checked');
+							if(outId.length==0){
+								alert("没有选择出库单");
+								return;
+							}
+							if(outId.length > 1){
+								alert("只能选择一条出库单");
+								return;
+							}
+							
+							location.href = "/fy/admin/biz/aftersale/complaint/add?id="+outId.val();
+						});
+						
 					});
 				</script>
-				<div class="box-tools">
+				<div class="box-tools" style="display: inline-block;margin-left: 50px">
 				
 				
 					<form action="/fy/admin/biz/whouse/outhouse" class="form-inline">
-					
-						
 					
 						<div class="form-group  input-group-sm">
 								<label for="order_date">出库日期</label>
@@ -128,141 +140,124 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding text-center">
-				<form action="/fy/admin/biz/whouse/outhouse/downloadOut" target="_blank" method="post" id="download_form">
-				<table class="table table-bordered" style="white-space: nowrap">
-					<thead>
-						<tr>
-							<th>  <input type="checkbox" id="selectAll"> 多选   </th>
-							<th>序号</th>
-							<th>类别</th>
-							<th>计划员</th>
-							<th>执行状态</th>
-							<th>紧急状态</th>
-							<th>工作订单号</th>
-							<th>送货单号</th>
-							<th>图号</th>
-							<th>名称</th>
-							<th>总图号</th>
-							<th>数量</th>
-							<th>单位</th>
-							<th>型号</th>
-							<th>规格</th>
-							<th>技术条件</th>
-							<th>质量等级</th>
-							<th>订单日期</th>
-							<th>交货日期</th>
-							
-							<th>图纸</th>
-							
-							<th>到货地址</th>
-							<th>运输方式</th>
-							<th>运输公司</th>
-							<th>运输费用</th>
-							<th>运输重量</th>
-							<th>运输单号</th>
+			<div class="box-body table-responsive no-padding text-center">
+				<div>
+					<div   id ="div_head"  style="overflow-x:hidden; overflow-y:scroll;">
+						<table style="width: 3625px"class="text-center table-bordered">
+							<tbody>
+								<tr>
+								<td width="60">  <input type="checkbox" id="selectAll"> 多选   </td>
+								<td width="50">序号</td>
+								<td width="60">类别</td>
+								<td width="60">计划员</td>
+								<td width="100">执行状态</td>
+								<td width="100">客户编码</td>
+								<td width="100">工作订单号</td>
+								<td width="150">送货单号</td>
+								<td width="150">图号</td>
+								<td width="200">名称</td>
+								<td width="300">总图号</td>
+								<td  width="100">数量</td>
+								<td  width="35">单位</td>
+								<td  width="200">型号</td>
+								<td  width="200">规格</td>
+								<td  width="200">技术条件</td>
+								<td width="100">质量等级</td>
+								<td width="100" >订单日期</td>
+								<td width="100">交货日期</td>
+								
+								<td width="150">图纸</td>
+								<td width="200">到货地址</td>
+								<td width="100">运输方式</td>
+								<td width="250">运输公司</td>
+								<td width="100">运输费用</td>
+								<td width="100">运输重量</td>
+								<td width="100">运输单号</td>
+								<td width="100">出库时间</td>
+								<td width="100">出库数量</td>
+								<td width="60">是否成品</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="div_table" style="overflow: scroll;height: 600px; ">
+						
+						<form action="/fy/admin/biz/whouse/outhouse/downloadOut" target="_blank" method="post" id="download_form">
+							<table class="text-center table-bordered" style="width: 3625px" >
+								<tbody id="table">
+									#for(x : modelPage.getList())
+									<tr>
+										 <td width="60"> <input name="selectId" type="checkbox"   value="#(x.out_id)"></td>
+										
+										<td width="50">#(for.index+1)</td>
+										<td width="60">#(x.cate_tmp)</td>  
+										<td width="60">#(x.plan_tmp)</td>
+										<td width="100">#(x.execu_status)</td>
+										<td width="100">#(x.customer_no)</td>
+										<td width="100">#(x.work_order_no)</td>
+										<td width="150">#(x.delivery_no)</td>
+										<td width="150">
+												#(x.map_no) 
+										 </td>
+										<td width="200">#(x.commodity_name)</td>
+										<td width="300">#(x.total_map_no)</td>
+										<td width="100">#(x.quantity)</td>
+										<td width="35">#(x.unit_tmp)</td>	 
+										<td width="200">#(x.model_no)</td>
+										<td width="200">#(x.commodity_spec)</td>
+										<td width="200">#(x.technology)</td>
+										<td width="100">#(x.machining_require)</td>
+										<td width="100" >#date(x.order_date,"yyyy-MM-dd")</td>
+										<td width="100" >#date(x.delivery_date,"yyyy-MM-dd")</td>
+										<td  width="150">
+										#if(x.filename) #(x.filename) 
+											<a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+										#end
+										</td>
+			
+										<td  width="200">#(x.receive_address)</td>
+										<td width="100">#(x.transport_type)</td>
+										<td width="250">#(x.transport_company)</td>
+										<td width="100">#(x.transport_fee)</td>
+										<td width="100">#(x.transport_weight)</td>
+										<td width="100">#(x.transport_no)</td>
+										
+										<td width="100">#date(x.out_time,"yyyy-MM-dd")</td>
+										<td width="100">#(x.out_quantity)</td>
+										
+										<td width="60">#(x.is_finsh_product)</td>
+									</tr>
+									#end
+								</tbody>
+			
+							</table>
+							</form>
+					</div>
+						<div>
+							<span hidden="">共加载 : <span id="rownumber">#(pageSize)</span>   </span>
+						</div>
+				</div>
 				
-							<th>出库时间</th>
-							<th>出库数量</th>
-							<!--  
-								<th>是否撤回应收明细单</th>
-								<th>撤回原因</th>
-							<th>是否生成售后处理表</th>
-							<th>售后处理表生成时间</th>-->
-					
-						</tr>
-					</thead>
-
-					<tbody>
-						#for(x : modelPage.getList())
-						<tr>
-							 <td> <input name="selectId" type="checkbox"   value="#(x.out_id)"></td>
-							
-							<td>#(for.index+1)</td>
-							<td>#(x.cate_tmp)</td>  
-							<td>#(x.plan_tmp)</td>
-							<td>#(x.execu_status)</td>
-							<td>#(x.urgent_status)</td>
-							<td>#(x.work_order_no)</td>
-							<td>#(x.delivery_no)</td>
-							<td >
-									#(x.map_no) 
-							 </td>
-							<td>#(x.commodity_name)</td>
-							<td>#(x.total_map_no)</td>
-							<td>#(x.quantity)</td>
-							<td>#(x.unit_tmp)</td>	 
-							<td>#(x.model_no)</td>
-							<td>#(x.commodity_spec)</td>
-							<td>#(x.technology)</td>
-							<td>#(x.machining_require)</td>
-							<td>#date(x.order_date,"yyyy-MM-dd")</td>
-							<td>#date(x.delivery_date,"yyyy-MM-dd")</td>
-							<td>
-							#if(x.filename) #(x.filename) 
-								<a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
-							#end
-							</td>
-
-							<td>#(x.receive_address)</td>
-							<td>#(x.transport_type)</td>
-							<td>#(x.transport_company)</td>
-							<td>#(x.transport_fee)</td>
-							<td>#(x.transport_weight)</td>
-							<td>#(x.transport_no)</td>
-							
-							<td>#date(x.out_time,"yyyy-MM-dd")</td>
-							<td>#(x.out_quantity)</td>
-							
-						</tr>
-						#end
-					</tbody>
-
-				</table>
-				</form>
-
 			</div>
 			<!-- /.box-body -->
 
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/whouse/outhouse?p=")</div>
-				
-				
-				<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
+		
 				
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
+	
+<input   searchItem='ajax' hidden="hidden"  name="out_date_start"  value="#(out_date_start)" >
+<input   searchItem='ajax' hidden="hidden"  name="out_date_end"  value="#(out_date_end)">
 
 
 <script type="text/javascript">
@@ -292,7 +287,60 @@
 		
 	}
 
+$(function(){
+	
 
+	$("#div_table").scroll(function(){
+
+	
+		var div_table = document.getElementById("div_table");
+		var offsetHeight1 = div_table.offsetHeight;
+		var scrollHeight1 = div_table.scrollHeight;
+		var clientHeight1 = div_table.clientHeight;
+		//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+		console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+	 
+		var xs= $(this).scrollLeft();
+		var scroll = $(this).scrollTop();
+		 
+		$("#div_head").scrollLeft(xs);
+
+		if((scrollHeight1-clientHeight1)-scroll <100){
+			$("#param").text($("[searchItem='ajax']").serialize());
+			if($("#currentPage").val() != $("#totalpage").val()){
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/whouse/outhouse/findJsonPage',
+					   data:$("[searchItem='ajax']").serialize(),
+					   async:false,
+					   success: function(ret){
+						   if (ret.state == "ok") {
+								$("#table").append(ret.data);
+								$("#currentPage").val(ret.pageNumber);
+								var rownumebr = $("#rownumber").text();
+								var row =  new Number(rownumebr) + ret.listSize;
+								$("#rownumber").text(row);
+								
+							//	var amount = $("#amount_tatol").text();
+								//var total =  new Number(amount) + ret.amount;
+								//$("#amount_tatol").text(total);
+							}
+						 
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
+						}
+					});
+				
+			}
+		}
+		 
+	});
+	
+});
 
 
     </script>

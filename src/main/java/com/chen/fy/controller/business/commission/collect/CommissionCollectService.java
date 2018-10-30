@@ -23,12 +23,16 @@ public class CommissionCollectService {
 			String inhouse_date_start, String inhouse_date_end) {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name ";
-		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
-				+ " Inner join fy_business_purchase audit on o.id = audit.order_id"
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no";
-		String desc = " order by o.id  desc ";
-		String where = "  where add_status=3 ";
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,"
+				+ "audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name,\n"
+				+ "pv.pay_check_result pv_check_result,pv.pay_quantity  pv_pay_quantity , \n"
+				+ "pv.pay_hang_date pv_hang_date,pv.pay_date pv_pay_date \n";
+		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id \n"
+				+ " Inner join fy_business_purchase audit on o.id = audit.order_id \n"
+				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no \n"
+				+ " LEFT JOIN pay_view pv on pv.order_id = o.id AND is_purchase = 1 \n ";
+		String desc = " order by o.id  desc \n";
+		String where = "  where add_status=3 \n";
 		String dateformat = "'%Y-%m-%d'";
 		if ("delay_warn".equals(condition)) {
 			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
@@ -60,26 +64,27 @@ public class CommissionCollectService {
 		}
 
 		else {
+			if (StringUtils.isNotEmpty(keyword)) {
+				if ("order_date".equals(condition)) {
 
-			if ("order_date".equals(condition)) {
+					conditionSb.append(String.format(" AND DATE_FORMAT(order_date,%s) = '%s'", dateformat, keyword));
 
-				conditionSb.append(String.format(" AND DATE_FORMAT(order_date,%s) = '%s'", dateformat, keyword));
+				} else if ("delivery_date".equals(condition)) {
 
-			} else if ("delivery_date".equals(condition)) {
+					conditionSb.append(String.format("AND   DATE_FORMAT(delivery_date,%s)= '%s'", dateformat, keyword));
 
-				conditionSb.append(String.format("AND   DATE_FORMAT(delivery_date,%s)= '%s'", dateformat, keyword));
+				} else if ("work_order_no".equals(condition)) {
+					conditionSb.append(" AND  o.work_order_no like  ");
+					conditionSb.append("'%").append(keyword).append("%'");
+				} else if ("supplier".equals(condition)) {
+					conditionSb.append(" AND  s.name like  ");
+					conditionSb.append("'%").append(keyword).append("%'");
+				} else {
 
-			} else if ("work_order_no".equals(condition)) {
-				conditionSb.append(" AND  o.work_order_no like  ");
-				conditionSb.append("'%").append(keyword).append("%'");
-			} else if ("supplier".equals(condition)) {
-				conditionSb.append(" AND  s.name like  ");
-				conditionSb.append("'%").append(keyword).append("%'");
-			} else if (StringUtils.isNotEmpty(keyword)) {
+					conditionSb.append(String.format(" AND  %s like  ", condition));
+					conditionSb.append("'%").append(keyword).append("%'");
 
-				conditionSb.append(String.format(" AND  %s like  ", condition));
-				conditionSb.append("'%").append(keyword).append("%'");
-
+				}
 			}
 
 		}

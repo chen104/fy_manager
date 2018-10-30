@@ -4,12 +4,12 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-			<div class="box-header">
-				<h3 class="box-title">应付结算单</h3>
+			<div  >
+				<span class="box-title" style="margin-left: 10px;margin-right: 50px">应付结算单</span>
 				<button class="btn btn-primary" id="bt_downlad">下载</button>
 				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
 				 
-				<div class="box-tools">
+				<div class="box-tools" style="display: inline-block;margin-left: 50px">
 				<form action="/fy/admin/biz/finance/paybill"  class="form-inline">
 				
 				 		<div class="form-group  input-group-sm">
@@ -139,148 +139,131 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding text-center">
-				<form action="/fy/admin/biz/finance/paybill/downloadPay" method="post" target="_blank" id="download_pay">
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style="">序号</th>
-							 	<th><input id="selectAll"   type="checkbox" data-select="selectAll"> </th> 
-								<th>类别</th>
-								<th>计划员</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>名称</th>
-								<th>图号</th>
-								<th>总图号</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
-								<th>数量</th>
-								<th>单位</th>
-								<th>采购时间</th>
-								<th>检测结果</th>
-								<th>厂商</th>
-								<th>订单编号</th>
-								<th>委外数量</th>
-								<th>委外单价</th>
-								<th>委外金额</th>
+			<div class="box-body table-responsive no-padding text-center">
+				<div>
+					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
+						<table style="width:3320px" class="text-center table-bordered">
+							<tbody>
+								<tr>
+								<td  width="50" >序号</td>
+							 	<td  width="50"><input id="selectAll"   type="checkbox" data-select="selectAll"> </td> 
+								<td  width="60">类别</td>
+								<td width="60" >计划员</td>
+								<td width="100">工作订单号</td>
+								<td width="150">送货单号</td>
+								<td width="200">名称</td>
+								<td width="150">图号</td>
+								<td  width="300">总图号</td>
+								<td width="200">技术条件</td>
+								<td width="100">质量等级</td>
+								<td width="100">数量</td>
+								<td width="100">单位</td>
+								<td width="100">采购时间</td>
+								<td width="100">检测结果</td>
+								<td width="300">厂商</td>
+								<td width="100">订单编号</td>
+								<td width="100">委外数量</td>
+								<td width="100">委外单价</td>
+								<td width="100">委外金额</td>
 								<!--
-								<th>含税金额</th>
-								<th>质量扣款</th>
+								<td>含税金额</td>
+								<td>质量扣款</td>
 								  -->
-								<th>入库时间</th>
-								<th>入库来源</th>
-								<th>实际入库数量</th>
-								<th>检测时间</th>
-								<th>应付总额</th>
-								<th>挂账期间</th>
-								<th>应付期间</th>
-								<th>操作</th>
+								<td width="100">入库时间</td>
+								<td width="100">入库来源</td>
+								<td width="100">实际入库数量</td>
+								<td width="100">检测时间</td>
+								<td width="100">应付总额</td>
+								<td width="100">挂账期间</td>
+								<td width="100">应付期间</td>
+								<td width="100">操作</td>
 							
 							</tr>
-						</thead>
-						<tbody>
-							#for(x : modelPage.getList())
-							<tr>
-								<td>#(for.index+1)</td>
-							 <td> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
-								<td>#(x.cate_tmp)</td>
-								
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.purchase_name)</td>
-								<td>#(x.map_no)</td>
-								
-								<td>#(x.total_map_no)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machining_require)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
-								<td>#(x.purchase_date)</td>
-								
-								<td>#(x.check_result)</td>
-								<td>#(x.supplier_name)</td>
-								
-								<td>#(x.purchase_no)</td>
-								<td>#(x.purchase_quantity)</td>
-								<td>#(x.purchase_cost)</td>
-								<td>#(x.purchase_amount)</td>
-							<!--  
-								<td>#(x.tatol_amount)</td>
-								<td>#(x.quality_deduction)</td>
-								
-								<td>#(x.discount)</td>	 	-->
-								
-								<td>#(x.in_warehouse_time)</td>
-								<td>#(x.in_from)</td>
-								<td>#(x.pay_quantity)</td>
-								<td>#(x.check_time)</td>
-								<td>#(x.should_pay)</td>
-								<td>#date(x.hang_date,"yyyy年MM月") </td>
-								<td>#date(x.pay_date,"yyyy年MM月")</td>
+							</tbody>
+						</table>
+					
+					</div>
+					<div id="div_table" style="overflow: scroll;height: 600px;display: block; ">
+						<form action="/fy/admin/biz/finance/paybill/downloadPay" method="post" target="_blank" id="download_pay"  >
+							<table class=" table-bordered text-center"  style="width: 3320px">
+								<tbody id="table">
+									#for(x : modelPage.getList())
+									<tr>
+										<td width="50" >#(for.index+1)</td>
+									 <td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+										<td width="60">#(x.cate_tmp)</td>
+										
+										<td width="60">#(x.plan_tmp)</td>
+										<td width="100">#(x.work_order_no)</td>
+										<td width="150">#(x.delivery_no)</td>
+										<td  width="200">#(x.purchase_name)</td>
+										<td width="150">#(x.map_no)</td>
+										
+										<td width="300">#(x.total_map_no)</td>
+										<td width="200">#(x.technology)</td>
+										<td width="100">#(x.machining_require)</td>
+										<td width="100">#(x.quantity)</td>
+										<td width="100">#(x.unit_tmp)</td>
+										<td width="100">#(x.purchase_date)</td>
+										
+										<td width="100">#(x.check_result)</td>
+										<td width="300">#(x.supplier_name)</td>
+										
+										<td width="100">#(x.purchase_no)</td>
+										<td width="100">#(x.purchase_quantity)</td>
+										<td width="100">#(x.purchase_cost)</td>
+										<td width="100">#(x.purchase_amount)</td>
+									<!--  
+										<td>#(x.tatol_amount)</td>
+										<td>#(x.quality_deduction)</td>
+										
+										<td>#(x.discount)</td>	 	-->
+										
+										<td width="100">#date(x.in_warehouse_time,"yyyy-MM-dd")</td>
+										<td width="100">#(x.in_from)</td>
+										<td width="100">#(x.pay_quantity)</td>
+										<td width="100">#date(x.check_time,"yyyy-MM-dd")</td>
+										<td width="100">#(x.should_pay)</td>
+										<td width="100">#date(x.hang_date,"yyyy年MM月") </td>
+										<td width="100">#date(x.pay_date,"yyyy年MM月")</td>
+									
+										<td  width="100" class="jfa-operation-button"><a href="/fy/admin/biz/finance/pay/edit?id=#(x.id)" style="margin-left: 14px;"> 
+										<i class="fa fa-pencil" title="修改"></i>
+										</a>
+										<!--  <a data-delete data-title="#escape(x.name)"
+											data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+												class="glyphicon glyphicon-share-alt" title="删除"></i>
+										</a> -->
+										</td>
+									</tr>
+									#end
+								</tbody>
+							</table>
+						</form>
 							
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/finance/pay/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a>
-								<!--  <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/base/category/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="glyphicon glyphicon-share-alt" title="删除"></i>
-								</a> -->
-								</td>
-							</tr>
-							#end
-						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="18"></td> <td>合计金额</td><td>#number(weiwai_account,"###.##")</td><td colspan="3"></td> <td>金额合计</td><td>#number(should_pay,"###.##")</td>
-							</tr>
-						</tfoot>
-					</table>
-				</form>
+					</div>
+					<div>
+						<span>委外合计金额 : </span><span id="weiwai_account">#(weiwai_account) </span>
+						 <span style="margin-left: 100px">应付金额合计 : </span><span id="should_pay">#(should_pay)</span>
+					</div>
+				</div>
+			
+				
 
 			</div>
 			<!-- /.box-body -->
-
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/finance/paybill?p=")</div>
-				
-					
-			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
-				
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 
 
 <script type="text/javascript">
@@ -303,6 +286,64 @@ $(function(){
 	});
 	
 	
+	
+	$("#div_table").scroll(function(){
+		
+		
+		var div_table = document.getElementById("div_table");
+		var offsetHeight1 = div_table.offsetHeight;
+		var scrollHeight1 = div_table.scrollHeight;
+		var clientHeight1 = div_table.clientHeight;
+		//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+		console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+	 
+		var xs= $(this).scrollLeft();
+		var scroll = $(this).scrollTop();
+		 
+		$("#div_head").scrollLeft(xs);
+	
+		if((scrollHeight1-clientHeight1)-scroll <100){
+			$("#param").text($("[searchItem='ajax']").serialize());
+			if($("#currentPage").val() != $("#totalpage").val()){
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/finance/paybill/findJsonPage',
+					   data:$("[searchItem='ajax']").serialize(),
+					   async:false,
+					   success: function(ret){
+						   if (ret.state == "ok") {
+								$("#table").append(ret.data);
+								$("#currentPage").val(ret.pageNumber);
+								var rownumebr = $("#rownumber").text();
+								var row =  new Number(rownumebr) + ret.listSize;
+								$("#rownumber").text(row);
+								
+								var weiwai_account =$("#weiwai_account").text();
+								var amount = ret.weiwai_account + new Number(weiwai_account);
+								$("#weiwai_account").text(amount);
+								var should_pay = $("#should_pay").text();
+								var payAcount = new Number(amount) 
+								var pay = new Number(should_pay) + ret.should_pay; 
+								$("#should_pay").text(pay);
+							//	var amount = $("#amount_tatol").text();
+								//var total =  new Number(amount) + ret.amount;
+								//$("#amount_tatol").text(total);
+							}
+						 
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
+						}
+					});
+				
+			}
+		}
+		 
+	});
+	 
 });
 
     </script>

@@ -1,0 +1,38 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td  width="50">#(for.index+1+n)</td>
+	 <td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
+	<td width="100">#(x.hang_date)</td>
+	<td width="100">#(x.invoice_no)</td>
+	
+	<td width="200">#(x.materials)</td>
+	<td width="200">#(x.commodity_name )</td>
+	<td width="100">#(x.Brand_no )</td>
+	<td width="100">#(x.spec)</td>
+	<td width="100">#(x.project_no)</td>
+	<td width="100">#(x.unit)</td>
+	<td  width="100">#(x.quantity)</td>
+	<td width="100">#(x.cost)</td>
+	<td width="100">#(x.hang_quantity)</td>
+	<td width="100">#(x.invoice_stat)</td>
+	<td width="100">#(x.hang_amount)</td>
+	
+	
+	<td width="60">#(x.perchase_person)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td  width="100">#(x.delivery_index)</td>
+	<td  width="100">#(x.contract)</td>
+	<td  width="300">#(x.remark)</td>
+	<td width="100">
+	
+		<a href="/fy/admin/biz/finance/upgetpay/edit?id=#(x.id)" style="margin-left: 14px;"> 
+	<i class="fa fa-pencil" title="修改"></i>
+	</a> <a data-delete data-title="#escape(x.name)"
+		data-action="/fy/admin/biz/finance/upgetpay/delete?id=#(x.id)" onclick="deletegetpay(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+			class="fa fa-trash" title="删除"></i>
+	</a>
+	</td>
+	
+</tr>
+#end

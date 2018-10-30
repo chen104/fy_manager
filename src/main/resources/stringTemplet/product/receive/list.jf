@@ -1,0 +1,29 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td width="50px"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+	
+	<td width="50" >#(x.cate_tmp)</td>  
+	<td width="60">#(x.plan_tmp)</td>
+	<td  width="65">#(x.execu_status)</td>
+	<td width="65">#(x.customer_no)</td>
+	<td width="100">#(x.work_order_no)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td  width="150">
+			#(x.map_no) 
+	 </td>
+	<td  width="150">#(x.commodity_name)</td>
+	<td width="300">#(x.total_map_no)</td>
+	<td width="100">#(x.quantity)</td>
+	<td width="100">#(x.unit_tmp)</td>	 
+	<td  width="200">#(x.model_no)</td>
+	<td  width="200">#(x.commodity_spec)</td>
+	<td width="200">#(x.technology)</td>
+	<td width="100">#(x.machining_require)</td>
+	<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
+	<td width="100">#date(x.delivery_date,"yyyy-MM-dd")</td>
+	<td width="100">#date(x.distribute_time,"yyyy-MM-dd")</td>
+ 
+ 
+</tr>
+#end

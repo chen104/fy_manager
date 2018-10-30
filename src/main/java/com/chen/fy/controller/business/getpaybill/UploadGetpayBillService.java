@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.chen.fy.model.FyUploadGetpay;
@@ -33,7 +32,8 @@ public class UploadGetpayBillService {
 		Page<FyUploadGetpay> personPage = null;
 		StringBuilder where = new StringBuilder();
 		where.append(" WHERE is_setlled = 1 ");
-		if (StringUtils.isEmpty(key)) {
+		if (!StringUtils.isEmpty(key)) {
+			/*
 			if ("hang_date".equals(condition)) {
 				Date date = null;
 				try {
@@ -51,6 +51,19 @@ public class UploadGetpayBillService {
 					e.printStackTrace();
 				}
 
+			}
+			*/
+			if ("delivery_no".equals(condition)) {
+				where.append(" AND ").append(condition).append(" like '%").append(key).append("%' ");
+			} else if ("hang_date".equals(condition)) {
+				Calendar calender = Calendar.getInstance();
+				calender.setTimeInMillis(System.currentTimeMillis());
+				try {
+					Date  date= DateUtils.parseDate(key, "yyyy-MM");
+					where.append(" AND '").append(key).append("' = DATE_FORMAT(hang_date,'%Y-%m') ");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 		} else {
@@ -142,15 +155,15 @@ public class UploadGetpayBillService {
 		 * 
 		 */
 
-		List<String> delino = splitdeliveryNoSet(deliveryNoSet);
-		for (String e : delino) {
-			String sql = String.format(Db.getSql("upgetpay.updateorder"), e);
-			System.out.println(sql);
-			Db.update(sql);
-		}
-
-		String updateHangStatus = Db.getSql("upgetpay.updateHangStatus");
-		Db.update(updateHangStatus);
+		// List<String> delino = splitdeliveryNoSet(deliveryNoSet);
+		// for (String e : delino) {
+		// String sql = String.format(Db.getSql("upgetpay.updateorder"), e);
+		// System.out.println(sql);
+		// Db.update(sql);
+		// }
+		//
+		// String updateHangStatus = Db.getSql("upgetpay.updateHangStatus");
+		// Db.update(updateHangStatus);
 
 		for (int i = 0; i < re.length; i++) {
 			total = total + re[i];
@@ -207,11 +220,25 @@ public class UploadGetpayBillService {
 		StringBuilder paySb = new StringBuilder();
 		SqlKit.joinIds(ids, paySb);
 		String update = " UPDATE  fy_upload_getpay SET is_setlled = 0 where id in ";
+		// 查找送货单号
+		List<Record> list = Db
+				.find("select DISTINCT delivery_no from fy_upload_getpay where id in " + paySb.toString());
+
+		ArrayList<String> deno = new ArrayList<String>();
+		for (Record e : list) {
+			deno.add(e.getStr("delivery_no"));
+		}
+		StringBuilder denoSb = new StringBuilder();
+		SqlKit.joinIds(deno, denoSb);
+
 		boolean re = Db.tx(new IAtom() {
 
 			@Override
 			public boolean run() throws SQLException {
 				int re = Db.update(update + paySb.toString());
+				// 更新挂账信息
+				String update = Db.getSql("order.updateGetpayInfo");
+				Db.update(String.format(update, denoSb.toString(), denoSb.toString()));
 				return re == ids.length;
 			}
 		});

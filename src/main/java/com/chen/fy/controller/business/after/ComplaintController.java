@@ -1,6 +1,7 @@
-package com.chen.fy.controller.business;
+package com.chen.fy.controller.business.after;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.FyBusinessOrder;
@@ -30,7 +31,7 @@ public class ComplaintController extends BaseController {
 		setAttr("append", "&pageSize=" + pageSize);
 		setAttr("keyWord", key);
 
-		modelPage = FyComplaint.dao.paginate(getParaToInt("p", 1), 10,
+		modelPage = FyComplaint.dao.paginate(getParaToInt("p", 1), getPageSize(),
 				"select c.*,o.map_tmp,o.commodity_name, o.quantity ",
 				"from  fy_complaint  c left  join fy_business_order o on c.order_id = o.id  order by id desc");
 
@@ -51,6 +52,8 @@ public class ComplaintController extends BaseController {
 	public void edit() {
 		Integer id = getParaToInt("id");
 		FyComplaint model = FyComplaint.dao.findById(id);
+		Date date = getParaToDate("model.complaintDate");
+		model.setComplaintDate(date);
 
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 
@@ -63,6 +66,8 @@ public class ComplaintController extends BaseController {
 
 	public void update() {
 		FyComplaint model = getBean(FyComplaint.class, "model");
+		Date date = getParaToDate("model.complaintDate");
+		model.setComplaintDate(date);
 		Ret ret = null;
 		boolean re = model.update();
 		if (re) {
@@ -75,16 +80,15 @@ public class ComplaintController extends BaseController {
 
 	public void save() {
 		FyComplaint model = getBean(FyComplaint.class, "model");
-		Integer id = model.getParentId();
-		FyBusinessOutWarehouse out = FyBusinessOutWarehouse.dao.findById(id);
-		// out.setAfterSaleCreateTime(new Date());
-		// out.setIsCreateAfterSale(true);
+		// Integer id = model.getParentId();
+		// FyBusinessOutWarehouse out = FyBusinessOutWarehouse.dao.findById(id);
+
 		Ret ret = null;
 
 		boolean re = Db.tx(new IAtom() {
 			public boolean run() throws SQLException {
 
-				return model.save() && out.update();
+				return model.save();
 			}
 		});
 

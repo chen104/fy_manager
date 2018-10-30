@@ -107,7 +107,7 @@ public class FinanceController extends BaseController {
 	 */
 	public void getbill() {
 		Page<FyBusinessOutWarehouse> modelPage = null;
-		String sql = "cate_tmp,plan_tmp,execu_status,urgent_status,order_date,delivery_date,work_order_no,"
+		String sql = "cate_tmp,plan_tmp,customer_no,customer_no,order_date,delivery_date,work_order_no,"
 				+ "delivery_no,commodity_name,commodity_spec,map_no,technology,machining_require,"
 				+ "quantity,unit_tmp,untaxed_cost,amount,taxRate,tax_amount,tatol_amount";
 

@@ -155,10 +155,10 @@
 								#fyColPerm("order","planer_id")
 								<th>计划员</th>
 								#end
-								#fyColPerm("order","execu_status")
+								#fyColPerm("order","customer_no")
 								<th>执行状态</th>
 								#end
-								#fyColPerm("order","urgent_status")
+								#fyColPerm("order","customer_no")
 								<th>紧急状态</th>
 								#end
 								#fyColPerm("order","work_bill_no")
@@ -303,12 +303,12 @@
 								<td>#(x.plan_tmp)</td>
 								#end
 								
-								#fyColPerm("order","execu_status")
-								<td>#(x.execuStatus)</td>
+								#fyColPerm("order","customer_no")
+								<td>#(x.customer_no)</td>
 								#end
 								
-								#fyColPerm("order","urgent_status")
-								<td>#(x.urgentStatus)</td>
+								#fyColPerm("order","customer_no")
+								<td>#(x.customer_no)</td>
 								#end
 								
 								#fyColPerm("order","work_bill_no")
@@ -438,7 +438,7 @@
 								 
 								#fyColPerm("order","out_time")
 								
-								<td> #date(x.out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
+								<td> #date(x.v_out_time,"yyyy-MM-dd") #(x.v_out_time) 出库时间 </td><!-- 出库时间-->
 								#end
 								
 								#fyColPerm("order","out_status")

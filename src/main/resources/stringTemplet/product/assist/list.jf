@@ -1,0 +1,72 @@
+#set(n = (modelPage.pageNumber-1) * pageSize??0)
+#for(x : modelPage.getList())
+<tr>
+	<td width="50">
+	#if(!x.is_create_pay&&"合格".equals(x.check_result))
+	 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
+	 #end
+	 </td>
+	<td width="60">#(x.cate_tmp)</td>  
+	<td width="60">#(x.plan_tmp)</td>
+	<td width="65">#(x.execu_status)</td>
+	<td width="65">#(x.customer_no)</td>
+	<td width="100">#(x.work_order_no)</td>
+	<td width="150">#(x.delivery_no)</td>
+	<td width="150" >
+			#(x.map_no) 
+	 </td>
+	<td  width="150">#(x.commodity_name)</td>
+	<td width="300">#(x.total_map_no)</td>
+	<td width="100">#(x.quantity)</td>
+	<td width="100">#(x.unit_tmp)</td>	 
+	<td width="200">#(x.model_no)</td>
+	<td width="200">#(x.commodity_spec)</td>
+	<td width="200">#(x.technology)</td>
+	<td width="100">#(x.machining_require)</td>
+
+	<td width="200" data-id="#(x.id)"> 
+ 
+		#if(x.filename) #(x.filename)
+		 <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
+		 <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>
+		   #end
+	
+	</td>
+
+	<td  width="100">#(x.assist_no)</td>
+	
+	<td width="100">#(x.assist_cost)</td>
+	<td width="100">#(x.assist_account)</td>
+	<td width="100">#taxRate(x.tax_rate)</td>
+	<td width="100">#(x.tax_amount)</td>
+	
+	<td width="100">#(x.tatol_amount)</td>
+	<td width="300"> #(x.supplier_name)</td>
+	<td width="100">#(x.assist_process)</td>
+	<td width="100">#(x.run_time)</td>
+	<td width="100">#(x.backtime)</td>
+	<td width="100">#(x.check_result)</td>
+	<!--  -->
+	<td width="100">#if(x.is_create_pay)
+		已生成应付单
+	#end
+	</td>
+	<td width="100">#(x.pay_create_time)</td> 
+	
+	<td width="100" class="jfa-operation-button">
+		<a href="/fy/admin/biz/assist/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
+		<i class="fa fa-pencil" title="修改"></i>
+		</a>
+		#if(!x.is_create_pay)
+			<a data-action="/fy/admin/biz/assist/delete?id=#(x.id)" style="margin-left: 14px;color: red" onclick="deleteAssist(this)"> 
+			<i class="fa fa-trash" title="删除"></i>
+		</a>
+		#end
+	</td>
+	
+	<td width="100">#date(x.hang_date,"yyyy-MM")</td> 
+	<td width="100">#date(x.pay_date,"yyyy-MM")</td> 
+	<td width="100">#(x.pay_quantity)</td>  
+	<td width="100">#(x.should_pay)</td>   
+</tr>
+#end

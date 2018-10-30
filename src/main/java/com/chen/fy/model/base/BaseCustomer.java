@@ -17,6 +17,14 @@ public abstract class BaseCustomer<M extends BaseCustomer<M>> extends Model<M> i
 		return getInt("id");
 	}
 
+	public void setCustomerNo(java.lang.String customerNo) {
+		set("customer_no", customerNo);
+	}
+	
+	public java.lang.String getCustomerNo() {
+		return getStr("customer_no");
+	}
+
 	public void setName(java.lang.String name) {
 		set("name", name);
 	}

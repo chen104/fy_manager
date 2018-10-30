@@ -194,4 +194,10 @@ public class DistributService {
 
 	}
 
+	public static void main(String[] args) {
+		int width = 50 + 60 + 60 + 60 + 100 + 100 + 100 + 150 + 150 + 130 + 650 + 100 + 35 + 200 + 200 + 200 + 80 + 100
+				+ 100 + 300 + 100;
+		System.out.println(width);
+	}
+
 }

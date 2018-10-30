@@ -5,20 +5,33 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.template.Engine;
 
 public class DistributController extends BaseController {
 	private static final Logger logger = LogManager.getLogger(DistributController.class);
 	DistributService service = DistributService.me;
+	Engine engine;
+
+	public DistributController() {
+		engine = new Engine();
+		engine.setToClassPathSourceFactory();
+		engine.addDirective("orderColor", OrderColorDirective.class);
+		engine.addDirective("taxRate", TaxRateDirective.class);
+	}
 
 	public void index() {
 		String key = getPara("keyWord");
@@ -200,6 +213,35 @@ public class DistributController extends BaseController {
 		}
 
 		renderJson(Ret.ok().set("msg", "撤回异常，请查看运行日志"));
+	}
+
+	public void findJsonPage() {
+		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
+		String condition = getPara("condition");
+
+		Page<FyBusinessOrder> modelPage = null;
+		try {
+			modelPage = service.findPage(getPageSize(), getParaToInt("p", 1) + 1, condition, key);
+			Ret ret = Ret.ok("msg", "加载数据");
+			HashedMap<String, Object> data = new HashedMap<String, Object>();
+			data.put("modelPage", modelPage);
+			data.put("pageSize", getPageSize());
+			String str = engine.getTemplate("stringTemplet/distribut/list.jf").renderToString(data);
+			ret.set("data", str);
+			ret.set(Constant.pageIndex, modelPage.getPageNumber());
+			ret.set(Constant.pagePageSize, modelPage.getPageSize());
+			ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
+			ret.set(Constant.pageListSize, modelPage.getList().size());
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			renderJson(Ret.fail("msg", "运行报错，刷新之后再试，或查看日志"));
+		}
 	}
 
 }

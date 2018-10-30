@@ -6,7 +6,9 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">生产计划表</h3>
+				#fypermession("product_plan_update")
 				<button class="btn btn-info"  id="bt_update_plan">更新计划时间</button>
+				#end
 				 <script type="text/javascript">
 				 	
 				 </script>
@@ -98,116 +100,86 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding">
+			<div class="box-body table-responsive no-padding">
+				<div id ="div_head"  style="overflow-x:hidden; overflow-y:scroll;">
+					<table style="width: 2940px" class="text-center table-bordered">
+					<tbody>
+						<tr>
+							<td width="50"><input type="checkbox" checked="checked" id="selectAll"></td>
+							<td width="50">类别</td>
+							<td width="60">计划员</td>
+							<td  width="65">执行状态</td>
+							<td width="65">客户编码</td>
+							<td width="100">工作订单号</td>
+							<td width="150">送货单号</td>
+							<td width="150">图号</td>
+							<td width="150">名称</td>
+							<td width="300">总图号</td>
+							<td width="100">数量</td>
+							<td width="100">单位</td>
+							<td   width="200">型号</td>
+							<td   width="200">规格</td>
+							<td   width="200">技术条件</td>
+							<td  width="100">质量等级</td>
+							<td  width="100">订单日期</td>
+							<td  width="100">交货日期</td>
+							<td  width="100">分配时间</td>
+							 
+							<td  width="200">图纸</td>
+							<td  width="100">预计投产时间</td>
+							<td  width="100">预计完工时间</td>
+							<td  width="200">备注</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+				<div  id="div_table"   style="overflow: scroll;height: 600px; ">
 					<form id="udpate_form" action="/fy/admin/biz/product/plan/findUpdatePlan" method="post">
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style=""><input type="checkbox" checked="checked" id="selectAll"></th>
-								<th>类别</th>
-								<th>计划员</th>
-								<th>执行状态</th>
-								<th>紧急状态</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>图号</th>
-								<th>名称</th>
-								<th>总图号</th>
-								<th>数量</th>
-								<th>单位</th>
-								<th>型号</th>
-								<th>规格</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
-								<th>分配时间</th>
-								 
-								<th>图纸</th>
-								<th>预计投产时间</th>
-								<th>预计完工时间</th>
-								<th>备注</th>
-							</tr>
-						</thead>
-						<tbody>
+					<table class=" table-bordered text-center"  style="width:2940px"">
+						<tbody id="table">
 							#for(x : modelPage.getList())
 							<tr>
-								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+								<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
 								
-								<td>#(x.cate_tmp)</td>  
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execuStatus)</td>
-								<td>#(x.urgentStatus)</td>
-								<td>#(x.workOrderNo)</td>
-								<td>#(x.deliveryNo)</td>
-								<td  data-id="#(x.id)">
+								<td width="50">#(x.cate_tmp)</td>  
+								<td width="60">#(x.plan_tmp)</td>
+								<td width="65">#(x.execu_status)</td>
+								<td width="65">#(x.customer_no)</td>
+								<td width="100">#(x.workOrderNo)</td>
+								<td width="150">#(x.deliveryNo)</td>
+								<td width="150"  data-id="#(x.id)">
 										#(x.map_no) 
 								 </td>
-								<td>#(x.commodityName)</td>
-								<td>#(x.total_map_no)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>	 
-								<td>#(x.model_no)</td>
-								<td>#(x.commodity_spec)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machiningRequire)</td>
-								<td>#date(x.orderDate,"yyyy-MM-dd")</td>
-								<td>#date(x.deliveryDate,"yyyy-MM-dd")</td>
-								<td>#(x.distribute_time)</td>
-								 <td>
+								<td width="150">#(x.commodityName)</td>
+								<td width="300">#(x.total_map_no)</td>
+								<td width="100">#(x.quantity)</td>
+								<td width="100">#(x.unit_tmp)</td>	 
+								<td  width="200">#(x.model_no)</td>
+								<td  width="200">#(x.commodity_spec)</td>
+								<td  width="200">#(x.technology)</td>
+								<td width="100">#(x.machiningRequire)</td>
+								<td width="100">#date(x.orderDate,"yyyy-MM-dd")</td>
+								<td width="100">#date(x.deliveryDate,"yyyy-MM-dd")</td>
+								<td width="100">#date(x.distribute_time,"yyyy-MM-dd")</td>
+								 <td width="200">
 									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i>
 									</a> <a target="_blank" href="/fy/admin/base/file/download?fileId=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>   #end 
 											
 								</td>
 								
-								<td>#date(x.plan_time,"yyyy-MM-dd")</td>
-								<td>#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
-								<td>#(x.plan_remark)</td>
+								<td width="100">#date(x.plan_time,"yyyy-MM-dd")</td>
+								<td width="100">#date(x.plan_finsh_time,"yyyy-MM-dd")</td>
+								<td width="200">#(x.plan_remark)</td>
 							</tr>
 							#end
 						</tbody>
 					</table>
 				</form>
-
+				</div>
+					
 			</div>
 			<!-- /.box-body -->
 
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/product/plan?p=")</div>
-				
-					
-			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
-				
-				
 		</div>
 		<!-- /.box -->
 	</div>
@@ -239,6 +211,89 @@
 		});
 		
 	
+</script>
+ <input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
+<script type="text/javascript">
+		$(function(){
+			$("#selectAll").click(function(){
+				var isChecked =  $("#selectAll").is(":checked");
+				if( isChecked ){
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', true);
+						this.checked= true;
+						});
+				}else{
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', false);
+						this.checked= false;
+					});
+				}
+				//console.info('this');
+				
+			});
+			
+			
+		});
+		
+		$(function(){
+			$("#div_table").scroll(function(){
+
+				
+				var div_table = document.getElementById("div_table");
+				var offsetHeight1 = div_table.offsetHeight;
+				var scrollHeight1 = div_table.scrollHeight;
+				var clientHeight1 = div_table.clientHeight;
+				//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+				//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+			 
+				var xs= $(this).scrollLeft();
+				var scroll = $(this).scrollTop();
+				 
+				$("#div_head").scrollLeft(xs);
+			//	console.info(" get "+((scrollHeight1-clientHeight1)-scroll <100) +"   "+($("#currentPage").val() != $("#totalpage").val()));
+				if((scrollHeight1-clientHeight1)-scroll <100){
+					$("#param").text($("[searchItem='ajax']").serialize());
+					if($("#currentPage").val() != $("#totalpage").val()){
+						$.ajax({
+							   type: "POST",
+							   url:'/fy/admin/biz/product/plan/findJsonPage',
+							   data:$("[searchItem='ajax']").serialize(),
+							   async:false,
+							   success: function(ret){
+								   if (ret.state == "ok") {
+										$("#table").append(ret.data);
+										$("#currentPage").val(ret.pageNumber);
+										var rownumebr = $("#rownumber").text();
+										var row =  new Number(rownumebr) + ret.listSize;
+										$("#rownumber").text(row);
+										
+									//	var amount = $("#amount_tatol").text();
+										//var total =  new Number(amount) + ret.amount;
+										//$("#amount_tatol").text(total);
+									}
+								 
+							   },
+							   error:function (XMLHttpRequest, textStatus, errorThrown) {
+								    // 通常 textStatus 和 errorThrown 之中
+								    // 只有一个会包含信息
+								 //   this; // 调用本次AJAX请求时传递的options参数
+								   alert('网络异常');
+								}
+							});
+						
+					}
+				}
+				 
+			});
+			
+		});
 </script>
  
 

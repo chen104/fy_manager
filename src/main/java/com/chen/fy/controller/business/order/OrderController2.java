@@ -70,12 +70,16 @@ public class OrderController2 extends BaseController {
 				order_date_start, order_date_end);
 		List<FyBusinessOrder> list = modelPage.getList();
 		Double tatol = 0d;
-		for (int i = 0; i < modelPage.getPageSize(); i++) {
+		int length = modelPage.getList().size();
+		for (int i = 0; i < length; i++) {
 			FyBusinessOrder model = list.get(i);
 			BigDecimal bg = model.getAmount();
-			tatol += bg.doubleValue();
-			setAttr("amount", tatol);
+			if (bg != null) {
+				tatol += bg.doubleValue();
+			}
+
 		}
+		setAttr("amount", tatol);
 		setAttr("modelPage", modelPage);
 		Integer width = service.executWidth(getLoginAccount());
 		setAttr("width", width);
@@ -94,8 +98,6 @@ public class OrderController2 extends BaseController {
 		String order_date_start = getPara("order_date_start");
 		String order_date_end = getPara("order_date_end");
 
-		setAttr("append",
-				"&keyWord=" + (key == null ? "" : key) + "&condition=" + (condition == null ? "" : condition));
 		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
 		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 0) + 1, getPageSize(),
 				order_date_start, order_date_end);
@@ -104,22 +106,25 @@ public class OrderController2 extends BaseController {
 		data.put("pageSize", getPageSize());
 		data.put("colMap", service.colhash);
 		engine.addSharedObject("account", getLoginAccount());
-		String str = engine.getTemplate("stringTemplet/order.jf").renderToString(data);
+		String str = engine.getTemplate("stringTemplet/order/order.jf").renderToString(data);
 		Ret ret = Ret.ok().set("msg", "查询完成");
 		ret.set("data", str);
 		Double tatol = 0d;
 		List<FyBusinessOrder> list = modelPage.getList();
-		for (int i = 0; i < modelPage.getPageSize(); i++) {
+		System.out.println("  page " + Constant.pagePageSize + " " + modelPage.getPageSize());
+		for (int i = 0; i < list.size(); i++) {
 			FyBusinessOrder model = list.get(i);
 			BigDecimal bg = model.getAmount();
-			tatol += bg.doubleValue();
+			if (bg != null) {
+				tatol += bg.doubleValue();
+			}
 
 		}
 		ret.set("amount", tatol);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());
 		ret.set(Constant.pagePageSize, modelPage.getPageSize());
 		ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
-
+		ret.set(Constant.pageListSize, modelPage.getList().size());
 		renderJson(ret);
 	}
 

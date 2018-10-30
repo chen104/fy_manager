@@ -5,12 +5,13 @@
 	<div class="col-xs-12">
 		<div class="box">
 	
-			<div class="box-header">
+			<div>
 			
-				<h3 class="box-title">采购表</h3>
+				<span class="box-title" style="margin-left: 10px;margin-right: 10px">采购表</span>
+					#fypermession("purchase_download")
 					<button class="btn btn-primary" id="download" ><span   >下载 </span></button>
-
-				<div class="box-tools">
+					#end
+				<span>
 						<form action="/fy/admin/biz/commission/purchase/" class="form-inline">
 						
 							 <div class="form-group  input-group-sm">
@@ -56,7 +57,7 @@
 									  </div>
 		
 							</form>
-				</div><!-- tools -->
+				</span><!-- tools -->
 			</div> <!-- /.box-header -->
 <script type="text/javascript">
   	$(function(){
@@ -155,121 +156,100 @@
 	});
 </script>
 			
-			<div id="div_table" class="box-body table-responsive no-padding">
-					<form  id="form_download" method="post" action="/fy/admin/biz/commission/purchase/downloadPurchase">
-						<input hidden="hidden" name="supplier_id" id="supplier_id" >
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style="">序号</th>
-								
-								<td><input name="selectAll" id="selectAll" type="checkbox" checked="checked"> </td>
-								<td>是否已下载</td>
-								<th>图号</th>
-								<th>总图号</th>
-								<th>品名</th>
-								<th>规格</th>
-								
-								<th>数量</th>
-								<th>单位</th>
-								<th>单件</th>
-								<th>总重</th>
-								
-								<th>单价</th>
-								<th>总金额</th>
-								<th>含税/未税</th>
-								<th>供应商</th>
-								<th>工作订单号</th>
-								<th>交货日期</th>
+			<div  class="box-body table-responsive no-padding">
+				<div>
 					
-								<th>采购日期</th>
-								<th>采购交货日期</th>
-								<th>采购订单号</th>
+					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
+						<table  class="text-center table-bordered"  id="table_head" style="width:2495px">
+							<tbody>
+								<tr>
+								<th  width="50">序号</th>
+								
+								<td  width="60" ><input name="selectAll" id="selectAll" type="checkbox" checked="checked"> </td>
+								<td width="100" >是否已下载</td>
+								<th width="150">图号</th>
+								<th width="300">总图号</th>
+								<th width="200">品名</th>
+								<th width="200">规格</th>
+								
+								<th width="100">数量</th>
+								<th width="35">单位</th>
+								<th width="100">单件</th>
+								<th width="100">总重</th>
+								
+								<th width="100">单价</th>
+								<th width="100">总金额</th>
+								<th width="100">含税/未税</th>
+								<th width="300">供应商</th>
+								<th width="100">工作订单号</th>
+								<th width="100">交货日期</th>
+					
+								<th width="100">采购日期</th>
+								<th width="100">采购交货日期</th>
+								<th width="100">采购订单号</th>
 							<!-- 	<th>图纸</th> -->
 								
 								
 							</tr>
-						</thead>
-						<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div  id="div_table" style="overflow: scroll;height: 600px; ">
+						
+					<form  id="form_download" method="post" action="/fy/admin/biz/commission/purchase/downloadPurchase">
+						<input hidden="hidden" name="supplier_id" id="supplier_id" >
+					<table class=" table-bordered text-center"  style="width: 2495px">
+						 
+						<tbody  id="table">
 							#for(x : modelPage.getList())
 							<tr>
-								<td>#(for.index+1)</td>
-								<td> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked" data-order="#(x.order_id)" data-supplier="#(x.supplier_id)"></td>
-								<td>#if(x.is_download) 已下载   #else 未下载 #end</td>
-								<td>#(x.map_no)</td>
-								<td>#(x.total_map_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.commodity_spec)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
+								<td   width="50">#(for.index+1)</td>
+								<td   width="60" > 
+									#if(!x.is_download)
+									<input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked" data-order="#(x.order_id)" data-supplier="#(x.supplier_id)">
+									#end
+								</td>
+								<td   width="100">#if(x.is_download) 已下载   #else 未下载 #end</td>
+								<td width="150">#(x.map_no)</td>
+								<td  width="300">#(x.total_map_no)</td>
+								<td width="200">#(x.commodity_name)</td>
+								<td width="200">#(x.commodity_spec)</td>
+								<td  width="100">#(x.quantity)</td>
+								<td width="35">#(x.unit_tmp)</td>
 								
-								<td>#(x.purchase_single_weight)</td>
-								<td>#(x.purchase_weight)</td>
+								<td width="100">#(x.purchase_single_weight)</td>
+								<td width="100">#(x.purchase_weight)</td>
 								
-								<td>#(x.purchase_cost)</td>
-								<td>#(x.purchase_account)</td>
-								<td>#(x.is_has_tax)</td>
+								<td width="100">#(x.purchase_cost)</td>
+								<td width="100">#(x.purchase_account)</td>
+								<td  width="100">#(x.is_has_tax)</td>
 								
-								<td>#(x.supplier_name)</td>
+								<td width="300">#(x.supplier_name)</td>
 								
-								<td>#(x.work_order_no)</td>
+								<td  width="100">#(x.work_order_no)</td>
 							
-								<td>#(x.delivery_date)</td>
-								<td>#(x.purchase_date)</td>
-								<td>#(x.purchase_delivery_date)</td>
-								<td>#(x.purchase_no)</td>
+								<td  width="100">#(x.delivery_date)</td>
+								<td  width="100">#(x.purchase_date)</td>
+								<td  width="100">#(x.purchase_delivery_date)</td>
+								<td  width="100">#(x.purchase_no)</td>
 								
 								
 							</tr>
 							#end
 						</tbody>
-						
-					<!-- 
-						<tfoot>
-							<tr>
-								<td colspan="23"> </td> <td>合计金额 </td><td>#(purchase_account)</td>
-							</tr>
-						</tfoot>
-						 -->
+				
 					</table>
 				</form>
+					</div>
+						<div>
+							<span hidden="">共加载 : <span id="rownumber">#(pageSize)</span>   </span>
+						</div>
+				</div>
+			
 
 			</div>
 			<!-- /.box-body -->
 
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/commission/purchase?p=")</div>
-				
-			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
 				
 				
 		</div>
@@ -277,6 +257,15 @@
 	</div>
 </div>
 
+
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 
 <script type="text/javascript">
 
@@ -323,6 +312,59 @@ function deletePurchase(a){
 		}
 		console.info('this');
 		
+	});
+	
+	$(function(){
+		$("#div_table").scroll(function(){
+	
+			
+			var div_table = document.getElementById("div_table");
+			var offsetHeight1 = div_table.offsetHeight;
+			var scrollHeight1 = div_table.scrollHeight;
+			var clientHeight1 = div_table.clientHeight;
+			//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+			//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+		 
+			var xs= $(this).scrollLeft();
+			var scroll = $(this).scrollTop();
+			 
+			$("#div_head").scrollLeft(xs);
+		//	 console.info((scrollHeight1-clientHeight1)+" "+ scroll);
+	
+			if((scrollHeight1-clientHeight1)-scroll <100){
+				$("#param").text($("[searchItem='ajax']").serialize());
+				if($("#currentPage").val() != $("#totalpage").val()){
+					$.ajax({
+						   type: "POST",
+						   url:'/fy/admin/biz/commission/purchase/findJsonPage',
+						   data:$("[searchItem='ajax']").serialize(),
+						   async:false,
+						   success: function(ret){
+							   if (ret.state == "ok") {
+									$("#table").append(ret.data);
+									$("#currentPage").val(ret.pageNumber);
+									var rownumebr = $("#rownumber").text();
+									var row =  new Number(rownumebr) + ret.listSize;
+									$("#rownumber").text(row);
+									
+								//	var amount = $("#amount_tatol").text();
+									//var total =  new Number(amount) + ret.amount;
+									//$("#amount_tatol").text(total);
+								}
+							 
+						   },
+						   error:function (XMLHttpRequest, textStatus, errorThrown) {
+							    // 通常 textStatus 和 errorThrown 之中
+							    // 只有一个会包含信息
+							 //   this; // 调用本次AJAX请求时传递的options参数
+							   alert('网络异常');
+							}
+						});
+					
+				}
+			}
+			 
+		});
 	});
 	
 

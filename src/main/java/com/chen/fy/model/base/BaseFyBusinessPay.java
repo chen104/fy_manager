@@ -225,4 +225,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("is_setlled");
 	}
 
+	public void setUnpassQuantity(java.lang.Integer unpassQuantity) {
+		set("unpass_quantity", unpassQuantity);
+	}
+	
+	public java.lang.Integer getUnpassQuantity() {
+		return getInt("unpass_quantity");
+	}
+
 }

@@ -24,9 +24,9 @@
     
         
         
-          <!-- ./col -->
+          <!-- ./col   small box  
         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
+         
           <div class="small-box bg-yellow">
             <div class="inner">
               <h3>#(delay)</h3>
@@ -39,7 +39,7 @@
             <a href="#" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        
+        -->
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -59,6 +59,86 @@
        
         <!-- ./col -->
       </div>
-      
+      <div class="row">
+      #fypermession("hang_amount_view")
+      	<div class="col-lg-6 col-xs-12">
+      		<form  id="myForm"  action="/fy/admin/total"  class="form-inline">
+      				<div class="form-group " style="width: 300px">
+
+			      	 		<select name="yyyy" class="form-control" style="display: inline-block;">
+			      	 			
+			      	 			<option  #if(yyyy=="2018") selected="selected" #end>2018</option>
+			      	 			<option #if(yyyy=="2019") selected="selected" #end>2019</option>
+			      	 			<option #if(yyyy=="2020") selected="selected" #end>2020</option>
+			      	 			<option #if(yyyy=="2021") selected="selected" #end>2021</option>
+			      	 			<option #if(yyyy=="2022") selected="selected" #end>2022</option>
+			      	 			<option #if(yyyy=="2023") selected="selected" #end>2024</option>
+			      	 			<option #if(yyyy=="2025") selected="selected" #end>2025</option>
+			      	 			<option #if(yyyy=="2026") selected="selected" #end>2026</option>
+			      	 		</select>
+			      	 		<div class="input-group-btn" style="display: inline-block;">
+								<button type="submit" class="btn btn-default" >
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+			      	 
+			      	 </div>
+			      	 	 
+	      	 </form>
+	      	 
+	      	 <div class=" bg-red text-center" style="width: 500px">
+	      	 	
+	      	 	<table class="table table-border" style="width: 500px">
+	      	 		<thead class=" text-center">
+	      	 			<tr>
+	      	 				<td>年月</td>
+	      	 				<td>当月未税合计</td>
+	      	 				<td>截止当期未税累计</td>
+	      	 			</tr>
+	      	 			 
+	      	 		</thead>
+	      	 		<tbody id="tbody">
+	      	 			#for(x : totalList)
+	      	 				<tr>
+	      	 					<td>#(x.order_date)</td>
+	      	 					<td>#(x.amount)</td>
+	      	 					<td>#(x.item_total)</td>
+	      	 				</tr>
+	      	 			#end
+	      	 		</tbody>
+	      	 	</table>
+	      	 </div>
+      	 </div>
+      	 #end
+      </div>
+<script src="/assets/atl/dist/js/jquery.form.js"></script>
+
+<script id="table_tr" type="text/x-jquery-tmpl">
+	<tr>
+		<td>${order_date}</td>
+		<td>${amount}</td>
+		<td>${item_total}</td>
+	</tr>
+</script>
+
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {
+							console.info(formData);
+						}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							$("#tbody").empty();
+							$("#table_tr").tmpl(ret.data).appendTo('#tbody');
+						} else {
+							alert(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
+				});
+			});
+</script>
 #end
-     

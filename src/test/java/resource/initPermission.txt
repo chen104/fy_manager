@@ -39,10 +39,13 @@ unit,单位首页,/fy/admin/base/unit,com.chen.fy.controller.base.UnitController
 unit_update,修改单位,/fy/admin/base/unit/update,com.chen.fy.controller.base.UnitController
 update_create,添加单位,/fy/admin/base/unit/save,com.chen.fy.controller.base.UnitController
 unit_delete,删除单位,/fy/admin/base/unit/delete,com.chen.fy.controller.base.UnitController
+
+
 order,订单查看,/fy/admin/biz/fyorder,com.chen.fy.controller.business.OrderController
 order_upload,订单上传,/fy/admin/biz/fyorder/importFile,com.chen.fy.controller.business.OrderController
 order_update,订单修改,/fy/admin/biz/fyorder/updateOrder,com.chen.fy.controller.business.OrderController
 order_delete,订单删除,/fy/admin/biz/fyorder/deleteOrder,com.chen.fy.controller.business.OrderController
+
 receive,订单接收表查看,/fy/admin/biz/fyorder/receive,com.chen.fy.controller.business.OrderController
 distrbut,订单分配查看,/fy/admin/biz/fyorder/distribute,com.chen.fy.controller.business.OrderController
 order_distribut,订单分配,/fy/admin/biz/fyorder/distrubiteBatch,com.chen.fy.controller.business.OrderController
@@ -92,5 +95,5 @@ outhouse,出库表查看,/fy/admin/biz/whouse/outWhouse,com.chen.fy.controller.b
 outhouse_create,新建出库,/fy/admin/biz/whouse/addOut,com.chen.fy.controller.business.WarehouseController
 pay,应付单查看, /fy/admin/biz/finance/pay/pay,com.chen.fy.controller.business.PayController
 
-
+hang_amount_view,合计挂账金额,/fy/admin/total,AccountController
 

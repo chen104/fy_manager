@@ -145,8 +145,8 @@ public class OrderService {
 			String excustatu = excel.getCellVal(i, 2);// 执行状态
 			item.setExecuStatus(excustatu);
 
-			String urgentStatus = excel.getCellVal(i, 3);// 紧急状态
-			item.setUrgentStatus(urgentStatus);
+			String customer = excel.getCellVal(i, 3);// 紧急状态
+			item.setCustomerNo(customer);
 
 			Date orderdate = excel.getDateValue(i, 4);// 订单日期
 			item.setOrderDate(orderdate);

@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.chen.fy.model.base.BaseAccount;
 import com.chen.util.saft.JsoupFilter;
 import com.jfinal.plugin.activerecord.Db;
@@ -15,7 +19,7 @@ import com.jfinal.plugin.ehcache.CacheKit;
  */
 @SuppressWarnings("serial")
 public class Account extends BaseAccount<Account> {
-
+	private static final Logger logger = LogManager.getLogger(Account.class);
 	private static final long serialVersionUID = 1L;
 
 	public static final String AVATAR_NO_AVATAR = "x.jpg"; // 刚注册时使用默认头像
@@ -61,6 +65,7 @@ public class Account extends BaseAccount<Account> {
 			Integer id = getId();
 			String sql = Db.getSql("permission.getPermission");
 			List<Record> list = Db.find(sql, id);
+			logger.debug("加载权限 ==> " + sql + "    id = " + id);
 			HashSet<String> permission = new HashSet<String>();
 			for (Record e : list) {
 				permission.add(e.getStr("key"));
@@ -69,6 +74,7 @@ public class Account extends BaseAccount<Account> {
 			obj = permission;
 		}
 		HashSet<String> permission = (HashSet<String>) obj;
+		logger.debug(" 加载权限 : " + StringUtils.join(permission.iterator(), ","));
 		if (permission.contains(key)) {
 			return true;
 		}

@@ -55,11 +55,17 @@ public class OrderService2 {
 			String order_date_start, String order_date_end) {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.*,f.originalFileName filename,f.id fileId ";
-		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id"
-				+ " LEFT JOIN in_house on  in_house.order_id = o.id "
-				+ " LEFT JOIN out_view on out_view.order_id = o.id "
-				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no ";
+		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " + " \n in_house.in_time in_time,\r\n"
+				+ " in_house.in_check_time in_check_time ,\r\n" + " in_house.in_check_result in_check_result, \n"
+				+ " out_view.v_out_time v_out_time,\r\n" 
+				+ "out_view.v_out_quantity v_out_quantity,\r\n"
+				+ "out_view.v_transport_no v_transport_no,\r\n"
+				+ "out_view.v_transport_company v_transport_company, \n"
+				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
+		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  \n"
+				+ " LEFT JOIN in_house on  in_house.order_id = o.id \n"
+				+ " LEFT JOIN out_view on out_view.order_id = o.id  \n"
+				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no \n";
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
 
@@ -74,7 +80,6 @@ public class OrderService2 {
 			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 and out_quantity = 0 ";
 			conditionSb.append(sql);
 		}
-
 		if ("delay".equals(condition)) {
 			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 ";
 			conditionSb.append(sql);
@@ -85,13 +90,13 @@ public class OrderService2 {
 
 		} else if (StringUtils.isNotEmpty(keyWord)) {
 
-			conditionSb.append(String.format(" AND %s like  ", condition, keyWord));
+			conditionSb.append(String.format(" AND o.%s like  ", condition, keyWord));
 			conditionSb.append("'%").append(keyWord).append("%'");
 		}
 		if (conditionSb.length() > 0) {
-			List<FyBusinessOrder> list = FyBusinessOrder.dao
-					.find(select + from + where + conditionSb.toString() + desc);
-			modelPage = new Page<FyBusinessOrder>(list, 1, list.size(), 1, list.size());
+			modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select,
+					from + where + conditionSb.toString() + desc);
+			// modelPage = new Page<FyBusinessOrder>(list, 1, list.size(), 1, list.size());
 		} else {
 			modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select, from + where + desc);
 
@@ -336,21 +341,25 @@ public class OrderService2 {
 			item.setCateTmp(catgory);
 			String planname = excel.getCellVal(i, 1);// 计划员
 			item.setPlanTmp(planname);
-
-			String excustatu = excel.getCellVal(i, 2);// 执行状态
-			item.setExecuStatus(excustatu);
-
-			String urgentStatus = excel.getCellVal(i, 3);// 紧急状态
-			item.setUrgentStatus(urgentStatus);
-
-			String workid = excel.getCellVal(i, 4);// 工作订单号
-			if (StringUtils.isEmpty(workid) && (!"备货".equals(excustatu))) {
-				System.out.println(item);
+			if (StringUtils.isEmpty(planname)) {
+				logger.debug(" 计划员 为空 " + i + " ");
 				continue;
 			}
-			System.out.println(workid);
-			item.setWorkOrderNo(workid);
 
+			String execuStatus = excel.getCellVal(i, 2);// 紧急状态
+			item.setExecuStatus(execuStatus);
+
+			String customerNo = excel.getCellVal(i, 3);// 紧急状态
+			item.setCustomerNo(customerNo);
+			// item.setUrgentStatus(urgentStatus);
+
+			String workid = excel.getCellVal(i, 4);// 工作订单号
+			item.setWorkOrderNo(workid);
+			// if (StringUtils.isEmpty(workid) && (!"备货".equals(excustatu))) {
+			// System.out.println(item);
+			// continue;
+			// }
+			// System.out.println(workid);
 			String DeliveryId = excel.getCellVal(i, 5);// 送货单号
 			item.setDeliveryNo(DeliveryId);
 
@@ -359,6 +368,7 @@ public class OrderService2 {
 
 			String name = excel.getCellVal(i, 7);// 商品名称
 			item.setCommodityName(name);
+
 
 			String totalMapNo = excel.getCellVal(i, 8);// 总图号
 			// item.setMapNo(mapNo);
@@ -449,7 +459,8 @@ public class OrderService2 {
 			}
 		});
 
-		Db.update("update  fy_business_order set order_status = 40 where execu_status ='备货' AND order_status = 0 ");
+		// Db.update("update fy_business_order set order_status = 40 where execu_status
+		// ='备货' AND order_status = 0 ");
 		return Integer.valueOf(sb.toString());
 
 	}
@@ -498,13 +509,13 @@ public class OrderService2 {
 		colhash.put("category_id", 60);
 		colhash.put("planer_id", 60);
 		colhash.put("execu_status", 100);
-		colhash.put("urgent_status", 100);
+		colhash.put("customer_no", 100);
 		colhash.put("work_bill_no", 100);
 		colhash.put("delivery_no", 120);
 
 		colhash.put("map_no", 150);
 		colhash.put("commodity_name", 130);
-		colhash.put("total_map_no", 550);
+		colhash.put("total_map_no", 300);
 		colhash.put("quantity", 100);
 		colhash.put("unit", 35);
 		colhash.put("draw", 300);
@@ -539,7 +550,7 @@ public class OrderService2 {
 		colhash.put("transport_company", 100);
 
 		colhash.put("transport_no", 100);
-		colhash.put("hang_date", 300);
+		colhash.put("hang_date", 100);
 		colhash.put("hang_status", 100);
 		colhash.put("hang_quantity", 100);
 		colhash.put("hang_amount", 100);
@@ -553,8 +564,14 @@ public class OrderService2 {
 		Integer width = new Integer("110");// 序号50
 		while (it.hasNext()) {
 			String key = it.next();
-			Integer w = colhash.get(key);
-			width += w;
+			/**
+			 * 判断是否拥有权限
+			 */
+			if (account.hasColPermission("order", key)) {
+				Integer w = colhash.get(key);
+				width += w;
+			}
+
 		}
 		return width;
 	}

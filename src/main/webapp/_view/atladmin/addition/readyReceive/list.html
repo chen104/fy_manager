@@ -45,7 +45,7 @@
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
-								<th>紧急状态</th>
+								<th>客户编码</th>
 								<th>订单日期</th>
 								<th>交货日期</th>
 								<th>工作订单号</th>
@@ -76,7 +76,7 @@
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
+								<td>#(x.customer_no)</td>
 								<td>#(x.order_date)</td>
 								<td>#(x.delivery_date)</td>
 								<td>#(x.work_order_no)</td>
@@ -98,15 +98,24 @@
 								<th>#(x.unadd_quantity)</th>
 								
 								<td>
-									#if(x.add_quantity!=x.quantity)
-									<a data-id="#(x.id)"  name="addquantiy"> <i
-										class="fa fa-hand-pointer-o" title="选择备货">补货</i>
-									</a>
+								
+							
+									#if(x.ready_order_id)
+										#if(x.add_quantity!=x.quantity)
+										<a data-id="#(x.id)"  name="addquantiy"> <i
+											class="fa fa-hand-pointer-o" title="选择备货">补货</i>
+										</a>
+										#end
+										<a style="margin-left: 10px"  data-map="#(x.map_no)"
+										data-id="#(x.id)" name="rollback_ready" > <i class="fa  fa-chain" title="选择备货">撤回</i>
+										</a>
+									#else
+										<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
+										data-id="#(x.id)" onclick="onSelectReady(this)" > <i
+											class="fa  fa-chain" title="选择备货">选择备货</i>
+										</a>
 									#end
-									<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
-									data-id="#(x.id)" onclick="onSelectReady(this)" > <i
-										class="fa  fa-chain" title="选择备货">选择备货</i>
-									</a>
+									
 								
 								</td>
 							</tr>
@@ -143,7 +152,7 @@
 					 div_table.scroll(function(){
  
 						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
+					//	 console.info("scrollLeft : "+ scrollLeft);
 						$("#ex6").slider('setValue', scrollLeft);
 					 
 					 });
@@ -201,10 +210,43 @@
 <script type="text/javascript">
 	$(function(){
 		$("a[name='addquantiy']").click(function(){
-			var addquantityModal =$("#addquantityModal");
+		//	console.info("tehs");
 			var order_id= $(this).data('id');
-			addquantityModal.data('id',order_id);
-			addquantityModal.modal("show");
+			var callback=function(){
+				console.info(" 添加备货 callback");
+			}
+			var addQauntityModel =	new AddQauntityModel(callback,order_id);
+			addQauntityModel.show();
+		});
+		
+		$("a[name='rollback_ready']").click(function(){
+		
+			var order_id= $(this).data('id'); 
+			console.info("撤回 "+order_id);
+			var sure = confirm("确定要撤回吗?")
+			if(sure){
+				//撤回
+				$.ajax({
+					   type: "POST",
+					   url:'/fy/admin/biz/addition/readyReceive/rollback' ,
+					   data:{order_id:order_id},
+					   success: function(ret){
+						   alert(ret.msg);
+						   if (ret.state == "ok") {
+							   location.reload();
+							}
+						
+					   },
+					   error:function (XMLHttpRequest, textStatus, errorThrown) {
+						    // 通常 textStatus 和 errorThrown 之中
+						    // 只有一个会包含信息
+						 //   this; // 调用本次AJAX请求时传递的options参数
+						   alert('网络异常');
+						}
+					});
+			}else{
+				
+			}
 		});
 	});
 </script>

@@ -1,17 +1,57 @@
 package com.chen.fy.controller.business.waitInhouse;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.TaxRateDirective;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.template.Engine;
 
 public class WaitInhouseController extends BaseController {
 	WaitInhouseService service = WaitInhouseService.me;
 	private static final Logger logger = LogManager.getLogger(WaitInhouseController.class);
+	Engine engine;
+
+	public WaitInhouseController() {
+		engine = new Engine();
+		engine.setToClassPathSourceFactory();
+		engine.addDirective("orderColor", OrderColorDirective.class);
+		engine.addDirective("taxRate", TaxRateDirective.class);
+	}
+
+	public void findJsonPage() {
+		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
+		String condition = getPara("condition");
+
+		Page<Record> modelPage = null;
+		try {
+			modelPage = service.findPage(getParaToInt("p", 1) + 1, getPageSize(), condition, key, getLoginAccount());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Ret ret = Ret.ok("msg", "加载数据");
+		HashedMap<String, Object> data = new HashedMap<String, Object>();
+		data.put("modelPage", modelPage);
+		data.put("pageSize", getPageSize());
+		String str = engine.getTemplate("stringTemplet/warehouse/waitIn/list.jf").renderToString(data);
+		ret.set("data", str);
+		ret.set(Constant.pageIndex, modelPage.getPageNumber());
+		ret.set(Constant.pagePageSize, modelPage.getPageSize());
+		ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
+		ret.set(Constant.pageListSize, modelPage.getList().size());
+		renderJson(ret);
+	}
 
 	public void index() {
 		String key = getPara("keyWord");
@@ -21,11 +61,10 @@ public class WaitInhouseController extends BaseController {
 		setAttr("keyWord", key);
 		keepPara("condition", "weiwai_cate");
 		String condition = getPara("condition");
-		String weiwai_cate = getPara("weiwai_cate");
 
 		Page<Record> modelPage = null;
 		try {
-			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), condition, key);
+			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), condition, key, getLoginAccount());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -37,9 +76,7 @@ public class WaitInhouseController extends BaseController {
 			append.append("&keyWord=").append(key);
 		}
 		append.append("&condition=").append(condition);
-		if (StringUtils.isNotEmpty(weiwai_cate)) {
-			append.append("&weiwai_cate=").append(weiwai_cate);
-		}
+
 		setAttr("append", append.toString());
 		render("waitList.html");
 

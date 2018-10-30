@@ -103,160 +103,147 @@ $(function(){
 
 
 </script>
-			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding text-center">
-			<form action="/fy/admin/biz/assist/createPay" method="post" id="select_form">
-					<table class="table table-bordered"  style="white-space:nowrap">
-						<thead>
-							<tr>
-								<th style=""><input type="checkbox" checked="checked" id="selectAll"></th>
-								<th>类别</th>
-								<th>计划员</th>
-								<th>执行状态</th>
-								<th>紧急状态</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>图号</th>
-								<th>名称</th>
-								<th>总图号</th>
-								<th>数量</th>
-								<th>单位</th>
-								<th>型号</th>
-								<th>规格</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
-								
-							
-								<th>图纸</th>
-								
-								<th>外协编号</th>
-								
-								<th>外协工序单价</th>
-								<th>外协工序金额</th>
-								<th>税率</th>
-								<th>税额</th>
-								<th>含税金额</th>
-								<th>外协厂商</th>
-								<th>外协工序</th>
-								<th>外协加工耗时</th>
-								<th>外协回厂时间</th>
-								<th>外协回厂检测结果</th>
-								<th>是否已生成应付单</th>
-								<th>生成时间</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							#for(x : modelPage.getList())
-							<tr>
-								<td>
-								#if(!x.is_create_pay&&"合格".equals(x.check_result))
-								 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
-								 #end
-								 </td>
-								<td>#(x.cate_tmp)</td>  
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.urgent_status)</td>
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td >
-										#(x.map_no) 
-								 </td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.total_map_no)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>	 
-								<td>#(x.model_no)</td>
-								<td>#(x.commodity_spec)</td>
-								<td>#(x.technology)</td>
-								<td>#(x.machining_require)</td>
-							
-								<td data-id="#(x.id)"> 
-							 
-									#if(x.filename) #(x.filename)
-									 <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
-									 <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>
-									   #end
-								
-								</td>
-							
-								<td>#(x.assist_no)</td>
-								
-								<td>#(x.assist_cost)</td>
-								<td>#(x.assist_account)</td>
-								<td>#taxRate(x.tax_rate)</td>
-								<td>#(x.tax_amount)</td>
-								
-								<td>#(x.tatol_amount)</td>
-								<td> #(x.supplier_name)</td>
-								<td>#(x.assist_process)</td>
-								<td>#(x.run_time)</td>
-								<td>#(x.backtime)</td>
-								<td>#(x.check_result)</td>
-								<!--  -->
-								<td>#if(x.is_create_pay)
-									已生成应付单
-								#end
-								</td>
-								<td>#(x.pay_create_time)</td> 
-								
-								<td class="jfa-operation-button">
-								
-								<a href="/fy/admin/biz/assist/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a>
+<!-- /.box-header -->
+<div  class="box-body table-responsive no-padding text-center">
+	<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
+	<table   class="text-center table-bordered"     style="width:4050px ;	font-size:10px; " >
+		<tbody>
+			<tr>
+				<td width="50"><input type="checkbox" checked="checked" id="selectAll"></td>
+				<td width="60">类别</td>
+				<td width="60">计划员</td>
+				<td width="65">执行状态</td>
+				<td width="65">客户编码</td>
+				<td width="100">工作订单号</td>
+				<td width="150">送货单号</td>
+				<td width="150">图号</td>
+				<td width="150">名称</td>
+				<td  width="300">总图号</td>
+				<td width="100">数量</td>
+				<td width="100">单位</td>
+				<td width="200">型号</td>
+				<td width="200">规格</td>
+				<td width="200">技术条件</td>
+				<td width="100">质量等级</td>
+				<td width="200">图纸</td>
+				<td width="100">外协编号</td>
+				<td width="100">外协工序单价</td>
+				<td width="100">外协工序金额</td>
+				<td width="100">税率</td>
+				<td width="100">税额</td>
+				<td width="100">含税金额</td>
+				<td width="300">外协厂商</td>
+				<td width="100">外协工序</td>
+				<td width="100">外协加工耗时</td>
+				<td width="100">外协回厂时间</td>
+				<td width="100">外协回厂检测结果</td>
+				
+				<!--  <td width="100">是否已生成应付单</td>
+				<td width="100">生成时间</td>
+				-->
+				
+				<td width="100">挂账区间</td>
+				<td width="100">应付区间</td>
+				<td width="100">数量</td>
+				<td width="100">金额</td>
+				
+				<td width="100">操作</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>
+<div id="div_table" style="overflow: scroll;height: 600px; ">
+	<form action="/fy/admin/biz/assist/createPay" method="post" id="select_form">
+			<table class="text-center table-bordered"  style="width: 4050px">
+				<tbody id="table">
+					#for(x : modelPage.getList())
+					<tr>
+						<td width="50">
+						#if(!x.is_create_pay&&"合格".equals(x.check_result))
+						 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
+						 #end
+						 </td>
+						 
+						<td width="60">#(x.cate_tmp)</td>  
+						<td width="60">#(x.plan_tmp)</td>
+						<td width="65">#(x.execu_status)</td>
+						<td width="65">#(x.customer_no)</td>
+						<td width="100">#(x.work_order_no)</td>
+						<td width="150">#(x.delivery_no)</td>
+						<td width="150" >
+								#(x.map_no) 
+						 </td>
+						<td  width="150">#(x.commodity_name)</td>
+						<td width="300">#(x.total_map_no)</td>
+						<td width="100">#(x.quantity)</td>
+						<td width="100">#(x.unit_tmp)</td>	 
+						<td width="200">#(x.model_no)</td>
+						<td width="200">#(x.commodity_spec)</td>
+						<td width="200">#(x.technology)</td>
+						<td width="100">#(x.machining_require)</td>
+					
+						<td width="200" data-id="#(x.id)"> 
+					 
+							#if(x.filename) #(x.filename)
+							 <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
+							 <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>
+							   #end
+						
+						</td>
+					
+						<td  width="100">#(x.assist_no)</td>
+						
+						<td width="100">#(x.assist_cost)</td>
+						<td width="100">#(x.assist_account)</td>
+						<td width="100">#taxRate(x.tax_rate)</td>
+						<td width="100">#(x.tax_amount)</td>
+						
+						<td width="100">#(x.tatol_amount)</td>
+						<td width="300"> #(x.supplier_name)</td>
+						<td width="100">#(x.assist_process)</td>
+						<td width="100">#(x.run_time)</td>
+						<td width="100">#(x.backtime)</td>
+						<td width="100">#(x.check_result)</td>
+						<!-- 
+						<td width="100">#if(x.is_create_pay)
+							已生成应付单
+						#end
+						</td>
+						<td width="100">#(x.pay_create_time)</td> 
+						 -->
+						<td width="100">#date(x.hang_date,"yyyy-MM")</td> <!-- 挂账区间 -->
+						<td width="100">#date(x.pay_date,"yyyy-MM")</td> <!-- 应付区间 -->
+						<td width="100">#(x.pay_quantity)</td>  <!-- 数量 -->
+						<td width="100">#(x.should_pay)</td>  <!--  金额 -->
+						
+						
+						<td width="100" class="jfa-operation-button">
+							#fypermession("assist_update")
+							<a href="/fy/admin/biz/assist/toEditassist?id=#(x.id)" style="margin-left: 14px;"> 
+							<i class="fa fa-pencil" title="修改"></i>
+							</a>
+							#end
+							#fypermession("assist_delete")
 								#if(!x.is_create_pay)
 									<a data-action="/fy/admin/biz/assist/delete?id=#(x.id)" style="margin-left: 14px;color: red" onclick="deleteAssist(this)"> 
 									<i class="fa fa-trash" title="删除"></i>
 								</a>
 								#end
-								</td>
-							</tr>
 							#end
-						</tbody>
-					</table>
-		</form>
+						</td>
+					</tr>
+					#end
+				</tbody>
+			</table>
+</form>
+
+</div>
+			
 
 			</div>
 			<!-- /.box-body -->
-
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/assist?p=")</div>
-				
-				
-			<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-						 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
-				
-				
+	
 		</div>
 		<!-- /.box -->
 	</div>
@@ -294,5 +281,91 @@ function deleteAssist(a){
 		}
 	}
     </script>
+
+  <input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
+<script type="text/javascript">
+		$(function(){
+			$("#selectAll").click(function(){
+				var isChecked =  $("#selectAll").is(":checked");
+				if( isChecked ){
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', true);
+						this.checked= true;
+						});
+				}else{
+					$('input[data-select=select]').each(function() {
+						//$(this).attr('checked', false);
+						this.checked= false;
+					});
+				}
+				//console.info('this');
+				
+			});
+			
+			
+		});
+		
+		$(function(){
+			$("#div_table").scroll(function(){
+
+				
+				var div_table = document.getElementById("div_table");
+				var offsetHeight1 = div_table.offsetHeight;
+				var scrollHeight1 = div_table.scrollHeight;
+				var clientHeight1 = div_table.clientHeight;
+				//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+				//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+			 
+				var xs= $(this).scrollLeft();
+				var scroll = $(this).scrollTop();
+				 
+				$("#div_head").scrollLeft(xs);
+			//	console.info(" get "+((scrollHeight1-clientHeight1)-scroll <100) +"   "+($("#currentPage").val() != $("#totalpage").val()));
+				if((scrollHeight1-clientHeight1)-scroll <100){
+					$("#param").text($("[searchItem='ajax']").serialize());
+					if($("#currentPage").val() != $("#totalpage").val()){
+						$.ajax({
+							   type: "POST",
+							   url:'/fy/admin/biz/assist/findJsonPage',
+							   data:$("[searchItem='ajax']").serialize(),
+							   async:false,
+							   success: function(ret){
+								   if (ret.state == "ok") {
+										$("#table").append(ret.data);
+										$("#currentPage").val(ret.pageNumber);
+										var rownumebr = $("#rownumber").text();
+										var row =  new Number(rownumebr) + ret.listSize;
+										$("#rownumber").text(row);
+										
+									//	var amount = $("#amount_tatol").text();
+										//var total =  new Number(amount) + ret.amount;
+										//$("#amount_tatol").text(total);
+									}
+								 
+							   },
+							   error:function (XMLHttpRequest, textStatus, errorThrown) {
+								    // 通常 textStatus 和 errorThrown 之中
+								    // 只有一个会包含信息
+								 //   this; // 调用本次AJAX请求时传递的options参数
+								   alert('网络异常');
+								}
+							});
+						
+					}
+				}
+				 
+			});
+			
+		});
+</script>
+ 
+
 
 #end

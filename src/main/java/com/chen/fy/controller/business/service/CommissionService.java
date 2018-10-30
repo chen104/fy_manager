@@ -66,8 +66,8 @@ public class CommissionService {
 				String execu_status = item.getStr("execu_status");// 执行状态
 				excel.setCellVal(row, 2, execu_status);
 
-				String urgent_status = item.getStr("urgent_status");// 紧急状态
-				excel.setCellVal(row, 3, urgent_status);
+				String customer_no = item.getStr("customer_no");// 紧急状态
+				excel.setCellVal(row, 3, customer_no);
 
 				Date order_date = item.getDate("order_date");// 订单日期
 				excel.setCellVal(row, 4, order_date);
