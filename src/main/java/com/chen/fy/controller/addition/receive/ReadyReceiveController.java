@@ -77,8 +77,17 @@ public class ReadyReceiveController extends BaseController {
 
 		Integer[] order_id = getParaValuesToInt("order_id");
 		logger.info(" 撤回 备货 " + StringUtils.join(order_id, ","));
-		Ret ret = service.rollback(order_id);
+		Ret ret = service.reset(order_id);
 		renderJson(ret);
 
+	}
+
+	/**
+	 * 撤回
+	 */
+	public void rollbackDistribut() {
+		String[] ids = getParaValues("selectId");
+		Ret ret = service.rollbackDistribut(ids);
+		renderJson(ret);
 	}
 }

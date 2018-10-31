@@ -9,7 +9,7 @@
 				#fypermession("execut_upload")
 					#include("upload.html")
 				#end
-				<span style="position: absolute;top:0px">
+				<span style=" top:0px">
 				<span style="margin-left: 10px;margin-right: 10px" >委外执行表</span>
 				
 					 <!-- 	/fy/admin/biz/commission/execute/todownloadAskCost				<button  class="btn btn-primary" onclick=" submit()" >选择供应商</button> -->
@@ -37,6 +37,7 @@
 						    <label for="condition">条件</label>
 							   
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
+							    <option #if(condition=="supplier_name") selected="selected" #end value="supplier_name">厂商</option>
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
 							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>

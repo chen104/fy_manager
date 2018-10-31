@@ -16,8 +16,10 @@
 	<td width="250">#(x.supplier_name)</td>
 
 	<td width="100" >
-	#if(x.has_in_quantity < x.quantity)
-	 <a data-action="inhouse" data-id="#(x.order_id)" > 入库<i class="fa fa-sign-in" title="入库"></i></a>
+	#fypermession("inhouse")
+		#if(x.has_in_quantity < x.quantity)
+		 <a data-action="inhouse" data-id="#(x.order_id)" > 入库<i class="fa fa-sign-in" title="入库"></i></a>
+		#end
 	#end
 	</td>
 

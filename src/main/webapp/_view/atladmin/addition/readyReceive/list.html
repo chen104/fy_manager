@@ -6,6 +6,42 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">备货接收表</h3>
+				<button class="btn btn-info"  id="bt_rollback">撤回</button>
+				<script type="text/javascript">
+					$(function(){
+						
+						$("#bt_rollback").click(function(){
+							
+							var selectIds = $("input[name=selectId]:checked");
+							if(selectIds.length == 0){
+								alert("没有选择订单");
+								return;
+							}
+							$.ajax({
+								   type: "POST",
+								   url:'/fy/admin/biz/addition/readyReceive/rollbackDistribut' ,
+								   data:selectIds.serialize(),
+								   type:'POST',
+								   success: function(ret){
+									   alert(ret.msg);
+									   if (ret.state == "ok") {
+										  
+										   location.reload();
+										}
+									
+								   },
+								   error:function (XMLHttpRequest, textStatus, errorThrown) {
+									    // 通常 textStatus 和 errorThrown 之中
+									    // 只有一个会包含信息
+									 //   this; // 调用本次AJAX请求时传递的options参数
+									   alert('网络异常');
+									}
+								});
+						});
+						
+					});
+					
+				</script>
 				<div class="box-tools">
 					<form action="/fy/admin/biz/addition/ready/receiveReady"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -34,6 +70,30 @@
 						 </form>
 				</div>
 			</div>
+			<script type="text/javascript">
+			
+			$(function(){
+				$("#selectAll").click(function(){
+					var isChecked =  $("#selectAll").is(":checked");
+					if( isChecked ){
+						$('input[data-select=select]').each(function() {
+							//$(this).attr('checked', true);
+							this.checked= true;
+							});
+					}else{
+						$('input[data-select=select]').each(function() {
+							//$(this).attr('checked', false);
+							this.checked= false;
+						});
+					}
+					console.info('this');
+					
+				});
+				
+				
+			});
+			
+			</script>
 			<!-- /.box-header -->
 			<div id="div_table" class="box-body table-responsive no-padding">
 	
@@ -41,7 +101,7 @@
 						<thead>
 							<tr >
 								<th style="">序号</th>
-								
+								<th  ><input type="checkbox" checked="checked" id="selectAll"></th>
 								<th>类别</th>
 								<th>计划员</th>
 								<th>执行状态</th>
@@ -72,7 +132,7 @@
 							#for(x : modelPage.getList())
 							<tr >
 								<td>#(for.index+1)</td>
-							
+								<td > <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
 								<td>#(x.execu_status)</td>
@@ -102,18 +162,24 @@
 							
 									#if(x.ready_order_id)
 										#if(x.add_quantity!=x.quantity)
-										<a data-id="#(x.id)"  name="addquantiy"> <i
-											class="fa fa-hand-pointer-o" title="选择备货">补货</i>
-										</a>
+											#fypermession("readyReceive_add_quantity")
+											<a data-id="#(x.id)"  name="addquantiy"> <i
+												class="fa fa-hand-pointer-o" title="选择备货">补货</i>
+											</a>
+											#end
 										#end
-										<a style="margin-left: 10px"  data-map="#(x.map_no)"
-										data-id="#(x.id)" name="rollback_ready" > <i class="fa  fa-chain" title="选择备货">撤回</i>
-										</a>
+										#fypermession("readyReceive_rollback")
+											<a style="margin-left: 10px"  data-map="#(x.map_no)"
+											data-id="#(x.id)" name="rollback_ready" > <i class="fa  fa-chain" title="重置">重置</i>
+											</a>
+										#end
 									#else
+										#fypermession("readyReceive_select_ready")
 										<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
 										data-id="#(x.id)" onclick="onSelectReady(this)" > <i
 											class="fa  fa-chain" title="选择备货">选择备货</i>
 										</a>
+										#end
 									#end
 									
 								

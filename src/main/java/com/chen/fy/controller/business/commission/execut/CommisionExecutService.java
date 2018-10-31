@@ -47,23 +47,28 @@ public class CommisionExecutService {
 			conditionSb.append(sql);
 
 		} else {
+			if (StringUtils.isNotEmpty(keyWord)) {
+				if ("order_date".equals(condition)) {
 
-			if ("order_date".equals(condition)) {
+					conditionSb.append(String.format(" AND order_date = '%s'", keyWord));
 
-				conditionSb.append(String.format(" AND order_date = '%s'", keyWord));
+				} else if ("delivery_date".equals(condition)) {
 
-			} else if ("delivery_date".equals(condition)) {
+					conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
 
-				conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
+				} else if ("work_order_no".equals(condition)) {
+					conditionSb.append(" AND  o.work_order_no like  ");
+					conditionSb.append("'%").append(keyWord).append("%'");
+				} else if ("supplier_name".equals(condition)) {
+					conditionSb.append(" AND  s.name like  ");
+					conditionSb.append("'%").append(keyWord).append("%'");
+				
+				} else {
 
-			} else if ("work_order_no".equals(condition)) {
-				conditionSb.append(" AND  o.work_order_no like  ");
-				conditionSb.append("'%").append(keyWord).append("%'");
-			} else if (StringUtils.isNotEmpty(keyWord)) {
+					conditionSb.append(String.format(" AND  %s like  ", condition));
+					conditionSb.append("'%").append(keyWord).append("%'");
 
-				conditionSb.append(String.format(" AND  %s like  ", condition));
-				conditionSb.append("'%").append(keyWord).append("%'");
-
+				}
 			}
 
 		}

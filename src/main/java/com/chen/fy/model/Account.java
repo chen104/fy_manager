@@ -3,6 +3,7 @@ package com.chen.fy.model;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
@@ -82,6 +83,43 @@ public class Account extends BaseAccount<Account> {
 		return false;
 	}
 
+	protected void initPermission() {
+		Integer id = getId();
+		String sql = Db.getSql("permission.getPermission");
+		List<Record> list = Db.find(sql, id);
+		logger.debug("加载权限 ==> " + sql + "    id = " + id);
+		HashSet<String> permission = new HashSet<String>();
+		for (Record e : list) {
+			permission.add(e.getStr("key"));
+		}
+		CacheKit.put("permission", getId(), permission);
+		logger.debug(getNickName() + " " + StringUtils.join(permission.iterator(), ","));
+		if (permission.contains("pay_purchase_view")) {
+			System.out.println("存在");
+		}
+	}
+
+	/*
+	 * 分配
+	 */
+	public Map<String, Boolean> getPermission() {
+		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+		initPermission();
+		Object obj = CacheKit.get("permission", getId());
+
+		HashSet<String> permission = (HashSet<String>) obj;
+
+		for (String e : permission) {
+
+			System.out.println();
+			map.put(e, true);
+		}
+		return map;
+
+	}
+
+
+
 	@SuppressWarnings("unchecked")
 	public boolean hasUriPermission(String key) {
 		if (getId() == 1) {
@@ -131,6 +169,12 @@ public class Account extends BaseAccount<Account> {
 		return false;
 	}
 
+	/**
+	 * 判断数据表的列字段
+	 * @param ctable
+	 * @param key
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public boolean hasColPermission(String ctable, String key) {
 		if (getId() == 1) {
@@ -204,13 +248,36 @@ public class Account extends BaseAccount<Account> {
 
 		// 加载所有权限，里面有的才拦截，没有的不拦截
 
-		List<Record> allperm = Db.find("select  actionKey from permission");
+		List<Record> allperm = Db.find("select  * from permission p");
 		HashSet<String> allppermission = new HashSet<String>();
+		HashSet<String> allkeyPermission = new HashSet<String>();
 		for (Record e : allperm) {
 			allppermission.add(e.getStr("actionKey"));
+			allkeyPermission.add(e.getStr("key"));
 		}
 
 		CacheKit.put("Permission", "all", allppermission);
+		CacheKit.put("Permission", "allkey", allkeyPermission);
+
+		initPermission();
+
+	}
+
+	/**
+	 * 获取所有key
+	 * @return
+	 */
+	public HashSet<String> getAllkeyPermission() {
+		Object obje = CacheKit.get("Permission", "allkey");
+		if (obje == null) {
+			reloadPermission();
+		}
+		obje = CacheKit.get("Permission", "allkey");
+		if (obje instanceof HashSet) {
+			return (HashSet<String>) obje;
+		} else {
+			return null;
+		}
 
 	}
 

@@ -42,7 +42,7 @@ public class PayBillController extends BaseController {
 		Double should_pay = 0d;
 		Double weiwai_account = 0d;
 		try {
-			modelPage = service.findPage(getParaToInt("p", 1) + 1, getPageSize(), key, condition, null, null);
+			modelPage = service.findPage(getParaToInt("p", 1) + 1, getPageSize(), key, condition, getLoginAccount());
 			for (Record e : modelPage.getList()) {
 				weiwai_account = weiwai_account
 						+ (e.getDouble("purchase_amount") == null ? 0 : e.getDouble("purchase_amount"));
@@ -80,7 +80,7 @@ public class PayBillController extends BaseController {
 		Double should_pay = 0d;
 		Double weiwai_account = 0d;
 		try {
-			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), key, condition, null, null);
+			modelPage = service.findPage(getParaToInt("p", 1), getPageSize(), key, condition, getLoginAccount());
 			for (Record e : modelPage.getList()) {
 				weiwai_account = weiwai_account
 						+ (e.getDouble("purchase_amount") == null ? 0 : e.getDouble("purchase_amount"));

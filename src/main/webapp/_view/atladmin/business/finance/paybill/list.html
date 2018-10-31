@@ -6,9 +6,12 @@
 		<div class="box">
 			<div  >
 				<span class="box-title" style="margin-left: 10px;margin-right: 50px">应付结算单</span>
+				#fypermession("paybill_download")
 				<button class="btn btn-primary" id="bt_downlad">下载</button>
+				#end
+				#fypermession("paybill_rollback")
 				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
-				 
+				 #end
 				<div class="box-tools" style="display: inline-block;margin-left: 50px">
 				<form action="/fy/admin/biz/finance/paybill"  class="form-inline">
 				

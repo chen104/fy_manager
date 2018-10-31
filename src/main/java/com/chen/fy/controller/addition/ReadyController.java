@@ -239,4 +239,6 @@ public class ReadyController extends BaseController {
 		Ret ret = service.selectReady(order_id, ready_id);
 		renderJson(ret);
 	}
+
+
 }

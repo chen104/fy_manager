@@ -33,6 +33,9 @@ public class FyPurchaseAuditController extends BaseController {
 			key = key.trim();
 		}
 		String condition = getPara("condition");
+		setAttr("condition", condition);
+		setAttr("keyWord", key);
+
 		Page<FyBusinessPurchase> accountPage = modelService.paginate(getParaToInt("p", 1), getPageSize(), condition,
 				key);
 		setAttr("modelPage", accountPage);

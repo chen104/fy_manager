@@ -15,10 +15,9 @@
 package com.chen.fy.controller.role;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.model.Account;
@@ -99,28 +98,27 @@ public class RoleAdminController extends BaseController {
 
 		Account account = getSessionAttr("account");
 		Permission dao = new Permission().dao();
-		List<Permission> permissionList = dao.find("select * from permission  order by controller asc");
-		srv.markAssignedPermissions(role, permissionList);
-		LinkedHashMap<String, List<Permission>> permissionMap = srv.groupByController(permissionList);
-		LinkedHashMap<String, List<Permission>> permissionMap1 = new LinkedHashMap<String, List<Permission>>();
-		LinkedHashMap<String, List<Permission>> permissionMap2 = new LinkedHashMap<String, List<Permission>>();
-		LinkedHashMap<String, List<Permission>> permissionMap3 = new LinkedHashMap<String, List<Permission>>();
-
-		Set<String> kes = permissionMap.keySet();
-		Iterator<String> iterator = kes.iterator();
-		int i = 0;
-		while (iterator.hasNext()) {
-			String k = iterator.next();
-
-			if (i % 3 == 0) {
-				permissionMap1.put(k, permissionMap.get(k));
-			} else if (i % 3 == 1) {
-				permissionMap2.put(k, permissionMap.get(k));
-			} else if (i % 3 == 2) {
-				permissionMap3.put(k, permissionMap.get(k));
-			}
-			i++;
+		// 获取所有权限
+		List<Permission> permissionList = dao.find("select * from permission");
+		HashMap<String, Integer> permisMap = new HashMap<String, Integer>();
+		for (Permission e : permissionList) {
+			permisMap.put(e.getKey(), e.getId());
 		}
+		setAttr("permisMap", permisMap);
+		
+		String sql = String .format( "\r\n" + 
+				"select p.key 'key' from role_permission  rp \r\n" + 
+				"	INNER JOIN permission p on p.id = rp.permissionId\r\n" + 
+				"	where  rp.roleId= %s", role.getId());
+		List<Record> plist = Db.find(sql);
+		HashMap<String, Boolean> permission = new HashMap<String, Boolean>();
+		for (Record e : plist) {
+			permission.put(e.getStr("key"), true);
+		}
+
+		setAttr("permission", permission);
+
+		// 获取列权限
 		String listColPermission = Db.getSql("permission.listRoleColPermission");
 		System.out.println(role.getId());
 		List<Record> list = Db.find(listColPermission, role.getId());
@@ -136,15 +134,11 @@ public class RoleAdminController extends BaseController {
 		}
 
 		setAttr("role", role);
-		setAttr("permissionMap", permissionMap);
 
-		setAttr("permissionMap1", permissionMap1);
-		setAttr("permissionMap2", permissionMap2);
-		setAttr("permissionMap3", permissionMap3);
 		setAttr("columnMap", colPermissionMap);
 		setAttr("ctable", ctable);
 		// setAttr("bill", billMap);
-		render("assign_permissions.html");
+		render("assign_permissions2.html");
 
 	}
 

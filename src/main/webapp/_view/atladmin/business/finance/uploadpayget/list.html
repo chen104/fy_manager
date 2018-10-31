@@ -4,12 +4,14 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-		#include("upload.html")
+		#fypermession("getpay_upload")
+			#include("upload.html")
+		#end
 		<span class="box-title" style="position: absolute;margin-left: 50px;font-size: 25px">应收明细表</span>
 			<span style="right: 50px;position: absolute;">
-			
+				#fypermession("getpay_to_bill")
 				<button class="btn btn-primary" id="bt_to_bill" >确认挂账</button>
-					
+				#end	
 				<span class="box-tools" style="display:  inline-block;">
 					
 					<form action="/fy/admin/biz/finance/upgetpay"  class="form-inline">

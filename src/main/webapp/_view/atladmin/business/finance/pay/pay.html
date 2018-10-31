@@ -6,9 +6,15 @@
 		<div class="box">
 			<div>
 				<span class="box-title">应付明细表</span>
+				#fypermession("pay_download")
 				<button class="btn btn-primary" id="bt_downlad">下载</button>
+				#end
+				#fypermession("pay_rollback")
 				<button class="btn btn-primary" id="bt_rollback" >撤回</button>
+				#end
+				#fypermession("pay_to_bill")
 				<button class="btn btn-primary" id="bt_to_bill" >确认挂账</button>
+				#end
 				<span class="box-tools" style="margin-left: 50px">
 						<form action="/fy/admin/biz/finance/pay/pay"  class="form-inline">
 						 		<div class="form-group  input-group-sm">

@@ -1,0 +1,434 @@
+ #@myLayout() #define main()
+
+<div class="box box-info" style="wwidth: 300ps">
+	<div class="box-header with-border">
+		<h3 class="box-title">
+			<div>
+				正在为 <span style="color: red;">#(role.name) #(role.id)</span> 分配权限
+			</div>
+
+		</h3>
+	</div>
+	<!-- /.box-header -->
+	<!-- form start -->
+
+	<input id="role_id" type="hidden" name="role.id" value="#(role.id)" />
+
+	<div class="box-body">
+		
+		<div class="row">
+			 
+			<div class="col-md-12" style="padding-top: 10px;padding-bottom: 20px">
+				<table class="table-bordered text-center">
+					 
+					<tbody >
+						<tr>
+							<td  width="200">用户管理 	<input   type="checkbox" > 全选  <input type="checkbox" > 反选  </td>
+							<td width="200">查看 <input type="checkbox" name ="permission" #if(permission.accout??) checked="checked" #end key="accout" value="#(permisMap.accout??)"> </td>
+						 	<td  width="200">添加<input type="checkbox" name ="permission"   #if(permission.accout_create??) checked="checked" #end key="accout_create" value="#(permisMap.accout_create??)"></td>
+							<td  width="200">删除<input type="checkbox" name ="permission"   #if(permission.accout_delete??) checked="checked" #end key="accout_delete" value="#(permisMap.accout_delete??)"></td>
+							<td  width="200">分配角色<input type="checkbox" name ="permission"   #if(permission.role_distribut??) checked="checked" #end key="role_distribut" value="#(permisMap.role_distribut??)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">角色管理</td> 
+							<td width="200">查看 <input type="checkbox"   name ="permission"  #if(permission.role??) checked="checked" #end key="role" value="#(permisMap.role??)"> </td>
+						 	<td  width="200">添加<input type="checkbox"  name ="permission"   #if(permission.role_create??) checked="checked" #end key="role_create" value="#(permisMap.role_create??)"></td>
+							<td  width="200">删除<input type="checkbox"  name ="permission"    #if(permission.role_delete??) checked="checked" #end key="role_delete" value="#(permisMap.role_delete??)"></td>
+							<td  width="200">角色授权<input type="checkbox"  name ="permission"   #if(permission.role_permission??) checked="checked" #end key="role_permission" value="#(permisMap.role_permission??)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">部门管理</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.department??) checked="checked" #end  key="department" value="#(permisMap.department)"> </td>
+						 
+							<td  width="200">删除  <input type="checkbox" name ="permission"   #if(permission.department_delete??) checked="checked" #end key="department_delete" value="#(permisMap.department_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">人员管理</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.person??) checked="checked" #end key="person" value="#(permisMap.person)"> </td>
+						 
+							<td  width="200">删除  <input type="checkbox"  name ="permission"   #if(permission.person_delete??) checked="checked" #end  key="person_delete" value="#(permisMap.person_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">厂商管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.supplier??) checked="checked" #end key="supplier" value="#(permisMap.supplier)"> </td>
+							
+							<td  width="200">删除  <input type="checkbox" name ="permission"   #if(permission.supplier_delete??) checked="checked" #end key="supplier_delete" value="#(permisMap.supplier_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">厂商分类管理</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.supplierCate??) checked="checked" #end key="supplierCate" value="#(permisMap.supplierCate)"> </td>
+							 
+							<td  width="200">删除  <input type="checkbox" name ="permission"   #if(permission.supplierCate_delete??) checked="checked" #end key="supplierCate_delete" value="#(permisMap.supplierCate_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">客户管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.customer??) checked="checked" #end key="customer" value="#(permisMap.customer)"> </td>
+							<td  width="200">删除  <input type="checkbox" name ="permission"   #if(permission.customer_delete??) checked="checked" #end key="customer_delete" value="#(permisMap.customer_delete)"></td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">税率管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.taxRate??) checked="checked" #end key="taxRate" value="#(permisMap.taxRate)"> </td>
+							<td  width="200">删除  <input type="checkbox"  name ="permission"   #if(permission.taxRate_delete??) checked="checked" #end key="taxRate_delete" value="#(permisMap.taxRate_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">分类管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.category??) checked="checked" #end  key="category" value="#(permisMap.category)"> </td>
+						 
+							<td  width="200">删除  <input type="checkbox"  name ="permission"   #if(permission.category_delete??) checked="checked" #end key="category_delete" value="#(permisMap.category_delete)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">单位管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.unit??) checked="checked" #end key="unit" value="#(permisMap.unit)"> </td>
+
+							<td  width="200">删除  <input type="checkbox" name ="permission"    #if(permission.unit_delete??) checked="checked" #end key="unit_delete" value="#(permisMap.unit_delete)"></td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">图纸管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"  #if(permission.file??) checked="checked" #end key="file" value="#(permisMap.file)"> </td>
+							<td  width="200">下载 <input type="checkbox"  name ="permission"   #if(permission.file_download??) checked="checked" #end  key="file_download" value="#(permisMap.file_download)" ></td>
+						 	<td  width="200">上传 <input type="checkbox"  name ="permission"    #if(permission.file_upload??) checked="checked" #end  key="file_upload" value="#(permisMap.file_upload)" ></td>
+							<td  width="200">删除  <input type="checkbox"  name ="permission"   #if(permission.file_delete??) checked="checked" #end  key="file_delete" value="#(permisMap.file_delete)" ></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">订单管理</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"    #if(permission.order??) checked="checked" #end  key="order" value="#(permisMap.order)"> </td>
+							<td  width="200">上传  <input type="checkbox" name ="permission"   #if(permission.order_upload??) checked="checked" #end  key="order_upload" value="#(permisMap.order_upload)"></td>
+							<td  width="200">下载 <input type="checkbox"  name ="permission"   #if(permission.order_download??) checked="checked" #end  key="order_download" value="#(permisMap.order_download)"></td>
+							<td  width="200">删除  <input type="checkbox" name ="permission"   #if(permission.order_delete??) checked="checked" #end  key="order_delete" value="#(permisMap.order_delete)"></td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">订单删除管理</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.order_delete_list??) checked="checked" #end  key="order_delete_list" value="#(permisMap.order_delete_list)"> </td>
+							<td  width="200">撤回  <input type="checkbox"  name ="permission"   #if(permission.order_rollback??) checked="checked" #end  key="order_rollback" value="#(permisMap.order_rollback)"></td>
+							<td  width="200"></td>
+							<td  width="200"></td>
+						</tr>
+						
+						
+						
+						<tr>
+							<td  width="200">分配表</td> 
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.distribut??) checked="checked" #end  key="distribut" value="#(permisMap.distribut)"> </td>
+							<td  width="200">分配  <input type="checkbox" name ="permission"   #if(permission.distribut_order??) checked="checked" #end  key="distribut_order" value="#(permisMap.distribut_order)"></td>
+							<td  width="200">下载 <input type="checkbox" name ="permission"    #if(permission.distribut_download??) checked="checked" #end  key="distribut_download" value="#(permisMap.distribut_download)"></td>
+							<td  width="200"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">委外接收表</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.commision??) checked="checked" #end  key="commision" value="#(permisMap.commision)"> </td>
+							<td  width="200">接收  <input type="checkbox"  name ="permission"   #if(permission.commision_receive??) checked="checked" #end  key="commision_receive" value="#(permisMap.commision_receive)"></td>
+							<td  width="200"></td>
+							<td  width="200"></td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">委外执行表</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.execut??) checked="checked" #end  key="execut"  value="#(permisMap.execut)"> </td>
+							<td  width="200">导入报价单 <input type="checkbox"  name ="permission"   #if(permission.execut_upload??) checked="checked" #end   key="execut_upload"  value="#(permisMap.execut_upload)"> </td>
+							<td  width="200">下载报目标  <input type="checkbox" name ="permission"   #if(permission.execut_download??) checked="checked" #end   key="execut_download" value="#(permisMap.execut_download)"></td>
+							<td  width="200">流转审核 <input type="checkbox"  name ="permission"   #if(permission.execut_to_audit??) checked="checked" #end  key="execut_to_audit"  value="#(permisMap.execut_to_audit)"> </td>
+						
+						</tr>
+						
+						<tr>
+							<td  width="200">采购审核单</td>
+							<td width="200">查看 <input type="checkbox" name ="permission"   #if(permission.audit??) checked="checked" #end   key="audit" value="#(permisMap.audit)"> </td>
+							<td  width="200">审核采购单  <input type="checkbox" name ="permission"   #if(permission.audit_purchase??) checked="checked" #end   key="audit_purchase" value="#(permisMap.audit_purchase)"></td>
+							 
+						</tr>
+						
+						<tr>
+							<td  width="200">采购单</td>
+							<td width="200">查看<input type="checkbox" name ="permission"   #if(permission.purchase??) checked="checked" #end   key="purchase" value="#(permisMap.purchase)"> </td>
+							<td  width="200">下载 <input type="checkbox" name ="permission"    #if(permission.purchase_download??) checked="checked" #end   key="purchase_download" value="#(permisMap.purchase_download)"></td>
+							<td  width="200">  </td>
+						</tr>
+						
+						<tr>
+							<td  width="200">委外一览表</td>
+							<td width="200">查看<input type="checkbox"    name ="permission"   #if(permission.commision_collect??) checked="checked" #end   key="commision_collect" value="#(permisMap.commision_collect)"> </td>
+							<td  width="200">撤回  <input type="checkbox" name ="permission"   #if(permission.commision_collect_rollback??) checked="checked" #end   key="commision_collect_rollback" value="#(permisMap.commision_collect_rollback)"></td>
+							<td  width="200"></td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">自产接收表  </td>
+							<td width="200">查看  <input type="checkbox"  name ="permission"   #if(permission.product??) checked="checked" #end  key="product" value="#(permisMap.product)"></td>
+							<td  width="200">接收 <input type="checkbox"  name ="permission"   #if(permission.product_receive??) checked="checked" #end   key="product_receive" value="#(permisMap.product_receive)"></td>
+							<td  width="200"> </td>
+						</tr>
+						
+						<tr>
+							<td  width="200">生产计划表</td>
+							<td width="200">查看<input type="checkbox" name ="permission"    #if(permission.product_plan??) checked="checked" #end  key="product_plan" value="#(permisMap.product_plan)"> </td>
+							<td  width="200">更新计划时间  <input type="checkbox" name ="permission"   #if(permission.product_plan_update??) checked="checked" #end   key="product_plan_update" value="#(permisMap.product_plan_update)"></td>
+							<td  width="200"> </td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">生产一览表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.product_collect??) checked="checked" #end   key="product_collect" value="#(permisMap.product_collect)"> </td>
+							<td  width="200">更新计划时间    <input type="checkbox"  name ="permission"   #if(permission.product_collect_update??) checked="checked" #end   key="product_collect_update" value="#(permisMap.product_collect_update)"></td>
+							<td  width="200">撤回 <input type="checkbox" name ="permission"    #if(permission.product_collect_rollback??) checked="checked" #end  key="product_collect_rollback" value="#(permisMap.product_collect_rollback)"></td>
+							<td  width="200">新建外协加工单<input type="checkbox" name ="permission"   #if(permission.product_create_assist??) checked="checked" #end   key="product_create_assist" value="#(permisMap.product_create_assist)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">外协加工单</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.assist??) checked="checked" #end  key="assist" value="#(permisMap.assist)"> </td>
+							<td  width="200">生成应付单  <input type="checkbox"  name ="permission"   #if(permission.assist_create_pay??) checked="checked" #end  key="assist_create_pay" value="#(permisMap.assist_create_pay)"></td>
+							
+						
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">待入库</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"  #if(permission.wait_inhouse??) checked="checked" #end   key="wait_inhouse" value="#(permisMap.wait_inhouse)"> </td>
+							<td  width="200">确认入库  <input type="checkbox" name ="permission"   #if(permission.inhouse??) checked="checked" #end   key="inhouse" value="#(permisMap.inhouse)"> </td>
+						 
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">待检测表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.wait_check??) checked="checked" #end  key="wait_check" value="#(permisMap.wait_check)"> </td>
+							<td  width="200">确认入库 <input type="checkbox" name ="permission"   #if(permission.check_inhouse??) checked="checked" #end   key="check_inhouse" value="#(permisMap.check_inhouse)"> </td>
+						</tr>
+						
+						<tr>
+							<td  width="200">检测汇总表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.wait_check_collect??) checked="checked" #end  key="wait_check" value="#(permisMap.wait_check_collect)"> </td>
+ 
+						</tr>
+						 
+						
+						<tr>
+							<td  width="200">异常记录表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.exception??) checked="checked" #end   key="exception" value="#(permisMap.exception)"> </td>
+							<td  width="200">下载 <input type="checkbox" name ="permission"   #if(permission.exception_download??) checked="checked" #end   key="exception_download" value="#(permisMap.exception_download)"> </td>
+						</tr>
+						
+						<tr>
+							<td  width="200">库存表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.storage??) checked="checked" #end  key="storage" value="#(permisMap.storage)"> </td>
+							<td  width="200">执行出库  <input type="checkbox" name ="permission"   #if(permission.storage_out??) checked="checked" #end   key="storage_out" value="#(permisMap.storage_out)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">出存表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.out_house??) checked="checked" #end   key="out_house" value="#(permisMap.out_house)"> </td>
+							<td  width="200">下载<input type="checkbox" name ="permission"   #if(permission.out_house_download??) checked="checked" #end   key="out_house_download" value="#(permisMap.out_house_download)"></td>
+							<td  width="200">出库撤回<input type="checkbox" name ="permission"   #if(permission.out_house_rollback??) checked="checked" #end   key="out_house_rollback" value="#(permisMap.out_house_rollback)"></td>
+							<td  width="200">生成投诉单<input type="checkbox"  name ="permission"  #if(permission.out_house_complaint??) checked="checked" #end   key="out_house_complaint" value="#(permisMap.out_house_complaint)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">应收明细表</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.getpay??) checked="checked" #end  key="getpay" value="#(permisMap.getpay)"> </td>
+							<td  width="200">上传  <input type="checkbox" name ="permission"    #if(permission.getpay_upload??) checked="checked" #end  key="getpay_upload" value="#(permisMap.getpay_upload)"> </td>
+							<td  width="200">确认挂账<input type="checkbox"  name ="permission"   #if(permission.getpay_to_bill??) checked="checked" #end   key="getpay_to_bill" value="#(permisMap.getpay_to_bill)"> </td>
+							
+						</tr>
+						
+						<tr>
+							<td  width="200">应收一览表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.getpay_bill??) checked="checked" #end  key="getpay_bill" value="#(permisMap.getpay_bill)"> </td>
+							<td  width="200">应收结算撤回<input type="checkbox" name ="permission"   #if(permission.getpay_bill_rollback??) checked="checked" #end   key="getpay_bill_rollback" value="#(permisMap.getpay_bill_rollback)">  </td>
+							
+						</tr>
+						
+						<tr>
+							<td  width="200">应付明细表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.pay??) checked="checked" #end  key="pay" value="#(permisMap.pay)"> </td>
+							<td  width="200">应付下载  <input type="checkbox" name ="permission"   #if(permission.pay_download??) checked="checked" #end  key="pay_download" value="#(permisMap.pay_download)"> </td>
+							<td  width="200">应付撤回<input type="checkbox" name ="permission"   #if(permission.pay_rollback??) checked="checked" #end  key="pay_rollback" value="#(permisMap.pay_rollback)"> </td>
+							<td  width="200">确认挂账<input type="checkbox"  name ="permission"   #if(permission.pay_to_bill??) checked="checked" #end  key="pay_to_bill" value="#(permisMap.pay_to_bill)"> </td>
+							<td  width="200">采购数据查看<input type="checkbox"  name ="permission"   #if(permission.pay_purchase_view??) checked="checked" #end   key="pay_purchase_view" value="#(permisMap.pay_purchase_view)"> </td>
+							<td  width="200">外协数据查看<input type="checkbox"  name ="permission"   #if(permission.pay_assist_view??) checked="checked" #end   key="pay_assist_view" value="#(permisMap.pay_assist_view)"> </td>
+						</tr>
+						
+						<tr>
+							<td  width="200">应付一览表</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.paybill??) checked="checked" #end  key="paybill" value="#(permisMap.paybill)"> </td>
+							<td  width="200">应付结算撤回 <input type="checkbox" name ="permission"   #if(permission.paybill_rollback??) checked="checked" #end   key="paybill_rollback" value="#(permisMap.paybill_rollback)"></td>
+							<td  width="200">应付结算单下载 <input type="checkbox"  name ="permission"   #if(permission.paybill_download??) checked="checked" #end  key="paybill_download" value="#(permisMap.paybill_download)"></td>
+							<td  width="200">采购数据查看<input type="checkbox"  name ="permission"   #if(permission.paybill_purchase_view??) checked="checked" #end   key="paybill_purchase_view" value="#(permisMap.paybill_purchase_view)"> </td>
+							<td  width="200">外协数据查看<input type="checkbox"  name ="permission"   #if(permission.paybill_assist_view??) checked="checked" #end   key="paybill_assist_view" value="#(permisMap.paybill_assist_view)"> </td>
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">备货接收表</td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.readyReceive??) checked="checked" #end  key="readyReceive" value="#(permisMap.readyReceive)"> </td>
+							<td  width="200"> 补单 <input type="checkbox" name ="permission"  #if(permission.readyReceive_add_quantity??) checked="checked" #end  key="readyReceive_add_quantity" value="#(permisMap.readyReceive_add_quantity)">  </td>
+							<td  width="200"> 重置 <input type="checkbox"  name ="permission"   #if(permission.readyReceive_reset??) checked="checked" #end  key="readyReceive_reset" value="#(permisMap.readyReceive_reset)"></td>
+							<td  width="200"> 选择备货<input type="checkbox" name ="permission"   #if(permission.readyReceive_select_ready??) checked="checked" #end   key="readyReceive_select_ready" value="#(permisMap.readyReceive_select_ready)"></td>
+							<td  width="200"> 撤回<input type="checkbox" name ="permission"   #if(permission.readyReceive_rollback??) checked="checked" #end   key="readyReceive_rollback" value="#(permisMap.readyReceive_rollback)"></td>
+						</tr>
+						
+						<tr>
+							<td  width="200">备货 </td>
+							<td width="200">查看<input type="checkbox"  name ="permission"   #if(permission.ready??) checked="checked" #end   key="ready" value="#(permisMap.ready??)"> </td>
+							 
+						</tr>
+						
+						
+						<tr>
+							<td  width="200">价格查询表</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.advisory??) checked="checked" #end   key="advisory" value="#(permisMap.advisory??)"> </td>
+							<td  width="200">添加 <input type="checkbox" name ="permission"   #if(permission.advisory_add??) checked="checked" #end   key="advisory_add" value="#(permisMap.advisory_add??)"></td>
+							<td  width="200">上传  <input type="checkbox" name ="permission"   #if(permission.advisory_upload??) checked="checked" #end  key="advisory_upload" value="#(permisMap.advisory_upload??)"></td>
+						
+						</tr>
+						
+						<tr>
+							<td  width="200">投诉表</td>
+							<td width="200">查看 <input type="checkbox"  name ="permission"   #if(permission.complaint??) checked="checked" #end   key="advisory" value="#(permisMap.complaint??)"> </td>
+							<td width="200">修改 <input type="checkbox"  name ="permission"   #if(permission.complaint_update??) checked="checked" #end   key="advisory" value="#(permisMap.complaint_update??)"> </td>
+							 
+						</tr>
+						
+						<tr>
+							<td  width="200">额外设置</td>
+							<td width="200">入库自产查看  <input type="checkbox" name ="permission"   #if(permission.house_product_selft??) checked="checked" #end   key="house_product_selft" value="#(permisMap.house_product_selft??)"> </td>
+							<td  width="200">入库委外查看<input type="checkbox" name ="permission"   #if(permission.house_purchase??) checked="checked" #end  key="house_purchase" value="#(permisMap.house_purchase)"></td>
+							<td  width="200">订单金额统计  <input type="checkbox" name ="permission"   #if(permission.hang_amount_view??) checked="checked" #end   key="hang_amount_view" value="#(permisMap.hang_amount_view??)"></td>
+						
+						</tr>
+					</tbody>
+					
+					
+				</table>
+				
+			</div>
+
+
+		</div>
+	
+		
+		<div class="row">
+			 #for(mapItem : columnMap)
+			<div class="col-md-4">
+				<ul class="list-group">
+
+					 #for(x : mapItem.value)
+					<li class="list-group-item">#(x.title) <span
+						class="pull-right"> <input type="checkbox"
+							onclick="onclickCheckCol(this)" data-role-id="#(role.id)"
+							data-col-id="#(x.id)" #(x.checked??)  >
+					</span>
+					</li> #end 
+				</ul>
+		
+			</div>
+			#end
+		</div>
+	
+
+	</div>
+
+
+	<!-- /.box-body -->
+	<div class="box-footer text-center"></div>
+
+</div>
+<script>
+	$(function(){
+		$("input[name='permission']").click(function(){
+			console.info(" "+this.checked+ " "+this.value);
+
+			$.ajax({
+				   type: "POST",
+				   url: this.checked ? "/fy/admin/role/addPermission" : "/fy/admin/role/deletePermission",
+				   data: "permissionId="+this.value+"&roleId="+$("#role_id").val(),
+				   success: function(ret){
+					   if (ret.state == "ok") {
+							
+						} else {
+							input.checked = !state;
+						}
+				   },
+				   error:function (XMLHttpRequest, textStatus, errorThrown) {
+					    // 通常 textStatus 和 errorThrown 之中
+					    // 只有一个会包含信息
+					 //   this; // 调用本次AJAX请求时传递的options参数
+					   input.checked = !state
+					}
+				});
+		
+		});
+	});
+
+	function onclickCheck(input){
+		var state =input.checked
+
+		 console.info( "check : " + state +"  "+$(input).data("account-id")+"  "+ $(input).data("role-id"));
+	
+		$.ajax({
+			   type: "POST",
+			   url: state ? "/fy/admin/role/addPermission" : "/fy/admin/role/deletePermission",
+			   data: "permissionId="+$(input).data("permission-id")+"&roleId="+$(input).data("role-id"),
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					} else {
+						input.checked = !state;
+					}
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   input.checked = !state
+				}
+			});
+	
+		}
+
+
+	function onclickCheckCol(input){
+		var state =input.checked
+
+		var item = $(input);
+		$.ajax({
+			   type: "POST",
+			   url: state ? "/fy/admin/role/addColumn" : "/fy/admin/role/deleteColumn",
+			   data: {roleId:item.data("role-id") , col_id:item.data("col-id") },
+			   success: function(ret){
+				   if (ret.state == "ok") {
+						
+					} else {
+						input.checked = !state;
+					}
+			   },
+			   error:function (XMLHttpRequest, textStatus, errorThrown) {
+				    // 通常 textStatus 和 errorThrown 之中
+				    // 只有一个会包含信息
+				 //   this; // 调用本次AJAX请求时传递的options参数
+				   input.checked = !state
+				}
+			});
+	
+		}
+</script>
+#end

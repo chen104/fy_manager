@@ -15,6 +15,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.chen.fy.model.Account;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
@@ -28,8 +29,8 @@ public class PaySerivce {
 	private static final Logger logger = LogManager.getLogger(PaySerivce.class);
 	public static final PaySerivce me = new PaySerivce();
 
-	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, String start_date,
-			String end_date) throws Exception {
+	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, Account accout)
+			throws Exception {
 		Page<Record> modelPage = null;
 		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,\n"
 				+ "order_date,delivery_date,execu_status,customer_no,total_map_no \n";
@@ -38,6 +39,17 @@ public class PaySerivce {
 		String desc = " order by id desc";
 		StringBuilder where = new StringBuilder();
 		where.append(" where  is_setlled = 0 ");
+
+		if (accout.hasPermission("pay_purchase_view") && accout.hasPermission("pay_assist_view")) {
+
+		} else if (accout.hasPermission("pay_purchase_view")) {
+			where.append(" AND is_purchase = 1 ");
+		} else if (accout.hasPermission("pay_assist_view")) {
+			where.append(" AND is_purchase = 0 ");
+		} else {
+			return new Page<>(new ArrayList<Record>(), 1, pageSize, 0, 0);
+		}
+
 		if (StringUtils.isNotEmpty(key)) {
 
 			if ("hang_date".equals(condition)) {

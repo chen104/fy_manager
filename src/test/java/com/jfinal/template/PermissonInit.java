@@ -86,9 +86,9 @@ public class PermissonInit {
 	}
 
 	@Test
-
 	public void initPermisson() throws IOException {
-		InputStream input = PermissonInit.class.getClassLoader().getResourceAsStream("permission/menuPerssion.txt");//
+		InputStream input = PermissonInit.class.getClassLoader()
+				.getResourceAsStream("permission/permission2018-10-30.log");// addpermi
 		if (input == null) {
 			return;
 		}
@@ -107,6 +107,8 @@ public class PermissonInit {
 			item.setRemark(p[1]);
 			item.setActionKey(p[2]);
 			item.setController(p[3]);
+			item.setPgroup(p[4]);
+			System.out.println(item);
 			boolean re = item.save();
 			System.out.println(p[1] + "  " + re);
 			line = read.readLine();

@@ -118,9 +118,11 @@ public class WaitCheckService {
 
 		FyBusinessInWarehouse old = FyBusinessInWarehouse.dao.findById(model.getId());
 		Integer in_quantity = old.getInQuantity();
+
 		if (pass_quantity > in_quantity) {
-			return Ret.fail().set("msg", "通过数量不能超过");
+			return Ret.fail().set("msg", "通过数量不能超过入库数量");
 		}
+
 
 		Integer order_id = old.getOrderId();
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(order_id);
@@ -137,6 +139,23 @@ public class WaitCheckService {
 
 		Integer unpass = old.getInQuantity() - model.getPassQuantity();
 		model.setUnpassQuantity(unpass);
+		String inform = old.getInFrom();
+		if ("本部".equals(inform)) {
+			boolean  re = 	Db.tx(new IAtom() {
+				
+				@Override
+				public boolean run() throws SQLException {
+					// TODO Auto-generated method stub
+					return order.update()&&model.update();
+				}
+			});
+		 
+			if(re) {
+				return Ret.ok().set("msg", "检测完成");
+			}
+			return Ret.fail().set("msg", "检测失败");
+			
+		}
 
 		FyBusinessPay oldpay = FyBusinessPay.dao
 				.findFirst("select * from fy_business_pay where parent_id =  " + model.getId());

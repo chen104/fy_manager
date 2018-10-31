@@ -6,9 +6,15 @@
 		<div class="box">
 			<div >
 				<span class="box-title" style="margin-left: 10px;margin-right:10px ">出库表</span>
+					#fypermession("out_house_download")
 					<button class="btn btn-primary" id="bt_download">下载</button>
+					#end
+					#fypermession("out_house_rollback")
 					<button class="btn btn-primary" id="bt_rollback">撤回</button>
+					#end
+					#fypermession("out_house_complaint")
 					<button class="btn btn-primary" id="bt_complain">生成投诉单</button>
+					#end
 				<script type="text/javascript">
 					$(function(){
 						

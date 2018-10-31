@@ -135,9 +135,9 @@
 								<td width="250">#(x.supplier_name)</td>
 								
 								<td width="100">
-								
+									#fypermession("check_inhouse")
 									<a data-action="inhouse" data-id="#(x.id)" href="/fy/admin/biz/whouse/check/waitCheck/editCheck?id=#(x.inhouse_id)"><i class="fa fa-star-half-o" title="检测">检测</i></a>
-								 
+								 	#end
 								</td>
 								
 								<td width="300">#(x.total_map_no)</td>

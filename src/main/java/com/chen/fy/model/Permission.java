@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BasePermission;
  */
 @SuppressWarnings("serial")
 public class Permission extends BasePermission<Permission> {
-	
+	public final static Permission dao = new Permission().dao();
 }

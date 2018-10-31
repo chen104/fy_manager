@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.product.collect;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,19 @@ public class PlanCollectController extends BaseController {
 			e.printStackTrace();
 		}
 		renderJson(Ret.fail().set("msg", "请看运行日志"));
+	}
+
+	public void downloadFile() {
+		String[] ids = getParaValues("downloadId");
+		try {
+			File file = service.download(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderText("下载发生异常，查看日志");
 	}
 
 }

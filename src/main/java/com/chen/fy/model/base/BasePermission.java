@@ -49,20 +49,20 @@ public abstract class BasePermission<M extends BasePermission<M>> extends Model<
 		return getStr("controller");
 	}
 
-	public void setParentId(java.lang.Integer parentId) {
-		set("parentId", parentId);
+	public void setPtype(java.lang.Integer ptype) {
+		set("ptype", ptype);
 	}
 	
-	public java.lang.Integer getParentId() {
-		return getInt("parentId");
+	public java.lang.Integer getPtype() {
+		return getInt("ptype");
 	}
 
-	public void setIsfy(java.lang.Boolean isfy) {
-		set("isfy", isfy);
+	public void setPgroup(java.lang.String pgroup) {
+		set("pgroup", pgroup);
 	}
 	
-	public java.lang.Boolean getIsfy() {
-		return get("isfy");
+	public java.lang.String getPgroup() {
+		return getStr("pgroup");
 	}
 
 }

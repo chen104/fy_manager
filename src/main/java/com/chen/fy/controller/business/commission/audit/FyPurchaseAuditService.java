@@ -43,9 +43,10 @@ public class FyPurchaseAuditService {
 		logger.info("");
 
 		String select = " SELECT o.*,audit.id audit_id ,purchase_single_weight,purchase_weight,purchase_delivery_date,purchase_cost,purchase_account,\r\n"
-				+ "audit_status,audit_time,audit.supplier_no supplier_no,s.name supplier_name ,is_has_tax ";
-		String from = "from fy_business_purchase audit   LEFT JOIN fy_business_order o on audit.work_order_no = o.work_order_no "
-				+ " LEFT JOIN  fy_base_supplier s on audit.supplier_no = s.supplier_no  ";
+				+ "audit_status,audit_time,audit.supplier_no supplier_no,s.name supplier_name ,is_has_tax \n";
+		String from = "from fy_business_purchase audit  \n "
+				+ " LEFT JOIN fy_business_order o on audit.work_order_no = o.work_order_no \n"
+				+ " LEFT JOIN  fy_base_supplier s on audit.supplier_no = s.supplier_no  \n";
 
 		String desc = " order by audit.id desc ";
 		String where = "  where add_status = 1 ";
@@ -62,25 +63,31 @@ public class FyPurchaseAuditService {
 			conditionSb.append(sql);
 
 		} else {
+			if (StringUtils.isNotEmpty(keyWord)) {
+				if ("order_date".equals(condition)) {
 
-			if ("order_date".equals(condition)) {
+					conditionSb.append(String.format("AND order_date = '%s'", keyWord));
 
-				conditionSb.append(String.format("AND order_date = '%s'", keyWord));
+				} else if ("delivery_date".equals(condition)) {
 
-			} else if ("delivery_date".equals(condition)) {
+					conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
 
-				conditionSb.append(String.format("AND  delivery_date = '%s'", keyWord));
+				} else if ("work_order_no".equals(condition)) {
+					conditionSb.append(String.format("AND  o.%s like  ", condition));
+					conditionSb.append("'%").append(keyWord).append("%'");
 
-			} else if ("work_order_no".equals(condition)) {
-				conditionSb.append(String.format("AND  o.%s like  ", condition));
-				conditionSb.append("'%").append(keyWord).append("%'");
-			}
+				} else if ("supplier_name".equals(condition)) {
+					conditionSb.append(" AND  s.name like  ");
+					conditionSb.append("'%").append(keyWord).append("%'");
 
-			else if (StringUtils.isNotEmpty(keyWord)) {
+				}
 
-				conditionSb.append(String.format("AND  %s like  ", condition));
-				conditionSb.append("'%").append(keyWord).append("%'");
+				else {
 
+					conditionSb.append(String.format("AND  %s like  ", condition));
+					conditionSb.append("'%").append(keyWord).append("%'");
+
+				}
 			}
 
 		}

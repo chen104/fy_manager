@@ -121,7 +121,7 @@ public class JunitFinalTest {
 			p.setActionKey(item[i][0]);
 			p.setController(item[i][1]);
 			p.setRemark(item[i][2]);
-			p.setIsfy(true);
+			// p.setIsfy(true);
 			p.save();
 			p.setId(null);
 		}

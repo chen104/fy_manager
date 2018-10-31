@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseRole;
  */
 @SuppressWarnings("serial")
 public class Role extends BaseRole<Role> {
-	
+	public static final Role dao = new Role().dao();
 }

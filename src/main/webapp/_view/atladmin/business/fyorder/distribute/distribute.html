@@ -188,11 +188,11 @@
 								
 								<td data-id="#(x.id)" width="300"> 
 									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
-									#fypermession("distribut_order_map")
+								
 									<a href="#" onclick=" selectMapFile(this)"> 
 												<i class="glyphicon glyphicon-th-large" title="选择图纸">选择图纸</i>
 									</a>
-									#end
+										<!--  fypermession("distribut_order_map") end -->
 								</td>
 								
 								<td width="300">#(x.total_map_no)</td>

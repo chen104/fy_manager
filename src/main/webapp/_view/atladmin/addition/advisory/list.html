@@ -4,11 +4,17 @@
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
-		#include("upload.html")
+		#fypermession("advisory_upload")
+			#include("upload.html")
+		#end
 			<div class="box-header">
 				<h3 class="box-title">询价管理</h3>
-				<a href="/fy/admin/biz/addition/advisory/add"><button type="submit"
+				
+				<a href="/fy/admin/biz/addition/advisory/add">
+				#fypermession("advisory_add")
+				<button type="submit"
 						class="btn btn-primary">添加记录</button></a>
+				#end
 				<div class="box-tools">
 					<form action="/fy/admin/biz/addition/advisory"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -105,12 +111,16 @@
 								<td>#(x.customer_profit_cost)</td>	
 								<td>#(x.customer_profit_amount)</td>
 								
-								<td class="jfa-operation-button"><a href="/fy/admin/biz/addition/advisory/edit?id=#(x.id)" style="margin-left: 14px;"> 
-								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
-									data-action="/fy/admin/biz/addition/advisory/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
-										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								<td class="jfa-operation-button">
+								#fypermession("advisory_add")
+									<a href="/fy/admin/biz/addition/advisory/edit?id=#(x.id)" style="margin-left: 14px;"> 
+									<i class="fa fa-pencil" title="修改"></i>
+									</a> <a data-delete data-title="#escape(x.name)"
+										data-action="/fy/admin/biz/addition/advisory/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
+											class="fa fa-trash" title="删除"></i>
+									</a>
+								#end
+								</td>
 							</tr>
 							#end
 						</tbody>

@@ -7,7 +7,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import com.chen.fy.model.Account;
 import com.chen.fy.model.Role;
-import com.chen.fy.role.RoleAdminService;
 import com.chen.fy.service.AccountAdminService;
 import com.chen.fy.service.AccountUpdateValidator;
 import com.jfinal.aop.Before;
@@ -82,7 +81,7 @@ public class AccountController extends BaseController {
 	 */
 	public void assignRoles() {
 		Account account = srv.findById(getParaToInt("id"));
-		List<Role> roleList = RoleAdminService.me.getAllRoles();
+		List<Role> roleList = Role.dao.find("select * from role order by id asc");
 		srv.markAssignedRoles(account, roleList);
 
 		setAttr("account", account);

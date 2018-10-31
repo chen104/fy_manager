@@ -134,9 +134,9 @@ public class ReadyReceiveService {
 	}
 
 	/*
-	 * 撤回
+	 * c
 	 */
-	public Ret rollback(Integer[] orderIds) {
+	public Ret reset(Integer[] orderIds) {
 		String update = " update fy_ready_add set ready_order_id = null,add_quantity = 0  where   add_order_id   in ";
 		StringBuilder sb = new StringBuilder();
 		SqlKit.joinIds(orderIds, sb);
@@ -149,4 +149,37 @@ public class ReadyReceiveService {
 		}
 	}
 
+	public Ret rollbackDistribut(String[] ids) {
+		/*
+		 * 需要修改的字段 order_status = 0 distribute_attr = null distribute_to = null
+		 * is_distribute = 1 plan_time =null plan_finsh_time =null plan_remark = null
+		 * distribute_time = null receive_time
+		 */
+
+		String update = " update fy_business_order set order_status = 0, distribute_attr = '撤回',\n"
+				+ " distribute_to = null,is_distribute = 1, plan_time =null, plan_finsh_time =null,\n"
+				+ "plan_remark = null, distribute_time = null,receive_time=null \n," + "dis_to = null "
+				+ " where has_in_quantity = 0 AND id in ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+
+				int re = Db.update(update + idsb.toString());
+
+				Db.delete("delete from fy_ready_add where add_order_id in " + idsb.toString());
+				logger.debug(" 撤回备货 sql==> " + update + idsb.toString() + "  \n sql ==> "
+						+ "delete from fy_ready_add where add_order_id in " + idsb.toString());
+				return re == ids.length;
+			}
+		});
+		if (re) {
+
+			return Ret.ok().set("msg", "撤回完成");
+		} else {
+			return Ret.ok().set("msg", "撤回失败，刷新之后再撤回");
+		}
+	}
 }

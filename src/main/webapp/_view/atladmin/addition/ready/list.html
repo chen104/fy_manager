@@ -6,6 +6,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">备货 </h3>
+				
 				<div class="box-tools">
 					<form action="/fy/admin/biz/addition/ready"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -41,6 +42,7 @@
 						<thead>
 							<tr >
 								<th style="">序号</th>
+							
 								<th>客户</th>
 								<th>类别</th>
 								<th>计划员</th>
@@ -68,11 +70,12 @@
 						<tbody>
 							#for(x : modelPage.getList())
 							<tr >
+								
 								<td>#(for.index+1)</td>
 								<td>#(x.customer_name)</td>
 								<td>#(x.cate_tmp)</td>
 								<td>#(x.plan_tmp)</td>
-								<td>#(x.customer_no)</td>
+								<td>#(x.execu_status)</td>
 								 
 								<td>#(x.work_order_no)</td>
 								<td>#(x.delivery_no)</td>

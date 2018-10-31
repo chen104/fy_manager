@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseRolePermission;
  */
 @SuppressWarnings("serial")
 public class RolePermission extends BaseRolePermission<RolePermission> {
-	
+	public final static RolePermission dao = new RolePermission().dao();
 }

@@ -19,7 +19,7 @@ public class StorageService {
 		StringBuilder conditionSb = new StringBuilder();
 		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name ,o.id order_id";
 		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
-				+ " Inner join fy_business_purchase audit on o.id = audit.order_id"
+				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id"
 				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no";
 		String desc = " order by o.id  desc ";
 		String where = "  where o.storage_quantity > 0  ";

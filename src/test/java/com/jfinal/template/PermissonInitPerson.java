@@ -65,6 +65,7 @@ public class PermissonInitPerson {
 		}
 	}
 
+
 	public void initPermisson() throws IOException {
 		InputStream input = TestString.class.getClassLoader().getResourceAsStream("permission/colperm");
 

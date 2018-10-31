@@ -14,6 +14,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.chen.fy.model.Account;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
@@ -27,8 +28,8 @@ public class PayBillSerivce {
 	private static final Logger logger = LogManager.getLogger(PayBillSerivce.class);
 	public static final PayBillSerivce me = new PayBillSerivce();
 
-	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, String start_date,
-			String end_date) throws Exception {
+	public Page<Record> findPage(Integer currentPage, Integer pageSize, String key, String condition, Account account)
+			throws Exception {
 		Page<Record> modelPage = null;
 		String sql = "cate_tmp,plan_tmp,work_order_no,delivery_no, \n"
 				+ "commodity_name,commodity_spec,map_no,quantity, \n"
@@ -39,6 +40,17 @@ public class PayBillSerivce {
 		String desc = " order by id desc";
 		StringBuilder where = new StringBuilder();
 		where.append(" WHERE is_setlled  = 1 ");
+		if (account.hasPermission("paybill_purchase_view") && account.hasPermission("paybill_assist_view")) {
+			logger.debug(" 拥有全部数据查看权限 ");
+		} else if (account.hasPermission("paybill_purchase_view")) {
+			where.append(" AND is_purchase = 1 ");
+			logger.debug(" 拥有查看采购数据 ");
+		} else if (account.hasPermission("paybill_assist_view")) {
+			where.append(" AND is_purchase = 0 ");
+			logger.debug(" 拥有查看外协数据");
+		} else {
+			return new Page<>(new ArrayList<Record>(), 1, pageSize, 0, 0);
+		}
 		if (StringUtils.isNotEmpty(key)) {
 
 			if ("hang_date".equals(condition)) {
