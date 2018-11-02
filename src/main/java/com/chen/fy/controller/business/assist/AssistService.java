@@ -1,10 +1,14 @@
 package com.chen.fy.controller.business.assist;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,7 +16,9 @@ import org.apache.log4j.Logger;
 import com.chen.fy.model.FyBusinessAssist;
 import com.chen.fy.model.FyBusinessPay;
 import com.jfinal.club.common.kit.CommonKit;
+import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -22,14 +28,35 @@ import com.jfinal.plugin.activerecord.Record;
 public class AssistService {
 	public final static AssistService me = new AssistService();
 	private static final Logger logger = LogManager.getLogger(AssistService.class);
+	String oTable = "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,\n "
+			+ "commodity_spec,map_no,quantity,unit_tmp,technology,\n "
+			+ "machining_require,untaxed_cost,order_date,delivery_date, \n" + "execu_status,customer_no"
+			+ ",s.name supplier_name ,p.create_time pay_create_time";
 
-	public Page<Record> findPage(int currentPage, int pageSize, String condition, String keys) {
-		Page<Record> modelPage = null;
-		String select = "";
-		String from = "";
-		String where = "";
-		String desc = "";
-		Page<Record> list = Db.paginate(currentPage, pageSize, select, from + where + desc);
+	public Page<FyBusinessAssist> findPage(int currentPage, int pageSize, String condition, String key) {
+		Page<FyBusinessAssist> modelPage = null;
+
+
+		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
+		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "
+				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id "
+				+ " left join fy_base_fyfile  f on o.draw = f.id"
+				+ " LEFT JOIN fy_business_pay p ON p.is_purchase =0 AND p.parent_id = a.id ";
+		if (StringUtils.isEmpty(key)) {
+			modelPage = FyBusinessAssist.dao.paginate(currentPage, pageSize, select,
+					from + " order by id desc");
+		} else {
+			StringBuilder sb = new StringBuilder();
+
+			if ("name".equals(condition)) {
+				sb.append(" and s.name like ").append("'%").append(key).append("%' ");
+			} else {
+				sb.append(" and o.work_order_no like ").append("'%").append(key).append("%' ");
+			}
+			modelPage = FyBusinessAssist.dao.paginate(currentPage, pageSize, select,
+					from + sb.toString() + " order by id desc");
+		}
+
 		return modelPage;
 	}
 
@@ -126,6 +153,146 @@ public class AssistService {
 			ret = Ret.ok().set("msg", "新建应付单失败");
 		}
 		return ret;
+
+	}
+
+	public File download(String[] ids) throws Exception {
+		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
+		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "
+				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id "
+				+ " left join fy_base_fyfile  f on o.draw = f.id"
+				+ " LEFT JOIN fy_business_pay p ON p.is_purchase =0 AND p.parent_id = a.id ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		String sql = select + from + " WHERE a.id in " + idsb.toString() + " order by a.id ";
+		logger.debug(" 下载 外协单 sql ==> " + sql);
+		List<Record> list = Db.find(sql);
+
+		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
+		if (!parentfile.exists()) {
+			parentfile.mkdirs();
+		}
+		File targetfile = new File(parentfile,
+				"外协加工单" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
+
+		// 读取模板
+		String xlsx = this.getClass().getClassLoader().getResource("templet/download/assist/assist.xlsx").getFile();
+		File sourceFile = new File(xlsx);
+		if (sourceFile.exists()) {
+			System.out.println(sourceFile.getName() + " 存在");
+		}
+		FileUtils.copyFile(sourceFile, targetfile);
+
+		PIOExcelUtil excel = null;
+		excel = new PIOExcelUtil(targetfile, 0);
+
+		int row = 1;
+		for (Record item : list) {
+			String cate_tmp = item.getStr("cate_tmp");// 类别
+			excel.setCellVal(row, 0, cate_tmp);
+
+			String plan_tmp = item.getStr("plan_tmp");// 计划员
+			excel.setCellVal(row, 1, plan_tmp);
+
+			String execu_status = item.getStr("execu_status"); // 执行状态
+			excel.setCellVal(row, 2, execu_status);
+
+			String customer_no = item.getStr("customer_no");// 客户编码
+			excel.setCellVal(row, 3, customer_no);
+
+			String work_order_no = item.getStr("work_order_no");// 订单单号
+			excel.setCellVal(row, 4, work_order_no);
+
+			String delivery_no = item.getStr("delivery_no");// 总图号
+			excel.setCellVal(row, 5, delivery_no);
+
+			String map_no = item.getStr("map_no");// 总图号
+			excel.setCellVal(row, 6, map_no);
+
+			String commodity_name = item.getStr("commodity_name");// 总图号
+			excel.setCellVal(row, 7, commodity_name);
+
+			String total_map_no = item.getStr("total_map_no");// 总图号
+			excel.setCellVal(row, 8, total_map_no);
+
+			String quantity = item.getStr("quantity");// 数量
+			excel.setCellVal(row, 9, quantity);
+
+			String unit_tmp = item.getStr("unit_tmp");// 总图号
+			excel.setCellVal(row, 10, unit_tmp);
+
+			String model_no = item.getStr("model_no");// 型号
+			excel.setCellVal(row, 11, model_no);
+
+			String commodity_spec = item.getStr("commodity_spec");// 规格
+			excel.setCellVal(row, 12, commodity_spec);
+
+			String technology = item.getStr("technology");// 技术条件
+			excel.setCellVal(row, 13, technology);
+
+			String machining_require = item.getStr("machining_require");// 质量等级
+			excel.setCellVal(row, 14, machining_require);
+
+			String filename = item.getStr("filename");// 图纸
+			excel.setCellVal(row, 15, filename);
+
+			String assist_no = item.getStr("assist_no");//
+			excel.setCellVal(row, 16, assist_no);
+
+			Double assist_cost = item.getDouble("assist_cost");// 总
+			excel.setCellVal(row, 17, assist_cost);
+
+			Double assist_account = item.getDouble("assist_account");// 总图号
+			excel.setCellVal(row, 18, assist_account);
+
+			Double tax_rate = item.getDouble("tax_rate");//
+			excel.setCellVal(row, 19, tax_rate);
+
+			String tax_amount = item.getStr("tax_amount");// 税额
+			excel.setCellVal(row, 20, tax_amount);
+
+			Double tatol_amount = item.getDouble("tatol_amount");// 含税金额
+			excel.setCellVal(row, 21, tatol_amount);
+
+			String supplier_name = item.getStr("supplier_name");// 厂商
+			excel.setCellVal(row, 22, supplier_name);
+
+			String assist_process = item.getStr("assist_process");// 外协工序
+			excel.setCellVal(row, 23, assist_process);
+
+			Double out_time = item.getDouble("run_time");// 回厂时间
+			excel.setCellVal(row, 24, out_time);
+
+			Date backtime = item.getDate("backtime");// 出货日期
+			excel.setCellVal(row, 25, backtime, "yyyy-MM-dd");
+
+			String check_result = item.getStr("check_result");// 检测结果
+			excel.setCellVal(row, 26, check_result);
+
+			Boolean is_create_pay = item.getBoolean("is_create_pay");//
+			if (is_create_pay == null || is_create_pay) {
+				excel.setCellVal(row, 27, "未生成");
+			} else {
+				excel.setCellVal(row, 27, "已生成");
+			}
+
+			Date hang_date = item.getDate("hang_date");// 出货日期
+			excel.setCellVal(row, 28, hang_date, "yyyy-MM");
+
+			Date pay_date = item.getDate("pay_date");// 应付区间
+			excel.setCellVal(row, 29, pay_date, "yyyy-MM");
+
+			Integer pay_quantity = item.getInt("pay_quantity");// 数量
+			excel.setCellVal(row, 30, pay_quantity);
+
+			Double should_pay = item.getDouble("should_pay");// 应付金额
+			excel.setCellVal(row, 31, should_pay);
+			row++;
+		}
+
+		excel.save2File(targetfile);
+
+		return targetfile;
 
 	}
 }

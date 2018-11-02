@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.controller.base.service.SupplierService;
@@ -20,7 +22,7 @@ import com.jfinal.upload.UploadFile;
 
 public class SupplierController extends BaseController {
 	SupplierService service = SupplierService.me;
-
+	private static final Logger logger = LogManager.getLogger(SupplierController.class);
 	public void index() {
 		findAllCate();
 		String key = getPara("keyWord");
@@ -163,6 +165,7 @@ public class SupplierController extends BaseController {
 					Supplier item = new Supplier();
 
 					String name = excel.getCellVal(i, 0);// 厂商名称
+					logger.debug("上传厂商 ： " + name);
 					if (StringUtils.isEmpty(name)) {
 						continue;
 					}
@@ -234,7 +237,6 @@ public class SupplierController extends BaseController {
 			renderFile(file);
 			return;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		renderText("下载失败");

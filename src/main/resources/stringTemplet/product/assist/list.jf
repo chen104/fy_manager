@@ -2,9 +2,7 @@
 #for(x : modelPage.getList())
 <tr>
 	<td width="50">
-	#if(!x.is_create_pay&&"合格".equals(x.check_result))
-	 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
-	 #end
+	<input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked" #if(!x.is_create_pay&&"合格".equals(x.check_result)) data-create-pay="true"  #end >
 	 </td>
 	<td width="60">#(x.cate_tmp)</td>  
 	<td width="60">#(x.plan_tmp)</td>

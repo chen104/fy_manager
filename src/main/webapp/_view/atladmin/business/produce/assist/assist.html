@@ -7,6 +7,35 @@
 			<div class="box-header">
 				<h3 class="box-title">外协加工单</h3>
 				<button class="btn btn-info"  id="bt_create_pay">生成应付单</button>
+				<button class="btn btn-info"  id="bt_download">下载</button>
+				<form action="/fy/admin/biz/assist/downloadFile"  method="post" target="_blank" hidden="hidden" id="download_form">
+							
+						</form>
+				<script type="text/javascript">
+				
+				$(function(){
+					$("#bt_download").click(function(){
+						var form =$("#download_form");
+						form.empty();
+						var isChecked = $('input[name=selectId]:checked');;
+						if(isChecked.length == 0){
+							alert("没有选择");
+							return;
+						}
+						isChecked.each(function() {
+							//$(this).attr('checked', true);
+							var input=$("<input/>");
+							input.attr("name","downloadId");
+							input.attr("value",this.value);
+							form.append(input);
+						});
+						//console.info(form)
+						form.submit();
+					});
+					
+					
+				});
+				</script>
 				<div class="box-tools">
 					<form action="/fy/admin/biz/assist"  class="form-inline">
 							 <div class="form-group  input-group-sm">
@@ -73,9 +102,16 @@ $(function(){
 			return ; 
 		}
 		
+		
 		if(selectIds.length >  1){
 			alert("只能选择一条协单");
 			return ; 
+		}
+		
+		var iscreate_pay = selectIds.data("create-pay");
+		if(iscreate_pay){
+			alert("不合格或已创建国应付单，不能创建");
+			return;
 		}
 		
 		$.ajax({
@@ -160,9 +196,9 @@ $(function(){
 					#for(x : modelPage.getList())
 					<tr>
 						<td width="50">
-						#if(!x.is_create_pay&&"合格".equals(x.check_result))
-						 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked">
-						 #end
+						
+						 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked" #if(!x.is_create_pay&&"合格".equals(x.check_result)) data-create-pay="true"  #end >
+						
 						 </td>
 						 
 						<td width="60">#(x.cate_tmp)</td>  

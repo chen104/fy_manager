@@ -118,6 +118,7 @@ public class ExecutWidth {
 
 	}
 
+	@Test
 	public void checkWidth() throws IOException {
 		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/warehouse/check/list.jf");
 
@@ -372,7 +373,7 @@ public class ExecutWidth {
 
 	}
 
-	@Test
+
 	public void getCollectAssistWidth() throws IOException {
 		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/product/assist/list.jf");
 

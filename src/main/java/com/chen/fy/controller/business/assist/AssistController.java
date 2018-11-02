@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.assist;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +35,12 @@ public class AssistController extends BaseController {
 		Integer id = getParaToInt("selectId");
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(id);
 		setAttr("order", order);
-		setAttr("model", new FyBusinessAssist());
+		FyBusinessAssist model = new FyBusinessAssist();
+		// TaxRate taxrate = TaxRate.dao.findFirst("SELECT * FROM fy_base_tax_rate WHERE
+		// match_value = 0");
+		model.setTaxRate(new BigDecimal("0"));
+		model.setTaxAmount(new BigDecimal("0"));
+		setAttr("model", model);
 
 		setAttr("action", "saveAssist");
 		setAttr("title", "新建外协加工单");
@@ -250,6 +257,20 @@ public class AssistController extends BaseController {
 			e.printStackTrace();
 		}
 		renderJson(Ret.ok().set("msg", "请查看运行日志"));
+	}
+
+	public void downloadFile() {
+		String[] ids = getParaValues("downloadId");
+		try {
+			File file = service.download(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		renderText("下载发生异常，查看日志");
 	}
 
 }

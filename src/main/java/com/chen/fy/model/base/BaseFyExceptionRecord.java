@@ -17,118 +17,6 @@ public abstract class BaseFyExceptionRecord<M extends BaseFyExceptionRecord<M>> 
 		return getInt("id");
 	}
 
-	public void setCateTmp(java.lang.String cateTmp) {
-		set("cate_tmp", cateTmp);
-	}
-	
-	public java.lang.String getCateTmp() {
-		return getStr("cate_tmp");
-	}
-
-	public void setPlanTmp(java.lang.String planTmp) {
-		set("plan_tmp", planTmp);
-	}
-	
-	public java.lang.String getPlanTmp() {
-		return getStr("plan_tmp");
-	}
-
-	public void setWorkOrderNo(java.lang.String workOrderNo) {
-		set("work_order_no", workOrderNo);
-	}
-	
-	public java.lang.String getWorkOrderNo() {
-		return getStr("work_order_no");
-	}
-
-	public void setMapTmp(java.lang.String mapTmp) {
-		set("map_tmp", mapTmp);
-	}
-	
-	public java.lang.String getMapTmp() {
-		return getStr("map_tmp");
-	}
-
-	public void setCommodityName(java.lang.String commodityName) {
-		set("commodity_name", commodityName);
-	}
-	
-	public java.lang.String getCommodityName() {
-		return getStr("commodity_name");
-	}
-
-	public void setTotalMapNo(java.lang.String totalMapNo) {
-		set("total_map_no", totalMapNo);
-	}
-	
-	public java.lang.String getTotalMapNo() {
-		return getStr("total_map_no");
-	}
-
-	public void setQuantity(java.lang.Integer quantity) {
-		set("quantity", quantity);
-	}
-	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
-	}
-
-	public void setUnitTmp(java.lang.String unitTmp) {
-		set("unit_tmp", unitTmp);
-	}
-	
-	public java.lang.String getUnitTmp() {
-		return getStr("unit_tmp");
-	}
-
-	public void setModelNo(java.lang.String modelNo) {
-		set("model_no", modelNo);
-	}
-	
-	public java.lang.String getModelNo() {
-		return getStr("model_no");
-	}
-
-	public void setCommoditySpec(java.lang.String commoditySpec) {
-		set("commodity_spec", commoditySpec);
-	}
-	
-	public java.lang.String getCommoditySpec() {
-		return getStr("commodity_spec");
-	}
-
-	public void setTechnology(java.lang.String technology) {
-		set("technology", technology);
-	}
-	
-	public java.lang.String getTechnology() {
-		return getStr("technology");
-	}
-
-	public void setMachiningRequire(java.lang.String machiningRequire) {
-		set("machining_require", machiningRequire);
-	}
-	
-	public java.lang.String getMachiningRequire() {
-		return getStr("machining_require");
-	}
-
-	public void setOrderDate(java.util.Date orderDate) {
-		set("order_date", orderDate);
-	}
-	
-	public java.util.Date getOrderDate() {
-		return get("order_date");
-	}
-
-	public void setDistributeTo(java.lang.String distributeTo) {
-		set("distribute_to", distributeTo);
-	}
-	
-	public java.lang.String getDistributeTo() {
-		return getStr("distribute_to");
-	}
-
 	public void setSupplierId(java.lang.Integer supplierId) {
 		set("supplier_id", supplierId);
 	}
@@ -159,6 +47,22 @@ public abstract class BaseFyExceptionRecord<M extends BaseFyExceptionRecord<M>> 
 	
 	public java.lang.String getCheckRemark() {
 		return getStr("check_remark");
+	}
+
+	public void setSupplierName(java.lang.String supplierName) {
+		set("supplier_name", supplierName);
+	}
+	
+	public java.lang.String getSupplierName() {
+		return getStr("supplier_name");
+	}
+
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
 	}
 
 }
