@@ -17,20 +17,20 @@ import com.jfinal.plugin.activerecord.Record;
 public class CheckCollectService {
 	public final static CheckCollectService me = new CheckCollectService();
 	private static final Logger logger = LogManager.getLogger(CheckCollectService.class);
+	String select = "select o.*,supplier_id,pass_quantity,unpass_quantity,\n"
+			+ "check_time,check_result,s.name supplier_name 	\r\n";
+	String from = " 	from fy_check_collect cc\r\n"
+			+ "		LEFT JOIN  fy_business_order o on cc.order_id = o.id\r\n"
+			+ "		LEFT JOIN fy_base_supplier s on cc.supplier_id = s.id  \r\n";
+
+	String where = "  where cc.check_result is not null  ";
 
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
 			throws Exception {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name "
-				+ ",inhouse.*,inhouse.in_quantity in_quantity,inhouse.id inhouse_id";
-		String from = "from  fy_business_order o  "
-				+ " INNER JOIN fy_business_in_warehouse inhouse on o.id = inhouse.order_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id  "
-				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id "
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no ";
-		String where = " where inhouse.check_result is not null ";
-		String desc = " order by inhouse.id desc ";
+
+		String desc = " order by cc.id desc ";
 		if ("delay_warn".equals(condition)) {
 			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
 			conditionSb.append(sql);

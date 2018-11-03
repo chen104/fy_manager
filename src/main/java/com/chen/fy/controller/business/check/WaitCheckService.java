@@ -10,10 +10,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessPay;
 import com.chen.fy.model.FyBusinessPurchase;
+import com.chen.fy.model.FyCheckCollect;
+import com.chen.fy.model.FyExceptionRecord;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -24,21 +25,21 @@ import com.jfinal.plugin.activerecord.Record;
 public class WaitCheckService {
 	public final static WaitCheckService me = new WaitCheckService();
 	private static final Logger logger = LogManager.getLogger(WaitCheckService.class);
-
+	String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id, \n"
+			+ "				o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name \n "
+			+ ",inhouse.inhouse_quantity in_quantity,inhouse.id inhouse_id \n";
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
 			throws Exception {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name "
-				+ ",inhouse.in_quantity in_quantity,inhouse.id inhouse_id";
-		String from = " from  fy_business_order o  "
-				+ " INNER JOIN fy_business_in_warehouse inhouse on o.id = inhouse.order_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id  "
-				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id "
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no ";
-		String where = " where inhouse.check_result is null  ";
+		String from = " from  fy_business_order o  \n"
+				+ " INNER JOIN fy_check_collect inhouse on o.id = inhouse.order_id  \n"
+				+ " left join fy_base_fyfile  f on o.draw = f.id \n "
+				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id  \n "
+				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no  \n ";
+		String where = " where inhouse.inhouse_quantity > 0 \n   ";
 
-		String desc = " order by inhouse.id  desc ";
+		String desc = " order by inhouse.id  desc  \n ";
 
 		if ("delay_warn".equals(condition)) {
 			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
@@ -90,13 +91,13 @@ public class WaitCheckService {
 	 * @throws Exception
 	 */
 	public Record findCheckRecordById(Integer id) throws Exception {
-		String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name "
-				+ ",inhouse.*,inhouse.in_quantity in_quantity,inhouse.id inhouse_id";
+
 		String from = " from  fy_business_order o  "
-				+ " INNER JOIN fy_business_in_warehouse inhouse on o.id = inhouse.order_id "
+				+ " INNER JOIN fy_check_collect inhouse on o.id = inhouse.order_id "
 				+ " left join fy_base_fyfile  f on o.draw = f.id  "
 				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id "
 				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no ";
+
 		String where = " where inhouse.id = " + id;
 
 		String desc = " order by inhouse.id  desc ";
@@ -107,45 +108,70 @@ public class WaitCheckService {
 
 	/**
 	 * 检测入库 ，根据检测更新信息
-	 * @param model
+	 * @param model   
+		 = getPara("model.pass_quantity");
+		 = getPara("model.check_result");
+		 = getParaValues("exception_reson");
+		 = getPara("model.check_remark");
 	 * @return
 	 */
-	public synchronized Ret checkInhouse(FyBusinessInWarehouse model) throws Exception {
-		Integer pass_quantity = model.getPassQuantity();
-		if (pass_quantity == null) {
-			return Ret.fail().set("msg", "通过数量不能为空或为0");
+	public synchronized Ret checkInhouse(String modelId, String pass_quantity, String check_result,
+			String[] exception_reson, String remark) throws Exception {
+		Integer passQuantity = 0;
+		try {
+
+			passQuantity = Integer.valueOf(pass_quantity);
+		} catch (Exception e) {
+			return Ret.fail().set("msg", "通过数量不能为非数字");
 		}
+		FyCheckCollect model = FyCheckCollect.dao.findById(Integer.valueOf(modelId));
 
-		FyBusinessInWarehouse old = FyBusinessInWarehouse.dao.findById(model.getId());
-		Integer in_quantity = old.getInQuantity();
 
-		if (pass_quantity > in_quantity) {
+		if (passQuantity > model.getInhouseQuantity()) {
 			return Ret.fail().set("msg", "通过数量不能超过入库数量");
 		}
+		model.setCheckResult(check_result);
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+		Integer unpassQuantity = model.getInhouseQuantity() - passQuantity;
+		if (unpassQuantity > 0) {
+			Integer oldunpass = model.getUnpassQuantity() == null ? 0 : model.getUnpassQuantity();
+			if (passQuantity < oldunpass) {
+				model.setUnpassQuantity(unpassQuantity + (oldunpass - passQuantity));// 把未通过的求和
+			} else {
+				model.setUnpassQuantity(unpassQuantity);// 把未通过的求和
+			}
 
 
-		Integer order_id = old.getOrderId();
-		FyBusinessOrder order = FyBusinessOrder.dao.findById(order_id);
+		}
 
-		Integer difference = old.getInQuantity() - (model.getPassQuantity() == null ? 0 : model.getPassQuantity());
-		Integer hasin = order.getHasInQuantity() - difference;
-		order.setHasInQuantity(hasin);
+
 		Integer storage = order.getStorageQuantity() == null ? 0 : order.getStorageQuantity();
-		storage += model.getPassQuantity();
+		storage += passQuantity;// 库存
 		order.setStorageQuantity(storage);
+
 		Date checkDate = new Date();
 		model.setCheckTime(checkDate);
-		order.setInhouseDate(checkDate);// 入库时间 检测合格即入库
+		// order.setInhouseDate(checkDate);// 入库时间 检测合格即入库
 
-		Integer unpass = old.getInQuantity() - model.getPassQuantity();
-		model.setUnpassQuantity(unpass);
-		String inform = old.getInFrom();
+		Integer odlpass = model.getPassQuantity() == null ? 0 : model.getPassQuantity();
+		model.setPassQuantity(passQuantity + odlpass);// 设置
+
+		String inform = model.getInFrom();
+		model.setInhouseQuantity(0);
 		if ("本部".equals(inform)) {
 			boolean  re = 	Db.tx(new IAtom() {
 				
 				@Override
 				public boolean run() throws SQLException {
-					// TODO Auto-generated method stub
+					if (unpassQuantity > 0) {// 不合格的需要记录
+						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
+						exceptionRecord.setOrderId(model.getOrderId());
+						exceptionRecord.setCheckRemark(remark);
+						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
+						exceptionRecord.setCheckTime(checkDate);
+						exceptionRecord.save();
+					}
+
 					return order.update()&&model.update();
 				}
 			});
@@ -157,91 +183,126 @@ public class WaitCheckService {
 			
 		}
 
-		FyBusinessPay oldpay = FyBusinessPay.dao
-				.findFirst("select * from fy_business_pay where parent_id =  " + model.getId());
+		if (passQuantity > 0) {
+			final FyBusinessPay pay = new FyBusinessPay();
+			String findPurches = String.format(
+					" select p.*,s.settlement_cycle from fy_business_purchase p \n"
+							+ "Left join fy_base_supplier s on  p.supplier_id = s.id \n" + "where p.order_id = %s ",
+					model.getOrderId());
 
-		final FyBusinessPay pay = new FyBusinessPay();
-		if (oldpay != null) {
-			pay._setAttrs(oldpay);
-		}
-		pay.setOrderId(order_id);// 订单id
-		pay.setIsPurchase(true);// 委外采购
-		pay.setPurchaseDate(model.getDate(""));
-		pay.setPayQuantity(model.getPassQuantity());// 通过数量，结算数量
-		pay.setCheckResult(model.getCheckResult());// 检测结果
-		pay.setCheckTime(model.getCheckTime());// 检测s时间
-		pay.setInWarehouseTime(model.getCheckTime());// 入库时间
-
-
-		FyBusinessPurchase purchase = FyBusinessPurchase.dao.findFirst(
-				"select *,settlement_cycle from fy_business_purchase p LEFT JOIN fy_base_supplier s ON s.id= p.supplier_id  where order_id = "
-						+ order_id);
-
-		if (purchase.getSupplierId() == null) {
-			return Ret.fail().set("msg", "厂商不能为空");
-		}
-
-		pay.setSupplierId(purchase.getSupplierId());// 厂商
-		pay.setPurchaseName(order.getCommodityName());// 采购名称
-		pay.setPurchaseQuantity(purchase.getPurchaseQuantity());// 采购数量
-		pay.setPurchaseCost(purchase.getPurchaseCost());// 采购单价
-		pay.setPurchaseNo(purchase.getPurchaseNo());// 采购编号
-		pay.setPurchaseAmount(purchase.getPurchaseAccount());// 采购总价
-		pay.setPurchaseDate(purchase.getPurchaseDate());// 采购时间
-
-		pay.setShouldPay(pay.getPurchaseCost().multiply(new BigDecimal(pay.getPayQuantity())));
-		pay.setInFrom("采购");
-		pay.setHangDate(pay.getCheckTime());// 挂账时间
-		int settlement_cycle = purchase.getInt("settlement_cycle");// 结算周期
-		pay.setUnpassQuantity(model.getUnpassQuantity());
-		if (settlement_cycle == 1) {// 月结30天
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(pay.getHangDate());
-			int day = calendar.get(Calendar.DAY_OF_MONTH);
-			if (day > 25) {
-				calendar.add(Calendar.MONTH, 2);
-			} else {
-				calendar.add(Calendar.MONTH, 1);
+			logger.debug(" 检测委外 查找 采购单单 sql = " + findPurches);
+			FyBusinessPurchase purchase = FyBusinessPurchase.dao.findFirst(findPurches);
+			if (purchase.getSupplierId() == null) {
+				return Ret.fail().set("msg", "厂商不能为空");
 			}
-			pay.setPayDate(calendar.getTime());
-		} else if (settlement_cycle == 2) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(pay.getHangDate());
-			int day = calendar.get(Calendar.DAY_OF_MONTH);
-			if (day > 25) {
-				calendar.add(Calendar.MONTH, 3);
-			} else {
-				calendar.add(Calendar.MONTH, 2);
+			pay.setOrderId(model.getOrderId());// 订单id
+			pay.setIsPurchase(true);// 委外采购
+			pay.setPurchaseDate(purchase.getPurchaseDate());
+			pay.setPayQuantity(passQuantity);// 通过数量，结算数量
+			pay.setCheckResult(check_result);// 检测结果
+			pay.setCheckTime(model.getCheckTime());// 检测s时间
+			pay.setInWarehouseTime(model.getCheckTime());// 入库时间
+			pay.setSupplierId(purchase.getSupplierId());// 厂商
+			pay.setPurchaseName(order.getCommodityName());// 采购名称
+			pay.setPurchaseQuantity(purchase.getPurchaseQuantity());// 采购数量
+			pay.setPurchaseCost(purchase.getPurchaseCost());// 采购单价
+			pay.setPurchaseNo(purchase.getPurchaseNo());// 采购编号
+			pay.setPurchaseAmount(purchase.getPurchaseAccount());// 采购总价
+			pay.setPurchaseDate(purchase.getPurchaseDate());// 采购时间
+
+			pay.setShouldPay(pay.getPurchaseCost().multiply(new BigDecimal(pay.getPayQuantity())));
+			pay.setInFrom("采购");
+			pay.setHangDate(pay.getCheckTime());// 挂账时间
+			Integer settlement_cycle = purchase.getInt("settlement_cycle");// 结算周期
+			if (settlement_cycle == null) {
+				return Ret.fail().set("msg", "供应商没有设置付款方式");
 			}
-			pay.setPayDate(calendar.getTime());
-		} else if (settlement_cycle == 3) {
-			pay.setPayDate(pay.getHangDate());
-		}
-		Calendar calender = Calendar.getInstance();
-		calender.setTime(pay.getCheckTime());// 当前时间
-		calender.add(Calendar.MONTH, 2);// 相隔2个月
-		pay.setPayDate(calender.getTime());// 应付期间
-		pay.setParentId(model.getId());// 上有单据 ,入库单id
-
-		boolean re = Db.tx(new IAtom() {
-
-			@Override
-			public boolean run() throws SQLException {
-				Boolean r = null;
-				if (pay.getId() == null) {
-					r = pay.save();
+			pay.setUnpassQuantity(model.getUnpassQuantity());
+			if (settlement_cycle == 1) {// 月结30天
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(pay.getHangDate());
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				if (day > 25) {
+					calendar.add(Calendar.MONTH, 2);
 				} else {
-					r = pay.update();
+					calendar.add(Calendar.MONTH, 1);
 				}
-
-				return order.update() && model.update() && r;
+				pay.setPayDate(calendar.getTime());
+			} else if (settlement_cycle == 2) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(pay.getHangDate());
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				if (day > 25) {
+					calendar.add(Calendar.MONTH, 3);
+				} else {
+					calendar.add(Calendar.MONTH, 2);
+				}
+				pay.setPayDate(calendar.getTime());
+			} else if (settlement_cycle == 3) {
+				pay.setPayDate(pay.getHangDate());
 			}
-		});
+			Calendar calender = Calendar.getInstance();
+			calender.setTime(pay.getCheckTime());// 当前时间
+			calender.add(Calendar.MONTH, 2);// 相隔2个月
+			pay.setPayDate(calender.getTime());// 应付期间
+			pay.setParentId(model.getId());// 上有单据 ,入库单id
 
-		if (re) {
-			return Ret.ok().set("msg", "检测完成");
+			boolean re = Db.tx(new IAtom() {
+
+				@Override
+				public boolean run() throws SQLException {
+					Boolean r = null;
+
+					if (unpassQuantity > 0) {// 不合格的需要记录
+						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
+						exceptionRecord.setOrderId(model.getOrderId());
+						exceptionRecord.setCheckRemark(remark);
+						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
+						exceptionRecord.setCheckTime(checkDate);
+						exceptionRecord.setSupplierId(purchase.getSupplierId());
+						exceptionRecord.setExceptionQuantity(unpassQuantity);
+						exceptionRecord.save();
+					}
+					if (pay.getId() == null) {
+						r = pay.save();
+					} else {
+						r = pay.update();
+					}
+
+					return order.update() && model.update() && r;
+				}
+			});
+
+			if (re) {
+				return Ret.ok().set("msg", "检测完成");
+			} else {
+				return Ret.fail().set("msg", "检测失败，刷新页面在重试一下");
+			}
 		} else {
-			return Ret.fail().set("msg", "检测失败，刷新页面在重试一下");
+			boolean re = Db.tx(new IAtom() {
+
+				@Override
+				public boolean run() throws SQLException {
+
+					if (unpassQuantity > 0) {// 不合格的需要记录
+						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
+						exceptionRecord.setOrderId(model.getOrderId());
+						exceptionRecord.setCheckRemark(remark);
+						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
+						exceptionRecord.setCheckTime(checkDate);
+						exceptionRecord.setExceptionQuantity(unpassQuantity);
+						exceptionRecord.save();
+					}
+
+					return order.update() && model.update();
+				}
+			});
+			if (re) {
+				return Ret.ok().set("msg", "检测完成");
+			} else {
+
+				return Ret.fail().set("msg", "检测失败");
+			}
 		}
 
 	}

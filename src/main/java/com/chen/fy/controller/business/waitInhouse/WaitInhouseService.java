@@ -9,8 +9,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.model.Account;
-import com.chen.fy.model.FyBusinessInWarehouse;
 import com.chen.fy.model.FyBusinessOrder;
+import com.chen.fy.model.FyCheckCollect;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -91,7 +91,7 @@ public class WaitInhouseService {
 	 * @return
 	 */
 	public Ret inhouse(Integer order_id, String inhouseQuantity) throws Exception {
-
+		logger.debug("入库 order " + order_id + "  数量 " + inhouseQuantity);
 		if (!NumberUtils.isNumber(inhouseQuantity)) {
 			return Ret.fail("msg", "入库数量不是数字");
 
@@ -101,22 +101,45 @@ public class WaitInhouseService {
 			return Ret.fail("msg", "刷新页面之后再入库");
 
 		}
-		FyBusinessInWarehouse inhouse = new FyBusinessInWarehouse();
-		inhouse.setOrderId(order_id);
-		/**
-		 * 自产为0，委外为1，备货为3
-		 */
-		if (order.getDisTo() == 1) {
-			inhouse.setInFrom("采购");
-		} else if (order.getDisTo() == 0) {
-			inhouse.setInFrom("本部");
-		}
-		inhouse.setInQuantity(Integer.valueOf(inhouseQuantity));
-		if (inhouse.getInQuantity() < 0) {
+		int inhouse_quantity=0;
+		try {
+			inhouse_quantity =Integer.valueOf(inhouseQuantity);
+			if(inhouse_quantity <1) {
+				return Ret.fail("msg", "入库数量为正整数");
+			}
+		}catch (Exception e) {
 			return Ret.fail("msg", "入库数量为正整数");
 		}
-		order.setHasInQuantity(order.getHasInQuantity() + inhouse.getInQuantity());
-		if (order.getHasInQuantity() > order.getQuantity()) {
+		
+		FyCheckCollect checkModel = FyCheckCollect.dao.findFirst(" select * from fy_check_collect where order_id = "+order_id);
+		logger.debug(
+				"查找sql ==> select * from fy_check_collect where order_id = " + order_id + "  " + (checkModel != null));
+		if (checkModel == null) {
+			checkModel = new FyCheckCollect();
+			checkModel.setOrderId(order_id);
+			checkModel.setInhouseQuantity(inhouse_quantity);
+			/**
+			 * 自产为0，委外为1，备货为3
+			 */
+			if (order.getDisTo() == 1) {
+				checkModel.setInFrom("采购");
+			} else if (order.getDisTo() == 0) {
+				checkModel.setInFrom("本部");
+			}
+		} else {
+			checkModel.setInhouseQuantity(inhouse_quantity + checkModel.getInhouseQuantity());
+		}
+		logger.debug(" 已入库数量 ：  " + order.getHasInQuantity() + " 订单数量：" + order.getQuantity() + "  入库数量："
+				+ checkModel.getInhouseQuantity());
+
+		logger.debug(" 待测数量  ：  " + checkModel.getInhouseQuantity() + " 已通过数量：" + checkModel.getPassQuantity());
+
+		int inhouses = checkModel.getInhouseQuantity()
+				+ (checkModel.getPassQuantity() == null ? 0 : checkModel.getPassQuantity());
+		order.setHasInQuantity(inhouses);
+
+
+		if (inhouses > order.getQuantity()) {
 			return Ret.fail("msg", "入库数量大于订单数");
 		}
 		if (order.getHasInQuantity() == order.getQuantity()) {
@@ -124,18 +147,14 @@ public class WaitInhouseService {
 		} else {
 			order.setInhouseStatus("部分入库");
 		}
+		// 入库时间
 		Date date = new Date();
-		inhouse.setInTime(date);
+		checkModel.setInTime(date);
 		order.setInhouseDate(date);
-
-		boolean re = Db.tx(new IAtom() {
-
-			@Override
-			public boolean run() throws SQLException {
-				// TODO Auto-generated method stub
-				return inhouse.save() && order.update();
-			}
-		});
+		WaitIAtom iatom = new WaitIAtom();
+		iatom.model = checkModel;
+		iatom.order = order;
+		boolean re = Db.tx(iatom);
 
 		Ret ret = null;
 		if (re) {
@@ -144,6 +163,22 @@ public class WaitInhouseService {
 			ret = Ret.ok().set("msg", "入库失败");
 		}
 		return ret;
+
+	}
+
+	class WaitIAtom implements IAtom {
+		public FyCheckCollect model;
+		public FyBusinessOrder order;
+		@Override
+		public boolean run() throws SQLException {
+			boolean re = false;
+			if (model.getId() == null) {
+				re = model.save();
+			} else {
+				re = model.update();
+			}
+			return re && order.update();
+		}
 
 	}
 }

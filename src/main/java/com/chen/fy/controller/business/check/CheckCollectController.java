@@ -18,7 +18,9 @@ public class CheckCollectController extends BaseController {
 	CheckCollectService service = CheckCollectService.me;
 	private static final Logger logger = LogManager.getLogger(CheckCollectController.class);
 	Engine engine;
-
+	String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id, \n"
+			+ "				o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name \n "
+			+ ",inhouse.inhouse_quantity in_quantity,inhouse.id inhouse_id \n";
 	public CheckCollectController() {
 		engine = new Engine();
 		engine.setToClassPathSourceFactory();

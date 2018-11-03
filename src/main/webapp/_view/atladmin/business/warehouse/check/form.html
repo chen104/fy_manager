@@ -335,51 +335,12 @@
 	
 	
 	
-	<div class="col-md-6">
-		<div class="form-group">
-			<label  class="col-sm-3 control-label">不合格原因</label>
-
-			<div class="col-sm-9">
-
-				 <select   name="model.exception_reson" class="form-control"  >
-				 	<option class="form-control" > </option>
-				 	<option class="form-control"  #if(model.exception_reson??=="孔距超差")  selected="selected" #end >孔距超差</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="孔边距超差") selected="selected" #end >孔边距超差</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="起台阶") selected="selected" #end >起台阶</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="毛刺/倒角") selected="selected" #end>毛刺/倒角</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="外观碰伤") selected="selected" #end >外观碰伤</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="精孔止规过") selected="selected" #end >精孔止规过</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="精孔通规止") selected="selected" #end>精孔通规止</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="未注公差尺寸超差") selected="selected" #end>未注公差尺寸超差</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="牙深不够") selected="selected" #end>牙深不够</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="牙螺纹拧不过") selected="selected" #end>牙螺纹拧不过</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="硬度超差") selected="selected" #end>硬度超差</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="产品变形") selected="selected" #end>产品变形</option>
-				 	<option class="form-control"  #if(model.exception_reson??=="平面度超差") selected="selected" #end>平面度超差</option>
-				 	
-				 	<option class="form-control"  #if(model.exception_reson??=="平行度超差") selected="selected" #end>平行度超差</option>
-					<option class="form-control"  #if(model.exception_reson??=="同心度超差") selected="selected" #end>同心度超差</option>
-					<option class="form-control"  #if(model.exception_reson??=="垂直度超差") selected="selected" #end >垂直度超差</option>
-
-					<option class="form-control"  #if(model.exception_reson??=="产品漏加工") selected="selected" #end>产品漏加工</option>
-					<option class="form-control"  #if(model.exception_reson??=="未做表处理") selected="selected" #end>未做表处理</option>
-					<option class="form-control"  #if(model.exception_reson??=="表处理加工错误")  selected="selected" #end >表处理加工错误</option>
-					<option class="form-control"  #if(model.exception_reson??=="孔深超差") selected="selected" #end >孔深超差</option>
-					<option class="form-control"  #if(model.exception_reson??=="光洁度超差") selected="selected" #end>光洁度超差</option>
-
-					<option class="form-control"  #if(model.exception_reson??=="产品脏污") selected="selected" #end>产品脏污</option>
-					<option class="form-control"  #if(model.exception_reson??=="生锈") selected="selected" #end>生锈</option>
-					<option class="form-control"  #if(model.exception_reson??=="电镀不良") selected="selected" #end>电镀不良</option>
-					<option class="form-control"  #if(model.exception_reson??=="标注公差尺寸超差") selected="selected" #end>标注公差尺寸超差</option>
-
-				 </select>
-			</div>
-		</div>
-	</div>
 	
 
 	
 </div>
+
+ 
 
 	<script type="text/javascript">
 <!--
@@ -391,6 +352,67 @@
 <!--  -->
 <div class="row">
 	
+	
+	<div class="col-md-6">
+		<div class="form-group">
+			<label  class="col-sm-3 control-label">不合格原因</label>
+
+			<div class="col-sm-9">
+				<fieldset>
+					<table class="table-bordered">
+						<tbody>
+							<tr>
+							
+							<td width="100px">	<input type="checkbox" value="孔距超差" name="exception_reson"> 孔距超差</td>
+							<td width="100px">	<input type="checkbox" value="孔距超差" name="exception_reson"> 孔边距超差</td>
+							<td width="100px">	<input type="checkbox" value="孔距超差" name="exception_reson"> 起台阶</td>
+							<td width="100px">	<input type="checkbox" value="孔距超差" name="exception_reson"> 毛刺/倒角 </td>
+							</tr>
+							<tr>
+							
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 外观碰伤  </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 精孔止规过 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 精孔通规止 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 未注公差尺寸超差 </td>
+							</tr>
+							<tr>
+								<td width="100px">	<input type="checkbox" value="孔距超差" name="exception_reson"> 牙深不够 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 牙螺纹拧不过 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 硬度超差 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 产品变形 </td>
+							</tr>
+							<tr>
+							
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 平面度超差 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 平行度超差 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 同心度超差 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 垂直度超差 </td>
+							</tr>
+							<tr>
+							
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 产品漏加工 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 未做表处理 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 表处理加工错误 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 孔深超差 </td>
+							</tr>
+							<tr>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 光洁度超差 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 产品脏污 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 生锈 </td>
+								<td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 电镀不良 </td>
+										
+							</tr>
+							<tr><td width="100px"><input type="checkbox" value="孔距超差" name="exception_reson"> 标注公差尺寸超差 </td></tr>
+							
+						</tbody>
+					</table>
+					补充  <input type="text" class="form-control"  name="exception_reson">
+				</fieldset>
+
+				 
+			</div>
+		</div>
+	</div>
 	
 	<div class="col-md-6">
 		<div class="form-group">

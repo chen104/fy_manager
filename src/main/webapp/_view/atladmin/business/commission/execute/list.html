@@ -22,6 +22,9 @@
 					#fypermession("execut_update_cost")
 					<button id="editCost" class="btn btn-primary"  data-action="/fy/admin/biz/commission/execute/edit" >修改价格 </button><!-- order_id=(x.order_id) -->
 					#end
+					
+					<button id="bt_rollback" class="btn btn-primary" >撤回</button>
+					
 					<form id="form_search" action="/fy/admin/biz/commission/execute"  class="form-inline">
 						 <div class="form-group  input-group-sm">
 						 	    <label for="pageSize">显示</label>
@@ -105,6 +108,39 @@
 				  	        form.css('display','none')
 				  			form.submit();
 				  		});
+				  		
+				  		
+				  		$("#bt_rollback").click(function(){
+				  			var selectIds = $("input[name=selectId]:checked");
+							var ids =  new Array();
+							if(selectIds==null||selectIds.length == 0){
+								alert("没有选择订单");
+								return ; 
+							}
+							
+							$.ajax({
+								   type: "POST",
+								   url:'/fy/admin/biz/fyorder/distribute/batchRollback' ,
+								   data:selectIds.serialize(),
+								   success: function(ret){
+									   if (ret.state == "ok") {
+										   alert(ret.msg);
+											location.reload();
+										}else{
+											
+										}
+									   
+								   },
+								   error:function (XMLHttpRequest, textStatus, errorThrown) {
+									    // 通常 textStatus 和 errorThrown 之中
+									    // 只有一个会包含信息
+									 //   this; // 调用本次AJAX请求时传递的options参数
+									   alert('网络异常');
+									}
+								});//ajax
+							
+				  		});
+				  		
 				  	});
 					  function onselectCondition(){
 					  		var val = $("#condition").val();

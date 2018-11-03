@@ -21,21 +21,19 @@ import com.jfinal.plugin.activerecord.Record;
 public class CheckExceptionService {
 	public final static CheckExceptionService me = new CheckExceptionService();
 	private static final Logger logger = LogManager.getLogger(CheckExceptionService.class);
-
+	String select = "SELECT o.*,check_time,exception_reson,\n "
+			+ "check_remark,exception_quantity , s.name supplier_name\n ";
+	String from = " 	from fy_exception_record er \r\n"
+			+ "	LEFT JOIN  fy_business_order o on er.order_id = o.id\r\n"
+			+ "	LEFT JOIN fy_base_supplier s on er.supplier_id = s.id \n";
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
 			throws Exception {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name "
-				+ ",inhouse.*,inhouse.in_quantity in_quantity,inhouse.id inhouse_id";
-		String from = " from  fy_business_order o  "
-				+ " INNER JOIN fy_business_in_warehouse inhouse on o.id = inhouse.order_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id  "
-				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id "
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no ";
-		String where = " where inhouse.unpass_quantity > 0";
 
-		String desc = " order by inhouse.id  desc ";
+		String where = " where 1=1 ";
+
+		String desc = " ORDER BY er.id   desc ";
 
 		if ("delay_warn".equals(condition)) {
 			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
@@ -92,16 +90,10 @@ public class CheckExceptionService {
 	 * @throws Exception
 	 */
 	public File download(String ids[]) throws Exception {
-		String select = "select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name "
-				+ ",inhouse.*,inhouse.in_quantity in_quantity,inhouse.id inhouse_id";
-		String from = " from  fy_business_order o  "
-				+ " INNER JOIN fy_business_in_warehouse inhouse on o.id = inhouse.order_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id  "
-				+ " LEFT join fy_business_purchase audit on o.id = audit.order_id "
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no ";
-		String where = " where inhouse.unpass_quantity > 0 AND inhouse.id in";
 
-		String desc = " order by inhouse.id  desc ";
+		String where = " where   er.id in";
+
+		String desc = " order by er.id  desc ";
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(ids, idsb);
 
@@ -145,7 +137,7 @@ public class CheckExceptionService {
 			String total_map_no = item.getStr("total_map_no");// 总图号
 			excel.setCellVal(row, 5, total_map_no);
 
-			String unpass_quantity = item.getStr("unpass_quantity");// 数量
+			String unpass_quantity = item.getStr("exception_quantity");// 数量
 			excel.setCellVal(row, 6, unpass_quantity);
 
 			String unit_tmp = item.getStr("unit_tmp");// 单位

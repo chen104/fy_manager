@@ -27,7 +27,7 @@
 	 
 	<td width="250">#(x.supplier_name)</td>
 	
-	<td width="100">#(x.in_quantity)</td>
+	<td width="100">#(x.has_in_quantity)</td>
 	<td width="100">#(x.pass_quantity)</td>
 	<td width="100">#(x.unpass_quantity)</td>
 		

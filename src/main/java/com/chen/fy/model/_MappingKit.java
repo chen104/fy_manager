@@ -28,6 +28,7 @@ public class _MappingKit {
 		arp.addMapping("fy_base_supplier", "id", Supplier.class);
 		arp.addMapping("fy_base_tax_rate", "id", TaxRate.class);
 		arp.addMapping("fy_base_unit", "id", Unit.class);
+		arp.addMapping("fy_biz_ww_receive", "id", FyBizWwReceive.class);
 		arp.addMapping("fy_business_assist", "id", FyBusinessAssist.class);
 		arp.addMapping("fy_business_bill", "id", FyBusinessBill.class);
 		arp.addMapping("fy_business_distribute", "id", FyBusinessDistribute.class);
@@ -47,7 +48,9 @@ public class _MappingKit {
 		arp.addMapping("fy_check_collect", "id", FyCheckCollect.class);
 		arp.addMapping("fy_complaint", "id", FyComplaint.class);
 		arp.addMapping("fy_exception_record", "id", FyExceptionRecord.class);
+		arp.addMapping("fy_pay_sum", "id", FyPaySum.class);
 		arp.addMapping("fy_ready_add", "id", FyReadyAdd.class);
+		arp.addMapping("fy_ready_purchase", "id", FyReadyPurchase.class);
 		arp.addMapping("fy_supplier_category", "id", FySupplierCategory.class);
 		arp.addMapping("fy_upload_getpay", "id", FyUploadGetpay.class);
 		arp.addMapping("order_upload_log", "id", OrderUploadLog.class);

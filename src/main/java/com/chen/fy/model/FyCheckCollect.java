@@ -7,5 +7,5 @@ import com.chen.fy.model.base.BaseFyCheckCollect;
  */
 @SuppressWarnings("serial")
 public class FyCheckCollect extends BaseFyCheckCollect<FyCheckCollect> {
-	
+	public static final FyCheckCollect dao = new FyCheckCollect().dao();
 }

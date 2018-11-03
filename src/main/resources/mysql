@@ -13,6 +13,10 @@ delete from fy_business_out_warehouse;
 delete from fy_business_assist;
 DELETE from fy_business_purchase;
 DELETE from  fy_ready_add;
+DELETE FROM fy_check_collect;
+DELETE FROM fy_exception_record;
+
+
 
 
 CREATE TABLE `fy_upload_getpay` (

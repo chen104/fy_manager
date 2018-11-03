@@ -177,9 +177,11 @@ public class DistributService {
 			public boolean run() throws SQLException {
 
 				int re = Db.update(update + idsb.toString());
+				/*
 				Db.update(
 						"Insert into fy_business_purchase_callback select * from fy_business_purchase where order_id = "
 								+ idsb.toString());
+								*/
 				Db.delete(" delete from fy_business_purchase where  order_id in " + idsb.toString());
 				Db.delete("delete from fy_ready_add where add_order_id in " + idsb.toString());
 				return re == ids.length;

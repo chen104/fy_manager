@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.directive.OrderColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
-import com.chen.fy.model.FyBusinessInWarehouse;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
@@ -122,9 +121,15 @@ public class WaitCheckController extends BaseController {
 		// String check_remark = getPara("check_remark");
 		// String check_result = getPara("check_result");
 
-		FyBusinessInWarehouse model = getModel(FyBusinessInWarehouse.class, "model");
+		String modelId = getPara("model.id");
+		String pass_quantity = getPara("model.pass_quantity");
+		String check_result = getPara("model.check_result");
+		String[] exception_reson = getParaValues("exception_reson");
+		String remark = getPara("model.check_remark");
+
+		// FyBusinessInWarehouse model = getModel(FyBusinessInWarehouse.class, "model");
 		try {
-			Ret ret = service.checkInhouse(model);
+			Ret ret = service.checkInhouse(modelId, pass_quantity, check_result, exception_reson, remark);
 			renderJson(ret);
 			return;
 		} catch (Exception e) {

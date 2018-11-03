@@ -57,4 +57,44 @@ public abstract class BaseFyCheckCollect<M extends BaseFyCheckCollect<M>> extend
 		return getStr("remark");
 	}
 
+	public void setOrderId(java.lang.Integer orderId) {
+		set("order_id", orderId);
+	}
+	
+	public java.lang.Integer getOrderId() {
+		return getInt("order_id");
+	}
+
+	public void setInFrom(java.lang.String inFrom) {
+		set("in_from", inFrom);
+	}
+	
+	public java.lang.String getInFrom() {
+		return getStr("in_from");
+	}
+
+	public void setInTime(java.util.Date inTime) {
+		set("in_time", inTime);
+	}
+	
+	public java.util.Date getInTime() {
+		return get("in_time");
+	}
+
+	public void setCheckTime(java.util.Date checkTime) {
+		set("check_time", checkTime);
+	}
+	
+	public java.util.Date getCheckTime() {
+		return get("check_time");
+	}
+
+	public void setCheckResult(java.lang.String checkResult) {
+		set("check_result", checkResult);
+	}
+	
+	public java.lang.String getCheckResult() {
+		return getStr("check_result");
+	}
+
 }
