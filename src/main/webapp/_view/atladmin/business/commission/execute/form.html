@@ -1,5 +1,7 @@
 
 <input hidden="hidden" value="#(model.audit_id??)" name="model.id"></input>
+<input hidden="hidden" value="#(model.order_id??)" name="model.order_id"></input>
+
 <div class="row">
 	<div class="col-md-6">
 			<div class="form-group">
@@ -92,7 +94,7 @@
 			<label  class="col-sm-3 control-label">厂商编码</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" value="#(model.supplier_no??)" readonly="readonly"   >
+				<input type="text" class="form-control"   value="#(model.supplier_no??)" readonly="readonly"   >
 			</div>
 		</div>
 	</div>
@@ -102,7 +104,8 @@
 			<label  class="col-sm-3 control-label">厂商名称</label>
 
 			<div class="col-sm-9">
-				<input type="text"  class="form-control" autocomplete="off"    value="#(model.supplier_name??)" readonly="readonly" >
+				<input type="text"  class="form-control" autocomplete="off"  id="supplier_name"  value="#(model.supplier_name??)" readonly="readonly" >
+				<input hidden="" type="text" id="supplier_id" name="model.supplier_id" value="#(model.supplier_id??)">
 			</div>
 		</div>
 	</div>
@@ -122,7 +125,18 @@
 			</div>
 		</div>
 	</div>
-
+	<script type="text/javascript">
+		$(function(){
+			$("#purchase_cost").change(function(){
+				if(this.value){
+					var purchase_account = $("#purchase_account");
+					var quantity = $("#quantity").val();
+					purchase_account.val(quantity * this.value);
+				}
+				console.info( this.value);
+			});
+		});
+	</script>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label  class="col-sm-3 control-label">采购总价</label>
@@ -157,6 +171,18 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	$(function(){
+		$("#purchase_single_weight").change(function(){
+			if(this.value){
+				var purchase_account = $("#purchase_weight");
+				var quantity = $("#quantity").val();
+				purchase_account.val(quantity * this.value);
+			}
+			console.info( this.value);
+		});
+	});
+	</script>
 
 	<div class="col-md-6">
 		<div class="form-group">

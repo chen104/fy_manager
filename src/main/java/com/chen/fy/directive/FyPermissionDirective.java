@@ -17,6 +17,9 @@ public class FyPermissionDirective extends Directive {
 
 		Object[] param = exprList.evalExprList(scope);
 		String key = param[0].toString();
+		if ("execut_update_cost".equals(key)) {
+			System.out.println("权限");
+		}
 		Account account = (Account) ((HttpSession) scope.get("session")).getAttribute("account");
 		HashSet<String> allpermis = account.getAllkeyPermission();
 		if (allpermis.contains(key)) {
@@ -25,9 +28,9 @@ public class FyPermissionDirective extends Directive {
 				stat.exec(env, scope, writer);
 			}
 		} else {
-			if (account.hasPermission(key)) {
+			// if (account.hasPermission(key)) {
 				stat.exec(env, scope, writer);
-			}
+			// }
 		}
 
 	}

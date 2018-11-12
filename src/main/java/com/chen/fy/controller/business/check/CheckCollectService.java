@@ -20,7 +20,7 @@ public class CheckCollectService {
 	String select = "select o.*,supplier_id,pass_quantity,unpass_quantity,\n"
 			+ "check_time,check_result,s.name supplier_name 	\r\n";
 	String from = " 	from fy_check_collect cc\r\n"
-			+ "		LEFT JOIN  fy_business_order o on cc.order_id = o.id\r\n"
+			+ "		INNER JOIN  fy_business_order o on cc.order_id = o.id\r\n"
 			+ "		LEFT JOIN fy_base_supplier s on cc.supplier_id = s.id  \r\n";
 
 	String where = "  where cc.check_result is not null  ";

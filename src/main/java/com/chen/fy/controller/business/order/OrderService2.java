@@ -55,17 +55,22 @@ public class OrderService2 {
 			String order_date_start, String order_date_end) {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " + " \n in_house.in_time in_time,\r\n"
-				+ " in_house.in_check_time in_check_time ,\r\n" + " in_house.in_check_result in_check_result, \n"
+		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " 
+				+ "  fc.in_time fc_in_time ,\r\n"
+				+ "  fc.check_result fc_check_result, fc.check_time fc_check_time,\r\n"
+				+ " fc.check_result fc_check_result, \n"
 				+ " out_view.v_out_time v_out_time,\r\n" 
 				+ "out_view.v_out_quantity v_out_quantity,\r\n"
 				+ "out_view.v_transport_no v_transport_no,\r\n"
 				+ "out_view.v_transport_company v_transport_company, \n"
+				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,"
 				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
 		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  \n"
-				+ " LEFT JOIN in_house on  in_house.order_id = o.id \n"
+				+ " LEFT JOIN fy_check_collect fc on o.id=fc.order_id \n"
 				+ " LEFT JOIN out_view on out_view.order_id = o.id  \n"
-				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no \n";
+				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no \n "
+				+ "  LEFT JOIN fy_business_purchase ph on ph.order_id = o.id  \n"
+				+ " LEFT JOIN  fy_base_supplier su on ph.supplier_id = su.id " + "\n";
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
 
@@ -419,6 +424,9 @@ public class OrderService2 {
 			String sendAddress = excel.getCellVal(i, 22);// 发货地址
 			item.setSendAddress(sendAddress);
 
+			String is_finsh_product = excel.getCellVal(i, 23);// 是否成品
+			item.setIsFinshProduct(is_finsh_product);
+
 			item.setImportTime(new Date());
 			item.setDistributeAttr("首次");
 			item.setHandleStatus("未处理");
@@ -543,13 +551,13 @@ public class OrderService2 {
 		colhash.put("begin_time", 100);
 
 		colhash.put("in_time", 100);
-		colhash.put("check_time", 300);
+		colhash.put("check_time", 100);
 		colhash.put("out_time", 100);
 		colhash.put("out_status", 100);
 		colhash.put("send_address", 100);
-		colhash.put("transport_company", 100);
+		colhash.put("transport_company", 200);
 
-		colhash.put("transport_no", 100);
+		colhash.put("transport_no", 200);
 		colhash.put("hang_date", 100);
 		colhash.put("hang_status", 100);
 		colhash.put("hang_quantity", 100);

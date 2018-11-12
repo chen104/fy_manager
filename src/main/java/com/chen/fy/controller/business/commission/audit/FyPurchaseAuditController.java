@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.commission.audit;
 
+import java.sql.BatchUpdateException;
+
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
@@ -117,16 +119,24 @@ public class FyPurchaseAuditController extends BaseController {
 	public void uploadFile() {
 		UploadFile ufile = getFile();
 		int total = 0;
+		Ret ret = null;
 		if (ufile != null) {
 			try {
-				total = modelService.uploadRuqest(ufile.getFile());
+				ret = modelService.uploadRuqest(ufile.getFile());
+				renderJson(ret);
+				return;
+			} catch (BatchUpdateException be) {
+				be.printStackTrace();
+
+				logger.error("报错订单");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				logger.error("文件报错");
 			}
 		}
 		ufile.getFile().deleteOnExit();
-		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
+		renderJson(Ret.fail().set("msg", " 查看运行日志"));
 
 	}
 

@@ -156,9 +156,9 @@
 							<tbody>
 								<tr>
 								<td width="50" >序号</td>
-								#fyColPerm("order","select_order")
+								
 								<td  width="60" >  <input type="checkbox" id="selectAll"> 多选   </td>
-								#end
+								
 								#fyColPerm("order","category_id")
 								<td width="#(colMap.category_id)">类别</td>
 								#end
@@ -265,10 +265,10 @@
 								<td   width="#(colMap.send_address)">发货地址</td>
 								#end
 								#fyColPerm("order","transport_company")
-								<td   width="#(colMap.transport_company)" >物流名称</td>
+								<td   width="#(colMap.transport_company)" >物流名称 </td>
 								#end
 								#fyColPerm("order","transport_no")
-								<td  width="#(colMap.transport_no)" >物流单号</td>
+								<td  width="#(colMap.transport_no)" >物流单号 </td>
 								#end
 								#fyColPerm("order","hang_date")
 								<td  width="#(colMap.hang_date)" >挂账时间</td>
@@ -311,9 +311,9 @@
 							<tr class="#orderColor("x")">
 							 
 								<td width="50">#(for.index+1) </td>
-								#fyColPerm("order","select_order")
+							
 								<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>
-								#end
+								
 								
 								#fyColPerm("order","category_id")
 								<td width="#(colMap.category_id)">#(x.cate_tmp)</td>  
@@ -367,9 +367,10 @@
 								
 								#fyColPerm("order","draw")	
 								<td width="#(colMap.draw)">
-								#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
+								#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
+								<a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
 									
-								</td>		
+								</td>
 								#end
 							
 								#fyColPerm("order","model_no")	
@@ -449,11 +450,11 @@
 								#end
 								
 								#fyColPerm("order","in_time")
-								<td width="#(colMap.in_time)" > #date(x.in_time,"yyyy-MM-dd")</td><!-- 入库时间-->
+								<td width="#(colMap.in_time)" > #date(x.fc_in_time,"yyyy-MM-dd")</td><!-- 入库时间-->
 								 #end
 								 
 								#fyColPerm("order","check_time")
-								<td width="#(colMap.check_time)"> #date(x.in_check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
+								<td width="#(colMap.check_time)"> #date(x.fc_check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
 								 #end
 								 
 								#fyColPerm("order","out_time")
@@ -478,10 +479,10 @@
 								<td width="#(colMap.send_address)">#(x.send_address)</td>
 								#end
 								#fyColPerm("order","transport_company")
-								<td width="#(colMap.transport_company)"> #(x.transport_company)</td><!-- 物流公司名称-->
+								<td width="#(colMap.transport_company)"> #(x.v_transport_company)</td><!-- 物流公司名称-->
 								#end
 								#fyColPerm("order","transport_no")
-								<td width="#(colMap.transport_no)"> #(x.transport_no)</td><!-- 物流单号-->
+								<td width="#(colMap.transport_no)"> #(x.v_transport_no)</td><!-- 物流单号-->
 								#end
 								
 								#fyColPerm("order","hang_date")
@@ -607,80 +608,6 @@
 <script type="text/javascript">
 	$(function(){
 	
-		/*
-		var table_head = document.getElementById("table_head");
-		var table_body=document.getElementById("table_body");
-		if(table_head.offsetWidth > table_body.offsetWidth){
-			table_body.width = table_head.offsetWidth; 
-		}else{
-			table_head.width =table_body.offsetWidth;
-		}
-		console.info(" data "+table_body.offsetWidth +" head "+table_head.offsetWidth);
-		 var head_rows = table_head.rows[0];
-		 if(table_body.rows.length > 1 ){
-			 console.info("length "+head_rows.cells.length);
-			 for(var i =0 ;i<head_rows.cells.length;i++){
-				 var data_row =  table_body.rows[1];
-				 if(i== 6 ){
-					 console.info("head "+head_rows.cells[i].offsetWidth +"  data "+  data_row.cells[i].offsetWidth);
-				 }
-				 console.info("data "+data_row.cells[i].offsetWidth+" head "+head_rows.cells[i].offsetWidth);
-				
-				if(data_row.cells[i].offsetWidth > head_rows.cells[i].offsetWidth){
-					head_rows.cells[i].width = data_row.cells[i].offsetWidth;
-				}else{
-					
-				}
-				  
-			 }
-			 
-		 }
-		 for(var i = 0 ;i < table_body.rows.length ;i++){
-			 console.error(i+" "+table_body.rows[1].cells[i].offsetWidth);
-			 
-		 }
-		 */
-		 /* table_head.parentNode.offsetWidth = head_rows.cells.length*50;
-		 table_head.width = head_rows.cells.length*50;
-		
-
-		 for(var i=0;i< head_rows.cells.length;i++){
-			 head_rows.cells[i].width="100px";
-		 }
-		 for(var i=0;i< head_rows.cells.length;i++){
-			console.info (i+" width "+  head_rows.cells[i].width) ;
-		 }
-		*/
-		//根据表格和表头确定宽度
-		
-		/*
-		var thead = $("#thead");
-		var tth = thead.find("th");
-		var tbody = $("#tbody");
-		var ttr = tbody.find("tr");
-		var div_table = document.getElementById("div_table");
-		var div_thead = document.getElementById("div_thead");
-		console.info("div_thead "+div_thead.offsetWidth+" div_table  " +div_table.offsetWidth);
-		div_thead.offsetWidth= div_table.offsetWidth;
-		console.info("div_thead "+div_thead.offsetWidth+" div_table  " +div_table.offsetWidth);
-	 
-			var div_table = document.getElementById("div_table");
-			var div_thead = document.getElementById("div_thead");
-			
-			console.info(" div_table  " + div_table.offsetWidth +" div_thead "+div_thead.offsetWidth);
-			var head_table = document.getElementById("head_table");
-			var data_table =document.getElementById("data_table");
-			
-			
-			
-			console.info("head_table "+head_table.offsetWidth+" data_table "+data_table.offsetWidth);
-			if(head_table.offsetWidth > data_table.offsetWidth){
-				data_table.width =  head_table.offsetWidth+30;
-			}else{
-				head_table.width =  data_table.offsetWidth;
-			}
-			console.info(" div_table  " + div_table.offsetWidth +" div_thead "+div_thead.offsetWidth);
-			*/
 	 
 		$("#div_table").scroll(function(){
 		//	var offsetHeight = document.getElementById("data_table").offsetHeight;
@@ -796,6 +723,7 @@ function selectMapFile(tdFile){
 			updateOrderFile(orderId,id,name,td);
 		}
 	};
+ //#pmodelKeyWord
 	new FileChooseModel(callback).show();
 	
 }

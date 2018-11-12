@@ -6,7 +6,7 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">部门管理</h3>
-
+			
 				<a href="/fy/admin/base/department/add"><button type="submit"
 						class="btn btn-primary">添加部门</button></a>
 
@@ -48,10 +48,13 @@
 							<td>#(x.dutyName)</td>
 							<td class="jfa-operation-button"><a href="/fy/admin/base/department/edit?id=#(x.id)"
 								style="margin-left: 14px;"> <i class="fa fa-pencil" title="修改"></i></a> 
+								#fypermession("department_delete")
 							<a data-delete data-title="#escape(x.partName)" onclick="deletepart(this)"
 								data-role-id="#(x.id)"  data-action="/fy/admin/base/department/delete?id=#(x.id)"
 								style="margin-left: 14px; color: red;cursor:pointer"> <i class="fa fa-trash" title="删除"></i>
-							</a> </td>
+							</a>
+							#end
+							 </td>
 						</tr>
 						#end
 					</tbody>

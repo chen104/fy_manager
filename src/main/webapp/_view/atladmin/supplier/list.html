@@ -192,10 +192,14 @@ $(function(){
 								<td>#(x.annex)</td>	
 								<td class="jfa-operation-button"><a href="/fy/admin/base/supplier/edit?id=#(x.id)" style="margin-left: 14px;"> 
 								<i class="fa fa-pencil" title="修改"></i>
-								</a> <a data-delete data-title="#escape(x.name)"
+								</a>
+								#fypermession("supplier_delete")
+								 <a data-delete data-title="#escape(x.name)"
 									data-action="/fy/admin/base/supplier/delete?id=#(x.id)" onclick="deleteperson(this)" style="margin-left: 14px; color: red;cursor:pointer"> <i
 										class="fa fa-trash" title="删除"></i>
-								</a></td>
+								</a>
+								#end
+								</td>
 							</tr>
 							#end
 						</tbody>

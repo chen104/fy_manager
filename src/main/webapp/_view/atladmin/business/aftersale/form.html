@@ -1,11 +1,9 @@
 
 <input hidden="hidden" value="#(model.id??)" name="model.id"></input>
-#if(action == "save")
-	<input hidden="hidden" value="#(out.id??)" name="model.parentId"></input>
-#else
-	<input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
-#end
-<input hidden="hidden" value="#(order.id??)" name="model.orderId"></input>
+
+<input hidden="hidden" value="#(model.parent_id??)" name="model.parentId"></input>
+
+<input hidden="hidden" value="#(model.order_id??)" name="model.orderId"></input>
 
 <div class="row">
 
@@ -25,7 +23,7 @@
 			<label  class="col-sm-3 control-label">投诉日期</label>
 
 			<div class="col-sm-9"> 
-				<input type="text" class="form-control"  autocomplete="off"  value="#(model.complaint_date??)" name="model.complaintDate"  data-type='datepicker'>
+				<input type="text" class="form-control"  autocomplete="off"  value="#date(model.complaint_date??,"yyyy-MM-dd")" name="model.complaintDate"  data-type='datepicker'>
 			</div>
 		</div>
 	</div>
@@ -41,7 +39,7 @@
 			<label  class="col-sm-3 control-label">图号</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  value="#(order.map_tmp??)" readonly="readonly" >
+				<input type="text" class="form-control"  value="#(model.map_no??)"  name="model.mapNo" >
 			</div>
 		</div>
 	</div>
@@ -51,7 +49,7 @@
 			<label  class="col-sm-3 control-label">名称</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  value="#(order.commodity_name??)" readonly="readonly" >
+				<input type="text" class="form-control"  value="#(model.name??)" readonly="readonly" name="model.name">
 			</div>
 		</div>
 	</div>
@@ -67,7 +65,7 @@
 			<label  class="col-sm-3 control-label">数量</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  value="#(order.quantity??)"  readonly="readonly">
+				<input type="text" class="form-control"  value="#(model.quantity??)" name="model.quantity"   >
 			</div>
 		</div>
 	</div>

@@ -197,11 +197,12 @@ public class AssistController extends BaseController {
 		// String oTable =
 		// "cate_tmp,plan_tmp,work_order_no,delivery_no,commodity_name,commodity_spec,map_no,quantity,unit_tmp,technology,machining_require,untaxed_cost,order_date,delivery_date,customer_no,customer_no"
 		// + ",s.name supplier_name ,p.create_time pay_create_time";
-		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId";
-		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id "
-				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id "
-				+ " left join fy_base_fyfile  f on o.draw = f.id"
-				+ " LEFT JOIN fy_business_pay p ON p.is_purchase =0 AND p.parent_id = a.id ";
+		String select = "select a.* ,s.name supplier," + oTable + " , f.originalFileName filename,f.id fileId,"
+				+ " p.hang_date ,p.pay_date,pay_quantity,p.should_pay ";
+		String from = " from  fy_business_assist a left join fy_business_order o on  o.id = a.order_id \n"
+				+ " left join fy_base_supplier s on s.id = a.assist_supplier_id \n "
+				+ " left join fy_base_fyfile  f on o.draw = f.id \n "
+				+ " LEFT JOIN fy_business_pay p ON p.is_purchase =0 AND p.parent_id = a.id \n ";
 		if (StringUtils.isEmpty(key)) {
 			modelPage = FyBusinessAssist.dao.paginate(getParaToInt("p", 1), pageSize, select,
 					from + " order by id desc");

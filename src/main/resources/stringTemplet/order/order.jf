@@ -3,9 +3,7 @@
 <tr class="#orderColor("x")">
 	 
 	<td width="50" >#(for.index  +  n + 1 ) </td>
-	#if(account.hasColPermission("order","select_order"))
 	<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>
- 	#end
 	
 	#if(account.hasColPermission("order","category_id"))
 	<td width="#(colMap.category_id)">#(x.cate_tmp)</td>  

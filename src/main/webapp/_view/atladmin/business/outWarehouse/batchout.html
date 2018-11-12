@@ -79,9 +79,24 @@
 							</table>
 							</div>
                 	</div>
+                	#if(modelList.size() ==1)
+                	<div class="row" style="margin-top: 40px"> 
+                		<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">出库数量</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="出库数量" autocomplete="off"  value=""
+										name="out.quantity">
+										<div style="color: red"> </div>
+								</div>
+							</div>
+						</div>
                 	
+                	</div>
+                	#end
                 	 
-                	<div class="row" style="margin-top: 40px">
+                	<div class="row" >
 
 						<div class="col-md-6">
 							<div class="form-group">

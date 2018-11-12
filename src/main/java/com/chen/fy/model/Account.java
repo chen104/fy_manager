@@ -75,7 +75,6 @@ public class Account extends BaseAccount<Account> {
 			obj = permission;
 		}
 		HashSet<String> permission = (HashSet<String>) obj;
-		logger.debug(" 加载权限 : " + StringUtils.join(permission.iterator(), ","));
 		if (permission.contains(key)) {
 			return true;
 		}
@@ -216,6 +215,7 @@ public class Account extends BaseAccount<Account> {
 	 * 刷新缓存
 	 */
 	public void reloadPermission() {
+		logger.debug(" 加载权限 : reloadPermission ");
 		Integer id = getId();
 		/**
 		 * 列缓存
@@ -234,7 +234,7 @@ public class Account extends BaseAccount<Account> {
 			set.add(e.getStr("ckey"));
 		}
 		CacheKit.put("colPermission", getId(), permission);
-
+		logger.debug(" 加载权限 : colPermission ");
 		/**
 		 * url缓存
 		 */
@@ -245,7 +245,7 @@ public class Account extends BaseAccount<Account> {
 			ppermission.add(e.getStr("uri"));
 		}
 		CacheKit.put("urlPermission", getId(), ppermission);
-
+		logger.debug(" 加载权限 : urlPermission ");
 		// 加载所有权限，里面有的才拦截，没有的不拦截
 
 		List<Record> allperm = Db.find("select  * from permission p");
@@ -258,7 +258,7 @@ public class Account extends BaseAccount<Account> {
 
 		CacheKit.put("Permission", "all", allppermission);
 		CacheKit.put("Permission", "allkey", allkeyPermission);
-
+		logger.debug(" 加载权限 : allppermission  allkeyPermission");
 		initPermission();
 
 	}

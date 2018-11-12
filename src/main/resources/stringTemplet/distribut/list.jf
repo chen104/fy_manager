@@ -1,7 +1,7 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
 <tr class="#orderColor("x")">
-	<td  width="50">#(for.index+1)</td>
+	<td  width="50">#(for.index  +  n + 1 ) </td>
 	<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)"> </td>
 	
 	<td width="60">#(x.cate_tmp)</td>  
@@ -21,7 +21,12 @@
 		<a href="#" onclick=" selectMapFile(this)"> 
 					<i class="glyphicon glyphicon-th-large" title="选择图纸">选择图纸</i>
 		</a>
-			<!--  fypermession("distribut_order_map") end -->
+		
+		#if(x.filename)
+		<a href="#" data-id="#(x.id)"name='bt_remove_draw' style="color: red"> 
+					<i class="glyphicon glyphicon-trash" title="选择图纸">移除</i>
+		</a>
+		#end
 	</td>
 	
 	<td width="300">#(x.total_map_no)</td>

@@ -95,7 +95,7 @@ update fy_business_order o INNER JOIN
 	(select sum(out_quantity) out_quantity ,  order_id from fy_business_out_warehouse
 	where id in %s GROUP BY order_id) oh
 	on o.id = oh.order_id
-	set o.storage_quantity = o.storage_quantity + oh.out_quantity,
+	set o.storage_quantity = o.storage_quantity + oh.out_quantity
 #end
 
 

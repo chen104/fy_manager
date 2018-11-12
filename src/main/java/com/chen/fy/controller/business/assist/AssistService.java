@@ -1,20 +1,22 @@
 package com.chen.fy.controller.business.assist;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.model.FyBusinessAssist;
 import com.chen.fy.model.FyBusinessPay;
+import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.CommonKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
@@ -91,6 +93,7 @@ public class AssistService {
 						+ idsb.toString());
 		List<FyBusinessPay> createModel = new ArrayList<>();
 		Date date = new Date();
+		StringBuilder sb = new StringBuilder();
 		for (FyBusinessAssist e : modelList) {
 			FyBusinessPay item = new FyBusinessPay();
 			item.setParentId(e.getId());
@@ -99,24 +102,66 @@ public class AssistService {
 			item.setCheckResult(e.getCheckResult());
 			item.setOrderNo(e.getAssistNo());
 
+			Integer quantity = e.getInt("quantity");
+
+			item.setPurchaseQuantity(quantity);// 外协数量
+			item.setPayQuantity(quantity);// 应付数量
+			BigDecimal taxRate = e.getTaxRate();
+			
+
 			item.setPurchaseCost(e.getAssistCost());// 单价
-			item.setPurchaseAmount(e.getTatolAmount());// 总额
-			item.setShouldPay(e.getTatolAmount());// 应付金额
+			Double totalAmout = e.getAssistCost().doubleValue() * quantity;
+			item.setPurchaseAmount(new BigDecimal(totalAmout));// 总额
+			Double tax = totalAmout * taxRate.doubleValue();
+			Double shulpay = tax + totalAmout;
+			item.setShouldPay(new BigDecimal(shulpay));// 应付金额
 
 			item.setOrderId(e.getOrderId());// 订单id
 			item.setPurchaseNo(e.getAssistNo());// 采购编号
 			item.setPurchaseName(e.getAssistProcess());// 加工工序，采购名称
 			item.setInFrom("外协");
-			Integer quantity = e.getInt("quantity");
-			item.setPurchaseQuantity(quantity);// 外协数量
-			item.setPayQuantity(quantity);// 应付数量
+
 			item.setSupplierId(e.getAssistSupplierId());// 采购厂商id
+			Supplier supplier = Supplier.dao.findById(e.getAssistSupplierId());
+			if (supplier == null) {
+				sb.append("," + e.getAssistProcess() + " 没有供应商 ");
+				continue;
+			}
+			Integer settlement_cycle = supplier.getSettlementCycle();// 结算周期
+			if (settlement_cycle == null) {
+				sb.append("," + e.getAssistProcess() + " 厂商没有结算周期  ");
+				continue;
+			}
 
 			item.setHangDate(date);
+			if (settlement_cycle == 1) {// 月结30天
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				if (day > 25) {
+					calendar.add(Calendar.MONTH, 2);
+				} else {
+					calendar.add(Calendar.MONTH, 1);
+				}
+				item.setPayDate(calendar.getTime());
+			} else if (settlement_cycle == 2) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				int day = calendar.get(Calendar.DAY_OF_MONTH);
+				if (day > 25) {
+					calendar.add(Calendar.MONTH, 3);
+				} else {
+					calendar.add(Calendar.MONTH, 2);
+				}
+				item.setPayDate(calendar.getTime());
+			} else if (settlement_cycle == 3) {
+				item.setPayDate(item.getHangDate());
+			}
+
 			item.setCreateTime(date);// 生成时间
 			item.setCheckTime(e.getBacktime());
-			Date payDate = DateUtils.addMonths(date, 2);
-			item.setPayDate(payDate);
+			// Date payDate = DateUtils.addMonths(date, 2);
+			// item.setPayDate(payDate);
 			item.setInWarehouseTime(e.getBacktime());// 回厂时间，为入库时间
 			createModel.add(item);//
 		}
@@ -148,7 +193,7 @@ public class AssistService {
 					+ " where   is_purchase = 0 AND p.parent_id = a.id\r\n";
 			Db.update(sql);
 
-			ret = Ret.ok().set("msg", "新建应付单完成");
+			ret = Ret.ok().set("msg", "新建应付单完成 " + createModel.size() + "条，");
 		} else {
 			ret = Ret.ok().set("msg", "新建应付单失败");
 		}

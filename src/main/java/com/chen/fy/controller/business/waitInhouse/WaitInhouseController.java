@@ -101,4 +101,23 @@ public class WaitInhouseController extends BaseController {
 		renderJson(Ret.fail("msg", "入库失败，请查看日志"));
 	}
 
+	/**
+	 * 撤回
+	 */
+	public void rollback() {
+
+		Integer id = getParaToInt("id");
+
+		try {
+			Ret ret = service.rollback(id);
+			renderJson(ret);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		renderJson(Ret.fail("msg", "运行请查看日志"));
+	}
+
 }

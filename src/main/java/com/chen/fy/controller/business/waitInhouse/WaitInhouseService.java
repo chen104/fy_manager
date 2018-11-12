@@ -166,6 +166,33 @@ public class WaitInhouseService {
 
 	}
 
+	/**
+	 * 撤回
+	 * @param id
+	 * @return
+	 */
+	public Ret rollback(Integer id) {
+		FyCheckCollect model = FyCheckCollect.dao.findById(id);
+		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
+		Integer inhouse = order.getHasInQuantity();
+		Integer waitin = model.getInhouseQuantity();
+		order.setHasInQuantity(inhouse - waitin);
+		model.setInhouseQuantity(0);
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				// TODO Auto-generated method stub
+				return order.update() && model.update();
+			}
+		});
+		if (re) {
+			return Ret.ok().set("msg", "撤回成功");
+		} else {
+			return Ret.fail().set("msg", "撤回失败");
+		}
+	}
+
 	class WaitIAtom implements IAtom {
 		public FyCheckCollect model;
 		public FyBusinessOrder order;

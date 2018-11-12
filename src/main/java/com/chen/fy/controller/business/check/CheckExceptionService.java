@@ -24,7 +24,7 @@ public class CheckExceptionService {
 	String select = "SELECT o.*,check_time,exception_reson,\n "
 			+ "check_remark,exception_quantity , s.name supplier_name\n ";
 	String from = " 	from fy_exception_record er \r\n"
-			+ "	LEFT JOIN  fy_business_order o on er.order_id = o.id\r\n"
+			+ "	INNER JOIN  fy_business_order o on er.order_id = o.id\r\n"
 			+ "	LEFT JOIN fy_base_supplier s on er.supplier_id = s.id \n";
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
 			throws Exception {

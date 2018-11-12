@@ -6,9 +6,11 @@
 		<div class="box">
 			<div class="box-header">
 				<h3 class="box-title">图纸管理</h3>
-
+				#fypermession("file_upload")
 				<a href="/fy/admin/base/file/goview"><button type="submit"
 						class="btn btn-primary">上传文件</button></a>
+						
+				#end
 				<div class="box-tools">
 					<form action="/fy/admin/base/file">
 						<div class="input-group input-group-sm" style="width: 150px;">
@@ -47,13 +49,18 @@
 							<td class="jfa-operation-button">
 							<a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.id)" ><i class="glyphicon glyphicon-eye-open">预览</i></a>
 							
+							#fypermession("file_download")
 							<a href="/fy/admin/base/file/download?fileId=#(x.id)"
 								style="margin-left: 14px;"> <i class="glyphicon glyphicon-download-alt" title="下载"></i></a>
+							#end
 								 
+							#fypermession("file_delete")
 							<a data-delete data-title="#escape(x.partName)" onclick="deletepart(this)"
 								data-id="#(x.id)"  data-action="/fy/admin/base/file/delete"
 								style="margin-left: 14px; color: red;cursor:pointer"> <i class="fa fa-trash" title="删除"></i>
-							</a> </td>
+							</a> 
+							#end
+							</td>
 						</tr>
 						#end
 					</tbody>

@@ -16,6 +16,7 @@ import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessPurchase;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.template.Engine;
@@ -163,20 +164,30 @@ public class CommisionExecutController extends BaseController {
 
 	public void update() {
 		FyBusinessPurchase model = getModel(FyBusinessPurchase.class, "model");
-		boolean re = model.update();
+
+		boolean re = false;
+		if (model.getId() == null) {
+			re = model.save();
+		} else {
+			re = model.update();
+		}
 		Ret ret = null;
 		if (re) {
 			ret = Ret.ok().set("msg", "更新成功");
 		} else {
 			ret = Ret.ok().set("msg", "更新失败");
 		}
+		int num = Db.update(
+				" update  fy_business_purchase  p INNER JOIN  fy_base_supplier s on s.id=p.supplier_id  set p.supplier_no = s.supplier_no where p.supplier_no is null ");
+		String sql = "update   fy_business_order o INNER JOIN  fy_business_purchase a \r\n"
+				+ " ON a.order_id = o.id \r\n"
+				+ " set a.work_order_no = o.work_order_no where a.work_order_no is null ";
+		Db.update(sql);
+		logger.debug("更新厂商编码 " + num);
 		renderJson(ret);
 		return;
 	}
 
-	public void updatePurchaseCost() {
-
-	}
 
 	public static void main(String[] args) {
 		int width = 50 + 60 + 60 + 60 + 100 + 100 + 100 + 150 + 150 + 200 + 650 + 100 + 35 + 200 + 200 + 200 + 80 + 200

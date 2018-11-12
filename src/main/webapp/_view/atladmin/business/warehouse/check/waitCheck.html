@@ -6,6 +6,44 @@
 		<div class="box">
 			<div  >
 				<span class="box-title" style="margin-left: 10px;margin-right: 10px">待检测</span>
+				<button   id="bt_rollback" class="btn btn-primary" >撤回 </button>
+				<script type="text/javascript">
+					$(function(){
+							$("#bt_rollback").click(function(){
+								var selectIds = $("input[name=selectId]:checked");
+								var ids =  new Array();
+								if(selectIds==null||selectIds.length == 0){
+									alert("没有选择订单");
+									return ; 
+								}
+								if(selectIds.length >1){
+									alert("只能选择一条订单");
+									return ; 
+								}
+								
+								$.ajax({
+									   type: "POST",
+									   url:'/fy/admin/biz/whouse/waitInhouse/rollback' ,
+									   data:{id:selectIds.val()},
+									   success: function(ret){
+										   if (ret.state == "ok") {
+										
+											   alert(ret.msg);
+											   location.reload();
+											}
+										   alert(ret.msg);
+									   },
+									   error:function (XMLHttpRequest, textStatus, errorThrown) {
+										    // 通常 textStatus 和 errorThrown 之中
+										    // 只有一个会包含信息
+										 //   this; // 调用本次AJAX请求时传递的options参数
+										   alert('网络异常');
+										}
+									});
+							});
+					});
+					
+				</script>
 				<span>
 					<form action="/fy/admin/biz/whouse/check/waitCheck"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -81,10 +119,11 @@
 					
 					<div>
 						<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-							<table style="width: 2755px" class="text-center table-bordered">
+							<table style="width: 2805px" class="text-center table-bordered">
 								<tbody>
 									<tr>
 										<td width="50"> </td>
+										<td width="50"><input type="checkbox"  id="selectAll"></td>
 										<td width="60" >类别</td>
 										<td  width="60">计划员</td>
 										<td width="100">执行状态</td>
@@ -116,12 +155,13 @@
 							</table>
 						</div>
 						<div id="div_table"  style="overflow: scroll;height: 600px; " >
-							<table   class=" table-bordered text-center"  style="width:2755px" >
+							<table   class=" table-bordered text-center"  style="width:2805px" >
 					 
 						<tbody id="table">
 							#for(x : modelPage.getList())
 							<tr>
 								<td width="50" >#(for.index+1)</td>
+									<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.inhouse_id)"  ></td>
 								<td width="60">#(x.cate_tmp)</td>  
 								<td width="60">#(x.plan_tmp)</td>
 								
@@ -187,6 +227,28 @@
 <input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
 <input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
 <script type="text/javascript">
+$(function(){
+	$("#selectAll").click(function(){
+		var isChecked =  $("#selectAll").is(":checked");
+		if( isChecked ){
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', true);
+				this.checked= true;
+				});
+		}else{
+			$('input[data-select=select]').each(function() {
+				//$(this).attr('checked', false);
+				this.checked= false;
+			});
+		}
+		console.info('this');
+		
+	});
+	
+	
+});
+</script>
+<script type="text/javascript">
 function toCheck(a){
 
 		$.ajax({
@@ -235,6 +297,7 @@ function toCheck(a){
 	}
 	
 	$(function(){
+		
 		
 		$("#div_table").scroll(function(){
 

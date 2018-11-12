@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.product.plan;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,6 +114,20 @@ public class PlanController extends BaseController {
 			e.printStackTrace();
 		}
 		renderJson(Ret.fail().set("msg", "请看运行日志"));
+	}
+
+	public void downloadPlan() {
+		String[] ids = getParaValues("downloadId");
+		try {
+			File file = service.downloadPlan(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error(e.getMessage());
+		}
+		renderText("下载发生异常，查看日志");
 	}
 
 }

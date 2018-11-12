@@ -27,12 +27,11 @@ public class CommisionExecutService {
 
 		StringBuilder conditionSb = new StringBuilder();
 		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no,audit.supplier_no supplier_no , s.name supplier_name ";
-		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
-				+ " left join fy_business_purchase audit on o.work_order_no = audit.work_order_no"
-				+ " LEFT JOIN fy_base_supplier s on audit.supplier_no = s.supplier_no";
+		String from = " from  fy_business_order o  \n " + "   left join fy_base_fyfile  f on o.draw = f.id  \n"
+				+ " left join fy_business_purchase audit on o.id = audit.order_id \n"
+				+ " LEFT JOIN fy_base_supplier s on audit.supplier_id = s.id \n";
 		String desc = " order by receive_time  desc ";
 		String where = "  where Is_Distribute = 1 and dis_to = 1  AND order_status=2 ";
-
 		if (StringUtils.isNotEmpty(weiwai_cate)) {
 			conditionSb.append(" AND weiwai_cate = '").append(weiwai_cate).append("' ");
 		}
@@ -149,7 +148,9 @@ public class CommisionExecutService {
 		}
 		String current = DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd");
 		File dirFile = new File(parentfile, "报目表" + current);
-
+		if (dirFile.exists()) {
+			FileUtils.forceDelete(dirFile);
+		}
 		dirFile.mkdir();
 
 		File targetfile = new File(dirFile, "订单" + current + ".xlsx");
@@ -176,8 +177,8 @@ public class CommisionExecutService {
 			String commodity_name = item.getStr("commodity_name");
 			excel.setCellVal(row, 2, commodity_name);
 
-			String commodity_spec = item.getStr("map_no");
-			excel.setCellVal(row, 3, commodity_spec);
+			String map_no = item.getStr("map_no");
+			excel.setCellVal(row, 3, map_no);
 
 			String filename = item.getStr("total_map_no");
 			excel.setCellVal(row, 4, filename);
@@ -224,17 +225,25 @@ public class CommisionExecutService {
 			}
 		}
 		File zipFile = new File(dirFile.getParentFile(), dirFile.getName() + ".zip");
+
+		if (zipFile.exists()) {
+			FileUtils.forceDelete(zipFile);
+		}
 		ZipKit zipkip = new ZipKit(zipFile);
 		zipkip.addDir(dirFile);
 		zipkip.close();
-		// FileUtils.forceDelete(dirFile);
+		FileUtils.forceDelete(dirFile);
 		return zipFile;
 	}
 
 	public Record findEdit(String order_id) throws Exception {
-		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no";
-		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id "
-				+ " left join  fy_business_purchase  audit on o.work_order_no = audit.work_order_no";
+		String select = " select o.* ,f.originalFileName filename,f.id fileId ,audit.* ,audit.id audit_id ,o.id order_id,o.work_order_no work_order_no \n"
+				+ " ,s.name supplier_name ,s.id supplier_id ,\n "
+				+ "audit.purchase_single_weight purchase_single_weight, audit.purchase_weight purchase_weight, \n "
+				+ " audit.purchase_cost purchase_cost,audit.purchase_account purchase_account";
+		String from = " from  fy_business_order o " + "   left join fy_base_fyfile  f on o.draw = f.id \n "
+				+ " left join  fy_business_purchase  audit on o.id = audit.order_id  \n"
+				+ "LEFT JOIN fy_base_supplier s ON s.id = audit.supplier_id";
 		String where = " where o.id = " + order_id;
 		Record model = Db.findFirst(select + from + where);
 		return model;

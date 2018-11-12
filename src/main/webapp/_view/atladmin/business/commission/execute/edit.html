@@ -34,16 +34,34 @@
 							console.info(formData);
 						}
 					, success: function(ret) {
+						alert(ret.msg);
 						if (ret.state == "ok") {
 							location.reload();
-						} else {
-							alert(ret.msg);
-						}
+							//location.href='/fy/admin/biz/commission/execute';
+						} 
 					}
 					, error: function(ret) {alert(ret.statusText);}
 					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调
 				});
+				
+				
+				
+				$("#supplier_name").click(function(){
+					var callback = function(isSelect,id,name){
+						if(isSelect){
+							console.info(" id "+id +"  name "+name);
+							$("#supplier_name").val(name);
+							$("#supplier_id").val(id);
+						}
+					}
+					var select  =new  SelectSupplierModal(callback);
+					select.show();
+				});
+				
+				
+				
+				
 			});
 </script>
-
+#include("../../../supplier/searchSupplier.html")
 #end

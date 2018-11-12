@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.chen.fy.controller.BaseController;
 import com.chen.fy.directive.OrderColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
+import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.SqlKit;
@@ -164,6 +165,7 @@ public class OuthouseController extends BaseController {
 			// return;
 			// }
 
+			//
 			Date out_date = getParaToDate("out.outTime");
 			model.setOutTime(out_date);
 			if (out_date == null) {
@@ -176,6 +178,26 @@ public class OuthouseController extends BaseController {
 				Waybill = new HashMap<String, Object>();
 			}
 			Waybill = model.toRecord().getColumns();
+			if (order_id.length == 1) {
+				String quantity = getPara("out.quantity");
+				try {
+					Integer quan = Integer.valueOf(quantity);
+
+					model.setOutQuantity(quan);
+
+					FyBusinessOrder order = FyBusinessOrder.dao.findById(order_id[0]);
+					if (quan > order.getStorageQuantity()) {
+						renderJson(Ret.fail().set("msg", "出库不能大于库存"));
+						return;
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.warn(" 出库必须为数字 ");
+					renderJson(Ret.fail().set("msg", "出库必须为数字"));
+					return;
+				}
+			}
 			CacheKit.put("outWarehouse", "Waybill", Waybill);
 			Ret ret = service.batchSave(order_id, model);
 			renderJson(ret);

@@ -56,7 +56,13 @@ public class OuthouseService {
 			String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
 			conditionSb.append(sql);
 
-		} else {
+		}
+		if ("total_map_no".equals(condition)) {
+			String sql = String.format(" AND    o.total_map_no  like  '%s' ", keyword);
+			conditionSb.append(sql);
+		}
+
+		else {
 
 			if ("order_date".equals(condition)) {
 
@@ -126,13 +132,21 @@ public class OuthouseService {
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(order_ids[i]);
 
 			Integer storagequantity = order.getStorageQuantity();// 获取库存
+			if (order_ids.length != 1) {
+				record.set("out_quantity", storagequantity);// 出库
+				Integer out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
+				out_quantity = out_quantity + order.getStorageQuantity();
+				order.setOutQuantity(out_quantity);// 出库数量
+				order.setStorageQuantity(0);// 出库完毕
+			} else {
+				Integer old_out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
+				Integer out_quantity = model.getOutQuantity();
+				order.setOutQuantity(out_quantity + old_out_quantity);// 出库数量
+				order.setStorageQuantity(order.getStorageQuantity() - out_quantity);// 出库完毕
 
-			record.set("out_quantity", storagequantity);// 出库
+			}
 
-			Integer out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
-			out_quantity = out_quantity + order.getStorageQuantity();
-			order.setOutQuantity(out_quantity);// 出库数量
-			order.setStorageQuantity(0);// 出库完毕
+
 			list.add(record);
 			orders.add(order);
 		}
@@ -150,7 +164,12 @@ public class OuthouseService {
 		if (re) {
 			//
 			try {
-				updateOrderOutInfo(order_ids);
+				ArrayList<Integer> orderlist = new ArrayList<Integer>();
+
+				for (Integer e : order_ids) {
+					orderlist.add(e);
+				}
+				updateOrderOutInfo(orderlist);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.warn(e.getMessage());
@@ -168,7 +187,10 @@ public class OuthouseService {
 	 * @param order_ids
 	 * @throws Exception
 	 */
-	private void updateOrderOutInfo(Integer[] order_ids) throws Exception {
+	private void updateOrderOutInfo(ArrayList<Integer> order_ids) throws Exception {
+		if (order_ids.size() < 1) {
+			return;
+		}
 		logger.debug("更新 订单 出库信息反写订单 的id " + StringUtils.join(order_ids, ","));
 		StringBuilder sb = new StringBuilder();
 		SqlKit.joinIds(order_ids, sb);
@@ -222,6 +244,7 @@ public class OuthouseService {
 
 					// 删除之前 更新库存
 					String ustorage = Db.getSql("order.updateOutStorage");
+
 					Db.update(String.format(ustorage, outsb.toString()));
 
 					// 删除出库
@@ -229,14 +252,16 @@ public class OuthouseService {
 
 					num[0] = Db.delete(delete + outsb.toString());
 					logger.debug("撤回出库 " + num[0] + "条记录");
+					// 查看是否还有出库
 					List<Record> list = Db
 							.find(" SELECT DISTINCT order_id FROM fy_business_out_warehouse WHERE  id IN   " + outsb);
 					ArrayList<Integer> idarray = new ArrayList<Integer>();
 					for (Record e : list) {
 						idarray.add(e.getInt("order_id"));
 					}
+
 					// 更新出库信息
-					updateOrderOutInfo((Integer[]) idarray.toArray());
+					updateOrderOutInfo(idarray);
 
 					return true;
 				} catch (Exception e) {

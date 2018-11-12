@@ -341,8 +341,9 @@
 							   url:'/fy/admin/biz/commission/audit/batchUpdateStatus' ,
 							   data:select.serialize(),
 							   success: function(ret){
+								   alert(ret.msg);
 								   if (ret.state == "ok") {
-									   alert(ret.msg);
+									   
 										location.reload();
 									}else{
 										
@@ -387,15 +388,19 @@
 					    <li name="weiwai_cate" #if(weiwai_cate=="胶木") class="active" #end data-title="胶木" ><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=胶木">胶木</a></li>
 					    <li name="weiwai_cate" #if(weiwai_cate=="机加")  class="active" #end data-title="机加"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=机加">机加</a></li>
 					    <li name="weiwai_cate" #if(weiwai_cate=="数控车")  class="active" #end  data-title="数控车" ><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=数控车">数控车</a></li>
-					    <li name="weiwai_cate" #if(weiwai_cate=="CMC")  class="active" #end  data-title="CMC"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=CMC">CMC</a></li>
+					    <li name="weiwai_cate" #if(weiwai_cate=="CMC")  class="active" #end  data-title="CNC"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=CNC">CNC</a></li>
 					    <li name="weiwai_cate" #if(weiwai_cate=="针类")  class="active" #end  data-title="针类"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=针类">针类</a></li>
+					 
+					 	<li name="weiwai_cate" #if(weiwai_cate=="普车")  class="active" #end  data-title="普车"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=普车">普车</a></li>
+					 	<li name="weiwai_cate" #if(weiwai_cate=="物资")  class="active" #end  data-title="物资"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=物资">物资</a></li>
+					 	<li name="weiwai_cate" #if(weiwai_cate=="标准件")  class="active" #end  data-title="标准件"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=标准件">标准件</a></li>
+					 	<li name="weiwai_cate" #if(weiwai_cate=="总图号")  class="active" #end  data-title="总图号"><a href="#" action="/fy/admin/biz/commission/execute?weiwai_cate=总图号">总图号</a></li>
 					  </ul>
 					</nav>
 			<!-- /.box-body -->
 			<script type="text/javascript">
 				$(function(){
 					$("[name=weiwai_cate]").click(function(){
-						
 						var form = $("#form_search");
 			  			var val = $("[name='weiwai_cate'][class='active']");
 			  			var input='<input name="weiwai_cate" value="'+$(this).data("title")+'"></input>';

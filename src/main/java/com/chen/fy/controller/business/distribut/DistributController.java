@@ -14,6 +14,7 @@ import com.chen.fy.directive.OrderColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -242,6 +243,34 @@ public class DistributController extends BaseController {
 			e.printStackTrace();
 			renderJson(Ret.fail("msg", "运行报错，刷新之后再试，或查看日志"));
 		}
+	}
+
+	/**
+	 * 移除图纸
+	 */
+	public void removeDraw() {
+		String sql = " update fy_business_order set draw =null where id in  ";
+		String[] ids = getParaValues("selectId");
+		if (ids == null || ids.length == 0) {
+			renderJson(Ret.fail().set("msg", "没有选择订单"));
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(ids, sb);
+		boolean re = Db.tx(new IAtom() {
+			
+			@Override
+			public boolean run() throws SQLException {
+				int update = Db.update(sql + sb.toString());
+				return update == ids.length;
+			}
+		});
+		if (re) {
+			renderJson(Ret.ok().set("msg", "移除图纸成功"));
+		} else {
+			renderJson(Ret.fail().set("msg", "移除失败"));
+		}
+
 	}
 
 }

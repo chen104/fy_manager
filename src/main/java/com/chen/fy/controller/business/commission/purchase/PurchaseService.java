@@ -83,7 +83,8 @@ public class PurchaseService {
 		}
 
 		String select = " select o.* ,s.name supplier_name,p.*";
-		String from = " from   fy_business_purchase  p LEFT JOIN   fy_business_order o  on  p.order_id = o.id  "
+		String from = " from   fy_business_purchase  p \n "
+				+ " INNER JOIN   fy_business_order o  on  p.order_id = o.id  "
 				+ " LEFT JOIN fy_base_supplier s on p.supplier_id = s.id";
 		String desc = " order by  p.id desc ";
 		modelPage = dao.paginate(pageIndex, pageSize, select, from + conditionSb.toString() + desc);

@@ -125,14 +125,14 @@ public class WaitCheckService {
 			return Ret.fail().set("msg", "通过数量不能为非数字");
 		}
 		FyCheckCollect model = FyCheckCollect.dao.findById(Integer.valueOf(modelId));
-
-
 		if (passQuantity > model.getInhouseQuantity()) {
 			return Ret.fail().set("msg", "通过数量不能超过入库数量");
 		}
+
 		model.setCheckResult(check_result);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
 		Integer unpassQuantity = model.getInhouseQuantity() - passQuantity;
+		/*
 		if (unpassQuantity > 0) {
 			Integer oldunpass = model.getUnpassQuantity() == null ? 0 : model.getUnpassQuantity();
 			if (passQuantity < oldunpass) {
@@ -140,11 +140,9 @@ public class WaitCheckService {
 			} else {
 				model.setUnpassQuantity(unpassQuantity);// 把未通过的求和
 			}
-
-
 		}
-
-
+		*/
+		model.setUnpassQuantity(unpassQuantity);
 		Integer storage = order.getStorageQuantity() == null ? 0 : order.getStorageQuantity();
 		storage += passQuantity;// 库存
 		order.setStorageQuantity(storage);
@@ -169,9 +167,11 @@ public class WaitCheckService {
 						exceptionRecord.setCheckRemark(remark);
 						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
 						exceptionRecord.setCheckTime(checkDate);
+						exceptionRecord.setExceptionQuantity(unpassQuantity);
 						exceptionRecord.save();
 					}
-
+					Integer hasInQuantity = model.getPassQuantity();
+					order.setHasInQuantity(hasInQuantity);
 					return order.update()&&model.update();
 				}
 			});
@@ -241,10 +241,7 @@ public class WaitCheckService {
 			} else if (settlement_cycle == 3) {
 				pay.setPayDate(pay.getHangDate());
 			}
-			Calendar calender = Calendar.getInstance();
-			calender.setTime(pay.getCheckTime());// 当前时间
-			calender.add(Calendar.MONTH, 2);// 相隔2个月
-			pay.setPayDate(calender.getTime());// 应付期间
+
 			pay.setParentId(model.getId());// 上有单据 ,入库单id
 
 			boolean re = Db.tx(new IAtom() {
@@ -268,7 +265,8 @@ public class WaitCheckService {
 					} else {
 						r = pay.update();
 					}
-
+					Integer hasInQuantity = model.getPassQuantity();
+					order.setHasInQuantity(hasInQuantity);
 					return order.update() && model.update() && r;
 				}
 			});
@@ -291,6 +289,8 @@ public class WaitCheckService {
 						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
 						exceptionRecord.setCheckTime(checkDate);
 						exceptionRecord.setExceptionQuantity(unpassQuantity);
+						Integer hasInQuantity = model.getPassQuantity();
+						order.setHasInQuantity(hasInQuantity);
 						exceptionRecord.save();
 					}
 

@@ -9,10 +9,38 @@
 				#fypermession("product_plan_update")
 				<button class="btn btn-info"  id="bt_update_plan">更新计划时间</button>
 				#end
-				
 				<button class="btn btn-info"  id="bt_rollback">撤回</button>
-				 <script type="text/javascript">
-				 	
+			 
+				<button class="btn btn-info"  id="bt_download">下载</button>
+				<form action="/fy/admin/biz/product/plan/downloadPlan"  method="post" target="_blank" hidden="hidden" id="download_form">
+							
+						</form>
+				<script type="text/javascript">
+				
+				$(function(){
+					$("#bt_download").click(function(){
+						var form =$("#download_form");
+						form.empty();
+						var isChecked = $('input[name=selectId]:checked');;
+						if(isChecked.length == 0){
+							alert("没有选择");
+							return;
+						}
+						isChecked.each(function() {
+							//$(this).attr('checked', true);
+							var input=$("<input/>");
+							input.attr("name","downloadId");
+							input.attr("value",this.value);
+							form.append(input);
+						});
+						//console.info(form)
+						form.submit();
+					});
+					
+					
+				});
+				
+
 				 </script>
 				<script type="text/javascript">
 				$(function(){
