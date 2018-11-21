@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.commission.collect;
 
+import java.io.File;
+
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
@@ -95,6 +97,20 @@ public class CommissionCollectController extends BaseController {
 		ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
 		ret.set(Constant.pageListSize, modelPage.getList().size());
 		renderJson(ret);
+	}
+
+	public void downloadCollect() {
+		String[] ids = getParaValues("downloadId");
+		try {
+			File file = service.downloadFile(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		index();
 	}
 
 }

@@ -43,7 +43,7 @@
 						
 					});
 				</script>
-				<span style="position: absolute;right: 5px">
+				<span style="margin-left: 50px">
 				
 					<form action="/fy/admin/biz/fyorder/distribute"  class="form-inline" style="">
 						 <div class="form-group  input-group-sm">
@@ -186,14 +186,14 @@
 								 </td>
 								<td width="130">#(x.commodity_name)</td>
 								
-								<td width="300"> 
+								<td width="300" data-order-id="#(x.id)" data-map="#(x.map_no)" > 
 									#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
 								
-									<a href="#"  data-order-id="#(x.id)"  name="bt_choose_map"  data-map="#(x.map_no)"> 
-												<i class="glyphicon glyphicon-th-large" title="选择图纸" >选择图纸</i>
+									<a href="#"  data-order-id="#(x.id)"  name="bt_choose_map"  data-map="#(x.map_no)"  onclick="btchooseMap(this)"  > 
+												<i class="glyphicon glyphicon-th-large" title="选择图纸"  >选择图纸</i>
 									</a>
 									#if(x.filename)
-									<a href="#" data-id="#(x.id)" name='bt_remove_draw' style="color: red"> 
+									<a href="#" data-id="#(x.id)" name='bt_remove_draw' style="color: red" onclick="removeMap(this)" > 
 												<i class="glyphicon glyphicon-trash" title="选择图纸">移除</i>
 									</a>
 									#end
@@ -228,40 +228,11 @@
 		<!-- /.box -->
 	</div>
 </div>
-<script id="each" type="text/x-jquery-tmpl"> 
-</script>
-<script type="text/javascript">
+<script id="order" type="text/x-jquery-tmpl"> 
 
-$(function(){
-		$("a[name='bt_remove_draw']").click(function(){
-			var a = $(this);
-			var sure = confirm("是否确定要移除图纸");
-			if(sure){
-				
-				$.ajax({
-					   type: "POST",
-					   url: "/fy/admin/biz/fyorder/distribute/removeDraw",
-					   data: {selectId:a.data("id")},
-					   success: function(ret){
-						   if (ret.state == "ok") {
-							   
-							   location.reload();
-						   }
-						   
-					  	 alert(ret.msg);
-					   },
-					 	error:function (XMLHttpRequest, textStatus, errorThrown) {
-					 	    // 通常 textStatus 和 errorThrown 之中
-					 	    // 只有一个会包含信息
-					 	    this; // 调用本次AJAX请求时传递的options参数
-					 	}
-					});
-			}
-			
-		});
-	
-});
+
 </script>
+ 
 <form>
 
 <input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
@@ -280,20 +251,20 @@ $(function(){
  $(function(){
 		
 		var div_table = document.getElementById("div_table");
-		console.info(div_table);
+	//	console.info(div_table);
 		$("#div_table").scroll(function(){
 			var div_table = document.getElementById("div_table");
 			var offsetHeight1 = div_table.offsetHeight;
 			var scrollHeight1 = div_table.scrollHeight;
 			var clientHeight1 = div_table.clientHeight;
 			//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
-			console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+			//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
 		 
 			var xs= $(this).scrollLeft();
 			var scroll = $(this).scrollTop();
 			 
 			$("#div_head").scrollLeft(xs);
-			 console.info((scrollHeight1-clientHeight1)+" "+ scroll);
+		//	 console.info((scrollHeight1-clientHeight1)+" "+ scroll);
 	
 			if((scrollHeight1-clientHeight1)-scroll <100){
 				$("#param").text($("[searchItem='ajax']").serialize());
@@ -315,6 +286,12 @@ $(function(){
 									//var total =  new Number(amount) + ret.amount;
 									//$("#amount_tatol").text(total);
 								}
+							   
+							   $("#table tr").click(function(){
+					 	  			$(".select_tr").removeClass("select_tr");
+					 	  			$(this).addClass("select_tr");
+					 	  			
+				 	  			});
 							 
 						   },
 						   error:function (XMLHttpRequest, textStatus, errorThrown) {
@@ -332,35 +309,56 @@ $(function(){
 		
 	});
 </script>
-
-
 #end
+<script id="test" type="text/x-jquery-tmpl">
+${fileName}
+ 	<a target="_blank" href="/fy/admin/base/file/viewFile?id=${fileId} " >
+		<i class="glyphicon glyphicon-eye-open">预览</i>
+	</a> 
+</script>
+<script id="hasMap" type="text/x-jquery-tmpl">
+	${fileName}
+    <a target="_blank" href="/fy/admin/base/file/viewFile?id=${fileId}" >
+		<i class="glyphicon glyphicon-eye-open">预览</i>
+	</a> 
+	<a target="_blank" href="/fy/admin/base/file/download?id=${fileId}">
+		<i class="glyphicon glyphicon-download-alt"  >下载</i>
+	</a>  						
+	
+	<a href="#"  data-order-id="${id}"  name="bt_choose_map"  data-map="${map_no}" onclick="btchooseMap(this)"> 
+		<i class="glyphicon glyphicon-th-large" title="选择图纸"  >选择图纸</i>
+	</a>
+	
+	<a href="#" data-id="${id}" name='bt_remove_draw' style="color: red"  onclick="removeMap(this)"> 
+		<i class="glyphicon glyphicon-trash" title="选择图纸">移除</i>
+	</a>
+
+</script>
+<script id="noMap" type="text/x-jquery-tmpl">
+     <a href="#"  data-order-id="${id}"  name="bt_choose_map"  data-map="${map_no}"  onclick="btchooseMap(this)"> 
+		<i class="glyphicon glyphicon-th-large" title="选择图纸" >选择图纸</i>
+	</a>
+
+</script>
+
+
 #include("disModel.html")
 #include("../../../file/listFileModel.html")
 <script type="text/javascript">
 
-$(function(){
-	
-	$("a[name='bt_choose_map']").click(function(){
-		var a = $(this);
-		var callback=function(select,id,name){
-			var td = $(tdFile).parent();
-			//var orderId= td.data("id");
-			var orderId = a.data("order-id");
-			if(select){
-				updateOrderFile(orderId,id,name,td);
-			}
-		};
-		var map = $(this).data("map");
-		console.debug(map);
-		//
-		$("#pmodelKeyWord").val(map);
-		new FileChooseModel(callback).show();
-	});
-});
+	 $(function(){
+			
+			//$("a[name='bt_choose_map']").click(function(){
+				
+		//	});
+			
 
+			
+		});
  
 /**
+ *
+
 更新图纸
 */
 function updateOrderFile(orderId,fileId,filename,td){
@@ -374,7 +372,15 @@ function updateOrderFile(orderId,fileId,filename,td){
 				//td.empty();
 				//var add= filename+'<a target="_blank" href="/fy/admin/base/file/viewFile?id='+fileId+'" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?fileId='+fileId+'"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>';
 				//td.append(add);
-				location.reload();
+				 var tdd =$(td);
+				var model ={fileName:filename,fileId:fileId,id:orderId,map_no:tdd.data("map")};
+				var hm = $("#hasMap").tmpl(model);
+				console.debug(hm);
+				tdd.empty();
+				
+				hm.appendTo(tdd);
+				
+				//location.reload();
 		}
 	   alert(ret.msg);
 	   },
@@ -386,5 +392,53 @@ function updateOrderFile(orderId,fileId,filename,td){
 	});
 }
 
+function btchooseMap(input){
+	var a = $(input);
+	var parent_td = a.parent();
+	var callback=function(select,id,name){
+		 
+		//var orderId= td.data("id");
+		var orderId = a.data("order-id");
+		if(select){
+			updateOrderFile(orderId,id,name,parent_td);
+		}
+	};
+	var map = parent_td.data("map");
+	console.debug(map);
+	$("#pmodelKeyWord").val(map);
+	new FileChooseModel(callback).show();
+}
 
+
+function removeMap(input){
+		var a = $(input);
+		var td= a.parent();
+		var sure = confirm("是否确定要移除图纸");
+		if(sure){
+			var parent_td = a.parent();
+			
+			$.ajax({
+				   type: "POST",
+				   url: "/fy/admin/biz/fyorder/distribute/removeDraw",
+				   data: {selectId:a.data("id")},
+				   success: function(ret){
+					   if (ret.state == "ok") {
+							var model={id:td.data('order-id'),map_no:td.data('map')}
+							var hm = $("#noMap").tmpl(model);
+							console.debug(hm);
+							td.empty();
+							hm.appendTo(td);
+					   }
+					   
+				  	 alert(ret.msg);
+				   },
+				 	error:function (XMLHttpRequest, textStatus, errorThrown) {
+				 	    // 通常 textStatus 和 errorThrown 之中
+				 	    // 只有一个会包含信息
+				 	    this; // 调用本次AJAX请求时传递的options参数
+				 	}
+				});
+		}
+	
+}
 </script>

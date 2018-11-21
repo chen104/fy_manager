@@ -448,7 +448,11 @@
 													//var amount = $("#amount_tatol").text();
 												//	$("#amount_tatol").text(total);
 												}
-											 
+											   $("#table tr").click(function(){
+									 	  			$(".select_tr").removeClass("select_tr");
+									 	  			$(this).addClass("select_tr");
+									 	  			
+								 	  			});
 										   },
 										   error:function (XMLHttpRequest, textStatus, errorThrown) {
 											    // 通常 textStatus 和 errorThrown 之中

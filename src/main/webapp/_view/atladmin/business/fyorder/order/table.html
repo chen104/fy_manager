@@ -430,7 +430,7 @@
 								#end 
 								
 								#fyColPerm("order","supplier")
-								<td width="#(colMap.supplier)"> #(x.supplier_name)</td><!-- 制造商-->
+								<td width="#(colMap.supplier)"> #if(x.supplier_name) #(x.supplier_name) #else if("自产" == x.distribute_to) 发奕林  #end </td><!-- 制造商-->
 								#end 
 								
 								#fyColPerm("order","purchase_cost")
@@ -619,13 +619,13 @@
 			var scrollHeight1 = div_table.scrollHeight;
 			var clientHeight1 = div_table.clientHeight;
 			//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
-			console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+		//	console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
 		 
 			var xs= $(this).scrollLeft();
 			var scroll = $(this).scrollTop();
 			 
 			$("#div_head").scrollLeft(xs);
-			 console.info((scrollHeight1-clientHeight1)+" "+ scroll);
+			// console.info((scrollHeight1-clientHeight1)+" "+ scroll);
 	
 			if((scrollHeight1-clientHeight1)-scroll <100){
 				$("#param").text($("[searchItem='ajax']").serialize());
@@ -648,6 +648,12 @@
 									$("#amount_tatol").text(total);
 								}
 							 
+							   $("#table tr").click(function(){
+					 	  			$(".select_tr").removeClass("select_tr");
+					 	  			$(this).addClass("select_tr");
+					 	  			
+				 	  			});
+			 	  		    
 						   },
 						   error:function (XMLHttpRequest, textStatus, errorThrown) {
 							    // 通常 textStatus 和 errorThrown 之中

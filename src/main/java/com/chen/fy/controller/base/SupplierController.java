@@ -81,6 +81,9 @@ public class SupplierController extends BaseController {
 
 	public void save() {
 		Supplier customer = getBean(Supplier.class, "model");
+		if (customer.getSupplierNo() == null || "".equals(customer.getSupplierNo())) {
+			customer.setSupplierNo(SupplierNoKit.getNo());
+		}
 		boolean re = customer.save();
 		Ret ret = null;
 		if (re) {
@@ -109,6 +112,9 @@ public class SupplierController extends BaseController {
 		Supplier model = Supplier.dao.findFirst(
 				"select s.*,p.name category_name,p.id category_id  from fy_base_supplier s left join  fy_supplier_category p on s.category= p.id  where s.id = ?",
 				getParaToInt("id"));
+		if (model.getSupplierNo() == null || "".equals(model.getSupplierNo())) {
+			model.setSupplierNo(SupplierNoKit.getNo());
+		}
 		setAttr("model", model);
 		setAttr("action", "update");
 		setAttr("title", "修改厂商");

@@ -26,37 +26,42 @@ public class StorageService {
 				+ "  LEFT JOIN out_view ov on ov.order_id = o.id ";
 		String desc = " order by o.id  desc ";
 		String where = "  where o.storage_quantity > 0  ";
+		if (StringUtils.isNotEmpty(keyword)) {
+			if ("delay_warn".equals(condition)) {
+				String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
+				conditionSb.append(sql);
+			} else
 
-		if ("delay_warn".equals(condition)) {
-			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
-			conditionSb.append(sql);
-		} else
+			if ("delay".equals(condition)) {
+				String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
+				conditionSb.append(sql);
 
-		if ("delay".equals(condition)) {
-			String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
-			conditionSb.append(sql);
-
-		} else {
-
-			if ("order_date".equals(condition)) {
-
-				conditionSb.append(
-						String.format(" AND DATE_FORMAT(order_date,%s) = '%s'", Constant.mysql_date_format, keyword));
-
-			} else if ("delivery_date".equals(condition)) {
-
-				conditionSb.append(String.format("AND  delivery_date = '%s'", keyword));
-
-			} else if ("work_order_no".equals(condition)) {
-				conditionSb.append(" AND  o.work_order_no like  ");
-				conditionSb.append("'%").append(keyword).append("%'");
-			} else if (StringUtils.isNotEmpty(keyword)) {
-
-				conditionSb.append(String.format(" AND  %s like  ", condition));
-				conditionSb.append("'%").append(keyword).append("%'");
-
+			} else if ("total_map_no".equals(condition)) {
+				conditionSb.append("  AND    o.total_map_no  like  '%").append(keyword).append("%' ");
 			}
 
+			else {
+
+				if ("order_date".equals(condition)) {
+
+					conditionSb.append(String.format(" AND DATE_FORMAT(order_date,%s) = '%s'",
+							Constant.mysql_date_format, keyword));
+
+				} else if ("delivery_date".equals(condition)) {
+
+					conditionSb.append(String.format("AND  delivery_date = '%s'", keyword));
+
+				} else if ("work_order_no".equals(condition)) {
+					conditionSb.append(" AND  o.work_order_no like  ");
+					conditionSb.append("'%").append(keyword).append("%'");
+				} else if (StringUtils.isNotEmpty(keyword)) {
+
+					conditionSb.append(String.format(" AND  %s like  ", condition));
+					conditionSb.append("'%").append(keyword).append("%'");
+
+				}
+
+			}
 		}
 		where = where + conditionSb.toString();
 		modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);

@@ -277,7 +277,7 @@ $(function(){
 		var scrollHeight1 = div_table.scrollHeight;
 		var clientHeight1 = div_table.clientHeight;
 		//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
-		console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+		//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
 	 
 		var xs= $(this).scrollLeft();
 		var scroll = $(this).scrollTop();
@@ -316,7 +316,11 @@ $(function(){
 								//var total =  new Number(amount) + ret.amount;
 								//$("#amount_tatol").text(total);
 							}
-						 
+						   $("#table tr").click(function(){
+				 	  			$(".select_tr").removeClass("select_tr");
+				 	  			$(this).addClass("select_tr");
+				 	  			
+			 	  			}); 
 					   },
 					   error:function (XMLHttpRequest, textStatus, errorThrown) {
 						    // 通常 textStatus 和 errorThrown 之中

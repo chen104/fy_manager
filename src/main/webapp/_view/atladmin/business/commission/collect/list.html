@@ -10,6 +10,42 @@
 				#fypermession("commision_collect_rollback")
 				<button class="btn btn-info"  id="bt_rollback">撤回</button>
 				#end
+				#fypermession("commision_collect_download")
+				<button class="btn btn-info"  id="bt_download">下载</button>
+				#end
+				
+				
+				<form action="/fy/admin/biz/commission/collect/downloadCollect"  method="post" target="_blank" hidden="hidden" id="download_form">
+							
+				</form>
+				<script type="text/javascript">
+				
+				$(function(){
+					$("#bt_download").click(function(){
+						var form =$("#download_form");
+						form.empty();
+						var isChecked = $('input[name=selectId]:checked');;
+						if(isChecked.length == 0){
+							alert("没有选择");
+							return;
+						}
+						isChecked.each(function() {
+							//$(this).attr('checked', true);
+							var input=$("<input/>");
+							input.attr("name","downloadId");
+							input.attr("value",this.value);
+							form.append(input);
+						});
+						//console.info(form)
+						form.submit();
+					});
+					
+					
+				});
+				
+
+				 </script>
+				
 				<!--  <a href="/fy/admin/biz/commission/toDownloadOneSum"><button class="btn btn-primary" >下载</button></a> -->	
 				<script type="text/javascript">
 					$(function(){
@@ -45,7 +81,7 @@
 				</script>
 				
 				
-				<span >
+				<span style="margin-left: 50px" >
 				  	
 					
 					<form action="/fy/admin/biz/commission/collect"  class="form-inline">
@@ -68,7 +104,7 @@
 						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
 						 	   	</select>
 						 </div>
-						 <div class="form-group  input-group-sm">
+						 <div class="form-group  input-group-sm" >
 						    <label for="condition">条件</label>
 							   
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
@@ -193,7 +229,7 @@
 			<div class="box-body table-responsive no-padding">
 					<div>
 							<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-								<table  class="text-center table-bordered"  id="table_head" style="width:4135px">
+								<table  class="text-center table-bordered"  id="table_head" style="width:4235px">
 									<tbody>
 											<tr>
 									<td width="50" ><input type="checkbox" checked="checked" id="selectAll"></td>
@@ -226,6 +262,7 @@
 									<td  width="100">订单编码</td>
 									<td  width="200">接收时间</td>
 									<td  width="100">采购时间</td>
+									<td  width="100">采购交货时间</td>
 									<td  width="100">入库数量</td>
 									<td  width="100">入库状态</td>
 									<td  width="100">入库时间</td>
@@ -244,7 +281,7 @@
 							
 							
 						<div  id="div_table"   style="overflow: scroll;height: 600px; ">
-								<table class=" table-bordered text-center"  style="width: 4135px">
+								<table class=" table-bordered text-center"  style="width: 4235px">
 									<tbody id="table">
 										#for(x : modelPage.getList())
 										<tr>
@@ -282,6 +319,8 @@
 											
 											<td  width="200">#date(x.receive_time,"yyyy-MM-dd")</td>	
 											<td  width="100">#date(x.plan_time,"yyyy-MM-dd")</td>	
+											
+											<td  width="100">#date(x.purchase_delivery_date,"yyyy-MM-dd")</td>	
 																	
 											<td  width="100">#(x.has_in_quantity)</td>
 											
@@ -290,7 +329,7 @@
 											</td>
 											<td  width="100">#(x.inhouse_date)</td>
 											
-											<td  width="100">#(x.check_result)</td>
+											<td  width="100">#(x.pv_check_result)</td>
 								
 								
 											<td  width="100">#(x.pv_pay_quantity)</td>	
@@ -396,7 +435,11 @@
 										//var total =  new Number(amount) + ret.amount;
 										//$("#amount_tatol").text(total);
 									}
-								 
+								$("#table tr").click(function(){
+						 	  			$(".select_tr").removeClass("select_tr");
+						 	  			$(this).addClass("select_tr");
+						 	  			
+					 	  		});
 							   },
 							   error:function (XMLHttpRequest, textStatus, errorThrown) {
 								    // 通常 textStatus 和 errorThrown 之中

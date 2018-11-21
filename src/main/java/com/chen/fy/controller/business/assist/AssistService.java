@@ -82,10 +82,11 @@ public class AssistService {
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(assistId, idsb);
 
-		Record model = Db.findFirst(
+		List<Record> idList = Db
+				.find(
 				" select  id from fy_business_pay  where  is_purchase = 0 AND  parent_id in " + idsb.toString());
-		if (model != null) {
-			return Ret.fail().set("msg", " 已存在应付单 ");
+		if (idList.size() > 0) {
+			return Ret.fail().set("msg", " 有单据 已存在应付单 ");
 		}
 
 		List<FyBusinessAssist> modelList = FyBusinessAssist.dao.find(

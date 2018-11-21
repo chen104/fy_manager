@@ -103,11 +103,6 @@ $(function(){
 		}
 		
 		
-		if(selectIds.length >  1){
-			alert("只能选择一条外协单");
-			return ; 
-		}
-		
 		var iscreate_pay = selectIds.data("create-pay");
 		if(!iscreate_pay){
 			alert("不合格或已存在应付单，不能创建");
@@ -142,10 +137,11 @@ $(function(){
 <!-- /.box-header -->
 <div  class="box-body table-responsive no-padding text-center">
 	<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-	<table   class="text-center table-bordered"     style="width:4050px ;	font-size:10px; " >
+	<table   class="text-center table-bordered"     style="width:4060px ;	font-size:10px; " >
 		<tbody>
 			<tr>
-				<td width="50"><input type="checkbox" checked="checked" id="selectAll"></td>
+				<td width="60"><input type="checkbox" checked="checked" id="selectAll"> </td>
+				
 				<td width="60">类别</td>
 				<td width="60">计划员</td>
 				<td width="65">执行状态</td>
@@ -191,14 +187,14 @@ $(function(){
 </div>
 <div id="div_table" style="overflow: scroll;height: 600px; ">
 	<form action="/fy/admin/biz/assist/createPay" method="post" id="select_form">
-			<table class="text-center table-bordered"  style="width: 4050px">
+			<table class="text-center table-bordered"  style="width: 4060px">
 				<tbody id="table">
 					#for(x : modelPage.getList())
 					<tr>
-						<td width="50">
+						<td width="60">
 						
 						 <input type="checkbox" name = "selectId"    value="#(x.id)" checked="checked" #if(!x.is_create_pay&&"合格".equals(x.check_result)) data-create-pay="true"  #end >  
-						
+							#if(x.is_create_pay) <i style="color: green;" class="glyphicon glyphicon-ok"></i> #end
 						 </td>
 						 
 						<td width="60">#(x.cate_tmp)</td>  
@@ -385,6 +381,11 @@ function deleteAssist(a){
 										//$("#amount_tatol").text(total);
 									}
 								 
+								   $("#table tr").click(function(){
+						 	  			$(".select_tr").removeClass("select_tr");
+						 	  			$(this).addClass("select_tr");
+						 	  			
+					 	  			}); 
 							   },
 							   error:function (XMLHttpRequest, textStatus, errorThrown) {
 								    // 通常 textStatus 和 errorThrown 之中

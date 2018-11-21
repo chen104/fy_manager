@@ -71,6 +71,14 @@
 	tr{
 		padding: 2px;
 	}
+	
+	.select_tr{
+		background-color: #b3fff0;;
+	}
+	
+	.unselect_tr{
+		background-color:transparent;
+	}
 	</style>
 	
 	<style type="text/css">
@@ -248,6 +256,14 @@
  	  		      todayHighlight:true,
  	  		       orientation:'bottom' 
  	  		    })
+ 	  		    
+	 	  		$("#table tr").click(function(){
+		 	  			$(".select_tr").removeClass("select_tr");
+		 	  			$(this).addClass("select_tr");
+		 	  			
+	 	  		});
+ 	  		    
+ 	  		    
  	 	 	});
  	 		
  	

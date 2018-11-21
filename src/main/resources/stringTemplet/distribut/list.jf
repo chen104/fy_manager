@@ -15,15 +15,14 @@
 	 </td>
 	<td width="130">#(x.commodity_name)</td>
 	
-	<td data-id="#(x.id)" width="300"> 
+	<td data-id="#(x.id)" width="300"  data-order-id="#(x.id)" data-map="#(x.map_no)" > 
 		#if(x.filename) #(x.filename) <a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> <a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a>  #end
 	
-		<a href="#" onclick=" selectMapFile(this)"> 
-					<i class="glyphicon glyphicon-th-large" title="选择图纸">选择图纸</i>
+		<a href="#"  data-order-id="#(x.id)"  name="bt_choose_map"  data-map="#(x.map_no)"  onclick="btchooseMap(this)"  > 
+					<i class="glyphicon glyphicon-th-large" title="选择图纸"  >选择图纸</i>
 		</a>
-		
 		#if(x.filename)
-		<a href="#" data-id="#(x.id)"name='bt_remove_draw' style="color: red"> 
+		<a href="#" data-id="#(x.id)" name='bt_remove_draw' style="color: red" onclick="removeMap(this)" > 
 					<i class="glyphicon glyphicon-trash" title="选择图纸">移除</i>
 		</a>
 		#end

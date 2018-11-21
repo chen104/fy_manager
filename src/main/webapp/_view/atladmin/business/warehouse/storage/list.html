@@ -56,7 +56,7 @@
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
 							    	<option #if(condition=="plan_tmp") selected="selected" #end value="plan_tmp">计划员</option>
-							    	<option #if(condition=="map_tmp") selected="selected" #end value="map_tmp">总图号</option>
+							    	<option #if(condition=="total_map_no") selected="selected" #end value="total_map_no">总图号</option>
 							    	<option #if(condition=="order_date") selected="selected" #end value="order_date">订单日期</option>
 							    	<option #if(condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 							    	<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
@@ -142,7 +142,7 @@
 					</div>
 					<div  id="div_table"  style="overflow: scroll;height: 600px;display: block; ">
 						<form id="out_form" action="/fy/admin/biz/whouse/outhouse/batchOutHouse" method="post">
-							<table class=" table-bordered"  style="width: 2465px;">
+							<table class=" table-bordered text-center"  style="width: 2465px;">
 							 
 								<tbody id="table">
 									#for(x : modelPage.getList())
@@ -260,7 +260,11 @@ $(function(){
 								//var total =  new Number(amount) + ret.amount;
 								//$("#amount_tatol").text(total);
 							}
-						 
+						   $("#table tr").click(function(){
+				 	  			$(".select_tr").removeClass("select_tr");
+				 	  			$(this).addClass("select_tr");
+				 	  			
+			 	  			}); 
 					   },
 					   error:function (XMLHttpRequest, textStatus, errorThrown) {
 						    // 通常 textStatus 和 errorThrown 之中

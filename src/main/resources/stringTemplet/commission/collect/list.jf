@@ -41,7 +41,7 @@
 	#(x.inhouse_status)
 	</td>
 	<td  width="100">#(x.inhouse_date)</td>
-	<td  width="100">#(x.check_result)</td>
+	<td  width="100">#(x.pv_check_result)</td>
 
 
 	<td  width="100">#(x.pv_pay_quantity)</td>	

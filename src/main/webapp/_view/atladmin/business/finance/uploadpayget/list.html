@@ -308,7 +308,7 @@ function deletegetpay(a){
 									$("#rownumber").text(row);
 									
 									var weiwai_account =$("#hang_amount").text();
-									var amount = ret.hang_amount + new Number(hang_amount);
+									var amount = ret.hang_amount + new Number(weiwai_account);
 									$("#hang_amount").text(amount);
 									/*
 									var weiwai_account =$("#weiwai_account").text();
@@ -323,7 +323,11 @@ function deletegetpay(a){
 									//var total =  new Number(amount) + ret.amount;
 									//$("#amount_tatol").text(total);
 								}
-							 
+							   $("#table tr").click(function(){
+					 	  			$(".select_tr").removeClass("select_tr");
+					 	  			$(this).addClass("select_tr");
+					 	  			
+				 	  			}); 
 						   },
 						   error:function (XMLHttpRequest, textStatus, errorThrown) {
 							    // 通常 textStatus 和 errorThrown 之中

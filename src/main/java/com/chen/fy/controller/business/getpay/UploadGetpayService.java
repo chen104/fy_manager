@@ -110,7 +110,7 @@ public class UploadGetpayService {
 
 
 			String cost = excel.getCellVal(i, 9);// 单价
-			item.setCost(NumberUtils.isNumber(cost) ? new BigDecimal(quantity) : null);
+				item.setCost(NumberUtils.isNumber(cost) ? new BigDecimal(cost) : null);
 
 
 			if (StringUtils.isEmpty(cost)) {
@@ -120,13 +120,13 @@ public class UploadGetpayService {
 			}
 
 			String hangquantity = excel.getCellVal(i, 10);// 已挂帐数量
-			item.setHangQuantity(NumberUtils.isNumber(hangquantity) ? new BigDecimal(quantity) : null);
+				item.setHangQuantity(NumberUtils.isNumber(hangquantity) ? new BigDecimal(hangquantity) : null);
 
 			String invoice_stat = excel.getCellVal(i, 11);// 发票挂账状态
 			item.setInvoiceStat(invoice_stat);
 
 			String hangAmount = excel.getCellVal(i, 12);// 挂账金额
-			item.setHangAmount(NumberUtils.isNumber(hangAmount) ? new BigDecimal(quantity) : null);
+				item.setHangAmount(NumberUtils.isNumber(hangAmount) ? new BigDecimal(hangAmount) : null);
 
 			String perchase_person = excel.getCellVal(i, 13);// 采购人
 			item.setPerchasePerson(perchase_person);
