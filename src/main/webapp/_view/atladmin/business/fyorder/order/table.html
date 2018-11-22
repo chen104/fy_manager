@@ -430,7 +430,12 @@
 								#end 
 								
 								#fyColPerm("order","supplier")
-								<td width="#(colMap.supplier)"> #if(x.supplier_name) #(x.supplier_name) #else if("自产" == x.distribute_to) 发奕林  #end </td><!-- 制造商-->
+								<td width="#(colMap.supplier)"> 
+									#if(x.supplier_name) 
+										#(x.supplier_name)
+									 #else if("自产" == x.distribute_to) 发奕林  
+									 #end 
+								</td><!-- 制造商-->
 								#end 
 								
 								#fyColPerm("order","purchase_cost")

@@ -17,44 +17,44 @@ public abstract class BaseFyAdvisoryCost<M extends BaseFyAdvisoryCost<M>> extend
 		return getInt("id");
 	}
 
-	public void setAdvisoryOrg(java.lang.String advisoryOrg) {
-		set("advisory_org", advisoryOrg);
+	public void setCustomerNo(java.lang.String customerNo) {
+		set("customer_no", customerNo);
 	}
 	
-	public java.lang.String getAdvisoryOrg() {
-		return getStr("advisory_org");
+	public java.lang.String getCustomerNo() {
+		return getStr("customer_no");
 	}
 
-	public void setAdvisoryPersion(java.lang.String advisoryPersion) {
-		set("advisory_persion", advisoryPersion);
+	public void setPlaner(java.lang.String planer) {
+		set("planer", planer);
 	}
 	
-	public java.lang.String getAdvisoryPersion() {
-		return getStr("advisory_persion");
+	public java.lang.String getPlaner() {
+		return getStr("planer");
 	}
 
-	public void setAdvisoryDate(java.util.Date advisoryDate) {
-		set("advisory_date", advisoryDate);
+	public void setOrderComeDate(java.util.Date orderComeDate) {
+		set("order_come_date", orderComeDate);
 	}
 	
-	public java.util.Date getAdvisoryDate() {
-		return get("advisory_date");
+	public java.util.Date getOrderComeDate() {
+		return get("order_come_date");
 	}
 
-	public void setAnswerPersion(java.lang.Integer answerPersion) {
-		set("answer_persion", answerPersion);
+	public void setStatus(java.lang.String status) {
+		set("status", status);
 	}
 	
-	public java.lang.Integer getAnswerPersion() {
-		return getInt("answer_persion");
+	public java.lang.String getStatus() {
+		return getStr("status");
 	}
 
-	public void setAnswerDate(java.util.Date answerDate) {
-		set("answer_date", answerDate);
+	public void setTecnologyRequire(java.lang.String tecnologyRequire) {
+		set("tecnology_require", tecnologyRequire);
 	}
 	
-	public java.util.Date getAnswerDate() {
-		return get("answer_date");
+	public java.lang.String getTecnologyRequire() {
+		return getStr("tecnology_require");
 	}
 
 	public void setCommodityName(java.lang.String commodityName) {

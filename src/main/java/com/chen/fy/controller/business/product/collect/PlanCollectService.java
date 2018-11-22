@@ -2,6 +2,7 @@ package com.chen.fy.controller.business.product.collect;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -243,6 +244,125 @@ public class PlanCollectService {
 		zipkip.close();
 		// FileUtils.forceDelete(dirFile);
 		return zipFile;
+	}
+
+	/**
+	 * 下载生产一览表
+	 * @param ids
+	 * @return
+	 * @throws Exception
+	 */
+	public File downloadProductCollect(String ids[]) throws Exception {
+
+		String select = "select o.*,originalFileName filename,file.id fileId";
+		String from = " from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
+		String where = " where   o.id in  ";
+		String desc = " order by distribute_time desc ";
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+
+		List<Record> list = Db.find(select + from + where + idsb.toString() + desc);
+
+		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
+		if (!parentfile.exists()) {
+			parentfile.mkdirs();
+		}
+		File targetfile = new File(parentfile,
+				"自产一览表" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
+
+		// 读取模板
+		String xlsx = this.getClass().getClassLoader().getResource("templet/download/ploduct/product_collect.xlsx")
+				.getFile();
+		File sourceFile = new File(xlsx);
+		if (sourceFile.exists()) {
+			System.out.println(sourceFile.getName() + " 存在");
+		}
+		FileUtils.copyFile(sourceFile, targetfile);
+
+		PIOExcelUtil excel = null;
+		excel = new PIOExcelUtil(targetfile, 0);
+
+		int row = 1;
+		for (Record item : list) {
+			String map_tmp = item.getStr("cate_tmp");// 类别
+			excel.setCellVal(row, 0, map_tmp);
+
+			String plan_tmp = item.getStr("plan_tmp");// 计划员
+			excel.setCellVal(row, 1, plan_tmp);
+
+			String execu_status = item.getStr("execu_status");// 计划员
+			excel.setCellVal(row, 2, execu_status);
+
+			String customer_no = item.getStr("customer_no");// 计划员
+			excel.setCellVal(row, 3, customer_no);
+
+			String work_order_no = item.getStr("work_order_no");// 工作订单号
+			excel.setCellVal(row, 4, work_order_no);
+
+			String delivery_no = item.getStr("delivery_no");// 工作订单号
+			excel.setCellVal(row, 5, delivery_no);
+
+			String map_no = item.getStr("map_no");// 图号
+			excel.setCellVal(row, 6, map_no);
+
+			String commodity_name = item.getStr("commodity_name");// 名称
+			excel.setCellVal(row, 7, commodity_name);
+
+			String total_map_no = item.getStr("total_map_no");// 总图号
+			excel.setCellVal(row, 8, total_map_no);
+
+			String quantity = item.getStr("quantity");// 数量
+			excel.setCellVal(row, 9, quantity);
+
+			String unit_tmp = item.getStr("unit_tmp");// 单位
+			excel.setCellVal(row, 10, unit_tmp);
+
+			String model_no = item.getStr("model_no");// 型号
+			excel.setCellVal(row, 11, model_no);
+
+			String commodity_spec = item.getStr("commodity_spec");// 规格
+			excel.setCellVal(row, 12, commodity_spec);
+
+			String technology = item.getStr("technology");// 技术条件
+			excel.setCellVal(row, 13, technology);
+
+			String machining_require = item.getStr("machining_require");// 质量等级
+			excel.setCellVal(row, 14, machining_require);
+
+			Date order_date = item.getDate("order_date");// 订单日期
+			excel.setCellVal(row, 15, order_date, "yyyy-MM-dd");
+
+			Date delivery_date = item.getDate("delivery_date");// 订单日期
+			excel.setCellVal(row, 16, delivery_date, "yyyy-MM-dd");
+
+			Date distribute_time = item.getDate("distribute_time");// 订单日期
+			excel.setCellVal(row, 17, distribute_time, "yyyy-MM-dd");
+
+
+			String filename = item.getStr("filename");// 分配流向
+			excel.setCellVal(row, 18, filename);
+
+			Date plan_time = item.getDate("plan_time");// 订单日期
+			excel.setCellVal(row, 19, plan_time, "yyyy-MM-dd");
+
+			Date plan_finsh_time = item.getDate("plan_finsh_time");// 订单日期
+			excel.setCellVal(row, 20, plan_finsh_time, "yyyy-MM-dd");
+
+
+			String has_in_quantity = item.getStr("has_in_quantity");// 入库数量
+			excel.setCellVal(row, 21, has_in_quantity);
+
+
+
+			String plan_remark = item.getStr("plan_remark");// 备注
+			excel.setCellVal(row, 22, plan_remark);
+
+			row++;
+		}
+
+		excel.save2File(targetfile);
+
+		return targetfile;
 	}
 
 }

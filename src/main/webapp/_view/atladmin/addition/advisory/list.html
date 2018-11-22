@@ -20,9 +20,9 @@
 						 <div class="form-group  input-group-sm">
 						    <label for="condition">条件</label>
 							    <select id="condition" class="form-control" name="condition" onselect="" onchange="onselectCondition()">
-							    	<option #if(condition=="advisory_org") selected="selected" #end value="advisory_org">询价单位</option>
-							    	<option #if(condition=="advisory_date") selected="selected" #end value="advisory_date">询价日期</option>
-							    	<option #if(condition=="answer_date") selected="selected" #end value="answer_date" >报价日期</option>
+							    	<option #if(condition=="customer_name") selected="selected" #end value="customer_name">客户</option>
+							    	<option #if(condition=="order_come_date") selected="selected" #end value="order_come_date">订单下达日期</option>
+							    	<option #if(condition=="tecnology_require") selected="selected" #end value="tecnology_require" >技术条件</option>
 							    	<option #if(condition=="commodity_name") selected="selected" #end value="commodity_name">商品名称</option>
 							    	<option #if(condition=="commodity_spec") selected="selected" #end value="commodity_spec">产品规格</option>
 							    	<option #if(condition=="map_no") selected="selected" #end value="map_no">商品总图号</option>
@@ -52,7 +52,7 @@
   <script type="text/javascript">
 	  function onselectCondition(){
 	  		var val = $("#condition").val();
-	  		if("advisory_date"==val||"answer_date"==val){
+	  		if("order_come_date"==val){
 	  			
 	  			$("#order_date_div").css('display','inline');//visible
 	  			$("#keyword_div").css('display','none');//visible
@@ -75,11 +75,11 @@
 							<tr>
 								<th style="">序号</th>
 								
-								<th>询价单位</th>
-								<th>询价人	</th>	
-								<th>询价日期</th>	
-								<th>报价人	</th>	
-								<th>报价日期</th>	
+								<th>客户</th>
+								<th>计划员	</th>	
+								<th>订单下达日期</th>	
+								<th>状态</th>	
+								<th>技术条件</th>	
 								<th>商品名称</th>	
 								<th>产品规格</th>	
 								<th>商品总图号</th>	
@@ -95,13 +95,13 @@
 							#for(x : modelPage.getList())
 							<tr>
 								<td>#(for.index+1)</td>
-								<td>#(x.advisory_org)</td>
-								<td>#(x.advisory_persion)</td>
-								<td>#(x.advisory_date)</td>
+								<td>#(x.customer_no)</td>
+								<td>#(x.planer)</td>
+								<td>#date(x.order_come_date,"yyyy-MM-dd")</td>
 								
-								<td>#(x.answer_persion_name)</td>	
-								
-								<td>#(x.answer_date)</td>	
+								<td>#(x.status)</td>	
+							
+								<td>#(x.tecnology_require)</td>	
 								<td>#(x.commodity_name)</td>	
 								<td>#(x.commodity_spec)</td>	
 								<td>#(x.map_no)</td>	

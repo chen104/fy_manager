@@ -46,7 +46,7 @@ public class OrderController2 extends BaseController {
 		setAttr("append",
 				"&keyWord=" + (key == null ? "" : key) + "&condition=" + (condition == null ? "" : condition));
 		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
-		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1), getPageSize(),
+		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1) + 1, getPageSize(),
 				order_date_start, order_date_end);
 		setAttr("modelPage", modelPage);
 		render("orderlist2.html");

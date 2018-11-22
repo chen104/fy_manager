@@ -24,6 +24,7 @@ public class WaitInhouseController extends BaseController {
 		engine.setToClassPathSourceFactory();
 		engine.addDirective("orderColor", OrderColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
+
 	}
 
 	public void findJsonPage() {
@@ -44,6 +45,7 @@ public class WaitInhouseController extends BaseController {
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
+		engine.addSharedObject("account", getLoginAccount());
 		String str = engine.getTemplate("stringTemplet/warehouse/waitIn/list.jf").renderToString(data);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());

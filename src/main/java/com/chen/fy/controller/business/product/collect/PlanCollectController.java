@@ -130,4 +130,17 @@ public class PlanCollectController extends BaseController {
 		renderText("下载发生异常，查看日志");
 	}
 
+	public void downloadCollect() {
+		String[] ids = getParaValues("downloadId");
+		try {
+			File file = service.downloadProductCollect(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		renderText("下载发生异常，查看日志");
+	}
+
 }

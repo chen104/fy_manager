@@ -3,7 +3,11 @@
 
 	<tr>
 		<td   width="50">#(for.index+1+n)</td>
-		<td   width="60" > <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked" data-order="#(x.order_id)" data-supplier="#(x.supplier_id)"></td>
+		<td   width="60" >
+		#if(!x.is_download)
+			<input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked" data-order="#(x.order_id)" data-supplier="#(x.supplier_id)">
+		#end
+		 </td>
 		<td   width="50">#if(x.is_download) 已下载   #else 未下载 #end</td>
 		<td width="150">#(x.map_no)</td>
 		<td  width="300">#(x.total_map_no)</td>

@@ -20,6 +20,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 public class AdvisoryCostConllor extends BaseController {
+	AdisoryCostService service = AdisoryCostService.me;
 	public void index() {
 		String key = getPara("keyWord");
 		Page<FyAdvisoryCost> personPage = null;
@@ -27,12 +28,12 @@ public class AdvisoryCostConllor extends BaseController {
 
 		if (StringUtils.isEmpty(key)) {
 			personPage = FyAdvisoryCost.dao.paginate(getParaToInt("p", 1), 10,
-					"select c.*,p.name answer_persion_name ,u.name unit_name",
-					"from fy_advisory_cost  c left join fy_base_person p on p.id=c.answer_persion left join fy_base_unit u on c.unit= u.id order by id desc");
+					"select c.*,u.name unit_name",
+					"from fy_advisory_cost  c " + " left join fy_base_unit u on c.unit= u.id order by id desc");
 		} else {
 			String condition = getPara("condition");
 			StringBuilder sb = new StringBuilder();
-			if ("advisory_date".equals(condition) || "answer_date".equals(condition)) {
+			if ("order_come_date".equals(condition)) {
 				sb.append("where ").append(condition).append(" = '").append(key).append("' ");
 			} else {
 				sb.append("where ").append(condition).append(" like '").append(key).append("' ");
@@ -75,7 +76,7 @@ public class AdvisoryCostConllor extends BaseController {
 	public void edit() {
 		Integer id = getParaToInt("id");
 		FyAdvisoryCost model = FyAdvisoryCost.dao.findFirst(
-				"select c.*,p.name answer_persion_name ,u.name unit_name  from fy_advisory_cost  c left join fy_base_person p on p.id=c.answer_persion left join fy_base_unit u on c.unit= u.id where c.id = ?",
+				"select c.*,u.name unit_name  from fy_advisory_cost  c  left join fy_base_unit u on c.unit= u.id where c.id = ?",
 				id);
 
 		setAttr("model", model);
@@ -85,6 +86,8 @@ public class AdvisoryCostConllor extends BaseController {
 
 	public void update() {
 		FyAdvisoryCost model = getBean(FyAdvisoryCost.class, "model");
+		Date d = getParaToDate("model.orderComeDate");
+		model.setOrderComeDate(d);
 		boolean re = model.update();
 		Ret ret = null;
 		if (re) {
@@ -120,23 +123,23 @@ public class AdvisoryCostConllor extends BaseController {
 
 				for (int i = 1; i < rows; i++) {
 					FyAdvisoryCost item = new FyAdvisoryCost();
-					String advisoryOrg = excel.getCellVal(i, 0);// 询价单位
-					item.setAdvisoryOrg(advisoryOrg);
+					String advisoryOrg = excel.getCellVal(i, 0);// 客户
+					item.setCustomerNo(advisoryOrg);
 
-					String advisory_persion = excel.getCellVal(i, 1);// 询价人
-					item.set("advisory_persion", advisory_persion);
+					String advisory_persion = excel.getCellVal(i, 1);// 计划员
+					item.setPlaner(advisory_persion);
 					if (StringUtils.isEmpty(advisory_persion)) {
 						continue;
 					}
 
-					Date advisory_date = excel.getDateValue(i, 2);// 询价日期
-					item.set("advisory_date", advisory_date);
+					Date advisory_date = excel.getDateValue(i, 2);// 订单下达日期
+					item.setOrderComeDate(advisory_date);
 
-					String answer_persion = excel.getCellVal(i, 3);// 报价人
-					item.set("answer_persion", getPerson(answer_persion));
+					String status = excel.getCellVal(i, 3);// 状态
+					item.setStatus(status);
 
-					Date answer_date = excel.getDateValue(i, 4);// 报价日期
-					item.set("answer_date", answer_date);
+					String tecnology = excel.getCellVal(i, 4);// 技术条件
+					item.setTecnologyRequire(tecnology);
 
 					String commodity_name = excel.getCellVal(i, 5);// 商品名称
 					item.set("commodity_name", commodity_name);
@@ -148,7 +151,10 @@ public class AdvisoryCostConllor extends BaseController {
 					item.set("map_no", map_no);
 
 					String unit = excel.getCellVal(i, 8);// 单位
-					item.set("unit", getunit(unit));
+					if (StringUtils.isNoneEmpty(unit)) {
+						Integer uid = service.getUnit(unit.trim());
+						item.set("unit", uid);
+					}
 
 					String base_cost = excel.getCellVal(i, 9);// 本部单机
 					item.set("base_cost",
@@ -187,9 +193,7 @@ public class AdvisoryCostConllor extends BaseController {
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
 	}
 
-	public Integer getunit(String unit) {
-		return null;
-	}
+
 
 	public Integer getPerson(String name) {
 		Person model = Person.dao.findFirst("select id from fy_base_person where name = ?", name);

@@ -9,7 +9,7 @@
 				#fypermession("product_plan_update")
 				<button class="btn btn-info"  id="bt_update_plan">重置计划时间</button>
 				#end
-				#fypermession("product_back")
+				#fypermession("product_collect_rollback")
 				<button class="btn btn-info"  id="bt_rollback">撤回</button>
 				#end
 				
@@ -17,9 +17,9 @@
 				<button class="btn btn-info"  id="bt_create_assist">外协加工单</button>
 			 	#end
 			 	
-			 	<!--  
+			 	<!--  -->
 				<button class="btn btn-info"  id="bt_download">下载</button>
-			 	-->
+			 	
 				 <script type="text/javascript">
 				 	
 				 </script>
@@ -182,7 +182,7 @@
 					
 				});
 			</script>
-						<form action="/fy/admin/biz/product/collect/downloadFile"  method="post" target="_blank" hidden="hidden" id="download_form">
+						<form action="/fy/admin/biz/product/collect/downloadCollect"  method="post" target="_blank" hidden="hidden" id="download_form">
 							
 						</form>
 						<div  id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">

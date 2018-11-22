@@ -1,5 +1,7 @@
 package com.chen.fy.controller.business.check;
 
+import java.io.File;
+
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
@@ -102,4 +104,9 @@ public class CheckCollectController extends BaseController {
 
 	}
 
+	public void downloadCheckCollect() throws Exception {
+		String[] ids = getParaValues("selectId");
+		File file = service.download(ids);
+		renderFile(file);
+	}
 }

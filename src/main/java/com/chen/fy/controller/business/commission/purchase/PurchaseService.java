@@ -132,8 +132,9 @@ public class PurchaseService {
 		String purchase_no = PurchaseNoKit.getNo();// 编号
 
 		excel.setCellVal(2, 19, purchase_no);// 订单编码：
-		excel.setCellVal(3, 19, new Date());// 日期：
-		excel.setDateCellStyle(3, 19, "yyyy/MM/yy", HorizontalAlignment.LEFT);
+		Date d = new Date(System.currentTimeMillis());
+		excel.setCellVal(3, 19, d);// 日期：
+		excel.setDateCellStyle(3, 19, "yyyy/MM/dd", HorizontalAlignment.LEFT);
 
 		String supplier_name = suplier.getName();// 厂商：
 		excel.setCellVal(4, 19, supplier_name);

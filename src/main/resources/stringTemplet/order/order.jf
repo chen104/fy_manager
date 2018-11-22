@@ -119,7 +119,12 @@
 	#end 
 	
 	#if(account.hasColPermission("order","supplier"))
-	<td width="#(colMap.supplier)"> #(x.supplier_name)</td><!-- 制造商-->
+	<td width="#(colMap.supplier)">
+		#if(x.supplier_name) 
+			#(x.supplier_name)
+		 #else if("自产" == x.distribute_to) 发奕林  
+		 #end 
+	</td><!-- 制造商-->
 	#end 
 	
 	#if(account.hasColPermission("order","purchase_cost"))
@@ -139,11 +144,11 @@
 	#end
 	
 	#if(account.hasColPermission("order","in_time"))
-	<td width="#(colMap.in_time)" > #date(x.in_time,"yyyy-MM-dd")</td><!-- 入库时间-->
+	<td width="#(colMap.in_time)" > #date(x.fc_in_time,"yyyy-MM-dd")</td><!-- 入库时间-->
 	 #end
 	 
 	#if(account.hasColPermission("order","check_time"))
-	<td width="#(colMap.check_time)"> #date(x.in_check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
+	<td width="#(colMap.check_time)"> #date(x.fc_check_time,"yyyy-MM-dd")</td><!-- 检测时间-->
 	 #end
 	 
 	#if(account.hasColPermission("order","out_time"))

@@ -35,7 +35,9 @@
 	
 	<td  width="200">#date(x.receive_time,"yyyy-MM-dd")</td>
 	<td  width="100">#date(x.plan_time,"yyyy-MM-dd")</td>	
-							
+	
+	<td  width="100">#date(x.purchase_delivery_date,"yyyy-MM-dd")</td>	
+	
 	<td  width="100">#(x.has_in_quantity)</td>
 	<td width="100">
 	#(x.inhouse_status)

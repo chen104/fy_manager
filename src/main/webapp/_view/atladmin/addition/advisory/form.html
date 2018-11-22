@@ -7,20 +7,20 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">询价单位</label>
+			<label  class="col-sm-3 control-label">客户</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control" placeholder="询价单位" name="model.advisoryOrg"   value="#(model.advisory_org??)"  autocomplete="off">
+				<input type="text" class="form-control" placeholder="客户" name="model.customerNo"   value="#(model.customer_no??)"  autocomplete="off"  >
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">询价人</label>
+			<label  class="col-sm-3 control-label">计划员</label>
 
 			<div class="col-sm-9">
-				<input type="text" class="form-control"  placeholder="询价人"  value="#(model.advisory_persion??)" name="model.advisoryPersion" autocomplete="off">
+				<input type="text" class="form-control"  placeholder="计划员"  value="#(model.planer??)" name="model.planer" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -33,22 +33,22 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">询价日期</label>
+			<label  class="col-sm-3 control-label">订单下达日期</label>
 
 			<div class="col-sm-9">
 				
-				<input type="text" class="form-control"  placeholder="询价日期" data-type='datepicker'  value="#(model.advisory_date??)" name="model.advisoryDate" autocomplete="off">
+				<input type="text" class="form-control"  placeholder="订单下达日期" data-type='datepicker'  value="#(model.order_come_date??)" name="model.orderComeDate" autocomplete="off">
 			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6">
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">报价人	</label>
+			<label  class="col-sm-3 control-label">状态</label>
 
 			<div class="col-sm-9">
-					<input type="text" id="person_name" onclick="onClickPerson()" class="form-control pull-right" value="#(model.answer_persion_name??)"  placeholder="报价人	"  autocomplete="off">
-					<input type="text" id="answer_persion" value="#(model.answer_persion??)" hidden="hidden" name="model.answerPersion">
+					<input type="text"   class="form-control pull-right" value="#(model.status??)"  name="model.status" placeholder="状态"  autocomplete="off">
+ 
 			</div>
 		</div>
 	</div>
@@ -61,10 +61,10 @@
 	<div class="col-md-6">
 
 		<div class="form-group">
-			<label  class="col-sm-3 control-label">报价日期</label>
+			<label  class="col-sm-3 control-label">技术条件</label>
 
 			<div class="col-sm-9">
-					<input type="text" class="form-control pull-right" data-type='datepicker'  placeholder="报价日期"  value="#(model.answer_date??)" name="model.answerDate" autocomplete="off" >
+					<input type="text" class="form-control pull-right"  placeholder="技术条件"  value="#(model.tecnology_require??)" name="model.tecnologyRequire" autocomplete="off" >
 			</div>
 		</div>
 	</div>
@@ -186,6 +186,7 @@
 
 #include("../../person/searchPerson.html")
 #include("../../unit/unitSelectModel.html")
+#include("../../customer/searchCustomer.html")
 <script>
 	
 	function onClickPerson(){
@@ -228,6 +229,15 @@
 		}
 		var selecUnitModal  = new SelecUnitModal( callback );
 		selecUnitModal.show();
+ }
+ 
+ function serchCustomer(){
+	 var callback=function(isSelect,id,name){
+		
+	 }
+	 
+	 var customerUi = 	new  ShowCustomerModel(callback)
+		customerUi.show();
  }
 </script>
 
