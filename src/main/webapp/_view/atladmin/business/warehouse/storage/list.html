@@ -171,7 +171,13 @@
 										<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
 										<td width="100">#(x.distribute_to)</td>
 										
-										<td width="250">#(x.supplier_name)</td>
+										<td width="250">
+										#if(x.supplier_name)
+												#(x.supplier_name)
+											#else if("自产"==x.distribute_to)
+												发奕林
+										#end
+										</td>
 										<td width="100">#(x.storage_quantity)</td>
 										<td width="100">#(x.v_out_quantity)  </td>
 										

@@ -162,6 +162,14 @@ public class CheckExceptionService {
 			excel.setCellVal(row, 13, distribute_to);
 
 			String supplier_name = item.getStr("supplier_name");// 厂商
+
+			if (StringUtils.isEmpty(supplier_name)) {
+
+				if ("自产".equals(distribute_to)) {
+					supplier_name = "发奕林";
+				}
+
+			}
 			excel.setCellVal(row, 14, supplier_name);
 
 			Date check_time = item.getDate("check_time");// 检测日期

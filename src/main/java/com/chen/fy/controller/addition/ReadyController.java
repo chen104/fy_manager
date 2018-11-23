@@ -283,5 +283,20 @@ public class ReadyController extends BaseController {
 		renderJson(ret);
 	}
 
+	public void downloadReady() {
+		String[] ids = getParaValues("selectId");
+		try {
+			File file = service.downloadFile(ids);
+			renderFile(file);
+			return;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		index();
+
+	}
+
 
 }

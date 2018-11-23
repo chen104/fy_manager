@@ -3,7 +3,7 @@
  
 <tr>
 	<td width="50">#(for.index+1+n)</td>
-	<td width="60">#(x.cate_tmp)</td>  
+	<td width="100">#(x.cate_tmp)</td>  
 	<td width="60" >#(x.plan_tmp)</td>
 
 	<td width="100">#(x.execu_status)</td>

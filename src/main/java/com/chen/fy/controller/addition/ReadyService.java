@@ -21,6 +21,7 @@ import com.chen.fy.model.FyBusinessReady;
 import com.chen.fy.model.Person;
 import com.chen.fy.model.Supplier;
 import com.jfinal.club.common.kit.PIOExcelUtil;
+import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -43,9 +44,11 @@ public class ReadyService {
 	 */
 	public Page<Record> findPage(Integer pageIndex, Integer pageSize, String condition, String key) {
 		Page<Record> modelPage = null;
-		String select = "select * ,add_quantity";
-		String from = "  from fy_business_order o  left join fy_ready_add on o.id = ready_order_id ";
-		String where = " where  execu_status ='备货' "; // customer_no ='备货'
+		String select = "select o.* ,add_quantity , d.delivery_no delivery_no ";
+		String from = "  from fy_business_order o  "
+				+ "			left join fy_ready_add ra on o.id = ra.ready_order_id"
+				+ "		LEFT JOIN fy_business_order d on ra.add_order_id = d.id ";
+		String where = " where  o.execu_status ='备货' "; // customer_no ='备货'
 		String orderby = " order by  o.id desc ";
 		if (StringUtils.isNotEmpty(key)) {
 			where += " AND " + condition + " like '%" + key + "%' ";
@@ -415,6 +418,13 @@ public class ReadyService {
 
 	public File downloadFile(String[] ids) throws Exception {
 
+		String select = "select o.* ,add_quantity , d.delivery_no delivery_no ";
+		String from = "  from fy_business_order o  "
+				+ "			left join fy_ready_add ra on o.id = ra.ready_order_id"
+				+ "		LEFT JOIN fy_business_order d on ra.add_order_id = d.id ";
+		String where = " where  o.id  in "; // customer_no ='备货'
+		StringBuilder sb = new StringBuilder();
+		SqlKit.joinIds(ids, sb);
 		File parentfile = new File(PathKit.getWebRootPath() + File.separator + "download/excel");
 		if (!parentfile.exists()) {
 			parentfile.mkdirs();
@@ -424,16 +434,17 @@ public class ReadyService {
 
 		// 读取模板
 
-		String filename = this.getClass().getClassLoader().getResource("templet/download/addready.xlsx").getFile();
+		String filename = this.getClass().getClassLoader().getResource("templet/download/ready/ready.xlsx")
+				.getFile();
 		FileUtils.copyFile(new File(filename), targetfile);
 
 		PIOExcelUtil excel = null;
 		excel = new PIOExcelUtil(targetfile, 0);
 		int row = 1;
-		List<Record> models = Db.find("");
+		List<Record> models = Db.find(select + from + where + sb.toString());
 		for (Record item : models) {
 
-			String customer_name = item.getStr("customer_name"); // 客户
+			String customer_name = item.getStr("customer_no"); // 客户
 			excel.setCellVal(row, 0, customer_name);
 
 			String category_name = item.getStr("category_name"); // 类别

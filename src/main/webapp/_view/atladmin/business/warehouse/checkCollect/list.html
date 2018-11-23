@@ -119,7 +119,7 @@
 			<div   class="box-body table-responsive no-padding">
 				<div>
 					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-						<table style="width:3005px" class="text-center table-bordered">
+						<table style="width:3055px" class="text-center table-bordered">
 							<tbody>
 								<tr>
 								 
@@ -188,7 +188,13 @@
 										<td  width="100">#date(x.order_date,"yyyy-MM-dd")</td>
 										<td width="100">#(x.distribute_to)</td>
 										 
-										<td width="250">#(x.supplier_name)</td>
+										<td width="250">
+											#if(x.supplier_name)
+												#(x.supplier_name)
+											#else if("自产"==x.distribute_to)
+												发奕林
+											#end
+										</td>
 										
 										<td width="100">#(x.has_in_quantity)</td>
 										<td width="100">#(x.pass_quantity)</td>

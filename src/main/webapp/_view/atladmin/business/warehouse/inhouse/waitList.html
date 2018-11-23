@@ -81,11 +81,11 @@
 			<div class="box-body table-responsive no-padding">
 					<div>
 						<div  id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-							<table style="width:2970px" class="text-center table-bordered">
+							<table style="width:3010px" class="text-center table-bordered">
 								<tbody>
 									<tr>
 										<td width="50"> </td>
-										<td width="60">类别</td>
+										<td width="100">类别</td>
 										<td width="60">计划员</td>
 										<td width="100">执行状态</td>
 										<td width="100">客户编码</td>
@@ -120,12 +120,12 @@
 						
 						
 						<div id="div_table"  style="overflow: scroll;height: 600px; ">
-							<table class=" table-bordered text-center"  style="width: 2970px">
+							<table class=" table-bordered text-center"  style="width: 3010px">
 									<tbody id="table">
 										#for(x : modelPage.getList())
 										<tr>
 											<td width="50">#(for.index+1)</td>
-											<td width="60">#(x.cate_tmp)</td>  
+											<td width="100">#(x.cate_tmp)</td>  
 											<td width="60" >#(x.plan_tmp)</td>
 											
 											<td width="100">#(x.execu_status)</td>
@@ -135,7 +135,14 @@
 											<td width="150">#(x.map_no)  </td>
 											<td width="200">#(x.commodity_name)</td>
 											
-											<td width="250">#(x.supplier_name)</td>
+											<td width="250">
+											
+											#if(x.supplier_name)
+												#(x.supplier_name)
+											#else if("自产"==x.distribute_to)
+												发奕林
+											#end
+											</td>
 											
 											<td width="100" >
 												#fypermession("inhouse")
