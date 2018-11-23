@@ -366,6 +366,11 @@ public class OrderService2 {
 			// }
 			// System.out.println(workid);
 			String DeliveryId = excel.getCellVal(i, 5);// 送货单号
+			if (StringUtils.isNotEmpty(DeliveryId)) {
+				DeliveryId = DeliveryId.trim();
+				DeliveryId = StringUtils.chomp(DeliveryId);
+			}
+			System.out.println(DeliveryId);
 			item.setDeliveryNo(DeliveryId);
 
 			String mapNo = excel.getCellVal(i, 6);// 图号 图纸

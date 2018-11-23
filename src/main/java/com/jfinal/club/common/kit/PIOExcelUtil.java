@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.DVConstraint;
@@ -366,6 +367,9 @@ public class PIOExcelUtil {
 		default:
 			cellVal = "";
 			break;
+		}
+		if (StringUtils.isNotEmpty(cellVal)) {
+			cellVal = cellVal.trim();
 		}
 		return cellVal;
 	}
