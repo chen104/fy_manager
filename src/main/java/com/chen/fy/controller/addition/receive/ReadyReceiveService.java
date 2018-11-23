@@ -27,29 +27,15 @@ public class ReadyReceiveService {
 		String orderby = " order by  o.id desc ";
 		if (StringUtils.isEmpty(key)) {
 			modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
-		} else {
-
-			// StringBuilder sb = new StringBuilder();
-			// sb.append(" and ").append(condition).append(" like '").append(key).append("'
-			// ");
-			// modelPage = FyBusinessOrder.dao.paginate(getParaToInt("p", 1), 10,
-			// "select
-			// o.*,r.order_no,r.add_quantity1,r.add_quantity2,r.add_quantity3,r.quantity
-			// ready_quantity ,add_status",
-			// "from fy_business_order o LEFT JOIN fy_business_ready r\r\n"
-			// + "on o.ready_id= r.id where dis_to = 3 " + sb.toString() + " order by id
-			// desc");
-
 		}
-
 		return modelPage;
 	}
 
 	public Page<Record> findJsonPage(Integer index, Integer pageSize, String map_no) {
 		Page<Record> modelPage = null;
-		String select = "select o.id,o.commodity_name,map_no,quantity ";
+		String select = "select o.id,o.commodity_name,map_no,quantity,execu_status";
 		String from = "  from fy_business_order o   ";
-		String where = " where  1 =1  ";// customer_no = '备货'
+		String where = " where  execu_status = '备货' ";// customer_no = '备货'
 		String orderby = " order by  o.id desc ";
 		if (StringUtils.isNotEmpty(map_no)) {
 			map_no = map_no.trim();
@@ -170,16 +156,16 @@ public class ReadyReceiveService {
 				int re = Db.update(update + idsb.toString());
 
 				Db.delete("delete from fy_ready_add where add_order_id in " + idsb.toString());
-				logger.debug(" 撤回备货 sql==> " + update + idsb.toString() + "  \n sql ==> "
+				logger.debug(" 重置接收备货 sql==> " + update + idsb.toString() + "  \n sql ==> "
 						+ "delete from fy_ready_add where add_order_id in " + idsb.toString());
 				return re == ids.length;
 			}
 		});
 		if (re) {
 
-			return Ret.ok().set("msg", "撤回完成");
+			return Ret.ok().set("msg", "重置备货完成");
 		} else {
-			return Ret.ok().set("msg", "撤回失败，刷新之后再撤回");
+			return Ret.ok().set("msg", "重置失败，刷新之后再重置");
 		}
 	}
 }

@@ -44,12 +44,13 @@ public class ReadyService {
 	public Page<Record> findPage(Integer pageIndex, Integer pageSize, String condition, String key) {
 		Page<Record> modelPage = null;
 		String select = "select * ,add_quantity";
-		String from = "  from fy_business_order o  left join ready_view on o.id = ready_order_id ";
+		String from = "  from fy_business_order o  left join fy_ready_add on o.id = ready_order_id ";
 		String where = " where  execu_status ='备货' "; // customer_no ='备货'
-		String orderby = " order by  id desc ";
-		if (StringUtils.isEmpty(key)) {
-			modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
+		String orderby = " order by  o.id desc ";
+		if (StringUtils.isNotEmpty(key)) {
+			where += " AND " + condition + " like '%" + key + "%' ";
 		}
+		modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
 		return modelPage;
 	}
 
@@ -73,6 +74,10 @@ public class ReadyService {
 
 			if (order.getReadyId() != null) {
 				return Ret.fail().set("msg", "备货失败，订单已经备货了");
+			}
+
+			if (order_id == ready_id) {
+				return Ret.fail().set("msg", "备货失败，备货订单不能选自己");
 			}
 			// 更新工作订单号，补单状态
 			BigDecimal quantity1 = model.getAddQuantity1();

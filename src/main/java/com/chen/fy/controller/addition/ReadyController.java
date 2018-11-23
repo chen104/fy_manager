@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -11,13 +12,17 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessReady;
+import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.ReadyProductNoKit;
 import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.template.Engine;
 import com.jfinal.upload.UploadFile;
 
 public class ReadyController extends BaseController {
@@ -36,6 +41,44 @@ public class ReadyController extends BaseController {
 			+ "LEFT JOIN fy_base_person person on person.id=r.planer_id  \n"
 			+ "left join fy_base_supplier su on su.id= r.supplier_id  \n"
 			+ "LEFT JOIN fy_base_unit unit on unit.id = r.unit \n";
+	Engine engine;
+
+	public ReadyController() {
+		engine = new Engine();
+		engine.setToClassPathSourceFactory();
+		engine.addDirective("orderColor", OrderColorDirective.class);
+		engine.addDirective("taxRate", TaxRateDirective.class);
+	}
+
+	public void findJsonPage() {
+		String key = getPara("keyWord");
+		if (key != null) {
+			key = key.trim();
+		}
+
+		keepPara("keyWord", "condition", "modelId");
+		String condition = getPara("condition");
+		Page<Record> modelPage = null;
+		try {
+			modelPage = service.findPage(getParaToInt("p", 1) + 1, getPageSize(), condition, key);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+		Ret ret = Ret.ok("msg", "加载数据");
+		HashedMap<String, Object> data = new HashedMap<String, Object>();
+		data.put("modelPage", modelPage);
+		data.put("pageSize", getPageSize());
+		engine.addSharedObject("account", getLoginAccount());
+		String str = engine.getTemplate("stringTemplet/addtion/ready/list.jf").renderToString(data);
+		ret.set("data", str);
+		ret.set(Constant.pageIndex, modelPage.getPageNumber());
+		ret.set(Constant.pagePageSize, modelPage.getPageSize());
+		ret.set(Constant.pageTotalRow, modelPage.getTotalRow());
+		ret.set(Constant.pageTotal, modelPage.getTotalPage());
+		ret.set(Constant.pageListSize, modelPage.getList().size());
+		renderJson(ret);
+	}
 
 	public void index() {
 		String key = getPara("keyWord");

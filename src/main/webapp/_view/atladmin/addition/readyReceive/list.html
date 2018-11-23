@@ -1,6 +1,14 @@
 #@myLayout() #define main()
 
+<<style>
+<!--
 
+-->
+	.div_table td{
+		padding: 0px;
+	}
+
+</style>
 <div class="row">
 	<div class="col-xs-12">
 		<div class="box">
@@ -95,142 +103,202 @@
 			
 			</script>
 			<!-- /.box-header -->
-			<div id="div_table" class="box-body table-responsive no-padding">
-	
-					<table class="table table-bordered text-center"  style="white-space:nowrap">
-						<thead>
-							<tr >
-								<th style="">序号</th>
-								<th  ><input type="checkbox" checked="checked" id="selectAll"></th>
-								<th>类别</th>
-								<th>计划员</th>
-								<th>执行状态</th>
-								<th>客户编码</th>
-								<th>订单日期</th>
-								<th>交货日期</th>
-								<th>工作订单号</th>
-								<th>送货单号</th>
-								<th>商品名称</th>
-								<th>图号</th>
-								<th>总图号</th>
-								<th>技术条件</th>
-								<th>质量等级</th>
-								<th>数量</th>
-								<th>单位</th>
+			
+			
+			<div   class="box-body table-responsive no-padding">
+				<div>
+					<div id ="div_head"  style="overflow-x:hidden; overflow-y:scroll;" >
+						<table class="text-center table-bordered"  id="table_head" style="width:2395px" >
+							<tbody>
+								<tr>
+									<td width="50" >序号</td>
+									<td  width="60" ><input type="checkbox" checked="checked" id="selectAll"></td>
+									<td width="60">类别</td>
+									<td width="60">计划员</td>
+									<td  width="100">执行状态</td>
+									<td  width="100">客户编码</td>
+									<td  width="100">订单日期</td>
+									<td  width="100">交货日期</td>
+									<td  width="150">工作订单号</td>
+									<td width="150">送货单号</td>
+									<td width="200">商品名称</td>
+									<td width="150">图号</td>
+									<td width="200">总图号</td>
+									<td width="200">技术条件</td>
+									<td width="80">质量等级</td>
+									<td  width="100">数量</td>
+									<td  width="35">单位</td>
+							
+									<td width="50">分配流向</td>
+									<td width="50">分配属性</td>
+									<td width="100">分配时间</td>
+									
+									<td width="100">补单数量</td>
+									<td width="100">未补单数量</td>
+									
+									<td width="100">操作</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div  id="div_table"  style="overflow: scroll;height: 600px; ">
 						
-								<th>分配流向</th>
-								<th>分配属性</th>
-								<th>分配时间</th>
+						<table   class=" table-bordered text-center"  style=" width: 2395px; ">
+							<tbody id="table"  >
+								#for(x : modelPage.getList())
+								<tr >
+									<td width="50">#(for.index+1)</td>
+									<td width="60"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
+									<td width="60">#(x.cate_tmp)</td>
+									<td width="60">#(x.plan_tmp)</td>
+									<td width="100">#(x.execu_status)</td>
+									<td width="100">#(x.customer_no)</td>
+									<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>
+									<td width="100"> #(x.delivery_date)</td>
+									<td width="150">#(x.work_order_no)</td>
+									<td width="150">#(x.delivery_no)</td>
+									<td width="200">#(x.commodity_name)</td>
+									<td width="150">#(x.map_no)</td>
+									<td width="200">#(x.total_map_no)</td>
+									
+									<td  width="200">#(x.technology)</td>
+									<td width="80">#(x.machining_require)</td>
+									<td width="100">#(x.quantity)</td>
+									<td  width="35">#(x.unit_tmp)</td>
 								
-								<th>补单数量</th>
-								<th>未补单数量</th>
+									<td width="50">#(x.distribute_to)</td>
+									<td width="50">#(x.distribute_attr)</td>
+									<td  width="100">#date(x.distribute_time,"yyyy-MM-dd")</td>
+									
+									<td  width="100">#(x.add_quantity)</td>
+									<td  width="100">#(x.unadd_quantity)</td>
+									
+									<td  width="100">
+									
 								
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							#for(x : modelPage.getList())
-							<tr >
-								<td>#(for.index+1)</td>
-								<td > <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
-								<td>#(x.cate_tmp)</td>
-								<td>#(x.plan_tmp)</td>
-								<td>#(x.execu_status)</td>
-								<td>#(x.customer_no)</td>
-								<td>#(x.order_date)</td>
-								<td>#(x.delivery_date)</td>
-								<td>#(x.work_order_no)</td>
-								<td>#(x.delivery_no)</td>
-								<td>#(x.commodity_name)</td>
-								<td>#(x.map_no)</td>
-								<td>#(x.total_map_no)</td>
-								
-								<td>#(x.technology)</td>
-								<td>#(x.machining_require)</td>
-								<td>#(x.quantity)</td>
-								<td>#(x.unit_tmp)</td>
-							
-								<td>#(x.distribute_to)</td>
-								<td>#(x.distribute_attr)</td>
-								<td>#(x.distribute_time)</td>
-								
-								<th>#(x.add_quantity)</th>
-								<th>#(x.unadd_quantity)</th>
-								
-								<td>
-								
-							
-									#if(x.ready_order_id)
-										#if(x.add_quantity!=x.quantity)
-											#fypermession("readyReceive_add_quantity")
-											<a data-id="#(x.id)"  name="addquantiy"> <i
-												class="fa fa-hand-pointer-o" title="选择备货">补货</i>
+										#if(x.ready_order_id)
+											#if(x.add_quantity!=x.quantity)
+												#fypermession("readyReceive_add_quantity")
+												<a data-id="#(x.id)"  name="addquantiy"> <i
+													class="fa fa-hand-pointer-o" title="选择备货">补货</i>
+												</a>
+												#end
+											#end
+											#fypermession("readyReceive_rollback")
+												<a style="margin-left: 10px"  data-map="#(x.map_no)"
+												data-id="#(x.id)" name="rollback_ready" > <i class="fa  fa-chain" title="重置">重置</i>
+												</a>
+											#end
+										#else
+											#fypermession("readyReceive_select_ready")
+											<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
+											data-id="#(x.id)" onclick="onSelectReady(this)" > <i
+												class="fa  fa-chain" title="选择备货">选择备货</i>
 											</a>
 											#end
 										#end
-										#fypermession("readyReceive_rollback")
-											<a style="margin-left: 10px"  data-map="#(x.map_no)"
-											data-id="#(x.id)" name="rollback_ready" > <i class="fa  fa-chain" title="重置">重置</i>
-											</a>
-										#end
-									#else
-										#fypermession("readyReceive_select_ready")
-										<a style="margin-left: 10px" data-title="#escape(x.name)" data-map="#(x.map_no)"
-										data-id="#(x.id)" onclick="onSelectReady(this)" > <i
-											class="fa  fa-chain" title="选择备货">选择备货</i>
-										</a>
-										#end
-									#end
+										
 									
-								
-								</td>
-							</tr>
-							#end
-						</tbody>
-					</table>
-		
-
+									</td>
+								</tr>
+								#end
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<!-- /.box-body -->
-
-			<div class="box-footer clearfix">
-				#@myadminPaginate(modelPage.pageNumber, modelPage.totalPage,
-				"/fy/admin/biz/addition/readyReceive?p=")</div>
-				
-				<div style="position:fixed ; bottom:20px;width:50%;right: 20px" >
-				<input id="ex6" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" style="width: 100%"/>  
-			 <script type="text/javascript">
-			 //data-slider-max="100"
-				 $(function(){
-					 var lenth= $("#div_table").get(0).scrollWidth -$("#div_table").width();
-					var ex6 =  $("#ex6");
-					ex6.slider({
-						max:lenth
-					});
-					 $("#ex6").on("slide", function(slideEvt) {
-						 var withSize = $("#div_table").width();
-						 $("#div_table").scrollLeft(slideEvt.value);
-					 	  
-					 	
-					 });
-					 
-					 var div_table=  $("#div_table");
-					 div_table.scroll(function(){
- 
-						var scrollLeft =  $(this).scrollLeft();
-					//	 console.info("scrollLeft : "+ scrollLeft);
-						$("#ex6").slider('setValue', scrollLeft);
-					 
-					 });
-				 });
-			
-			 </script>
-			 </div>
-				
+			<!-- /.box-body -->	
 		</div>
 		<!-- /.box -->
 	</div>
 </div>
+
+
+<input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
+
+<input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>
+<input searchItem='ajax' hidden="hidden" id="currentPage" name="p" value="#(modelPage.pageNumber)"></input>
+<input searchItem='ajax'  hidden="hidden" id="totalRow" value="#(modelPage.totalRow)"></input>
+
+<input searchItem='ajax'  hidden="hidden" name="keyWord" value="#(keyWord)"></input>
+<input searchItem='ajax'  hidden="hidden"  name="condition" value="#(condition)"></input>
+
+<script type="text/javascript">
+<!--
+
+//-->
+		$(function(){
+		
+			
+			$(function(){
+				
+				var div_table = document.getElementById("div_table");
+			//	console.info(div_table);
+				$("#div_table").scroll(function(){
+
+				
+					var div_table = document.getElementById("div_table");
+					var offsetHeight1 = div_table.offsetHeight;
+					var scrollHeight1 = div_table.scrollHeight;
+					var clientHeight1 = div_table.clientHeight;
+					//console.info("offsetHeight " + offsetHeight +" scrollHeight  " +scrollHeight + "  clientHeight "+ clientHeight);
+					//console.info("offsetHeight " + offsetHeight1 +" scrollHeight  " +scrollHeight1 + "  clientHeight "+ clientHeight1);
+				 
+					var xs= $(this).scrollLeft();
+					var scroll = $(this).scrollTop();
+					 
+					$("#div_head").scrollLeft(xs);
+					// console.info((scrollHeight1-clientHeight1)+" "+ scroll);
+			
+					if((scrollHeight1-clientHeight1)-scroll <100){
+						
+						if($("#currentPage").val() != $("#totalpage").val()){
+							$.ajax({
+								   type: "POST",
+								   url:'/fy/admin/biz/addition/readyReceive/findJsonPage',
+								   data:$("[searchItem='ajax']").serialize(),
+								   async:false,
+								   success: function(ret){
+									   if (ret.state == "ok") {
+											$("#table").append(ret.data);
+											$("#currentPage").val(ret.pageNumber);
+											//var rownumebr = $("#rownumber").text();
+											//var row =  new Number(rownumebr) + ret.listSize;
+											//$("#rownumber").text(row);
+											
+										//	var amount = $("#amount_tatol").text();
+											//var total =  new Number(amount) + ret.amount;
+											//$("#amount_tatol").text(total);
+										}
+									   $("#table tr").click(function(){
+							 	  			$(".select_tr").removeClass("select_tr");
+							 	  			$(this).addClass("select_tr");
+							 	  			
+						 	  			}); 
+								   },
+								   error:function (XMLHttpRequest, textStatus, errorThrown) {
+									    // 通常 textStatus 和 errorThrown 之中
+									    // 只有一个会包含信息
+									 //   this; // 调用本次AJAX请求时传递的options参数
+									   alert('网络异常');
+									}
+								});
+							
+						}
+					}
+					 
+				});
+				
+			});
+			
+			
+		});
+		
+	
+</script>
+
+
 #include("searchReady.html")
 <script type="text/javascript">
 	

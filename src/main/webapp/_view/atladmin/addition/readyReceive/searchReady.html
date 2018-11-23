@@ -21,6 +21,7 @@
 						<thead>
 							<tr>
 								<th></th>
+								<th>执行状态</th>
 								<th>名称</th>
 								<th>图号</th>
 					
@@ -145,6 +146,7 @@ function getReadyFromServer(pageNumer , order_id){
 				console.debug(plist[x].id+"  "+plist[x].commodity_name);
 				
 				var tr='<tr><td class="text-center"><input type="radio" name="selectReady" value="'+plist[x].id+'_'+plist[x].commodity_name+'"></td>'+
+				'<td>'+checknull(plist[x].execu_status)+'</td>'+
 				'<td>'+checknull(plist[x].commodity_name)+'</td>'+
 				'<td>'+plist[x].map_no+'</td>'+
 				'<td>'+plist[x].quantity+'</td></tr>';

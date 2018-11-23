@@ -395,4 +395,48 @@ public class ExecutWidth {
 
 	}
 
+	public void getAddReadyReceiveWidth() throws IOException {
+		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/addtion/readreceive/list.jf");
+
+		File file = new File(url.getFile());
+
+		System.out.println(file.exists());
+		String str = FileUtils.readFileToString(file);
+		// System.out.println(str);
+		Document doc = Jsoup.parse(str);
+		// System.out.println(doc.toString());
+		Elements elements = doc.select("td");
+		int total = 0;
+		for (Element e : elements) {
+			String width = e.attr("width");
+			System.out.println(width);
+			total += Integer.valueOf(width);
+		}
+		System.out.println(total);
+
+	}
+
+	@Test
+	public void getAddReadyWidth() throws IOException {
+		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/addtion/ready/list.jf");
+
+		File file = new File(url.getFile());
+
+		System.out.println(file.exists());
+		String str = FileUtils.readFileToString(file);
+		// System.out.println(str);
+		Document doc = Jsoup.parse(str);
+		// System.out.println(doc.toString());
+		Elements elements = doc.select("td");
+		int total = 0;
+		for (Element e : elements) {
+			String width = e.attr("width");
+			System.out.println(width);
+			total += Integer.valueOf(width);
+		}
+		System.out.println(total);
+
+	}
+
+
 }

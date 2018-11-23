@@ -156,23 +156,24 @@ public class AdvisoryCostConllor extends BaseController {
 						item.set("unit", uid);
 					}
 
-					String base_cost = excel.getCellVal(i, 9);// 本部单机
+					String quantity = excel.getCellVal(i, 9);// 数量',
+					item.set("quantity",
+							NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) : new BigDecimal("0"));
+
+					String base_cost = excel.getCellVal(i, 10);//
 					item.set("base_cost",
 							NumberUtils.isNumber(base_cost) ? new BigDecimal(base_cost) : new BigDecimal("0"));
 
-					String customer_profit_cost = excel.getCellVal(i, 10);// 客户利润价价
+					String customer_profit_cost = excel.getCellVal(i, 11);// 客户利润价价
 					item.set("customer_profit_cost",
 							NumberUtils.isNumber(customer_profit_cost) ? new BigDecimal(customer_profit_cost)
 									: new BigDecimal("0"));
 
-					String customer_profit_amount = excel.getCellVal(i, 11);// 客户利润价价
+					String customer_profit_amount = excel.getCellVal(i, 12);// 客户利润价价
 					item.set("customer_profit_amount",
 							NumberUtils.isNumber(customer_profit_amount) ? new BigDecimal(customer_profit_amount)
 									: new BigDecimal("0"));
 
-					String quantity = excel.getCellVal(i, 12);// 数量',
-					item.set("quantity",
-							NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) : new BigDecimal("0"));
 
 					list.add(new Record().setColumns(item));
 					i++;
