@@ -3,7 +3,7 @@ package com.chen.fy.directive;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.chen.fy.model.FyBusinessOrder;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.template.Directive;
 import com.jfinal.template.Env;
 import com.jfinal.template.io.Writer;
@@ -16,10 +16,11 @@ import com.jfinal.template.stat.Scope;
  * @author Administrator
  *
  */
-public class OrderColorDirective extends Directive {
+public class CommissionColorDirective extends Directive {
 	private Date currentDate;
 	Calendar calender;
-	public OrderColorDirective() {
+
+	public CommissionColorDirective() {
 		currentDate = new Date();
 		calender = Calendar.getInstance();
 	}
@@ -35,10 +36,14 @@ public class OrderColorDirective extends Directive {
 
 			// Object obj = scope.get(objs);
 
-			if (obj instanceof FyBusinessOrder) {
-				FyBusinessOrder model = (FyBusinessOrder) obj;
-				if (model.getQuantity() != model.getInt("v_out_quantity")) {
-					Date deliverdate = model.getDeliveryDate();// 交货日期
+			if (obj instanceof Record) {
+				Record model = (Record) obj;
+				Integer quantity = model.getInt("quantity");
+				if (quantity != model.getInt("pass_quantity")) {
+					Date deliverdate = model.getDate("purchase_delivery_date");// 预计完成时间
+					if (deliverdate == null) {
+						return;
+					}
 					calender.setTime(deliverdate);
 					calender.add(Calendar.DATE, 1);// 当天不算拖期
 					Date tmp = calender.getTime();

@@ -190,7 +190,7 @@
 								<tbody>
 									<tr>
 										<td width="50"><input type="checkbox" checked="checked" id="selectAll"></td>
-										<td width="50">类别</td>
+										<td width="100">类别</td>
 										<td width="60" >计划员</td>
 										<td width="65">执行状态</td>
 										<td width="65">客户编码</td>
@@ -221,12 +221,12 @@
 						
 						<div id="div_table"  style="overflow: scroll;height: 600px; " >
 							<form id="udpate_form" action="/fy/admin/biz/product/collect/findUpdatePlan" method="post">
-							<table  class=" table-bordered text-center"   style="width:3040px ">
+							<table  class=" table-bordered text-center"   style="width:3090px ">
 								<tbody id="table">
 									#for(x : modelPage.getList())
-									<tr>
+									<tr  class="#productColor(x)" >
 										<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
-										<td width="50">#(x.cate_tmp)</td>  
+										<td width="100">#(x.cate_tmp)</td>  
 										<td  width="60">#(x.plan_tmp)</td>
 										<td width="65">#(x.execu_status)</td>
 										<td width="65">#(x.customer_no)</td>

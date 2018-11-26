@@ -12,8 +12,35 @@
 				<span style="top: 0px">
 				<span class="box-title text-center" style="padding-top: 0px;margin-top: 0px" >订单管理</span>
 				#fypermession("order_download")
-				<a href="/fy/admin/biz/fyorder/order2/toDownload"><button class="btn btn-primary">下载</button> </a>
+				<button class="btn btn-primary" id="bt_download">下载</button> 
 				#end
+					<script type="text/javascript">
+				$(function(){
+					$("#bt_download").click(function(){
+						var form =$("#download_form");
+						form.empty();
+						var isChecked = $('input[name=selectId]:checked');;
+						if(isChecked.length == 0){
+							alert("没有选择");
+							return;
+						}
+						isChecked.each(function() {
+							//$(this).attr('checked', true);
+							var input=$("<input/>");
+							input.attr("name","selectId");
+							input.attr("value",this.value);
+							form.append(input);
+						});
+						//console.info(form)
+						form.submit();
+					});
+					
+				});
+			</script>
+				<form action="/fy/admin/biz/fyorder/order2/download"  method="post" target="_blank" hidden="hidden" id="download_form">
+					
+				</form>
+				
 				
 				#fypermession("order_delete")
 					<button class="btn btn-primary" id="bt_delete">删除</button> 
@@ -308,7 +335,7 @@
 							
 							<tbody>
 						#for(x : modelPage.getList())
-							<tr class="#orderColor("x")">
+							<tr class="#orderColor(x)">
 							 
 								<td width="50">#(for.index+1) </td>
 							

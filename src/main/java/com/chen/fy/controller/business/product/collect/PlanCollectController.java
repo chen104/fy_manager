@@ -9,7 +9,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
-import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.jfinal.club.common.kit.Constant;
@@ -27,8 +27,10 @@ public class PlanCollectController extends BaseController {
 	public PlanCollectController() {
 		engine = new Engine();
 		engine.setToClassPathSourceFactory();
-		engine.addDirective("orderColor", OrderColorDirective.class);
+		engine.addDirective("productColor", ProductColorDirective.class);
+
 		engine.addDirective("taxRate", TaxRateDirective.class);
+
 	}
 
 	public void findJsonPage() {

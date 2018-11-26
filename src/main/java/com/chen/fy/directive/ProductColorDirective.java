@@ -16,10 +16,10 @@ import com.jfinal.template.stat.Scope;
  * @author Administrator
  *
  */
-public class OrderColorDirective extends Directive {
+public class ProductColorDirective extends Directive {
 	private Date currentDate;
 	Calendar calender;
-	public OrderColorDirective() {
+	public ProductColorDirective() {
 		currentDate = new Date();
 		calender = Calendar.getInstance();
 	}
@@ -37,8 +37,11 @@ public class OrderColorDirective extends Directive {
 
 			if (obj instanceof FyBusinessOrder) {
 				FyBusinessOrder model = (FyBusinessOrder) obj;
-				if (model.getQuantity() != model.getInt("v_out_quantity")) {
-					Date deliverdate = model.getDeliveryDate();// 交货日期
+				if (model.getQuantity() != model.getInt("pass_quantity")) {
+					Date deliverdate = model.getPlanFinshTime();// 预计完成时间
+					if (deliverdate == null) {
+						return;
+					}
 					calender.setTime(deliverdate);
 					calender.add(Calendar.DATE, 1);// 当天不算拖期
 					Date tmp = calender.getTime();

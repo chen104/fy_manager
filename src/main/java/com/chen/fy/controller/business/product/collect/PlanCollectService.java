@@ -29,20 +29,21 @@ public class PlanCollectService {
 			throws Exception {
 		Page<FyBusinessOrder> modelPage = null;
 
-		String select = "select o.*,originalFileName filename,file.id fileId";
-		String from = " from  fy_business_order o   LEFT JOIN fy_base_fyfile file on o.draw = file.id";
+		String select = "select o.*,originalFileName filename,file.id fileId , pass_quantity";
+		String from = " from  fy_business_order o   \n" + " LEFT JOIN fy_base_fyfile file on o.draw = file.id \n"
+				+ " LEFT JOIN fy_check_collect fc on o.id =fc.order_id ";
 		String where = " where    dis_to = 0 and order_status=12   ";
 		String desc = " order by distribute_time desc ";
 		StringBuilder conditionSb = new StringBuilder();
-
+		// 延期与订单不同，根据计划时间来确定
 		if ("delay_warn".equals(condition)) {
-			String sql = "  AND  DATEDIFF(delivery_date , NOW()) < 4 AND DATEDIFF(delivery_date , NOW()) > 0 and out_quantity = 0 ";
+			String sql = "   AND  DATEDIFF(plan_finsh_time , NOW()) < 3 AND DATEDIFF(plan_finsh_time , NOW()) > 0 and IFNULL(pass_quantity,0) <> o.quantity";
 			conditionSb.append(sql);
 			conditionSb.toString();
 		} else
 
 		if ("delay".equals(condition)) {
-			String sql = " AND     DATEDIFF(delivery_date , NOW()) < 0   and out_quantity = 0 ";
+			String sql = " AND     DATEDIFF(plan_finsh_time , NOW()) < 0   and IFNULL(pass_quantity,0) <> o.quantity";
 			conditionSb.append(sql);
 			conditionSb.toString();
 		} else {

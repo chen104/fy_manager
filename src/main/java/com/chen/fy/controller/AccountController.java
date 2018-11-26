@@ -146,9 +146,13 @@ public class AccountController extends BaseController {
 	@ActionKey("/fy/admin")
 	public void adminIndex() {
 
+		// 分配这展示
 		Integer unDistribut = Db.queryInt("select count(1) num from fy_business_order where dis_to is null");
 		setAttr("unDistribut", unDistribut);
 
+		/**
+		 *
+		 */
 		Integer warn_distribut = Db.queryInt(
 				"select  count(1) num  from fy_business_order where dis_to is null  and DATEDIFF(CURDATE(),import_time) > 2");
 		setAttr("unDistribut", warn_distribut);
@@ -156,7 +160,36 @@ public class AccountController extends BaseController {
 		Integer delay = Db.queryInt(
 				" select  count(1) num  from fy_business_order where out_quantity =0  and DATEDIFF(CURDATE(),import_time) > 30 ");
 		setAttr("delay", delay);
+		
+		//订单警告，根据出库数量和交货日期 决定
+		String order_warn_sql = Db.getSql("index.getOrderWarnCount");
+		Integer order_warn = Db.queryInt(order_warn_sql);
+		setAttr("order_warn", order_warn);
 
+		// 订单拖期，根据出库数量和交货日期 决定
+		String order_delay_sql = Db.getSql("index.getOrderDelayCount");
+		Integer order_delay = Db.queryInt(order_delay_sql);
+		setAttr("order_delay", order_delay);
+
+		// 委外警告，根据采购交货时间
+		String commision_warn_sql = Db.getSql("index.getCommisionWarnCount");
+		Integer commision_warn = Db.queryInt(commision_warn_sql);
+		setAttr("commision_warn", commision_warn);
+
+		// 委外拖期，根据采购交货时间
+		String commision_delay_sql = Db.getSql("index.getCommisionDelayCount");
+		Integer commision_delay = Db.queryInt(commision_delay_sql);
+		setAttr("commision_delay", commision_delay);
+
+		// 自产警告，根据采购交货时间
+		String product_warn_sql = Db.getSql("index.getProductWarnCount");
+		Integer product_warn = Db.queryInt(product_warn_sql);
+		setAttr("product_warn", product_warn);
+
+		// 自产拖期，根据采购交货时间
+		String product_delay_sql = Db.getSql("index.getProductDelayCount");
+		Integer prodect_delay = Db.queryInt(product_delay_sql);
+		setAttr("product_delay", prodect_delay);
 		/**
 		 * 需要传递参数年份，如 2018
 		 */
@@ -174,6 +207,7 @@ public class AccountController extends BaseController {
 			Double item_total = totale;
 			e.set("item_total", item_total);
 		}
+		setAttr("accont", getLoginAccount());
 		setAttr("totalList", list);
 		render("../index.html");
 

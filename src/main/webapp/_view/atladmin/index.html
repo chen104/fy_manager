@@ -5,33 +5,16 @@
   
   <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>#(unDistribut)</h3>
-
-              <p>待分配订单</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            #fypermession("order")
-            <a href="/fy/admin/biz/fyorder/distribute" class="small-box-footer"> 查看<i class="fa fa-arrow-circle-right"></i></a>
-            #end
-          </div>
-        </div>
-    
-        
-        
-          <!-- ./col   small box  
+       
+       #fypermession("order")
+          <!-- ./col   small box    -->
         <div class="col-lg-3 col-xs-6">
          
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>#(delay)</h3>
+              <h3>#(order_warn??0)</h3>
 
-              <p>拖期</p>
+              <p>订单预警</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars "></i>
@@ -39,15 +22,15 @@
             <a href="#" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        -->
+      
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>#(delay)</h3>
+              <h3>#(order_delay??0)</h3>
 
-              <p>拖期</p>
+              <p>订单拖期</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars "></i>
@@ -56,9 +39,97 @@
           </div>
         </div>
         <!-- ./col -->
-       
-        <!-- ./col -->
+       #fypermession("distribut")
+         <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>#(unDistribut)</h3>
+              <p>待分配订单</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="/fy/admin/biz/fyorder/distribute" class="small-box-footer"> 查看<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        #end
+    #end
       </div>
+      
+      
+      #fypermession("commision_collect")
+      <div class="row">
+      
+      	<div class="col-lg-3 col-xs-6">
+         
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>#(commision_warn??0)</h3>
+
+              <p>委外预警</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars "></i>
+            </div>
+            <a href="/fy/admin/biz/commission/collect?pageSize=30&condition=delay_warn&keyWord=" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      
+      
+      	 <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>#(commision_delay??0)</h3>
+
+              <p>委外拖期</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars "></i>
+            </div>
+            <a href="/fy/admin/biz/commission/collect?pageSize=30&condition=delay&keyWord=" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </div>
+      #end
+      	#fypermession("product_collect")
+        <div class="row">
+      
+      	<div class="col-lg-3 col-xs-6">
+         
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>#(product_warn??0)</h3>
+
+              <p>生产预警</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars "></i>
+            </div>
+            <a href="/fy/admin/biz/product/collect?pageSize=30&condition=delay_warn" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      
+      
+      	 <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>#(product_delay??0)</h3>
+
+              <p>生产拖期</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars "></i>
+            </div>
+            <a href="/fy/admin/biz/product/collect?pageSize=30&condition=delay" class="small-box-footer">查看<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      
+      </div>
+      #end
+      
       <div class="row">
       #fypermession("hang_amount_view")
       	<div class="col-lg-6 col-xs-12">

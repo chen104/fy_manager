@@ -64,9 +64,11 @@ import com.chen.fy.controller.business.product.receive.ProduceReceiveController;
 import com.chen.fy.controller.business.storage.StorageController;
 import com.chen.fy.controller.business.waitInhouse.WaitInhouseController;
 import com.chen.fy.controller.role.RoleAdminController;
+import com.chen.fy.directive.CommissionColorDirective;
 import com.chen.fy.directive.FyColPermDirective;
 import com.chen.fy.directive.FyPermissionDirective;
 import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.directive.TestDirective;
 import com.chen.fy.login.LoginService;
@@ -279,6 +281,9 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.addDirective("test", TestDirective.class);
 
 		me.addDirective("orderColor", OrderColorDirective.class);
+		me.addDirective("productColor", ProductColorDirective.class);
+		me.addDirective("commisionColor", CommissionColorDirective.class);
+
 		me.addDirective("now", NowDirective.class);
 
 		// me.addSharedFunction("/_view/_admin/common/__admin_layout.html");

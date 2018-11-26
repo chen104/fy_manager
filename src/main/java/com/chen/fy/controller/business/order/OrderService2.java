@@ -168,9 +168,20 @@ public class OrderService2 {
 		return list;
 	}
 
-	public File downloanOrder2(String[] ids) throws Exception {
-		String select = "select o.*,f.originalFileName filename,f.id fileId  ";
-		String from = "from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  ";
+	public File downloanOrder2(String[] ids, Account account) throws Exception {
+		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " + "  fc.in_time fc_in_time ,\r\n"
+				+ "  fc.check_result fc_check_result, fc.check_time fc_check_time,\r\n"
+				+ " fc.check_result fc_check_result, \n" + " out_view.v_out_time v_out_time,\r\n"
+				+ "out_view.v_out_quantity v_out_quantity,\r\n" + "out_view.v_transport_no v_transport_no,\r\n"
+				+ "out_view.v_transport_company v_transport_company, \n"
+				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,"
+				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
+		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  \n"
+				+ " LEFT JOIN fy_check_collect fc on o.id=fc.order_id \n"
+				+ " LEFT JOIN out_view on out_view.order_id = o.id  \n"
+				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no \n "
+				+ "  LEFT JOIN fy_business_purchase ph on ph.order_id = o.id  \n"
+				+ " LEFT JOIN  fy_base_supplier su on ph.supplier_id = su.id " + "\n";
 		String desc = "  order by o.id desc ";
 		StringBuilder sb = new StringBuilder();
 		SqlKit.joinIds(ids, sb);
@@ -195,128 +206,312 @@ public class OrderService2 {
 
 		int row = 1;
 		for (Record item : list) {
-			String cate_tmp = item.getStr("cate_tmp");// 类别
-			excel.setCellVal(row, 0, cate_tmp);
+			if (account.hasColPermission("order", "category_id")) {
+				String cate_tmp = item.getStr("cate_tmp");// 类别
+				excel.setCellVal(row, 0, cate_tmp);
+			}
+			if (account.hasColPermission("order", "category_id")) {
+				String plan_tmp = item.getStr("plan_tmp");// 计划员
+				excel.setCellVal(row, 1, plan_tmp);
+			}
+			if (account.hasColPermission("order", "execu_status")) {
+				String execu_status = item.getStr("execu_status");// 执行状态
+				excel.setCellVal(row, 2, execu_status);
+			}
+			if (account.hasColPermission("order", "customer_no")) {
+				String urgent_status = item.getStr("customer_no");// 客户编码
+				excel.setCellVal(row, 3, urgent_status);
+			}
 
-			String plan_tmp = item.getStr("plan_tmp");// 计划员
-			excel.setCellVal(row, 1, plan_tmp);
+			if (account.hasColPermission("order", "work_bill_no")) {
+				String workOrder_no = item.getStr("work_order_no");// 工作订单号
+				excel.setCellVal(row, 4, workOrder_no);
+			}
 
-			String execu_status = item.getStr("execu_status");// 执行状态
-			excel.setCellVal(row, 2, execu_status);
+			if (account.hasColPermission("order", "delivery_no")) {
+				String delivery_no = item.getStr("delivery_no");// 送货单号
+				excel.setCellVal(row, 5, delivery_no);
+			}
 
-			String urgent_status = item.getStr("urgent_status");// 紧急状态
-			excel.setCellVal(row, 3, urgent_status);
+			if (account.hasColPermission("order", "map_no")) {
+				String filename = item.getStr("map_no");// 图号
+				excel.setCellVal(row, 6, filename);
+			}
 
-			String workOrder_no = item.getStr("work_order_no");// 工作订单号
-			excel.setCellVal(row, 4, workOrder_no);
+			if (account.hasColPermission("order", "commodity_name")) {
+				String commodity_name = item.getStr("commodity_name");// 名称
+				excel.setCellVal(row, 7, commodity_name);
+			}
 
-			String delivery_no = item.getStr("delivery_no");// 送货单号
-			excel.setCellVal(row, 5, delivery_no);
+			if (account.hasColPermission("order", "total_map_no")) {
+				String map_no = item.getStr("total_map_no");// 总图号
+				excel.setCellVal(row, 8, map_no);
+			}
 
-			String filename = item.getStr("filename");// 图号
-			excel.setCellVal(row, 6, filename);
+			if (account.hasColPermission("order", "quantity")) {
+				Double quantity = item.getDouble("quantity");// 数量
+				excel.setCellVal(row, 9, quantity);
+			}
 
-			String commodity_name = item.getStr("commodity_name");// 名称
-			excel.setCellVal(row, 7, commodity_name);
+			if (account.hasColPermission("order", "unit")) {
 
-			String map_no = item.getStr("map_no");// 总图号
-			excel.setCellVal(row, 8, map_no);
+				String unit_tmp = item.getStr("unit_tmp");// 单位
+				excel.setCellVal(row, 10, unit_tmp);
+			}
 
-			Double quantity = item.getDouble("quantity");// 数量
-			excel.setCellVal(row, 9, quantity);
+			if (account.hasColPermission("order", "draw")) {
 
-			String unit_tmp = item.getStr("unit_tmp");// 单位
-			excel.setCellVal(row, 10, unit_tmp);
+				String filename = item.getStr("filename");// 型号
+				excel.setCellVal(row, 11, filename);
+			}
 
-			String model_no = item.getStr("model_no");// 型号
-			excel.setCellVal(row, 11, model_no);
+			if (account.hasColPermission("order", "model_no")) {
 
-			String commodity_spec = item.getStr("commodity_spec");// 规格
-			excel.setCellVal(row, 12, commodity_spec);
+				String model_no = item.getStr("model_no");// 型号
+				excel.setCellVal(row, 12, model_no);
+			}
 
-			String technology = item.getStr("technology");// 技术条件
-			excel.setCellVal(row, 13, technology);
+			if (account.hasColPermission("order", "commodity_spec")) {
 
-			String machining_require = item.getStr("machining_require");// 质量等级
-			excel.setCellVal(row, 14, machining_require);
+				String commodity_spec = item.getStr("commodity_spec");// 规格
+				excel.setCellVal(row, 13, commodity_spec);
+			}
 
-			Date order_date = item.getDate("order_date");// 订单日期
-			excel.setCellVal(row, 15, order_date);
 
-			excel.setDateCellStyle(row, 15);
+			if (account.hasColPermission("order", "technology")) {
 
-			Date delivery_date = item.getDate("delivery_date");// 交货日期
-			excel.setCellVal(row, 16, delivery_date);
+				String technology = item.getStr("technology");// 技术条件
+				excel.setCellVal(row, 14, technology);
+			}
 
-			excel.setDateCellStyle(row, 16);
+			if (account.hasColPermission("order", "machining_require")) {
 
-			String untaxed_cost = item.getStr("untaxed_cost");// 未税单价
-			excel.setCellVal(row, 17, untaxed_cost);
+				String machining_require = item.getStr("machining_require");// 质量等级
+				excel.setCellVal(row, 15, machining_require);
+			}
 
-			Double amount = item.getDouble("amount");// 金额
-			excel.setCellVal(row, 18, amount);
+			if (account.hasColPermission("order", "order_date")) {
 
-			Double tax_rate = item.getDouble("tax_rate");// 税率
-			excel.setCellVal(row, 19, tax_rate);
+				Date order_date = item.getDate("order_date");// 订单日期
+				excel.setCellVal(row, 16, order_date);
 
-			Double tax_amount = item.getDouble("tax_amount");// 税额
-			excel.setCellVal(row, 20, tax_amount);
+				excel.setDateCellStyle(row, 16);
+			}
 
-			Double tatol_amount = item.getDouble("tatol_amount");// 含税金额
-			excel.setCellVal(row, 21, tatol_amount);
+			if (account.hasColPermission("order", "delivery_date")) {
 
-			Date distribute_time = item.getDate("distribute_time");// 分配时间
-			excel.setCellVal(row, 22, distribute_time);
+				Date delivery_date = item.getDate("delivery_date");// 交货日期
+				excel.setCellVal(row, 17, delivery_date);
+				excel.setDateCellStyle(row, 17);
+			}
 
-			excel.setDateCellStyle(row, 22);
+			if (account.hasColPermission("order", "un_tax_cost")) {
 
-			String distribute_to = item.getStr("distribute_to");// 分配流向
-			excel.setCellVal(row, 23, distribute_to);
+				String untaxed_cost = item.getStr("untaxed_cost");// 未税单价
+				excel.setCellVal(row, 18, untaxed_cost);
+			}
 
-			String supplier_name = item.getStr("supplier_name");// 制造商
-			excel.setCellVal(row, 24, supplier_name);
+			if (account.hasColPermission("order", "amount")) {
 
-			Date receive_time = item.getDate("receive_time");// 接收时间
-			excel.setCellVal(row, 25, receive_time);
+				Double amount = item.getDouble("amount");// 金额
+				excel.setCellVal(row, 19, amount);
+			}
 
-			excel.setDateCellStyle(row, 25);
+			if (account.hasColPermission("order", "tax_rate")) {
 
-			Date plan_time = item.getDate("plan_time");// 投产时间
-			excel.setCellVal(row, 26, plan_time);
+				Double tax_rate = item.getDouble("tax_rate");// 税率
+				excel.setCellVal(row, 20, tax_rate);
+			}
 
-			excel.setDateCellStyle(row, 26);
+			if (account.hasColPermission("order", "tax_amount")) {
 
-			Date in_warehouse_time = item.getDate("in_warehouse_time");// 入库时间
-			excel.setCellVal(row, 27, in_warehouse_time);
+				Double tax_amount = item.getDouble("tax_amount");// 税额
+				excel.setCellVal(row, 21, tax_amount);
+			}
 
-			excel.setDateCellStyle(row, 27);
+			if (account.hasColPermission("order", "tatolAmount")) {
 
-			Date check_time = item.getDate("check_time");// 检测时间
-			excel.setCellVal(row, 28, check_time);
+				Double tatol_amount = item.getDouble("tatol_amount");// 含税金额
+				excel.setCellVal(row, 22, tatol_amount);
+			}
 
-			excel.setDateCellStyle(row, 28);
+			if (account.hasColPermission("order", "distribute_time")) {
 
-			Date out_house_date = item.getDate("out_house_date");// 出库时间
-			excel.setCellVal(row, 29, out_house_date);
+				Date distribute_time = item.getDate("distribute_time");// 分配时间
+				excel.setCellVal(row, 23, distribute_time);
+				excel.setDateCellStyle(row, 23);
 
-			excel.setDateCellStyle(row, 29);
+			}
 
-			String out_house_status = item.getStr("out_house_status");// 出库状态
-			excel.setCellVal(row, 30, out_house_status);
+			if (account.hasColPermission("order", "distribute_to")) {
+				String distribute_to = item.getStr("distribute_to");// 分配流向
+				excel.setCellVal(row, 24, distribute_to);
 
-			String send_address = item.getStr("send_address");// 发货地址
-			excel.setCellVal(row, 31, send_address);
+			}
 
-			String transport_company = item.getStr("transport_company");// 物流名称
-			excel.setCellVal(row, 32, transport_company);
+			if (account.hasColPermission("order", "supplier")) {
 
-			String transport_no = item.getStr("transport_no");// 物流单号
-			excel.setCellVal(row, 33, transport_no);
+				String supplier_name = item.getStr("supplier_name");// 制造商
+				excel.setCellVal(row, 25, supplier_name);
 
-			String is_finsh_product = item.getStr("is_finsh_product");// 物流单号
-			if (StringUtils.isNotEmpty(is_finsh_product)) {
-				is_finsh_product = is_finsh_product.trim();
-				excel.setCellVal(row, 34, is_finsh_product);
+			}
+
+			if (account.hasColPermission("order", "purchase_cost")) {
+
+				// Date receive_time = item.getDate("receive_time");// 接收时间
+				// excel.setCellVal(row, 25, receive_time);
+				//
+				// excel.setDateCellStyle(row, 25);
+				String purchase_cost = item.getStr("purchase_cost");// 采购单价
+				excel.setCellVal(row, 26, purchase_cost);
+			}
+
+			if (account.hasColPermission("order", "purchase_account")) {
+
+				// Date receive_time = item.getDate("receive_time");// 接收时间
+				// excel.setCellVal(row, 25, receive_time);
+				//
+				// excel.setDateCellStyle(row, 25);
+				String purchase_account = item.getStr("purchase_account");// 采购总价
+				excel.setCellVal(row, 27, purchase_account);
+			}
+
+			if (account.hasColPermission("order", "receive_time")) {
+
+				Date receive_time = item.getDate("receive_time");// 接收时间
+				excel.setCellVal(row, 28, receive_time);
+				excel.setDateCellStyle(row, 28);
+			}
+
+
+			if (account.hasColPermission("order", "begin_time")) {
+
+				Date plan_time = item.getDate("plan_time");// 投产时间
+				excel.setCellVal(row, 29, plan_time);
+				excel.setDateCellStyle(row, 29);
+
+			}
+
+			if (account.hasColPermission("order", "in_time")) {
+
+				Date in_warehouse_time = item.getDate("fc_in_time");// 入库时间
+				excel.setCellVal(row, 30, in_warehouse_time);
+				excel.setDateCellStyle(row, 30);
+			}
+
+			if (account.hasColPermission("order", "check_time")) {
+
+				Date check_time = item.getDate("fc_check_time");// 检测时间
+				excel.setCellVal(row, 31, check_time);
+				excel.setDateCellStyle(row, 31);
+
+			}
+
+			if (account.hasColPermission("order", "out_time")) {
+
+				Date out_house_date = item.getDate("v_out_time");// 出库时间
+				excel.setCellVal(row, 32, out_house_date);
+				excel.setDateCellStyle(row, 32);
+
+			}
+
+			if (account.hasColPermission("order", "out_status")) {
+				 Integer quantity = item.getInt("quantity");
+				 Integer v_out_quantity = item.getInt("v_out_quantity");
+				 String out_house_status = null;
+				if(v_out_quantity ==null || v_out_quantity==0) {
+					out_house_status="未出库";
+				}else if(quantity==null){
+					out_house_status="订单异常";
+				}else if(v_out_quantity <0 ||v_out_quantity >quantity) {
+					out_house_status="出库异常";
+				}else if(v_out_quantity < quantity) {
+					out_house_status="部分出库";
+				}else if(v_out_quantity == quantity) {
+					out_house_status="已出库";
+				}else {
+					out_house_status="异常出库数";
+				}
+				
+				excel.setCellVal(row, 33, out_house_status);
+
+			}
+
+			if (account.hasColPermission("order", "send_address")) {
+
+				String send_address = item.getStr("send_address");// 发货地址
+				excel.setCellVal(row, 34, send_address);
+
+			}
+
+			if (account.hasColPermission("order", "transport_company")) {
+
+				String transport_company = item.getStr("v_transport_company");// 物流名称
+				excel.setCellVal(row, 35, transport_company);
+
+			}
+
+			if (account.hasColPermission("order", "transport_no")) {
+
+				String transport_no = item.getStr("v_transport_no");// 物流单号
+				excel.setCellVal(row, 36, transport_no);
+			}
+
+			if (account.hasColPermission("order", "hang_date")) {
+
+				Date out_house_date = item.getDate("gp_hang_date");// 挂账时间
+				excel.setCellVal(row, 37, out_house_date);
+				excel.setDateCellStyle(row, 37);
+
+			}
+
+			if (account.hasColPermission("order", "hang_status")) {
+				Integer quantity = item.getInt("quantity");
+				Integer gp_hang_quantity = item.getInt("gp_hang_quantity");
+				String hang_status = null;
+				if (gp_hang_quantity == null || gp_hang_quantity == 0) {
+					hang_status = "未挂账";
+				} else if (quantity == null) {
+					hang_status = "订单异常";
+				} else if (gp_hang_quantity < 0 || gp_hang_quantity > quantity) {
+					hang_status = "挂账异常";
+				} else if (gp_hang_quantity < quantity) {
+					hang_status = "部分挂账";
+				} else if (gp_hang_quantity == quantity) {
+					hang_status = "已挂账";
+				} else {
+					hang_status = "异常挂账";
+				}
+
+				excel.setCellVal(row, 38, hang_status);
+
+			}
+
+			if (account.hasColPermission("order", "hang_quantity")) {
+
+				String hang_quantity = item.getStr("hang_quantity");// 挂账数量
+				excel.setCellVal(row, 39, hang_quantity);
+			}
+
+			if (account.hasColPermission("order", "hang_amount")) {
+
+				String hang_quantity = item.getStr("hang_amount");// 挂账金额
+				excel.setCellVal(row, 40, hang_quantity);
+			}
+
+			if (account.hasColPermission("order", "unhang_quantity")) {
+
+				String unhang_quantity = item.getStr("unhang_quantity");// 未挂账
+				excel.setCellVal(row, 41, unhang_quantity);
+			}
+
+			if (account.hasColPermission("order", "is_finsh_product")) {
+
+				String is_finsh_product = item.getStr("is_finsh_product");// 是否成品
+				if (StringUtils.isNotEmpty(is_finsh_product)) {
+					is_finsh_product = is_finsh_product.trim();
+					excel.setCellVal(row, 42, is_finsh_product);
+				}
 			}
 
 			row++;

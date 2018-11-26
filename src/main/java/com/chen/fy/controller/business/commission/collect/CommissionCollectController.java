@@ -8,7 +8,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
-import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.CommissionColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.kit.Ret;
@@ -24,7 +24,8 @@ public class CommissionCollectController extends BaseController {
 	public CommissionCollectController() {
 		engine = new Engine();
 		engine.setToClassPathSourceFactory();
-		engine.addDirective("orderColor", OrderColorDirective.class);
+
+		engine.addDirective("commisionColor", CommissionColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
 	}
 

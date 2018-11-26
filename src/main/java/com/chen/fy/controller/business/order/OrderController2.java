@@ -10,7 +10,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.CommissionColorDirective;
 import com.chen.fy.directive.OrderColorDirective;
+import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.jfinal.club.common.kit.Constant;
@@ -30,26 +32,12 @@ public class OrderController2 extends BaseController {
 		engine.setToClassPathSourceFactory();
 		engine.addDirective("orderColor", OrderColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
+		engine.addDirective("productColor", ProductColorDirective.class);
+		engine.addDirective("commisionColor", CommissionColorDirective.class);
 	}
 
 	public void index() {
-		String key = getPara("keyWord");
-		if (key != null) {
-			key = key.trim();
-
-		}
-
-		String condition = getPara("condition");
-		String order_date_start = getPara("order_date_start");
-		String order_date_end = getPara("order_date_end");
-
-		setAttr("append",
-				"&keyWord=" + (key == null ? "" : key) + "&condition=" + (condition == null ? "" : condition));
-		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
-		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1) + 1, getPageSize(),
-				order_date_start, order_date_end);
-		setAttr("modelPage", modelPage);
-		render("orderlist2.html");
+		findtable();
 	}
 
 	public void findtable() {
@@ -156,7 +144,7 @@ public class OrderController2 extends BaseController {
 	public void download() {
 		String[] ids = getParaValues("selectId");
 		try {
-			File file = service.downloanOrder2(ids);
+			File file = service.downloanOrder2(ids, getLoginAccount());
 			renderFile(file);
 
 			return;
@@ -165,7 +153,7 @@ public class OrderController2 extends BaseController {
 			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
-		findDownload();
+		renderText("下载异常");
 	}
 
 	public void uploadFile() {

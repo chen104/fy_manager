@@ -77,6 +77,9 @@
 								
 								<th>客户</th>
 								<th>计划员	</th>	
+								<th>工作订单号</th>	
+								<th>送货单号</th>	
+								<th>牌号</th>	
 								<th>订单下达日期</th>	
 								<th>状态</th>	
 								<th>技术条件</th>	
@@ -97,6 +100,10 @@
 								<td>#(for.index+1)</td>
 								<td>#(x.customer_no)</td>
 								<td>#(x.planer)</td>
+								<td>#(x.work_order_no)</td>
+								<td>#(x.delivery_no)</td>
+								<td>#(x.brand_no)</td>
+								
 								<td>#date(x.order_come_date,"yyyy-MM-dd")</td>
 								
 								<td>#(x.status)</td>	

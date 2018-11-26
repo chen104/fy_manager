@@ -33,6 +33,30 @@ public abstract class BaseFyAdvisoryCost<M extends BaseFyAdvisoryCost<M>> extend
 		return getStr("planer");
 	}
 
+	public void setWorkOrderNo(java.lang.String workOrderNo) {
+		set("work_order_no", workOrderNo);
+	}
+	
+	public java.lang.String getWorkOrderNo() {
+		return getStr("work_order_no");
+	}
+
+	public void setDeliveryNo(java.lang.String deliveryNo) {
+		set("delivery_no", deliveryNo);
+	}
+	
+	public java.lang.String getDeliveryNo() {
+		return getStr("delivery_no");
+	}
+
+	public void setBrandNo(java.lang.String brandNo) {
+		set("brand_no", brandNo);
+	}
+	
+	public java.lang.String getBrandNo() {
+		return getStr("brand_no");
+	}
+
 	public void setOrderComeDate(java.util.Date orderComeDate) {
 		set("order_come_date", orderComeDate);
 	}

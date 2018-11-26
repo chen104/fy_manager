@@ -1,6 +1,6 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
-<tr class="#orderColor("x")">
+<tr class="#orderColor(x)">
 	 
 	<td width="50" >#(for.index  +  n + 1 ) </td>
 	<td width="60"> <input name="selectId" type="checkbox"   value="#(x.id)">  </td>

@@ -1,8 +1,8 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
-<tr>
+<tr class="#productColor(x)" >
 	<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.id)" checked="checked"></td>
-	<td width="50">#(x.cate_tmp)</td>  
+	<td width="100">#(x.cate_tmp)</td>  
 	<td  width="60">#(x.plan_tmp)</td>
 	<td width="65">#(x.execu_status)</td>
 	<td width="65">#(x.customer_no)</td>

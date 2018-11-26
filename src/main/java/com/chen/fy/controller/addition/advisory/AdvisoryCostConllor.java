@@ -132,44 +132,54 @@ public class AdvisoryCostConllor extends BaseController {
 						continue;
 					}
 
-					Date advisory_date = excel.getDateValue(i, 2);// 订单下达日期
+					// 工作订单号
+					String workOrderNo = excel.getCellVal(i, 2);// 状态工作订单号
+					item.setWorkOrderNo(workOrderNo);
+
+					String deliveryNo = excel.getCellVal(i, 3);// 送货单号
+					item.setDeliveryNo(deliveryNo);
+
+					String brandNo = excel.getCellVal(i, 4);// 牌号
+					item.setBrandNo(brandNo);
+
+					Date advisory_date = excel.getDateValue(i, 5);// 订单下达日期
 					item.setOrderComeDate(advisory_date);
 
-					String status = excel.getCellVal(i, 3);// 状态
+					String status = excel.getCellVal(i, 6);// 状态
 					item.setStatus(status);
 
-					String tecnology = excel.getCellVal(i, 4);// 技术条件
+					String tecnology = excel.getCellVal(i, 7);// 技术条件
 					item.setTecnologyRequire(tecnology);
 
-					String commodity_name = excel.getCellVal(i, 5);// 商品名称
+					String commodity_name = excel.getCellVal(i, 8);// 商品名称
 					item.set("commodity_name", commodity_name);
 
-					String commodity_spec = excel.getCellVal(i, 6);// 商品规格
+					String commodity_spec = excel.getCellVal(i, 9);// 商品规格
 					item.set("commodity_spec", commodity_spec);
 
-					String map_no = excel.getCellVal(i, 7);// 总图号，关联图纸
+					String map_no = excel.getCellVal(i, 10);// 总图号，关联图纸
 					item.set("map_no", map_no);
 
-					String unit = excel.getCellVal(i, 8);// 单位
+					String unit = excel.getCellVal(i, 11);// 单位
 					if (StringUtils.isNoneEmpty(unit)) {
 						Integer uid = service.getUnit(unit.trim());
 						item.set("unit", uid);
 					}
 
-					String quantity = excel.getCellVal(i, 9);// 数量',
+					String quantity = excel.getCellVal(i, 12);// 数量',
 					item.set("quantity",
 							NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) : new BigDecimal("0"));
 
-					String base_cost = excel.getCellVal(i, 10);//
+					String base_cost = excel.getCellVal(i, 13);//
 					item.set("base_cost",
 							NumberUtils.isNumber(base_cost) ? new BigDecimal(base_cost) : new BigDecimal("0"));
 
-					String customer_profit_cost = excel.getCellVal(i, 11);// 客户利润价价
+					String customer_profit_cost = excel.getCellVal(i, 14);// 客户利润价价
 					item.set("customer_profit_cost",
 							NumberUtils.isNumber(customer_profit_cost) ? new BigDecimal(customer_profit_cost)
 									: new BigDecimal("0"));
 
-					String customer_profit_amount = excel.getCellVal(i, 12);// 客户利润价价
+					String customer_profit_amount = excel.getCellVal(i, 15);// 客户利润价价
 					item.set("customer_profit_amount",
 							NumberUtils.isNumber(customer_profit_amount) ? new BigDecimal(customer_profit_amount)
 									: new BigDecimal("0"));

@@ -19,3 +19,8 @@
 #namespace("order")
 #include("order.sql")
 #end
+
+
+#namespace("index")
+#include("index.sql")
+#end
