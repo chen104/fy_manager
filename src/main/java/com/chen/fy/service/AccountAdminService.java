@@ -17,10 +17,13 @@ package com.chen.fy.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.chen.fy.login.LoginService;
 import com.chen.fy.model.Account;
 import com.chen.fy.model.Role;
 import com.chen.fy.model.Session;
+import com.jfinal.club.common.kit.IpKit;
 import com.jfinal.kit.HashKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -83,7 +86,7 @@ public class AccountAdminService {
 		return Ret.ok("msg", "账户更新成功");
 	}
 
-	public Ret addAccount(Account account) {
+	public Ret addAccount(Account account, HttpServletRequest request) {
 		Ret ret = null;
 		Account list = dao.findFirst("select  1 from account where userName = ?", account.getUserName());
 		if (list != null) {
@@ -100,13 +103,14 @@ public class AccountAdminService {
 		account.setPassword(password);
 		account.setSalt(salt);
 		// account.setNickName(nickName);
-		account.setStatus(Account.STATUS_REG);
+		account.setStatus(Account.STATUS_OK);
 		account.setCreateAt(new Date());
-		// account.setIp(ip);
+		String ip = IpKit.getRealIp(request);
+		account.setIp(ip);
 		account.setAvatar(Account.AVATAR_NO_AVATAR); // 注册时设置默认头像
 		boolean re = account.save();
 		if (re) {
-			ret = Ret.fail().set("msg", "用户添加成功");
+			ret = Ret.ok().set("msg", "用户添加成功");
 		} else {
 			ret = Ret.fail().set("msg", "用户添加失败");
 		}
@@ -197,6 +201,7 @@ public class AccountAdminService {
 		String password = HashKit.sha256(salt + newpass);
 		user.setPassword(password);
 		user.setSalt(salt);
+		user.setUpdateTime(new Date());
 		boolean re = user.update();
 		if (re) {
 			return Ret.ok().set("msg", "修改密码成功");

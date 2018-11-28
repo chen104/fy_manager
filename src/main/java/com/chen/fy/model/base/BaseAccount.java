@@ -89,4 +89,12 @@ public abstract class BaseAccount<M extends BaseAccount<M>> extends Model<M> imp
 		return getInt("likeCount");
 	}
 
+	public void setUpdateTime(java.util.Date updateTime) {
+		set("update_time", updateTime);
+	}
+	
+	public java.util.Date getUpdateTime() {
+		return get("update_time");
+	}
+
 }

@@ -55,7 +55,7 @@ public class AccountController extends BaseController {
 	public void save() {
 
 		Account account = getBean(Account.class);
-		Ret ret = srv.addAccount(account);
+		Ret ret = srv.addAccount(account, getRequest());
 
 		renderJson(ret);
 	}
