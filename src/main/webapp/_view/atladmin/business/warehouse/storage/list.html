@@ -38,6 +38,43 @@
 			 			});
 			 		});
 			 	</script>
+			 	<button  id="bt_rollback" class="btn btn-info" >撤回</button>
+			 	<script type="text/javascript">
+			 		$(function(){
+			 			$("#bt_rollback").click(function(){
+			 				var outId = $('input[name=selectId]:checked');
+							if(outId.length==0){
+								alert("没有选择订单");
+								return;
+							}
+							var select  = confirm("是否真的要撤回");
+							if(select){
+								$.ajax({
+									   type: "POST",
+									   url:"/fy/admin/biz/whouse/storage/rollback2Check" ,
+									   data:outId.serialize(),
+									   success: function(ret){
+										   alert(ret.msg);
+										   if (ret.state == "ok") {
+											   
+												location.reload();
+											}else{
+										
+											}
+									   },
+									   error:function (XMLHttpRequest, textStatus, errorThrown) {
+										    // 通常 textStatus 和 errorThrown 之中
+										    // 只有一个会包含信息
+										 //   this; // 调用本次AJAX请求时传递的options参数
+										   alert('网络异常');
+										}
+									});
+							}
+			 				
+			 			});
+			 		});
+			 	</script>
+			 	
 				<div class="box-tools" style="display: inline-block;margin-left: 50px">
 					<form action="/fy/admin/biz/whouse/storage"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -143,7 +180,6 @@
 					<div  id="div_table"  style="overflow: scroll;height: 600px;display: block; ">
 						<form id="out_form" action="/fy/admin/biz/whouse/outhouse/batchOutHouse" method="post">
 							<table class=" table-bordered text-center"  style="width: 2555px;">
-							 
 								<tbody id="table">
 									#for(x : modelPage.getList())
 									<tr>

@@ -35,7 +35,7 @@
 									    	<option #if(condition=="supplier") selected="selected" #end value="supplier" >厂商</option>
 									    	<option #if(condition=="hang_date") selected="selected" #end value="hang_date">挂账期间</option>
 									    	<option #if(condition=="pay_date") selected="selected" #end value="pay_date">付账期间</option>
-									  
+									  		<option #if(condition=="work_order_no") selected="selected" #end value="work_order_no" >工作订单号</option>
 									    </select>
 								  
 								  </div>
@@ -77,26 +77,29 @@
 								alert("没有选择应付单");
 								return;
 							}
-							$.ajax({
-								   type: "POST",
-								   url:'/fy/admin/biz/finance/pay/rollback' ,
-								   data:selectIds.serialize(),
-								   success: function(ret){
-									   alert(ret.msg);
-									   if (ret.state == "ok") {
-											location.reload();
-										
+							var select = confirm(" 确定要撤回吗 ？");
+							if(select){
+								$.ajax({
+									   type: "POST",
+									   url:'/fy/admin/biz/finance/pay/rollback' ,
+									   data:selectIds.serialize(),
+									   success: function(ret){
+										   alert(ret.msg);
+										   if (ret.state == "ok") {
+												location.reload();
+											
+											}
+									
+										  
+									   },
+									   error:function (XMLHttpRequest, textStatus, errorThrown) {
+										    // 通常 textStatus 和 errorThrown 之中
+										    // 只有一个会包含信息
+										 //   this; // 调用本次AJAX请求时传递的options参数
+										   alert('网络异常');
 										}
-								
-									  
-								   },
-								   error:function (XMLHttpRequest, textStatus, errorThrown) {
-									    // 通常 textStatus 和 errorThrown 之中
-									    // 只有一个会包含信息
-									 //   this; // 调用本次AJAX请求时传递的options参数
-									   alert('网络异常');
-									}
-								});
+									});
+							}
 					  	});
 					  		
 					  		$("#bt_downlad").click(function(){

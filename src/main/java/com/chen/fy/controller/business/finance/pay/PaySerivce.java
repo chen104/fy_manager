@@ -87,6 +87,8 @@ public class PaySerivce {
 					e.printStackTrace();
 				}
 
+			} else if ("work_order_no".equals(condition)) {
+				where.append("AND o.work_order_no").append(" like '%").append(key).append("%' ");
 			} else {
 				where.append("AND s.name").append(" like '%").append(key).append("%' ");
 			}
@@ -233,6 +235,17 @@ public class PaySerivce {
 
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(payIds, idsb);
+
+		String countsql = " select count(1) num,order_id from fy_business_pay where id in  %s group by order_id having num > 1";
+		countsql = String.format(countsql, idsb.toString());
+		// 检测是否存在同一订单的 两条应付单
+		List<Record> numlist = Db.find(countsql);
+		if (numlist.size() > 0) {
+			Ret ret = Ret.fail().set("msg", "存在同一个订单的 两条应付单，不能同时撤回");
+			return ret;
+		}
+
+
 		// 查找外协单的ID
 		String select = "select id ,parent_id from fy_business_pay where is_purchase = 0 and id in ";
 		List<Record> list = Db.find(select + idsb.toString());
@@ -240,27 +253,36 @@ public class PaySerivce {
 		for (Record e : list) {
 			assistPayId.add(e.getInt("parent_id"));
 		}
+
 		// 查找采购单的id
 		select = "select id ,parent_id,order_id from fy_business_pay where is_purchase = 1 and id in ";
+
 		list = Db.find(select + idsb);
-		List<Integer> inhouseId = new ArrayList<Integer>();
+		List<Integer> payId = new ArrayList<Integer>();
 		HashSet<Integer> order_ids = new HashSet<Integer>();
 		for (Record e : list) {
-			inhouseId.add(e.getInt("parent_id"));
 			order_ids.add(e.getInt("order_id"));
+			payId.add(e.getInt("id"));
 		}
-		if (inhouseId.size() > 0) {
-			String check = "select count(1) num from  fy_business_order o LEFT JOIN  \r\n"
-					+ "(	select order_id,sum(pass_quantity) pass_quantity  from fy_business_in_warehouse\r\n"
-					+ "	where id in (12,1)\r\n" + " GROUP BY order_id\r\n" + ") iw on o.id = iw.order_id\r\n" + " \r\n"
-					+ "where o.id in (1)  \r\n" + "";
+
+		// 检测采购单是否有足够的库存
+		String checkQuantiy = "SELECT order_id from fy_business_order o INNER JOIN \r\n"
+				+ " fy_business_pay p on o.id=p.order_id\r\n" + " where p.id in %s \r\n"
+				+ " AND o.storage_quantity < p.pay_quantity";
+		StringBuilder purchasPayId = new StringBuilder();
+		SqlKit.joinIds(payId, purchasPayId);
+		checkQuantiy = String.format(checkQuantiy, purchasPayId.toString());
+		List<Record> checkList = Db.find(checkQuantiy);
+		if (checkList.size() > 0) {
+			Ret ret = Ret.fail().set("msg", "存在订单库存小于 应付单应付数量");
+			return ret;
 		}
 		boolean re = Db.tx(new IAtom() {
 
 			@Override
 			public boolean run() throws SQLException {
 				int udrow = 0;
-				// 更新外协单
+				// 更新外协单，设置没有应付单
 				if (assistPayId.size() > 0) {
 					StringBuilder assits = new StringBuilder();
 					SqlKit.joinIds(assistPayId, assits);
@@ -269,26 +291,13 @@ public class PaySerivce {
 					udrow = u1 + udrow;
 				}
 				// 更新入库检查单，修改为待检测
-				if (inhouseId.size() > 0) {
+				if (order_ids.size() > 0) {
 					// 更新库存，
-					StringBuilder sb = new StringBuilder();
-					SqlKit.joinIds(inhouseId, sb);
 
-					StringBuilder orderSB = new StringBuilder();
-					SqlKit.joinIds(order_ids, orderSB);
-					String update = "update  fy_business_order o LEFT JOIN  \r\n"
-							+ "(	select order_id,sum(pass_quantity) pass_quantity  from fy_business_in_warehouse\r\n"
-							+ "	where id in " + sb.toString() + "\r\n" + " GROUP BY order_id\r\n"
-							+ ") iw on o.id = iw.order_id\r\n"
-							+ " set o.storage_quantity = o.storage_quantity - pass_quantity,o.has_in_quantity = o.has_in_quantity - pass_quantity\r\n"
-							+ " where o.id in " + orderSB.toString();
-					Db.update(update);
-					update = "update fy_business_in_warehouse set check_time = null,check_result = null,pass_quantity = 0,unpass_quantity = 0 \r\n"
-							+ " where id in ";
-
-					int u2 = Db.update(update + sb.toString());// 设置为检测单
-					udrow = u2 + udrow;
-
+					String sql = Db.getSql("pay.rollbackUpdate");
+					sql = String.format(sql, purchasPayId.toString());
+					int u2 = Db.update(sql);
+					udrow += u2 / 2;
 				}
 				String delete = " delete from fy_business_pay  where id in " + idsb.toString();
 				int delete_num = Db.delete(delete);

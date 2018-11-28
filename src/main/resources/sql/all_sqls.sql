@@ -29,3 +29,9 @@
 #namespace("storage")
 #include("storage.sql")
 #end
+
+
+
+#namespace("pay")
+#include("pay.sql")
+#end

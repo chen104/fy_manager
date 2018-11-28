@@ -85,7 +85,7 @@ public class StorageService {
 		StringBuilder idsb = new StringBuilder();
 		SqlKit.joinIds(ids, idsb);
 		List<Record> list = Db.find(
-				"select count(1),distribute_attr,distribute_to,id from  fy_business_order where  dis_to = 1  AND id in "
+				"select distribute_attr,distribute_to,id from  fy_business_order where  dis_to = 1  AND id in "
 						+ idsb.toString());
 		if (list.size() > 0) {
 			ret = Ret.fail().set("msg", "存在委外单，请在应付单撤回");
@@ -96,8 +96,11 @@ public class StorageService {
 
 			@Override
 			public boolean run() throws SQLException {
-				int updateCount = Db.update(updateSql, idsb.toString());
-				return updateCount == ids.length;
+				String  sql = String.format(updateSql, idsb.toString());
+
+				logger.debug("撤回 库存 sql  " + sql);
+				int updateCount = Db.update(sql);
+				return (updateCount) == (ids.length * 2);
 			}
 		});
 		if (re) {
