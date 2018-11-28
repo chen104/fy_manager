@@ -121,7 +121,7 @@ public class ReadyReceiveController extends BaseController {
 	public void rollback() {
 
 		Integer[] order_id = getParaValuesToInt("order_id");
-		logger.info(" 撤回 备货 " + StringUtils.join(order_id, ","));
+		logger.info(" 重置备货 " + StringUtils.join(order_id, ","));
 		Ret ret = service.reset(order_id);
 		renderJson(ret);
 

@@ -1,0 +1,314 @@
+#@myLayout()
+
+#define main()
+<!-- Horizontal Form -->
+          <div class="box box-info" style="wwidth: 300ps">
+            <div class="box-header with-border">
+              <h3 class="box-title">订单修改</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" id="myForm" action="/fy/admin/biz/fyorder/order2/update" method="post">
+				<input type="hidden" name="model.id" value="#(model.id??)" />
+              <div class="box-body">
+					<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">类别</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="类别"
+										value="#(model.cate_tmp??)" name="model.cate_tmp" id="category">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">计划员</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="计划员" id="personName"
+										value="#(model.plan_tmp??)" name="model.plan_tmp" autocomplete="name" onclick="showChooesPerson($('#personId'),$('#personName'))">
+									<input hidden="" value="" id="personId">
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">工作订单号</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control"  
+										value="#(model.work_order_no??)"   name="model.work_order_no">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">送货单号</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control"  
+										value="#(model.delivery_no??)"  name="model.delivery_no">
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">名称</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="名称"
+										value="#(model.commodity_name??)" name="model.commodity_name">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">订单日期</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="订单日期"
+									data-type='datepicker'	value="#date(model.order_date??,"yyyy-MM-dd")" name="model.order_date">
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">交货日期</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="交货日期"
+									data-type='datepicker'	value="#(model.delivery_date??)" name="model.delivery_date">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">图号</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="图号"
+										value="#(model.map_no??)" name="model.map_no">
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+					
+					<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">总图号</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="总图号"
+										value="#(model.total_map_no??)" name="model.total_map_no">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">数量</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="数量" id="quantity"
+										value="#(model.quantity??)" name="model.quantity">
+								</div>
+							</div>
+						</div>
+					</div>
+
+              </div>
+              
+    
+              
+				<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">未税单价</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="未税单价"  id="untaxed_cost"
+										value="#(model.untaxed_cost??)" name="model.untaxed_cost" onchange="executAmount()">
+								</div>
+							</div>
+						</div>
+				
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">金额</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="金额"
+										value="#(model.amount??)" name="model.amount" id="amount">
+								</div>
+							</div>
+						</div>
+					
+              </div>
+              
+              	<div class="row">
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">税率</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="tax_rate_name" placeholder="税率"
+										value="#taxRate(model.tax_rate??)"   >
+									<input type="text" id="tax_rate" hidden="hidden"
+										value="#(model.tax_rate??)" name="model.tax_rate">
+								</div>
+							</div>
+						</div>
+				
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">税额</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="税额"  
+										value="#(model.tax_amount??)" name="model.tax_amount" id="tax_amount">
+								</div>
+							</div>
+						</div>
+						
+              </div>
+              
+              
+				<div class="row">
+				
+					<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">含税金额</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="含税金额" id="tatol_amount"
+										value="#(model.tatol_amount??)" name="model.tatol_amount">
+								</div>
+							</div>
+					</div>
+				
+				
+						<div class="col-md-6">
+					
+							<div class="form-group">
+								<label class="col-sm-3 control-label">执行状态</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="执行状态"
+										value="#(model.execu_status??)" name="model.execu_status">
+								</div>
+							</div>
+						</div>
+			</div>
+              <!-- /.box-body -->
+              <div class="box-footer text-center">
+              	<div>
+					<a   class="btn btn-default pull-left" href="/fy/admin/biz/fyorder/order2" >返回</a>
+                	<button onclick="" class="btn btn-info">确定</button> <!-- 靠右 class  pull-right  -->
+              	</div>
+             
+              </div>
+              <!-- /.box-footer -->
+            </form>
+          </div>
+ <script src="/assets/atl/dist/js/jquery.form.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+				$("#myForm").ajaxForm({
+					dataType: "json"
+					, beforeSubmit: function(formData, jqForm, options) {}
+					, success: function(ret) {
+						if (ret.state == "ok") {
+							location.href = "/fy/admin/biz/fyorder/order2";
+						} else {
+							showFailMsg(ret.msg);
+						}
+					}
+					, error: function(ret) {alert(ret.statusText);}
+					, complete: function(ret) {} 	      // 无论是 success 还是 error，最终都会被回调 parseFloat(string)
+				});
+			});
+</script>
+#end
+#include("../../../person/personModel.html")
+#include("../../../category/searchCategory.html")
+#include("../../../taxrate/taxSelectModel.html")
+<script type="text/javascript">
+	
+	function executAmount(){
+		var quantity = parseFloat($("#quantity").val());//数量
+		var untaxed_cost = parseFloat($("#untaxed_cost").val());//未税单价
+		var amount = parseFloat($("#amount").val());
+		var tax_amount = parseFloat($("#tax_amount").val());//税额
+		var tax_rate = parseFloat($("#tax_rate").val());//税率
+	//	var tatol_amount = parseFloat($("#tatol_amount").val());
+		
+		if(untaxed_cost&&quantity){
+			amount = untaxed_cost * quantity;
+			$("#amount").val(amount);
+		}
+		
+		if(amount&&tax_rate){
+			tax_amount = amount * tax_rate;
+			$("#tax_amount").val(tax_amount)
+		}
+		
+		if(tax_amount&&amount){
+			var tatol_amount =tax_amount+amount;
+			$("#tatol_amount").val(tatol_amount);
+		}
+		
+	
+	}
+    $(function(){
+    	$("#category").click(function(){
+    		var callback =function(select,id,name){
+    			if(select){
+    				$("#category").val(name);
+    			
+    			}
+    		}
+    		var showCategory = new ShowCategory(callback);
+        	 console.info("test");
+        	 console.info(showCategory);
+        	 
+        	 showCategory.show();
+    	});
+    	$("#tax_rate_name").click(function(){
+    		var callback=function(select,id,name,matchval){
+    			if(select){ 
+    				$("#tax_rate_name").val(name);
+    				$("#tax_rate").val(matchval);
+    				executAmount();
+    			}
+    		}
+    		var	 selectTaxRate = new SelecTaxRateModal(callback);
+    		selectTaxRate.show();
+    	});
+    	
+    	
+    
+    });
+</script>

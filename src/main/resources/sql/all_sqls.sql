@@ -24,3 +24,8 @@
 #namespace("index")
 #include("index.sql")
 #end
+
+
+#namespace("storage")
+#include("storage.sql")
+#end

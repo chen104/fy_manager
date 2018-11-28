@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,7 @@ import com.jfinal.club.common.kit.CommonKit;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.club.common.kit.ZipKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -33,7 +35,7 @@ public class OuthouseService {
 			String out_date_start, String out_date_end) throws Exception {
 		Page<Record> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
-		String select = " select o.* ,f.originalFileName filename,f.id fileId,ou.* ,ou.id out_id ";
+		String select = " select o.* ,f.originalFileName filename,f.id fileId,f.filepath filepath ,ou.* ,ou.id out_id ";
 		String from = " from  fy_business_order o " + " INNER JOIN fy_business_out_warehouse ou on ou.order_id = o.id"
 				+ "   left join fy_base_fyfile  f on o.draw = f.id ";
 
@@ -41,9 +43,17 @@ public class OuthouseService {
 		String where = "  where  1=1  ";
 		if (StringUtils.isNotEmpty(keyword)) {
 			if (StringUtils.isNotEmpty(out_date_start)) {
+
+				Date startDate = DateUtils.parseDate(out_date_start, "yyyy-MM-dd");
+				startDate = DateUtils.addDays(startDate, -1);
+				out_date_start = DateFormatUtils.format(startDate, "yyyy-MM-dd");
 				conditionSb.append(" AND ou.out_time > '").append(out_date_start).append("' ");
 			}
 			if (StringUtils.isNotEmpty(out_date_end)) {
+				Date endDate = DateUtils.parseDate(out_date_end, "yyyy-MM-dd");
+				endDate = DateUtils.addDays(endDate, 1);
+				out_date_end = DateFormatUtils.format(endDate, "yyyy-MM-dd");
+
 				conditionSb.append(" AND ou.out_time < '").append(out_date_end).append("' ");
 			}
 
@@ -288,8 +298,10 @@ public class OuthouseService {
 	 * @throws Exception
 	 */
 	public File download(String[] ids) throws Exception {
-		String select = " select o.* ,ou.*  ";
-		String from = " from  fy_business_order o " + " INNER JOIN fy_business_out_warehouse ou on ou.order_id = o.id";
+		String select = " select o.* ,ou.*,  "
+				+ " f.originalFileName filename,f.filename realName , f.id fileId , f.filepath \n";
+		String from = " from  fy_business_order o " + " INNER JOIN fy_business_out_warehouse ou on ou.order_id = o.id"
+				+ "  left join fy_base_fyfile  f on o.draw = f.id    \n " + "";
 
 		String where = " where ou.id in ";
 		String desc = " order by ou.id desc ";
@@ -302,7 +314,15 @@ public class OuthouseService {
 		if (!parentfile.exists()) {
 			parentfile.mkdirs();
 		}
-		File targetfile = new File(parentfile,
+
+		String current = DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd");
+		File dirFile = new File(parentfile, "出库单" + current);
+		if (dirFile.exists()) {
+			FileUtils.forceDelete(dirFile);
+		}
+		dirFile.mkdir();
+
+		File targetfile = new File(dirFile,
 				"出库单" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
 
 		// 读取模板
@@ -353,7 +373,31 @@ public class OuthouseService {
 
 		excel.save2File(targetfile);
 		Db.update(" update  fy_business_out_warehouse set is_download = 1 where id in " + idsb.toString());
-		return targetfile;
+
+		/**
+		 * 拷贝图纸
+		 */
+		for (Record item : list) {
+			String filename = item.getStr("realName");
+			String originalFileName = item.getStr("filename");
+			String filepath = item.getStr("filepath");
+			if (filename != null && originalFileName != null && filepath != null) {
+				File sourcefile = new File(filepath, filename);
+				if (sourcefile.exists()) {
+					FileUtils.copyFile(sourcefile, new File(dirFile, originalFileName));
+				}
+			}
+		}
+		File zipFile = new File(dirFile.getParentFile(), dirFile.getName() + ".zip");
+
+		if (zipFile.exists()) {
+			FileUtils.forceDelete(zipFile);
+		}
+		ZipKit zipkip = new ZipKit(zipFile);
+		zipkip.addDir(dirFile);
+		zipkip.close();
+		FileUtils.forceDelete(dirFile);
+		return zipFile;
 	}
 
 }

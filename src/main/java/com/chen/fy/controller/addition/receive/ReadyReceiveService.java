@@ -21,13 +21,26 @@ public class ReadyReceiveService {
 
 	public Page<Record> findPage(Integer pageIndex, Integer pageSize, String condition, String key) {
 		Page<Record> modelPage = null;
-		String select = "select o.*,ra.add_quantity,(quantity - add_quantity)  unadd_quantity,ra.id raId,ra.ready_order_id  ready_order_id";
+		String select = "select o.*,ra.add_quantity,(quantity - IFNULL(add_quantity,0))  unadd_quantity,ra.id raId,ra.ready_order_id  ready_order_id";
 		String from = "  from fy_business_order o  \n" + "LEFT JOIN  fy_ready_add ra on o.id= ra.add_order_id   ";
 		String where = " where  order_status = 30 ";
 		String orderby = " order by  o.id desc ";
-		if (StringUtils.isEmpty(key)) {
-			modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
+		if (StringUtils.isNotEmpty(key)) {
+			if ("ready_status".equals(condition)) {
+				if("未补单".equals(key)) {
+					where += " AND IFNULL(add_quantity,0) = 0 ";
+				} else if ("部分补单".equals(key)) {
+					where += " AND quantity > add_quantity AND add_quantity > 0 ";
+				}
+				else {
+					where += " AND quantity = add_quantity  ";
+				}
+			} else {
+				where += " AND o." + condition + " like '%" + key + "%' ";
+			}
+
 		}
+		modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
 		return modelPage;
 	}
 
@@ -75,9 +88,9 @@ public class ReadyReceiveService {
 //		boolean re = model.save();
 		if (re) {
 			Ret.ok();
-			ret = Ret.ok("msg", "补货完成");
+			ret = Ret.ok("msg", "选择备货完成");
 		} else {
-			ret = Ret.fail("msg", "补货失败");
+			ret = Ret.fail("msg", "选择备货失败");
 		}
 
 		return ret;
@@ -120,18 +133,18 @@ public class ReadyReceiveService {
 	}
 
 	/*
-	 * c
+	 * 充值备货
 	 */
 	public Ret reset(Integer[] orderIds) {
 		String update = " update fy_ready_add set ready_order_id = null,add_quantity = 0  where   add_order_id   in ";
 		StringBuilder sb = new StringBuilder();
 		SqlKit.joinIds(orderIds, sb);
-		logger.info(" 撤回备货 ===> sql : " + update + sb.toString());
-		int del = Db.delete(update + sb.toString());
+		logger.info(" 重置备货 ===> sql : " + update + sb.toString());
+		int del = Db.update(update + sb.toString());
 		if (del == orderIds.length) {
-			return Ret.ok("msg", "撤回完成");
+			return Ret.ok("msg", " 重置完成");
 		} else {
-			return Ret.fail("msg", "撤回" + del + " 条");
+			return Ret.fail("msg", " 重置 " + del + " 条");
 		}
 	}
 

@@ -48,14 +48,12 @@ public class OrderController2 extends BaseController {
 		}
 
 		String condition = getPara("condition");
-		String order_date_start = getPara("order_date_start");
-		String order_date_end = getPara("order_date_end");
-
-		setAttr("append",
-				"&keyWord=" + (key == null ? "" : key) + "&condition=" + (condition == null ? "" : condition));
-		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
+		String date_start = getPara("date_start");
+		String date_end = getPara("date_end");
+		String continue_condition = getPara("continue_condition");
+		keepPara("condition", "keyWord", "date_start", "date_end", "continue_condition");
 		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 1), getPageSize(),
-				order_date_start, order_date_end);
+				continue_condition, date_start, date_end);
 		List<FyBusinessOrder> list = modelPage.getList();
 		Double tatol = 0d;
 		int length = modelPage.getList().size();
@@ -81,14 +79,14 @@ public class OrderController2 extends BaseController {
 			key = key.trim();
 
 		}
-
 		String condition = getPara("condition");
-		String order_date_start = getPara("order_date_start");
-		String order_date_end = getPara("order_date_end");
+		String date_start = getPara("date_start");
+		String date_end = getPara("date_end");
+		String continue_condition = getPara("continue_condition");
+		keepPara("condition", "keyWord", "date_start", "date_end", "continue_condition");
 
-		keepPara("condition", "keyWord", "order_date_start", "order_date_end");
 		Page<FyBusinessOrder> modelPage = service.find(condition, key, getParaToInt("p", 0) + 1, getPageSize(),
-				order_date_start, order_date_end);
+				continue_condition, date_start, date_end);
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
@@ -170,6 +168,27 @@ public class OrderController2 extends BaseController {
 		}
 
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
+
+	}
+
+	public void edit() {
+		Integer id = getParaToInt("id");
+		FyBusinessOrder model = FyBusinessOrder.dao.findById(id);
+		setAttr("model", model);
+		render("edit.html");
+	}
+
+	public void update() {
+		FyBusinessOrder model = getModel(FyBusinessOrder.class, "model");
+		System.out.println(model);
+		boolean re = model.update();
+		Ret ret = null;
+		if (re) {
+			ret = Ret.ok().set("msg", "更新完成");
+		} else {
+			ret = Ret.fail().set("msg", "更新失败");
+		}
+		renderJson(ret);
 
 	}
 

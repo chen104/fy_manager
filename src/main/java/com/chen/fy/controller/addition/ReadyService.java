@@ -51,7 +51,7 @@ public class ReadyService {
 		String where = " where  o.execu_status ='备货' "; // customer_no ='备货'
 		String orderby = " order by  o.id desc ";
 		if (StringUtils.isNotEmpty(key)) {
-			where += " AND " + condition + " like '%" + key + "%' ";
+			where += " AND o." + condition + " like '%" + key + "%' ";
 		}
 		modelPage = Db.paginate(pageIndex, pageSize, select, from + where + orderby);
 		return modelPage;

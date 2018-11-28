@@ -43,7 +43,7 @@ public class CommissionCollectService {
 		String where = "  where add_status=3 \n";
 		String dateformat = "'%Y-%m-%d'";
 		if ("delay_warn".equals(condition)) {
-			String sql = "  AND  DATEDIFF(purchase_delivery_date , NOW()) < 3 AND DATEDIFF(purchase_delivery_date , NOW()) > 0 and o.quantity <> IFNULL(pass_quantity,0) ";
+			String sql = "  AND  DATEDIFF(purchase_delivery_date , NOW()) < 3 AND DATEDIFF(purchase_delivery_date , NOW()) > -1  and o.quantity <> IFNULL(pass_quantity,0) ";
 			conditionSb.append(sql);
 		} else
 

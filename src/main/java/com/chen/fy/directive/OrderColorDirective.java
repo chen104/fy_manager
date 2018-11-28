@@ -37,6 +37,13 @@ public class OrderColorDirective extends Directive {
 
 			if (obj instanceof FyBusinessOrder) {
 				FyBusinessOrder model = (FyBusinessOrder) obj;
+				String execuStatus = model.getExecuStatus();
+				if (execuStatus != null) {
+					execuStatus = execuStatus.trim();
+				}
+				if ("备货".equals(execuStatus)) {
+					return;
+				}
 				if (model.getQuantity() != model.getInt("v_out_quantity")) {
 					Date deliverdate = model.getDeliveryDate();// 交货日期
 					calender.setTime(deliverdate);

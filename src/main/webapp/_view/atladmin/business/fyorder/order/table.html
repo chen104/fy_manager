@@ -45,13 +45,19 @@
 				#fypermession("order_delete")
 					<button class="btn btn-primary" id="bt_delete">删除</button> 
 				#end	
-					<form action="/fy/admin/biz/fyorder/order2/findtable"  class="form-inline">
+					<form action="/fy/admin/biz/fyorder/order2/findtable"  class="form-inline" style="margin-left: 20px">
 						 <div class="form-group  input-group-sm">
-						 		<label for="order_date">订单日期</label>
+						 		 
+						 		<select class="form-control" name="continue_condition" >
+						 			<option   value="order_date">订单日期</option>
+						 			<option  #if(continue_condition="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+						 		</select>
 						 			
-						 		<input  class="form-control " autocomplete="off" name="order_date_start" data-type='datepicker' style="width: 100px" value="#(order_date_start)" >
+						 		<input  class="form-control " autocomplete="off" name="date_start" data-type='datepicker' style="width: 100px" value="#(date_start)" >
 						 		<label>到</label>
-						 		<input class="form-control"  autocomplete="off" name="order_date_end"  data-type='datepicker'  style="width: 100px" value="#(order_date_end)">
+						 		<input class="form-control"  autocomplete="off" name="date_end"  data-type='datepicker'  style="width: 100px" value="#(date_end)">
+						 	 
+						 	 
 						 	    <label for="pageSize">显示</label>
 						 	   	<select   id="pageSize" class="form-control" name="pageSize" >
 						 	   			<option  value="10">10</option>
@@ -61,7 +67,7 @@
 						 	   			<option  value="100" #if(pageSize == 1000) selected="selected" #end >100</option>
 						 	   	</select>
 						 </div>
-						 <div class="form-group  input-group-sm">
+						 <div class="form-group  input-group-sm" style="margin-left: 10px">
 						    <label for="condition">条件</label>
 							    <select id="condition" class="form-control" name="condition"   onchange="onselectCondition()">
 							    	<option #if(condition=="cate_tmp") selected="selected" #end value="cate_tmp">类别</option>
@@ -556,7 +562,7 @@
 								</td> 
 								#fyColPerm("order","order_update")
 								<td class="jfa-operation-button" width="#(colMap.order_update)">
-								<a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
+								<a href="/fy/admin/biz/fyorder/order2/edit?id=#(x.id)"   data-id="#(x.id)"> 
 									<i class="glyphicon glyphicon-pencil" title="修改"></i>
 								</a> 
 								</td>
@@ -625,8 +631,8 @@
 </div>
 
 <form>
-<input searchItem='ajax' hidden="hidden" name="order_date_start" id="ajax_order_date_start" value="#(order_date_start)" ></input>
-<input searchItem='ajax' hidden="hidden" id="order_date_end" name="order_date_end" value="#(order_date_end)"></input>
+<input searchItem='ajax' hidden="hidden"  id="date_start" name="date_start" value="#(date_start)" ></input>
+<input searchItem='ajax' hidden="hidden" id="date_end" name="date_end" value="#(date_end)"></input>
 <input searchItem='ajax' hidden="hidden" id="ajax_pageSize" name="pageSize" value="#(pageSize)"></input>
 
 <input searchItem='ajax' hidden="hidden" id="totalpage"  value="#(modelPage.totalPage)"></input>

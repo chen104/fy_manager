@@ -37,7 +37,7 @@ public class PlanCollectService {
 		StringBuilder conditionSb = new StringBuilder();
 		// 延期与订单不同，根据计划时间来确定
 		if ("delay_warn".equals(condition)) {
-			String sql = "   AND  DATEDIFF(plan_finsh_time , NOW()) < 3 AND DATEDIFF(plan_finsh_time , NOW()) > 0 and IFNULL(pass_quantity,0) <> o.quantity";
+			String sql = "   AND  DATEDIFF(plan_finsh_time , NOW()) < 3 AND DATEDIFF(plan_finsh_time , NOW()) > -1 and IFNULL(pass_quantity,0) <> o.quantity";
 			conditionSb.append(sql);
 			conditionSb.toString();
 		} else

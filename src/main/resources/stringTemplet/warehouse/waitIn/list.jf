@@ -13,7 +13,13 @@
 	<td width="150">#(x.map_no)  </td>
 	<td width="200">#(x.commodity_name)</td>
 
-	<td width="250">#(x.supplier_name)</td>
+	<td width="250">
+			#if(x.supplier_name)
+				#(x.supplier_name)
+			#else if("自产"==x.distribute_to)
+				发奕林
+			#end
+	</td>
 
 	<td width="100" >
 	#if(account.hasPermission("inhouse"))

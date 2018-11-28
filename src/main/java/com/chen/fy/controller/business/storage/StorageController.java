@@ -47,7 +47,7 @@ public class StorageController extends BaseController {
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
-		String str = engine.getTemplate("stringTemplet/warehouse/checkException/list.jf").renderToString(data);
+		String str = engine.getTemplate("stringTemplet/warehouse/storage/list.jf").renderToString(data);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());
 		ret.set(Constant.pagePageSize, modelPage.getPageSize());
@@ -83,6 +83,12 @@ public class StorageController extends BaseController {
 		setAttr("append", append.toString());
 		render("list.html");
 
+	}
+
+	public void rollback2Check() {
+		String[] selectId = getParaValues("selectId");
+		Ret ret = service.rollback(selectId);
+		renderJson(ret);
 	}
 
 }

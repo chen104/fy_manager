@@ -49,7 +49,7 @@ public class CheckCollectController extends BaseController {
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
-		String str = engine.getTemplate("stringTemplet/commission/audit/list.jf").renderToString(data);
+		String str = engine.getTemplate("stringTemplet/warehouse/checkCollect/list.jf").renderToString(data);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());
 		ret.set(Constant.pagePageSize, modelPage.getPageSize());

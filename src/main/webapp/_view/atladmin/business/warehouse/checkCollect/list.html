@@ -119,19 +119,21 @@
 			<div   class="box-body table-responsive no-padding">
 				<div>
 					<div id ="div_head" style="overflow-x:hidden; overflow-y:scroll;">
-						<table style="width:3055px" class="text-center table-bordered">
+						<table style="width:3635px" class="text-center table-bordered">
 							<tbody>
 								<tr>
 								 
 								<td width="50"><input type="checkbox" id="selectAll"></td>
 								<td width="50"> 序号</td>
 								
-								<td width="60">类别</td>
-								<td  width="60">计划员</td>
-								<td  width="100">工作订单号</td>
+								<td width="150">类别</td>
+								<td  width="100">计划员</td>
+								<td  width="150">工作订单号</td>
 								<td width="150">图号</td>
 								<td width="200">名称</td>
 								<td width="300">总图号</td>
+								
+								<td width="400"> 图纸 </td>
 								<td width="100">数量</td>
 								<td width="35" >单位</td>
 								
@@ -160,33 +162,40 @@
 					</div>
 					<div id="div_table"  style="overflow: scroll;height: 600px;display: block; ">
 						<form id="download_form" action="/fy/admin/biz/whouse/check/collect/downloadCheckCollect" target="_blank" method="post">
-								<table  class="  table-bordered text-center"  style="width:3055px ">
+								<table  class="  table-bordered text-center"  style="width:3635px ">
 								<tbody id="table">
 									#for(x : modelPage.getList())
 									<tr>
 										<td  width="50">  <input name="selectId" type="checkbox"   value="#(x.collect_id)"> </td>
 										<td  width="50">#(for.index+1)</td>
-										<td  width="60">#(x.cate_tmp)</td>  
-										<td width="60">#(x.plan_tmp)</td>
+										<td  width="150">#(x.cate_tmp)</td>  
+										<td width="100">#(x.plan_tmp)</td>
 		
-										<td width="100">#(x.work_order_no)</td>
+										<td width="150">#(x.work_order_no)</td>
 										
 										<td  width="150">#(x.map_no)  </td>
 										
 										<td width="200">#(x.commodity_name)</td>
 										<td width="300">#(x.total_map_no)</td>
+										<td width="400">
+											#if(x.filename) #(x.filename) 
+												<a target="_blank" href="/fy/admin/base/file/viewFile?id=#(x.fileId)" ><i class="glyphicon glyphicon-eye-open">预览</i></a> 
+												<a target="_blank" href="/fy/admin/base/file/download?id=#(x.fileId)"><i class="glyphicon glyphicon-download-alt"  ></i>下载</a> 
+												 #end
+									
+										</td>
 										<td width="100">#(x.quantity)</td>
 										<td width="35" >#(x.unit_tmp)</td>	 
 										
 										<td width="200">#(x.model_no)</td>
 										<td  width="200">#(x.commodity_spec)</td>
 										<td width="200">#(x.technology)</td>
-										<td  width="100">#(x.machining_require)</td>
+										<td  width="100">#(x.machining_require) </td>
 										
 										
 										
 										<td  width="100">#date(x.order_date,"yyyy-MM-dd")</td>
-										<td width="100">#(x.distribute_to)</td>
+										<td width="100">#(x.distribute_to) </td>
 										 
 										<td width="250">
 											#if(x.supplier_name)
@@ -198,9 +207,9 @@
 										
 										<td width="100">#(x.has_in_quantity)</td>
 										<td width="100">#(x.pass_quantity)</td>
-										<td width="100">#(x.unpass_quantity)</td>
+										<td width="100">#(x.unpass_quantity)  test </td>
 											
-										 <td width="100">#date(x.check_time,"yyyy-MM-dd")</td>
+										 <td width="100">#date(x.check_time??,"yyyy-MM-dd")</td>
 										<td  width="200">#(x.exception_reson)</td>
 										<td  width="200">#(x.check_remark)</td>
 										

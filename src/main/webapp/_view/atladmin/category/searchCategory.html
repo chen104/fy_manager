@@ -70,8 +70,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"
 					id="Category_bt_onCancel">取消</button>
-				<button type="button" class="btn btn-primary" id="bt_Category_select"
-					onclick="onselectCategory()">确定</button>
+				<button type="button" class="btn btn-primary" id="bt_Category_select"  >确定</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -87,9 +86,6 @@
 		this.callback = callback;
 		
 		$("#bt_Category_select").click(function(){
-			
-			
-			
 			 var a = $("input[name='selectCategory']:checked").val();//	获得选择值
 	  		 if(a!=null){
 	  			 var vals = 	a.split("_");

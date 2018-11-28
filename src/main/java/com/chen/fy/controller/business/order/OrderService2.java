@@ -52,9 +52,10 @@ public class OrderService2 {
 	 * @return
 	 */
 	public Page<FyBusinessOrder> find(String condition, String keyWord, Integer page, Integer pageSize,
-			String order_date_start, String order_date_end) {
+			String continue_contition, String date_start, String date_end) {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
+
 		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " 
 				+ "  fc.in_time fc_in_time ,\r\n"
 				+ "  fc.check_result fc_check_result, fc.check_time fc_check_time,\r\n"
@@ -74,19 +75,46 @@ public class OrderService2 {
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
 
-		if (StringUtils.isNotEmpty(order_date_start)) {
-			conditionSb.append(String.format(" AND order_date > '%s'", order_date_start));
+
+		if (StringUtils.isNotEmpty(date_start)) {
+			try {
+				Date startDate = DateUtils.parseDate(date_start, "yyyy-MM-dd");
+				startDate = DateUtils.addDays(startDate, -1);
+				String startDateStr = DateFormatUtils.format(startDate, "yyyy-MM-dd");
+				if ("order_date".equals(continue_contition)) {
+					conditionSb.append(String.format(" AND  order_date > '%s'   ", startDateStr));
+
+				} else if ("delivery_date".equals(continue_contition)) {
+					conditionSb.append(String.format(" AND  delivery_date > '%s'   ", startDateStr));
+				}
+			} catch (Exception e) {
+				logger.error("交货日期或订单日期 格式错误");
+			}
 		}
-		if (StringUtils.isNotEmpty(order_date_end)) {
-			conditionSb.append(String.format(" AND order_date < '%s'", order_date_end));
+		if (StringUtils.isNotEmpty(date_end)) {
+
+			try {
+				Date dateEnd = DateUtils.parseDate(date_end, "yyyy-MM-dd");
+				dateEnd = DateUtils.addDays(dateEnd, 1);
+				String startEndStr = DateFormatUtils.format(dateEnd, "yyyy-MM-dd");
+				if ("order_date".equals(continue_contition)) {
+					conditionSb.append(String.format(" AND  order_date < '%s'   ", startEndStr));
+
+				} else if ("delivery_date".equals(continue_contition)) {
+					conditionSb.append(String.format(" AND  delivery_date < '%s'   ", startEndStr));
+				}
+			} catch (Exception e) {
+				logger.error("交货日期或订单日期 格式错误");
+			}
+
 		}
 
 		if ("delay_warn".equals(condition)) {
-			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 and out_quantity = 0 ";
+			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 AND DATEDIFF(delivery_date , NOW()) > -1  AND out_quantity = 0 AND o.execu_status<>'备货' ";
 			conditionSb.append(sql);
 		}
 		if ("delay".equals(condition)) {
-			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 ";
+			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 AND o.execu_status<>'备货'";
 			conditionSb.append(sql);
 		}
 		if ("delivery_date".equals(condition)) {
@@ -714,20 +742,20 @@ public class OrderService2 {
 		// if (colhash == null) {
 		colhash = new HashMap<String, Integer>();
 		// 序号 50
-		colhash.put("category_id", 60);
+		colhash.put("category_id", 100);
 		colhash.put("planer_id", 60);
 		colhash.put("execu_status", 100);
 		colhash.put("customer_no", 100);
-		colhash.put("work_bill_no", 100);
+		colhash.put("work_bill_no", 150);
 		colhash.put("delivery_no", 120);
 
-		colhash.put("map_no", 150);
-		colhash.put("commodity_name", 130);
+		colhash.put("map_no", 200);
+		colhash.put("commodity_name", 200);
 		colhash.put("total_map_no", 300);
 		colhash.put("quantity", 100);
 		colhash.put("unit", 35);
 		colhash.put("draw", 300);
-		colhash.put("model_no", 200);
+		colhash.put("model_no", 300);
 		colhash.put("commodity_spec", 200);
 
 		colhash.put("technology", 200);

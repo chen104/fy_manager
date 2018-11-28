@@ -1,11 +1,17 @@
 package com.chen.fy.controller.business.storage;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -67,6 +73,39 @@ public class StorageService {
 		modelPage = Db.paginate(currentPage, pageSize, select, from + where + desc);
 
 		return modelPage;
+	}
+
+	/**
+	 * 撤回库存到，待检测
+	 * @param ids
+	 * @return
+	 */
+	public Ret rollback(String[] ids) {
+		Ret ret = null;
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		List<Record> list = Db.find(
+				"select count(1),distribute_attr,distribute_to,id from  fy_business_order where  dis_to = 1  AND id in "
+						+ idsb.toString());
+		if (list.size() > 0) {
+			ret = Ret.fail().set("msg", "存在委外单，请在应付单撤回");
+			return ret;
+		}
+		String updateSql = Db.getSql("storage.rollbackProductStorage");
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				int updateCount = Db.update(updateSql, idsb.toString());
+				return updateCount == ids.length;
+			}
+		});
+		if (re) {
+			ret = Ret.ok().set("msg", "撤回完成");
+		} else {
+			ret = Ret.ok().set("msg", "撤回失败，刷新之后再撤回");
+		}
+		return ret;
 	}
 
 }

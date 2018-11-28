@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.jfinal.club.common.kit.Constant;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
+import com.jfinal.club.common.kit.ZipKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
@@ -25,14 +26,13 @@ public class CheckCollectService {
 	public final static CheckCollectService me = new CheckCollectService();
 	private static final Logger logger = LogManager.getLogger(CheckCollectService.class);
 	String select = "select o.*,p.supplier_id,pass_quantity,unpass_quantity,\n"
+			+ " f.originalFileName filename, f.filename realName ,f.id fileId , f.filepath , \n"
 			+ "check_time,check_result,s.name supplier_name ,cc.id collect_id	\r\n";
 	String from = " 	from fy_check_collect cc\r\n"
-			+ "		INNER JOIN  fy_business_order o on cc.order_id = o.id\r\n"
+			+ " INNER JOIN  fy_business_order o on cc.order_id = o.id\r\n"
+			+ " left join fy_base_fyfile  f on o.draw = f.id   \n"
 			+ "  LEFT JOIN fy_business_purchase p on p.order_id = cc.order_id\r\n"
 			+ "		LEFT JOIN fy_base_supplier s on p.supplier_id = s.id  \r\n";
-
-
-
 	public Page<Record> findPage(Integer currentPage, Integer pageSize, String condition, String keyword)
 			throws Exception {
 		String where = "  where cc.check_result is not null  ";
@@ -117,7 +117,14 @@ public class CheckCollectService {
 		if (!parentfile.exists()) {
 			parentfile.mkdirs();
 		}
-		File targetfile = new File(parentfile,
+		String current = DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd");
+		File dirFile = new File(parentfile, "检测汇总表" + current);
+		if (dirFile.exists()) {
+			FileUtils.forceDelete(dirFile);
+		}
+		dirFile.mkdir();
+
+		File targetfile = new File(dirFile,
 				"检测一览表" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy-MM-dd") + ".xlsx");
 
 		// 读取模板
@@ -208,7 +215,29 @@ public class CheckCollectService {
 		}
 
 		excel.save2File(targetfile);
+		/**
+		 * 拷贝图纸
+		 */
+		for (Record item : list) {
+			String filename = item.getStr("realName");
+			String originalFileName = item.getStr("filename");
+			String filepath = item.getStr("filepath");
+			if (filename != null && originalFileName != null && filepath != null) {
+				File sourcefile = new File(filepath, filename);
+				if (sourcefile.exists()) {
+					FileUtils.copyFile(sourcefile, new File(dirFile, originalFileName));
+				}
+			}
+		}
+		File zipFile = new File(dirFile.getParentFile(), dirFile.getName() + ".zip");
 
-		return targetfile;
+		if (zipFile.exists()) {
+			FileUtils.forceDelete(zipFile);
+		}
+		ZipKit zipkip = new ZipKit(zipFile);
+		zipkip.addDir(dirFile);
+		zipkip.close();
+		FileUtils.forceDelete(dirFile);
+		return zipFile;
 	}
 }

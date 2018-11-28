@@ -164,7 +164,7 @@ public class FileController extends BaseController {
 
 				File f = new File(PathKit.getWebRootPath() + File.separator + "map", fyfile.getOriginalFileName());
 				if (!f.exists()) {
-					renderError(404);
+					renderText("未找到文件 ： " + filename);
 					return;
 				}
 				BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));
