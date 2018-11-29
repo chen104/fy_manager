@@ -131,24 +131,24 @@ public class PurchaseService {
 		 */
 		String purchase_no = PurchaseNoKit.getNo();// 编号
 
-		excel.setCellVal(2, 19, purchase_no);// 订单编码：
+		excel.setCellVal(2, 22, purchase_no);// 订单编码：
 		Date d = new Date(System.currentTimeMillis());
-		excel.setCellVal(3, 19, d);// 日期：
-		excel.setDateCellStyle(3, 19, "yyyy/MM/dd", HorizontalAlignment.LEFT);
+		excel.setCellVal(3, 22, d);// 日期：
+		excel.setDateCellStyle(3, 22, "yyyy/MM/dd", HorizontalAlignment.LEFT);
 
 		String supplier_name = suplier.getName();// 厂商：
-		excel.setCellVal(4, 19, supplier_name);
+		excel.setCellVal(4, 22, supplier_name);
 
 		String phone = suplier.getPhone();// 电话/传真：
-		excel.setCellVal(5, 19, phone);
+		excel.setCellVal(5, 22, phone);
 
 		String address = suplier.getAddress();
-		excel.setCellVal(6, 19, address);
+		excel.setCellVal(6, 22, address);
 
 		String personContect = (suplier.getContactPerson() == null ? "" : suplier.getContactPerson())
 				+ (suplier.getContactType() == null ? "" : suplier.getContactType()); // 联系人/电话：
 
-		excel.setCellVal(7, 19, personContect);
+		excel.setCellVal(7, 22, personContect);
 
 		int row = 11;
 		DataFormat dataformat = excel.getDateFormat();
@@ -166,53 +166,54 @@ public class PurchaseService {
 			excel.setCellVal(row, 6, commodity_name);
 			excel.setCellStyle(row, 6, borderstyle1);
 
-			String commodity_spec = item.getStr("commodity_spec");// 规格
-			excel.setCellVal(row, 10, commodity_spec);
-			excel.setCellStyle(row, 10, borderstyle1);
+			String total_map_no = item.getStr("total_map_no");// 总图号
+			excel.setCellVal(row, 11, total_map_no);
+			excel.setCellStyle(row, 11, borderstyle1);
 			//
-			// String filename = item.getStr("total_map_no");
-			// excel.setCellVal(row, 4, filename);
-
-			Double quantity = item.getDouble("quantity");// 数量
-			excel.setCellVal(row, 13, quantity);
-			excel.setCellStyle(row, 13, borderstyle1);
-
-			String unit_tmp = item.getStr("unit_tmp");
-			excel.setCellVal(row, 15, unit_tmp);
+			String cate_tmp = item.getStr("cate_tmp");
+			excel.setCellVal(row, 15, cate_tmp);
 			excel.setCellStyle(row, 15, borderstyle1);
 
-			String suppiler_no = item.getStr("purchase_single_weight");
-			excel.setCellVal(row, 17, suppiler_no);
-			excel.setCellStyle(row, 17, borderstyle1);
+			Double quantity = item.getDouble("quantity");// 数量
+			excel.setCellVal(row, 16, quantity);
+			excel.setCellStyle(row, 16, borderstyle1);
 
-			String purchase_weight = item.getStr("purchase_weight");
-			excel.setCellVal(row, 18, purchase_weight);
+			String unit_tmp = item.getStr("unit_tmp");// 单位
+			excel.setCellVal(row, 18, unit_tmp);
 			excel.setCellStyle(row, 18, borderstyle1);
 
-			Double purchase_cost = item.getDouble("purchase_cost");
-			excel.setCellVal(row, 19, purchase_cost);
-			excel.setCellStyle(row, 19, borderstyle1);
-
-			Double purchase_account = item.getDouble("purchase_account");
-			excel.setCellVal(row, 20, purchase_account);
+			String suppiler_no = item.getStr("purchase_single_weight");// 单件
+			excel.setCellVal(row, 20, suppiler_no);
 			excel.setCellStyle(row, 20, borderstyle1);
 
-			String is_has_tax = item.getStr("is_has_tax");
-			excel.setCellVal(row, 21, is_has_tax);
+			String purchase_weight = item.getStr("purchase_weight");// 总重
+			excel.setCellVal(row, 21, purchase_weight);
 			excel.setCellStyle(row, 21, borderstyle1);
 
-			String work_order_no = item.getStr("work_order_no");
-			excel.setCellVal(row, 22, work_order_no);
+			Double purchase_cost = item.getDouble("purchase_cost");
+			excel.setCellVal(row, 22, purchase_cost);
 			excel.setCellStyle(row, 22, borderstyle1);
 
+			Double purchase_account = item.getDouble("purchase_account");
+			excel.setCellVal(row, 23, purchase_account);
+			excel.setCellStyle(row, 23, borderstyle1);
+
+			String is_has_tax = item.getStr("is_has_tax");
+			excel.setCellVal(row, 24, is_has_tax);
+			excel.setCellStyle(row, 24, borderstyle1);
+
+			String work_order_no = item.getStr("work_order_no");
+			excel.setCellVal(row, 25, work_order_no);
+			excel.setCellStyle(row, 25, borderstyle1);
+
 			Date purchase_delivery_date = item.getDate("purchase_delivery_date");
-			excel.setCellVal(row, 23, purchase_delivery_date);
+			excel.setCellVal(row, 26, purchase_delivery_date);
 			CellStyle style = excel.getCellType();
 			style.setBorderLeft(BorderStyle.THIN);
 			style.setBorderRight(BorderStyle.THIN);
 			style.setAlignment(HorizontalAlignment.LEFT);
 			style.setDataFormat(dataformat.getFormat("yyyy-MM-dd"));
-			excel.setCellStyle(row, 23, style);
+			excel.setCellStyle(row, 26, style);
 
 			// String suppiler_no = item.getStr("suppiler_no");
 			// excel.setCellVal(row, 7, suppiler_no);

@@ -5,8 +5,9 @@
 	WHERE DATEDIFF(delivery_date , NOW()) < 3 
 	AND   DATEDIFF(delivery_date , NOW()) > -1 
 	AND o.quantity <> IFNULL(v_out_quantity,0)
-	AND o.execu_status <> '备货'
+	
 #end
+##AND o.execu_status <> '备货'
 
 
 #获得订单拖期数量
@@ -15,8 +16,8 @@
 	LEFT JOIN  out_view ov on ov.order_id = o.id 
 	WHERE  DATEDIFF(delivery_date , NOW()) < 0 
 	AND o.quantity <> IFNULL(v_out_quantity,0)
-	AND  o.execu_status <> '备货'
 #end
+##AND  o.execu_status <> '备货'
 
 
 

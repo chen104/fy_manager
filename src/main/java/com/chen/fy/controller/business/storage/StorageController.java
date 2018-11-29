@@ -84,11 +84,11 @@ public class StorageController extends BaseController {
 		render("list.html");
 
 	}
-
-	public void rollback2Check() {
-		String[] selectId = getParaValues("selectId");
-		Ret ret = service.rollback(selectId);
-		renderJson(ret);
-	}
+	//
+	// public void rollback2Check() {
+	// String[] selectId = getParaValues("selectId");
+	// Ret ret = service.rollback(selectId);
+	// renderJson(ret);
+	// }
 
 }

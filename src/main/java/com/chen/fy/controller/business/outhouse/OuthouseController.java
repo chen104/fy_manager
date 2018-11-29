@@ -60,7 +60,7 @@ public class OuthouseController extends BaseController {
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
-		String str = engine.getTemplate("stringTemplet/warehouse/check/list.jf").renderToString(data);
+		String str = engine.getTemplate("stringTemplet/warehouse/outHouse/list.jf").renderToString(data);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());
 		ret.set(Constant.pagePageSize, modelPage.getPageSize());

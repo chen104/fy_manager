@@ -35,3 +35,8 @@
 #namespace("pay")
 #include("pay.sql")
 #end
+
+
+#namespace("check")
+#include("check.sql")
+#end

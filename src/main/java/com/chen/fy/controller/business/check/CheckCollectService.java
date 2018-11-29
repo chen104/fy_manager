@@ -2,6 +2,7 @@ package com.chen.fy.controller.business.check;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,34 +76,7 @@ public class CheckCollectService {
 		return modelPage;
 	}
 
-	/**
-	 * 需要测回的入库单;
-	 * 检测单与入库单同表，记录检查情况，撤回操作，清空检测数据，检测结果，通过数量，未通过数量，删除应付单
-	 * @param inhouseId
-	 * @return
-	 */
-	public Ret rollback(String[] inhouseId) throws Exception {
-		Ret ret = null;
-		String update = " update fy_business_in_warehouse set check_result = null,pass_quantity = 0,unpass_quantity = 0 ,exception_reson = null,check_remark = null where id in ";
-		String deletePay = " delete from fy_business_pay WHERE is_purchase = 1 AND is_parent_id  in ";
-		StringBuilder idsb = new StringBuilder();
-		SqlKit.joinIds(inhouseId, idsb);
-		boolean re = Db.tx(new IAtom() {
 
-			@Override
-			public boolean run() throws SQLException {
-				int up = Db.update(update + idsb.toString());
-				int de = Db.delete(deletePay + idsb.toString());
-				return up == de;
-			}
-		});
-		if (re) {
-			ret = Ret.ok().set("msg", "撤回成功");
-		} else {
-			ret = Ret.ok().set("msg", "撤回失败，刷新后在在试");
-		}
-		return ret;
-	}
 
 	public File download(String ids[]) throws Exception {
 
@@ -239,5 +213,52 @@ public class CheckCollectService {
 		zipkip.close();
 		FileUtils.forceDelete(dirFile);
 		return zipFile;
+	}
+
+	/**
+	 * 撤回库存到，待检测
+	 * @param ids
+	 * @return
+	 */
+	public Ret rollback(String[] ids) {
+		Ret ret = null;
+		StringBuilder idsb = new StringBuilder();
+		SqlKit.joinIds(ids, idsb);
+		String findsql = "select order_id from fy_check_collect where id in " + idsb.toString();
+		List<Record> Listorder = Db.find(findsql);
+		List<Integer> orderlist = new ArrayList<Integer>();
+		for (Record e : Listorder) {
+			Integer item = e.getInt("order_id");
+			orderlist.add(item);
+		}
+
+		StringBuilder orderSb = new StringBuilder();
+		SqlKit.joinIds(orderlist, orderSb);
+
+		List<Record> list = Db
+				.find("select distribute_attr,distribute_to,id from  fy_business_order   where  dis_to = 1  AND id in "
+						+ orderSb.toString());
+		if (list.size() > 0) {
+			ret = Ret.fail().set("msg", "存在委外单，请在应付单撤回");
+			return ret;
+		}
+		String updateSql = Db.getSql("storage.rollbackProductStorage");
+		boolean re = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				String sql = String.format(updateSql, orderSb.toString());
+
+				logger.debug("撤回 库存 sql  " + sql);
+				int updateCount = Db.update(sql);
+				return (updateCount) == (ids.length * 2);
+			}
+		});
+		if (re) {
+			ret = Ret.ok().set("msg", "撤回完成");
+		} else {
+			ret = Ret.ok().set("msg", "撤回失败，刷新之后再撤回");
+		}
+		return ret;
 	}
 }

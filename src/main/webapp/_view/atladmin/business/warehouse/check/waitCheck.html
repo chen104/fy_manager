@@ -16,22 +16,18 @@
 									alert("没有选择订单");
 									return ; 
 								}
-								if(selectIds.length >1){
-									alert("只能选择一条订单");
-									return ; 
-								}
+								
 								
 								$.ajax({
 									   type: "POST",
-									   url:'/fy/admin/biz/whouse/waitInhouse/rollback' ,
-									   data:{id:selectIds.val()},
+									   url:'/fy/admin/biz/whouse/check/waitCheck/rollback' ,
+									   data:selectIds.serialize(),
 									   success: function(ret){
+										   alert(ret.msg);
 										   if (ret.state == "ok") {
-										
-											   alert(ret.msg);
 											   location.reload();
 											}
-										   alert(ret.msg);
+								
 									   },
 									   error:function (XMLHttpRequest, textStatus, errorThrown) {
 										    // 通常 textStatus 和 errorThrown 之中
@@ -44,38 +40,7 @@
 					});
 					
 				</script>
-				<button  id="bt_rollback" class="btn btn-info" >撤回</button>
-			 	<script type="text/javascript">
-			 		$(function(){
-			 			$("#bt_rollback").click(function(){
-			 				var outId = $('input[name=selectId]:checked');
-							if(outId.length==0){
-								alert("没有选择订单");
-								return;
-							}
-			 				$.ajax({
-								   type: "POST",
-								   url:"/" ,
-								   data:outId.serialize(),
-								   success: function(ret){
-									   alert(ret.msg);
-									   if (ret.state == "ok") {
-										   
-											location.reload();
-										}else{
-									
-										}
-								   },
-								   error:function (XMLHttpRequest, textStatus, errorThrown) {
-									    // 通常 textStatus 和 errorThrown 之中
-									    // 只有一个会包含信息
-									 //   this; // 调用本次AJAX请求时传递的options参数
-									   alert('网络异常');
-									}
-								});
-			 			});
-			 		});
-			 	</script>
+			
 				<span>
 					<form action="/fy/admin/biz/whouse/check/waitCheck"  class="form-inline">
 						 <div class="form-group  input-group-sm">

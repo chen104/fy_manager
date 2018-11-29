@@ -110,11 +110,11 @@ public class OrderService2 {
 		}
 
 		if ("delay_warn".equals(condition)) {
-			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 AND DATEDIFF(delivery_date , NOW()) > -1  AND out_quantity = 0 AND o.execu_status<>'备货' ";
+			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 3 AND DATEDIFF(delivery_date , NOW()) > -1  AND out_quantity = 0   ";
 			conditionSb.append(sql);
 		}
 		if ("delay".equals(condition)) {
-			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 AND o.execu_status<>'备货'";
+			String sql = " AND   DATEDIFF(delivery_date , NOW()) < 0 and out_quantity = 0 ";
 			conditionSb.append(sql);
 		}
 		if ("delivery_date".equals(condition)) {
@@ -318,7 +318,7 @@ public class OrderService2 {
 				excel.setCellVal(row, 15, machining_require);
 			}
 
-			if (account.hasColPermission("order", "order_date")) {
+			if (account.hasColPermission("order", "bill_date")) {
 
 				Date order_date = item.getDate("order_date");// 订单日期
 				excel.setCellVal(row, 16, order_date);
@@ -760,7 +760,7 @@ public class OrderService2 {
 
 		colhash.put("technology", 200);
 		colhash.put("machining_require", 80);
-		colhash.put("order_date", 100);
+		colhash.put("bill_date", 100);
 		colhash.put("delivery_date", 100);
 		colhash.put("un_tax_cost", 100);
 

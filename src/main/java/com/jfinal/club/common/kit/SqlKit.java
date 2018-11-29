@@ -105,4 +105,9 @@ public class SqlKit {
 		ret.append(")");
 	}
 
+	public static String getIds(String[] ids) {
+		StringBuilder ret = new StringBuilder();
+		joinIds(ids, ret);
+		return ret.toString();
+	}
 }

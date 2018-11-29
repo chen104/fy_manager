@@ -139,4 +139,10 @@ public class WaitCheckController extends BaseController {
 		}
 		renderJson(Ret.fail("msg", "查看运行日志"));
 	}
+
+	public void rollback() {
+		String ids[] = getParaValues("selectId");
+		Ret ret = service.rollback(ids);
+		renderJson(ret);
+	}
 }

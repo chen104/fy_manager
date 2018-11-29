@@ -240,8 +240,8 @@
 								#fyColPerm("order","machining_require")
 								<td  width="#(colMap.machining_require)" >质量等级</td>
 								#end
-								#fyColPerm("order","order_date")
-								<td  width="#(colMap.order_date)" >订单日期</td>
+								#fyColPerm("order","bill_date")
+								<td  width="#(colMap.bill_date)" >订单日期</td>
 								#end
 								#fyColPerm("order","delivery_date")
 								<td  width="#(colMap.delivery_date)">交货日期</td>
@@ -426,8 +426,8 @@
 								#end
 								
 								
-								#fyColPerm("order","order_date")
-									<td width="#(colMap.order_date)">#date(x.orderDate,"yyyy-MM-dd")</td>
+								#fyColPerm("order","bill_date")
+									<td width="#(colMap.bill_date)">#date(x.orderDate,"yyyy-MM-dd")</td>
 								#end
 								
 								#fyColPerm("order","delivery_date")

@@ -82,8 +82,8 @@
 	#end
 	
 	
-	#if(account.hasColPermission("order","order_date"))
-		<td width="#(colMap.order_date)">#date(x.orderDate,"yyyy-MM-dd")</td>
+	#if(account.hasColPermission("order","bill_date"))
+		<td width="#(colMap.bill_date)">#date(x.orderDate,"yyyy-MM-dd")</td>
 	#end
 	
 	#if(account.hasColPermission("order","delivery_date"))

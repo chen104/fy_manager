@@ -16,6 +16,7 @@ import com.chen.fy.model.FyBusinessPurchase;
 import com.chen.fy.model.FyCheckCollect;
 import com.chen.fy.model.FyExceptionRecord;
 import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -209,7 +210,12 @@ public class WaitCheckService {
 			pay.setPurchaseNo(purchase.getPurchaseNo());// 采购编号
 			pay.setPurchaseAmount(purchase.getPurchaseAccount());// 采购总价
 			pay.setPurchaseDate(purchase.getPurchaseDate());// 采购时间
-
+			if (pay.getPurchaseCost() == null) {
+				pay.setPurchaseCost(new BigDecimal(0));
+			}
+			if (pay.getPayQuantity() == null) {
+				pay.setPayQuantity(0);
+			}
 			pay.setShouldPay(pay.getPurchaseCost().multiply(new BigDecimal(pay.getPayQuantity())));
 			pay.setInFrom("采购");
 			pay.setHangDate(pay.getCheckTime());// 挂账时间
@@ -305,6 +311,29 @@ public class WaitCheckService {
 			}
 		}
 
+	}
+
+	/**
+	 * 待检测撤回到待入库
+	 */
+	public Ret rollback(String[] checkId) {
+		Ret ret = null;
+		String ids = SqlKit.getIds(checkId);
+		String rollback = Db.getSql("check.rollbackWaitCheck");
+		boolean re = Db.tx(new IAtom() {
+			@Override
+			public boolean run() throws SQLException {
+				String sql = String.format(rollback, ids);
+				int ret = Db.update(sql);
+				return (ret / 2) == checkId.length;
+			}
+		});
+		if (re) {
+			ret = Ret.ok().set("msg", "撤回完成 ");
+		} else {
+			ret = Ret.ok().set("msg", "撤回失败，刷新之后再撤回 ");
+		}
+		return ret;
 	}
 
 }

@@ -42,7 +42,42 @@
 					
 				
 				</script>
-				
+				<button  id="bt_rollback" class="btn btn-info" >撤回</button>
+			 	<script type="text/javascript">
+			 		$(function(){
+			 			$("#bt_rollback").click(function(){
+			 				var outId = $('input[name=selectId]:checked');
+							if(outId.length==0){
+								alert("没有选择订单");
+								return;
+							}
+							var select  = confirm("是否真的要撤回");
+							if(select){
+								$.ajax({
+									   type: "POST",
+									   url:"/fy/admin/biz/whouse/check/collect/rollbackCheck" ,
+									   data:outId.serialize(),
+									   success: function(ret){
+										   alert(ret.msg);
+										   if (ret.state == "ok") {
+											   
+												location.reload();
+											}else{
+										
+											}
+									   },
+									   error:function (XMLHttpRequest, textStatus, errorThrown) {
+										    // 通常 textStatus 和 errorThrown 之中
+										    // 只有一个会包含信息
+										 //   this; // 调用本次AJAX请求时传递的options参数
+										   alert('网络异常');
+										}
+									});
+							}
+			 				
+			 			});
+			 		});
+			 	</script>
 				<div class="box-tools" style="display: inline-block;margin-left: 100px">
 					<form action="/fy/admin/biz/whouse/check/collect"  class="form-inline">
 						 <div class="form-group  input-group-sm">
@@ -207,7 +242,7 @@
 										
 										<td width="100">#(x.has_in_quantity)</td>
 										<td width="100">#(x.pass_quantity)</td>
-										<td width="100">#(x.unpass_quantity)  test </td>
+										<td width="100">#(x.unpass_quantity)  </td>
 											
 										 <td width="100">#date(x.check_time??,"yyyy-MM-dd")</td>
 										<td  width="200">#(x.exception_reson)</td>

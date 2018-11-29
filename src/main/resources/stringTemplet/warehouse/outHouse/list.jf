@@ -1,6 +1,5 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
-<table>
 <tr>
 	 <td width="60"> <input name="selectId" type="checkbox"   value="#(x.out_id)"></td>
 	

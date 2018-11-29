@@ -6,7 +6,8 @@
 	set 
 	o.storage_quantity = 0,#库存清零
 	o.has_in_quantity = o.has_in_quantity - o1.storage_quantity,#已入库
-	fc.pass_quantity = fc.pass_quantity - o1.storage_quantity #已检测合格的 减去撤回库存
+	fc.pass_quantity = fc.pass_quantity - o1.storage_quantity, #已检测合格的 减去撤回库存
+	fc.unpass_quantity = 0; 
 	where  o.id IN  %s
 
 #end
