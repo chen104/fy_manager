@@ -210,15 +210,15 @@ public class OuthouseService {
 		logger.debug(" 运行==> " + update + " ");
 		int r = Db.update(update);
 		logger.debug(" 更新 ==>   " + r);
-		sql = Db.getSql("order.updateOutInfoTransport_no");// 更新出库单信息
-		update = String.format(sql, sb.toString(), sb.toString());
-		logger.debug(" 运行==> " + update + " ");
-		r = Db.update(update);
-		if (r == 0) {// 没有出库单，这更新出库信息为null
-			String up = Db.getSql("order.updateOrderOutIsNull");
-			Db.update(String.format(up, sb.toString()));
-			logger.debug(" 没有找到出库单 则 更新" + up);
-		}
+		// sql = Db.getSql("order.updateOutInfoTransport_no");// 更新出库单信息
+		// update = String.format(sql, sb.toString(), sb.toString());
+		// logger.debug(" 运行==> " + update + " ");
+		// r = Db.update(update);
+		// if (r == 0) {// 没有出库单，这更新出库信息为null
+		// String up = Db.getSql("order.updateOrderOutIsNull");
+		// Db.update(String.format(up, sb.toString()));
+		// logger.debug(" 没有找到出库单 则 更新" + up);
+		// }
 		logger.debug(" 更新 ==>   " + r);
 
 	}

@@ -53,27 +53,33 @@ set o.ww_quantity = real_in_quantity ,o.ww_unquantity =o.quantity - real_in_quan
 #end
 
 ###更新挂账信息 参数payId，in的方式 is_setlled = 1 AND
+###挂账时间
+###挂账数量
+ ###未挂账数量
+###挂账金额
 #sql("updatepayInfo")
 	update fy_business_order o INNER  JOIN 
 	(SELECT sum(should_pay) should_pay,sum(pay_quantity) pay_quantity,MAX(hang_date) hang_date,order_id
 	from  fy_business_pay  where  order_id in %s group by order_id) p
 	on o.id = p.order_id
-	set o.hang_time = p.hang_date ,###挂账时间
-		o.hang_quantity = p.pay_quantity ,###挂账数量
-		o.unhang_quantity = o.quantity - p.pay_quantity , ###未挂账数量
-		o.hang_account = p.should_pay###挂账金额
+	set o.hang_time = p.hang_date ,
+		o.hang_quantity = p.pay_quantity ,
+		o.unhang_quantity = o.quantity - p.pay_quantity ,
+		o.hang_account = p.should_pay
 	where o.id in %s
 #end
 
 
 ###更新挂账信息 参数是订单Id，in的方式
+#出库数量
+ #出库时间
 #sql("updateOutInfoQuantity")
 	 update fy_business_order o INNER JOIN
 	(select sum(out_quantity) out_quantity ,sum(out_time) out_time,order_id from fy_business_out_warehouse
 	where order_id in %s GROUP BY order_id) oh
 	on o.id = oh.order_id
-	set o.out_quantity = oh.out_quantity, #出库数量
-	o.out_house_date = oh.out_time #出库时间
+	set o.out_quantity = oh.out_quantity, 
+	o.out_house_date = oh.out_time
 #end
 
 ###更新挂账信息 参数是 ，in的方式,字符串格式化传递参数。String.format
