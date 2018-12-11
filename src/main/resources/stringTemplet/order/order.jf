@@ -98,17 +98,6 @@
 	<td  width="#(colMap.amount)">#(x.amount)</td>
 	#end
 	
-	#if(account.hasColPermission("order","tax"))
-	<td width="#(colMap.tax)">#taxRate(x.tax_rate)</td>
-	#end
-	
-	#if(account.hasColPermission("order","tax_amount"))
-	<td width="#(colMap.tax_amount)">#(x.tax_amount)</td>
-	#end
-	
-	#if(account.hasColPermission("order","tatol_amount"))
-	<td width="#(colMap.tatol_amount)">#(x.tatolAmount)</td>
-	#end
 	
 	#if(account.hasColPermission("order","distribute_time"))
 	<td width="#(colMap.distribute_time)">#date(x.distribute_time,"yyyy-MM-dd")</td>

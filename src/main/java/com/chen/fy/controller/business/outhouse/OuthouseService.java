@@ -136,8 +136,10 @@ public class OuthouseService {
 		logger.debug("出库 订单id " + StringUtils.join(order_ids, ","));
 		List<Record> list = new ArrayList<Record>();
 		List<FyBusinessOrder> orders = new ArrayList<FyBusinessOrder>();
+
 		for (int i = 0; i < order_ids.length; i++) {
 			Record record = model.toRecord();// 获取一个新的对象存储对象
+
 			record.set("order_id", order_ids[i]);
 			record.set("parent_id", order_ids[i]);
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(order_ids[i]);
@@ -149,7 +151,7 @@ public class OuthouseService {
 				out_quantity = out_quantity + order.getStorageQuantity();
 				order.setOutQuantity(out_quantity);// 出库数量
 				order.setStorageQuantity(0);// 出库完毕
-			} else {
+			} else {// 单个出库已输入数量为准
 				Integer old_out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
 				Integer out_quantity = model.getOutQuantity();
 				order.setOutQuantity(out_quantity + old_out_quantity);// 出库数量

@@ -199,6 +199,10 @@ public class OuthouseController extends BaseController {
 				}
 			}
 			CacheKit.put("outWarehouse", "Waybill", Waybill);
+			model.setCreateBy(getLoginAccountId());
+			model.setUpdateBy(model.getCreateBy());
+			model.setCreateTime(new Date());
+			model.setUpdateTime(model.getCreateTime());
 			Ret ret = service.batchSave(order_id, model);
 			renderJson(ret);
 		} catch (

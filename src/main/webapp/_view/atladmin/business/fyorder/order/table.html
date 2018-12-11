@@ -252,6 +252,8 @@
 								#fyColPerm("order","amount")
 								<td   width="#(colMap.amount)">金额</td>
 								#end
+								
+								<!--  
 								#fyColPerm("order","taxrate")
 								<td  width="#(colMap.taxrate)"  >税率</td>
 								#end
@@ -261,6 +263,8 @@
 								#fyColPerm("order","tatol_amount")
 								<td  width="#(colMap.tatol_amount)"  >含税金额</td>
 								#end
+								  -->
+								
 								#fyColPerm("order","distribute_time")
 								<td  width="#(colMap.distribute_time)">分配时间</td>
 								#end
@@ -442,6 +446,7 @@
 								<td  width="#(colMap.amount)">#(x.amount)</td>
 								#end
 								
+								<!--  
 								#fyColPerm("order","tax")
 								<td width="#(colMap.tax)">#taxRate(x.tax_rate)</td>
 								#end
@@ -453,7 +458,8 @@
 								#fyColPerm("order","tatol_amount")
 								<td width="#(colMap.tatol_amount)">#(x.tatolAmount)</td>
 								#end
-								
+								 -->
+								 
 								#fyColPerm("order","distribute_time")
 								<td width="#(colMap.distribute_time)">#date(x.distribute_time,"yyyy-MM-dd")</td>
 								#end
