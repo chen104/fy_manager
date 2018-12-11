@@ -236,14 +236,16 @@
 									<td width="50" >序号</td>
 									<td  width="60" >类别</td>
 									<td width="60">计划员</td>
+									
 									<td width="100">执行状态</td>
 									<td width="100">客户编码</td>
 									<td width="100">工作订单号</td>
 									
 									<td  width="150">送货单号</td>
 									<td width="150">图号</td>
-									<td width="200">名称</td>
 									
+									
+									<td width="200">名称</td>
 									<td width="300">总图号</td>
 									<td width="300">图纸</td>
 									<td width="100">数量</td>
@@ -329,7 +331,7 @@
 											
 											<td  width="100">#date(x.purchase_delivery_date,"yyyy-MM-dd")</td>	
 																	
-											<td  width="100">#(x.has_in_quantity)</td>
+											<td  width="100">#(x.has_in_quantity??0)  </td>
 											
 											<td width="100">
 											#(x.inhouse_status)

@@ -88,6 +88,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.core.converter.TypeConverter;
+import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.Prop;
@@ -122,12 +123,12 @@ public class JFinalClubConfig extends JFinalConfig {
 		/**
 		 * 特别注意：Eclipse 之下建议的启动方式
 		 */
-		// JFinal.start("src/main/webapp", 80, "/", 5);
-
+//		JFinal.start("src/main/webapp", 80, "/", 5);
+		// org.eclipse.jetty.io.nio.SelectorManager
 		/**
 		 * 特别注意：IDEA 之下建议的启动方式，仅比 eclipse 之下少了最后一个参数
 		 */
-		JFinal.start("src/main/webapp", 80, "/");
+		 JFinal.start("src/main/webapp", 80, "/");
 	}
 
 	public void configConstant(Constants me) {
@@ -340,6 +341,8 @@ public class JFinalClubConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {
 		me.add(DruidKit.getDruidStatViewHandler()); // druid 统计页面功能
 		// me.add(new UrlSeoHandler()); // index、detail 两类 action 的 url seo
+
+		me.add(new UrlSkipHandler("/fy/servlet", false));
 	}
 
 	/**

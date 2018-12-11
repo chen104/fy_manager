@@ -50,7 +50,7 @@
 						 		 
 						 		<select class="form-control" name="continue_condition" >
 						 			<option   value="order_date">订单日期</option>
-						 			<option  #if(continue_condition="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
+						 			<option  #if(continue_condition=="delivery_date") selected="selected" #end value="delivery_date">交货日期</option>
 						 		</select>
 						 			
 						 		<input  class="form-control " autocomplete="off" name="date_start" data-type='datepicker' style="width: 100px" value="#(date_start)" >

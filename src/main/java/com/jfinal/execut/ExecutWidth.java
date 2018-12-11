@@ -76,7 +76,8 @@ public class ExecutWidth {
 
 	}
 
-	public void collectWidth() throws IOException {
+	@Test
+	public void CommissioncollectWidth() throws IOException {
 		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/commission/collect/list.jf");
 
 		File file = new File(url.getFile());
@@ -182,7 +183,7 @@ public class ExecutWidth {
 
 	}
 
-	@Test
+
 	public void storageWidth() throws IOException {
 		URL url = ExecutWidth.class.getClassLoader().getResource("stringTemplet/warehouse/storage/list.jf");
 

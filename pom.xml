@@ -41,8 +41,7 @@
 			    <version>1.11.3</version>
 			    <scope>test</scope>
 			</dependency>
-		
-		<dependency>
+			<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.1.8</version>
@@ -50,6 +49,8 @@
 				jar 打进去 -->
 			<scope>provided</scope>
 		</dependency>
+		
+	
 		<!-- -->
 		<dependency>
 			<groupId>com.jfinal</groupId>

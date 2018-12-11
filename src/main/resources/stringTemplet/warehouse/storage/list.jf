@@ -3,6 +3,7 @@
 <tr>
 	<td width="50">#(for.index+1+n)</td>
 	<td  width="60"><input name="selectId" type="checkbox" value="#(x.order_id)" data-select=select data-address="#(x.send_address)"></td>
+	<td width="200">#(x.send_address)</td> 
 	<td width="100">#(x.cate_tmp)</td>  
 	<td width="60">#(x.plan_tmp)</td>
 

@@ -153,7 +153,7 @@
 	 
 	#if(account.hasColPermission("order","out_time"))
 	
-	<td width="#(colMap.out_time)"> #date(x.out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
+	<td width="#(colMap.out_time)"> #date(x.v_out_time,"yyyy-MM-dd")</td><!-- 出库时间-->
 	#end
 	
 	#if(account.hasColPermission("order","out_status"))
@@ -173,10 +173,10 @@
 	<td width="#(colMap.send_address)">#(x.send_address)</td>
 	#end
 	#if(account.hasColPermission("order","transport_company"))
-	<td width="#(colMap.transport_company)"> #(x.transport_company)</td><!-- 物流公司名称-->
+	<td width="#(colMap.transport_company)"> #(x.v_transport_company)</td><!-- 物流公司名称-->
 	#end
 	#if(account.hasColPermission("order","transport_no"))
-	<td width="#(colMap.transport_no)"> #(x.transport_no)</td><!-- 物流单号-->
+	<td width="#(colMap.transport_no)"> #(x.v_transport_no)</td><!-- 物流单号-->
 	#end
 	
 	#if(account.hasColPermission("order","hang_date"))

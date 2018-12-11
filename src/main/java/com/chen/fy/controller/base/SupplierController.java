@@ -26,6 +26,9 @@ public class SupplierController extends BaseController {
 	public void index() {
 		findAllCate();
 		String key = getPara("keyWord");
+		if (StringUtils.isNotEmpty(key)) {
+			key = key.trim();
+		}
 		Page<Supplier> personPage = null;
 		setAttr("keyWord", key);
 		String select = "select s.*,p.name category_name,p.id category_id";
@@ -35,7 +38,7 @@ public class SupplierController extends BaseController {
 		if (StringUtils.isEmpty(key)) {
 			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, select, from + ordebyr);
 		} else {
-			where = " where name like ? ";
+			where = " where s.name like ? ";
 			personPage = Supplier.dao.paginate(getParaToInt("p", 1), 10, select, from + where + ordebyr,
 					"%" + key + "%");
 			setAttr("append", "keyWord=" + key);

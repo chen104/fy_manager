@@ -2,6 +2,8 @@ package com.chen.fy.directive;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.template.Directive;
@@ -19,10 +21,18 @@ import com.jfinal.template.stat.Scope;
 public class CommissionColorDirective extends Directive {
 	private Date currentDate;
 	Calendar calender;
-
+	private Set<String> work_no_set;
+	private boolean isdebug = false;
 	public CommissionColorDirective() {
 		currentDate = new Date();
 		calender = Calendar.getInstance();
+		if (isdebug) {
+			work_no_set = new HashSet<String>();
+			// work_no_set.add("6A-657083-1-1");
+			// work_no_set.add("20181115-105");
+			// work_no_set.add("6A-653934-1-2");
+			// work_no_set.add("6A-653934-1-1");
+		}
 	}
 
 	@Override
@@ -39,7 +49,19 @@ public class CommissionColorDirective extends Directive {
 			if (obj instanceof Record) {
 				Record model = (Record) obj;
 				Integer quantity = model.getInt("quantity");
-				if (quantity != model.getInt("pass_quantity")) {
+				String work_no = model.getStr("work_order_no");
+				// if (work_no_set.contains(work_no)) {
+				// System.out.println(model);
+				// }
+				Integer pass_quantity = model.getInt("pass_quantity");
+				if (pass_quantity == null) {
+					pass_quantity = new Integer(0);
+				}
+
+				Integer has_in_quantity = model.getInt("has_in_quantity");
+
+
+				if (quantity.intValue() != pass_quantity.intValue()) {
 					Date deliverdate = model.getDate("purchase_delivery_date");// 预计完成时间
 					if (deliverdate == null) {
 						return;

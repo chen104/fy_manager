@@ -44,7 +44,15 @@ public class OrderColorDirective extends Directive {
 				// if ("备货".equals(execuStatus)) {
 				// return;
 				// }
-				if (model.getQuantity() != model.getInt("v_out_quantity")) {
+				Integer quantity = model.getQuantity();
+				Integer outQuantiy = model.getInt("v_out_quantity");
+				if (outQuantiy == null) {
+					outQuantiy = new Integer(0);
+				}
+				if (quantity == null) {
+					quantity = new Integer(0);
+				}
+				if (quantity.intValue() != outQuantiy.intValue()) {
 					Date deliverdate = model.getDeliveryDate();// 交货日期
 					calender.setTime(deliverdate);
 					calender.add(Calendar.DATE, 1);// 当天不算拖期

@@ -37,7 +37,17 @@ public class ProductColorDirective extends Directive {
 
 			if (obj instanceof FyBusinessOrder) {
 				FyBusinessOrder model = (FyBusinessOrder) obj;
-				if (model.getQuantity() != model.getInt("pass_quantity")) {
+
+				Integer quantity = model.getQuantity();
+				Integer pass_quantity = model.getInt("pass_quantity");
+				if (pass_quantity == null) {
+					pass_quantity = new Integer(0);
+				}
+				if (quantity == null) {
+					quantity = new Integer(0);
+				}
+
+				if (quantity.intValue() != pass_quantity.intValue()) {
 					Date deliverdate = model.getPlanFinshTime();// 预计完成时间
 					if (deliverdate == null) {
 						return;

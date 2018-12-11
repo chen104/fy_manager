@@ -136,9 +136,10 @@ public class CommisionExecutController extends BaseController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
-		render("askCostDownload.html");
+		index();
 	}
 
 	public void edit() {

@@ -496,16 +496,20 @@ public class OrderService2 {
 			if (account.hasColPermission("order", "hang_status")) {
 				Integer quantity = item.getInt("quantity");
 				Integer gp_hang_quantity = item.getInt("gp_hang_quantity");
+				if(gp_hang_quantity ==null) {
+					gp_hang_quantity = new Integer(0);
+				}
 				String hang_status = null;
-				if (gp_hang_quantity == null || gp_hang_quantity == 0) {
+				if (quantity == null || quantity.intValue() == 0) {
+					hang_status = "已挂账";
+				} else
+				if (gp_hang_quantity.intValue() == 0) {
 					hang_status = "未挂账";
-				} else if (quantity == null) {
-					hang_status = "订单异常";
-				} else if (gp_hang_quantity < 0 || gp_hang_quantity > quantity) {
+				} else if (gp_hang_quantity < 0 || gp_hang_quantity.intValue() > quantity.intValue()) {
 					hang_status = "挂账异常";
-				} else if (gp_hang_quantity < quantity) {
+				} else if (gp_hang_quantity.intValue() < quantity.intValue()) {
 					hang_status = "部分挂账";
-				} else if (gp_hang_quantity == quantity) {
+				} else if (gp_hang_quantity.intValue() == quantity.intValue()) {
 					hang_status = "已挂账";
 				} else {
 					hang_status = "异常挂账";
