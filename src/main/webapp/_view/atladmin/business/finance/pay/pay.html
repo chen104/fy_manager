@@ -179,12 +179,12 @@
 			<div  class="box-body table-responsive no-padding text-center">
 				<div >
 					<div id ="div_head"  style="overflow-x:hidden; overflow-y:scroll;">
-						<table style="width: 3720px"class="text-center table-bordered">
+						<table style="width: 3760px"class="text-center table-bordered">
 							<tbody>
 								<tr>
 									<td  width="50" >序号</td>
 								 	<td width="50" ><input id="selectAll"   type="checkbox" data-select="selectAll"> </td> 
-									<td width="60">类别</td>
+									<td width="100">类别</td>
 									<td  width="60">计划员</td>
 									<td  width="100">工作订单号</td>
 									<td  width="150">送货单号</td>
@@ -220,14 +220,14 @@
 					</div>
 					<div id="div_table"   style="overflow: scroll;height: 600px;display: block; ">
 						<form action="/fy/admin/biz/finance/pay/downloadPay" method="post" target="_blank" id="download_pay" style="width: width: 3920px">
-							<table class=" table-bordered text-center"  style="width: 3720px">
+							<table class=" table-bordered text-center"  style="width: 3760px">
 								 
 								<tbody id="table">
 									#for(x : modelPage.getList())
 									<tr>
 										<td width="50">#(for.index+1)</td>
 									 <td width="50"> <input name="selectId" value="#(x.id)" type="checkbox" data-select='select' >  </td> 
-										<td width="60">#(x.cate_tmp)</td>
+										<td width="100">#(x.cate_tmp)</td>
 										
 										<td width="60">#(x.plan_tmp)</td>
 										<td width="100">#(x.work_order_no)</td>

@@ -380,7 +380,14 @@ public class OrderService2 {
 			if (account.hasColPermission("order", "supplier")) {
 
 				String supplier_name = item.getStr("supplier_name");// 制造商
-				excel.setCellVal(row, 25, supplier_name);
+				if (StringUtils.isNotEmpty(supplier_name)) {
+					excel.setCellVal(row, 25, supplier_name);
+				} else {
+					String distribute_to = item.getStr("distribute_to");// 分配流向
+					if ("自产".equals(distribute_to)) {
+						excel.setCellVal(row, 25, "发奕林");
+					}
+				}
 
 			}
 
