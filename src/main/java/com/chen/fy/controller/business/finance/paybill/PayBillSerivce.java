@@ -82,7 +82,7 @@ public class PayBillSerivce {
 					calendar.add(Calendar.DATE, 1);
 					calendar.add(Calendar.MONTH, 1);
 					String end = DateFormatUtils.format(calendar, "yyyy-MM-dd");
-					where.append("where p.pay_date > '").append(start).append("' and p.pay_date < '").append(end)
+					where.append(" AND p.pay_date > '").append(start).append("' and p.pay_date < '").append(end)
 							.append("' ");
 				} catch (Exception e) {
 					e.printStackTrace();

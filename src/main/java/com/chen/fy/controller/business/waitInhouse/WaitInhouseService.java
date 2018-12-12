@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.waitInhouse;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -101,10 +102,10 @@ public class WaitInhouseService {
 			return Ret.fail("msg", "刷新页面之后再入库");
 
 		}
-		int inhouse_quantity=0;
+		BigDecimal inhouse_quantity = new BigDecimal(0);
 		try {
-			inhouse_quantity =Integer.valueOf(inhouseQuantity);
-			if(inhouse_quantity <1) {
+
+			if (inhouse_quantity.doubleValue() < 0) {
 				return Ret.fail("msg", "入库数量为正整数");
 			}
 		}catch (Exception e) {
@@ -127,19 +128,19 @@ public class WaitInhouseService {
 				checkModel.setInFrom("本部");
 			}
 		} else {
-			checkModel.setInhouseQuantity(inhouse_quantity + checkModel.getInhouseQuantity());
+			checkModel.setInhouseQuantity(inhouse_quantity.add(checkModel.getInhouseQuantity()));
 		}
 		logger.debug(" 已入库数量 ：  " + order.getHasInQuantity() + " 订单数量：" + order.getQuantity() + "  入库数量："
 				+ checkModel.getInhouseQuantity());
 
 		logger.debug(" 待测数量  ：  " + checkModel.getInhouseQuantity() + " 已通过数量：" + checkModel.getPassQuantity());
 
-		int inhouses = checkModel.getInhouseQuantity()
-				+ (checkModel.getPassQuantity() == null ? 0 : checkModel.getPassQuantity());
+		BigDecimal inhouses = checkModel.getInhouseQuantity()
+				.add((checkModel.getPassQuantity() == null ? new BigDecimal(0) : checkModel.getPassQuantity()));
 		order.setHasInQuantity(inhouses);
 
 
-		if (inhouses > order.getQuantity()) {
+		if (inhouses.compareTo(order.getQuantity()) == 1) {
 			return Ret.fail("msg", "入库数量大于订单数");
 		}
 		if (order.getHasInQuantity() == order.getQuantity()) {
@@ -174,10 +175,10 @@ public class WaitInhouseService {
 	public Ret rollback(Integer id) {
 		FyCheckCollect model = FyCheckCollect.dao.findById(id);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-		Integer inhouse = order.getHasInQuantity();
-		Integer waitin = model.getInhouseQuantity();
-		order.setHasInQuantity(inhouse - waitin);
-		model.setInhouseQuantity(0);
+		BigDecimal inhouse = order.getHasInQuantity();
+		BigDecimal waitin = model.getInhouseQuantity();
+		order.setHasInQuantity(inhouse.subtract(waitin));
+		model.setInhouseQuantity(new BigDecimal(0));
 		boolean re = Db.tx(new IAtom() {
 
 			@Override

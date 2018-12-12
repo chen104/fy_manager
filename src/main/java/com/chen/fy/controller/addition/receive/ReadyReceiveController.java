@@ -103,7 +103,7 @@ public class ReadyReceiveController extends BaseController {
 	 */
 	public void addQuantity() {
 		Integer order_id = getParaToInt("order_id");
-		Integer addquantity = getParaToInt("addquantity");
+		String addquantity = getPara("addquantity");
 		try {
 			Ret ret = service.addQuantity(order_id, addquantity);
 			renderJson(ret);

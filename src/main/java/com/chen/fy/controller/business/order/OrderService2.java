@@ -608,7 +608,7 @@ public class OrderService2 {
 			item.setTotalMapNo(totalMapNo);
 
 			String quantity = excel.getCellVal(i, 9);// 数量
-			item.setQuantity(NumberUtils.isNumber(quantity) ? Integer.valueOf(quantity) : null);
+			item.setQuantity(NumberUtils.isNumber(quantity) ? new BigDecimal(quantity) : null);
 
 			String unit = excel.getCellVal(i, 10);// 单位
 			item.setUnitTmp(unit);

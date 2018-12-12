@@ -73,12 +73,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("in_from");
 	}
 
-	public void setPayQuantity(java.lang.Integer payQuantity) {
+	public void setPayQuantity(java.math.BigDecimal payQuantity) {
 		set("pay_quantity", payQuantity);
 	}
 	
-	public java.lang.Integer getPayQuantity() {
-		return getInt("pay_quantity");
+	public java.math.BigDecimal getPayQuantity() {
+		return get("pay_quantity");
 	}
 
 	public void setParentId(java.lang.Integer parentId) {
@@ -185,12 +185,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getStr("purchase_name");
 	}
 
-	public void setPurchaseQuantity(java.lang.Integer purchaseQuantity) {
+	public void setPurchaseQuantity(java.math.BigDecimal purchaseQuantity) {
 		set("purchase_quantity", purchaseQuantity);
 	}
 	
-	public java.lang.Integer getPurchaseQuantity() {
-		return getInt("purchase_quantity");
+	public java.math.BigDecimal getPurchaseQuantity() {
+		return get("purchase_quantity");
 	}
 
 	public void setPurchaseCost(java.math.BigDecimal purchaseCost) {
@@ -225,12 +225,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return get("is_setlled");
 	}
 
-	public void setUnpassQuantity(java.lang.Integer unpassQuantity) {
+	public void setUnpassQuantity(java.math.BigDecimal unpassQuantity) {
 		set("unpass_quantity", unpassQuantity);
 	}
 	
-	public java.lang.Integer getUnpassQuantity() {
-		return getInt("unpass_quantity");
+	public java.math.BigDecimal getUnpassQuantity() {
+		return get("unpass_quantity");
 	}
 
 }

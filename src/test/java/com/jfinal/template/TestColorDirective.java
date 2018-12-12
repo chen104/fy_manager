@@ -1,5 +1,6 @@
 package com.jfinal.template;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class TestColorDirective {
 		engine.addDirective("commisionColor", CommissionColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
 		model = new FyBusinessOrder();
-		model.setQuantity(12);
+		model.setQuantity(new BigDecimal(12));
 
 	}
 

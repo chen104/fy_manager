@@ -10,9 +10,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
-import com.chen.fy.directive.CommissionColorDirective;
+import com.chen.fy.directive.NumberFormatDirective;
 import com.chen.fy.directive.OrderColorDirective;
-import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.jfinal.club.common.kit.Constant;
@@ -32,8 +31,7 @@ public class OrderController2 extends BaseController {
 		engine.setToClassPathSourceFactory();
 		engine.addDirective("orderColor", OrderColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
-		engine.addDirective("productColor", ProductColorDirective.class);
-		engine.addDirective("commisionColor", CommissionColorDirective.class);
+		engine.addDirective("numberFormat", NumberFormatDirective.class);
 	}
 
 	public void index() {

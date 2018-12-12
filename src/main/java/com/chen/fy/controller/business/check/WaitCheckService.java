@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -118,21 +119,20 @@ public class WaitCheckService {
 	 */
 	public synchronized Ret checkInhouse(String modelId, String pass_quantity, String check_result,
 			String[] exception_reson, String remark) throws Exception {
-		Integer passQuantity = 0;
-		try {
-
-			passQuantity = Integer.valueOf(pass_quantity);
-		} catch (Exception e) {
+		BigDecimal passQuantity = null;
+		;
+		if (!NumberUtils.isNumber(pass_quantity)) {
 			return Ret.fail().set("msg", "通过数量不能为非数字");
 		}
+		passQuantity = new BigDecimal(pass_quantity);
 		FyCheckCollect model = FyCheckCollect.dao.findById(Integer.valueOf(modelId));
-		if (passQuantity > model.getInhouseQuantity()) {
+		if (passQuantity.compareTo(model.getInhouseQuantity()) == 1) {
 			return Ret.fail().set("msg", "通过数量不能超过入库数量");
 		}
 
 		model.setCheckResult(check_result);
 		FyBusinessOrder order = FyBusinessOrder.dao.findById(model.getOrderId());
-		Integer unpassQuantity = model.getInhouseQuantity() - passQuantity;
+		BigDecimal unpassQuantity = model.getInhouseQuantity().subtract(passQuantity);
 		/*
 		if (unpassQuantity > 0) {
 			Integer oldunpass = model.getUnpassQuantity() == null ? 0 : model.getUnpassQuantity();
@@ -144,25 +144,25 @@ public class WaitCheckService {
 		}
 		*/
 		model.setUnpassQuantity(unpassQuantity);
-		Integer storage = order.getStorageQuantity() == null ? 0 : order.getStorageQuantity();
-		storage += passQuantity;// 库存
+		BigDecimal storage = order.getStorageQuantity() == null ? new BigDecimal(0) : order.getStorageQuantity();
+		storage = storage.add(passQuantity);// 库存
 		order.setStorageQuantity(storage);
 
 		Date checkDate = new Date();
 		model.setCheckTime(checkDate);
 		// order.setInhouseDate(checkDate);// 入库时间 检测合格即入库
 
-		Integer odlpass = model.getPassQuantity() == null ? 0 : model.getPassQuantity();
-		model.setPassQuantity(passQuantity + odlpass);// 设置
+		BigDecimal odlpass = model.getPassQuantity() == null ? new BigDecimal(0) : model.getPassQuantity();
+		model.setPassQuantity(passQuantity.add(odlpass));// 设置
 
 		String inform = model.getInFrom();
-		model.setInhouseQuantity(0);
+		model.setInhouseQuantity(new BigDecimal(0));
 		if ("本部".equals(inform)) {
 			boolean  re = 	Db.tx(new IAtom() {
 				
 				@Override
 				public boolean run() throws SQLException {
-					if (unpassQuantity > 0) {// 不合格的需要记录
+					if (unpassQuantity.doubleValue() > 0) {// 不合格的需要记录
 						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
 						exceptionRecord.setOrderId(model.getOrderId());
 						exceptionRecord.setCheckRemark(remark);
@@ -171,7 +171,7 @@ public class WaitCheckService {
 						exceptionRecord.setExceptionQuantity(unpassQuantity);
 						exceptionRecord.save();
 					}
-					Integer hasInQuantity = model.getPassQuantity();
+					BigDecimal hasInQuantity = model.getPassQuantity();
 					order.setHasInQuantity(hasInQuantity);
 					return order.update()&&model.update();
 				}
@@ -184,7 +184,7 @@ public class WaitCheckService {
 			
 		}
 
-		if (passQuantity > 0) {
+		if (passQuantity.doubleValue() > 0) {
 			final FyBusinessPay pay = new FyBusinessPay();
 			String findPurches = String.format(
 					" select p.*,s.settlement_cycle from fy_business_purchase p \n"
@@ -214,9 +214,9 @@ public class WaitCheckService {
 				pay.setPurchaseCost(new BigDecimal(0));
 			}
 			if (pay.getPayQuantity() == null) {
-				pay.setPayQuantity(0);
+				pay.setPayQuantity(new BigDecimal(0));
 			}
-			pay.setShouldPay(pay.getPurchaseCost().multiply(new BigDecimal(pay.getPayQuantity())));
+			pay.setShouldPay(pay.getPurchaseCost().multiply(pay.getPayQuantity()));
 			pay.setInFrom("采购");
 			pay.setHangDate(pay.getCheckTime());// 挂账时间
 			Integer settlement_cycle = purchase.getInt("settlement_cycle");// 结算周期
@@ -256,7 +256,7 @@ public class WaitCheckService {
 				public boolean run() throws SQLException {
 					Boolean r = null;
 
-					if (unpassQuantity > 0) {// 不合格的需要记录
+					if (unpassQuantity.doubleValue() > 0) {// 不合格的需要记录
 						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
 						exceptionRecord.setOrderId(model.getOrderId());
 						exceptionRecord.setCheckRemark(remark);
@@ -271,7 +271,7 @@ public class WaitCheckService {
 					} else {
 						r = pay.update();
 					}
-					Integer hasInQuantity = model.getPassQuantity();
+					BigDecimal hasInQuantity = model.getPassQuantity();
 					order.setHasInQuantity(hasInQuantity);
 					return order.update() && model.update() && r;
 				}
@@ -288,14 +288,14 @@ public class WaitCheckService {
 				@Override
 				public boolean run() throws SQLException {
 
-					if (unpassQuantity > 0) {// 不合格的需要记录
+					if (unpassQuantity.doubleValue() > 0) {// 不合格的需要记录
 						FyExceptionRecord exceptionRecord = new FyExceptionRecord();
 						exceptionRecord.setOrderId(model.getOrderId());
 						exceptionRecord.setCheckRemark(remark);
 						exceptionRecord.setExceptionReson(StringUtils.join(exception_reson, ","));
 						exceptionRecord.setCheckTime(checkDate);
 						exceptionRecord.setExceptionQuantity(unpassQuantity);
-						Integer hasInQuantity = model.getPassQuantity();
+						BigDecimal hasInQuantity = model.getPassQuantity();
 						order.setHasInQuantity(hasInQuantity);
 						exceptionRecord.save();
 					}

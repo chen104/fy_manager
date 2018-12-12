@@ -25,28 +25,28 @@ public abstract class BaseFyCheckCollect<M extends BaseFyCheckCollect<M>> extend
 		return getInt("supplier_id");
 	}
 
-	public void setInhouseQuantity(java.lang.Integer inhouseQuantity) {
+	public void setInhouseQuantity(java.math.BigDecimal inhouseQuantity) {
 		set("inhouse_quantity", inhouseQuantity);
 	}
 	
-	public java.lang.Integer getInhouseQuantity() {
-		return getInt("inhouse_quantity");
+	public java.math.BigDecimal getInhouseQuantity() {
+		return get("inhouse_quantity");
 	}
 
-	public void setPassQuantity(java.lang.Integer passQuantity) {
+	public void setPassQuantity(java.math.BigDecimal passQuantity) {
 		set("pass_quantity", passQuantity);
 	}
 	
-	public java.lang.Integer getPassQuantity() {
-		return getInt("pass_quantity");
+	public java.math.BigDecimal getPassQuantity() {
+		return get("pass_quantity");
 	}
 
-	public void setUnpassQuantity(java.lang.Integer unpassQuantity) {
+	public void setUnpassQuantity(java.math.BigDecimal unpassQuantity) {
 		set("unpass_quantity", unpassQuantity);
 	}
 	
-	public java.lang.Integer getUnpassQuantity() {
-		return getInt("unpass_quantity");
+	public java.math.BigDecimal getUnpassQuantity() {
+		return get("unpass_quantity");
 	}
 
 	public void setRemark(java.lang.String remark) {

@@ -41,12 +41,12 @@ public abstract class BaseFyReadyAdd<M extends BaseFyReadyAdd<M>> extends Model<
 		return get("create_time");
 	}
 
-	public void setAddQuantity(java.lang.Integer addQuantity) {
+	public void setAddQuantity(java.math.BigDecimal addQuantity) {
 		set("add_quantity", addQuantity);
 	}
 	
-	public java.lang.Integer getAddQuantity() {
-		return getInt("add_quantity");
+	public java.math.BigDecimal getAddQuantity() {
+		return get("add_quantity");
 	}
 
 }

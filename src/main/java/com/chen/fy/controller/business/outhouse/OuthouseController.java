@@ -1,6 +1,7 @@
 package com.chen.fy.controller.business.outhouse;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -181,12 +183,17 @@ public class OuthouseController extends BaseController {
 			if (order_id.length == 1) {
 				String quantity = getPara("out.quantity");
 				try {
-					Integer quan = Integer.valueOf(quantity);
-
+					BigDecimal quan = null;
+					if (NumberUtils.isNumber(quantity)) {
+						quan = new BigDecimal(quantity);
+					} else {
+						renderJson(Ret.fail().set("msg", "出库必须是数字"));
+						return;
+					}
 					model.setOutQuantity(quan);
 
 					FyBusinessOrder order = FyBusinessOrder.dao.findById(order_id[0]);
-					if (quan > order.getStorageQuantity()) {
+					if (quan.compareTo(order.getStorageQuantity()) == 1) {
 						renderJson(Ret.fail().set("msg", "出库不能大于库存"));
 						return;
 					}

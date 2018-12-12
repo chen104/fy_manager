@@ -73,12 +73,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("out_time");
 	}
 
-	public void setOutQuantity(java.lang.Integer outQuantity) {
+	public void setOutQuantity(java.math.BigDecimal outQuantity) {
 		set("out_quantity", outQuantity);
 	}
 	
-	public java.lang.Integer getOutQuantity() {
-		return getInt("out_quantity");
+	public java.math.BigDecimal getOutQuantity() {
+		return get("out_quantity");
 	}
 
 	public void setOrderId(java.lang.Integer orderId) {

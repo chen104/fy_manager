@@ -1,5 +1,6 @@
 package com.chen.fy.directive;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,7 +45,12 @@ public class OrderColorDirective extends Directive {
 				// if ("备货".equals(execuStatus)) {
 				// return;
 				// }
-				if (model.getQuantity() != model.getInt("v_out_quantity")) {
+				BigDecimal quantity = model.getQuantity();
+				Double v_out_quantity = model.getDouble("v_out_quantity");
+				if (v_out_quantity == null) {
+					v_out_quantity = 0d;
+				}
+				if (quantity.doubleValue() != v_out_quantity) {
 					Date deliverdate = model.getDeliveryDate();// 交货日期
 					calender.setTime(deliverdate);
 					calender.add(Calendar.DATE, 1);// 当天不算拖期
@@ -66,5 +72,6 @@ public class OrderColorDirective extends Directive {
 		}
 
 	}
+
 
 }

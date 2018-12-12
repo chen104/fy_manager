@@ -103,7 +103,7 @@ public class AssistService {
 			item.setCheckResult(e.getCheckResult());
 			item.setOrderNo(e.getAssistNo());
 
-			Integer quantity = e.getInt("quantity");
+			BigDecimal quantity = e.getBigDecimal("quantity");
 
 			item.setPurchaseQuantity(quantity);// 外协数量
 			item.setPayQuantity(quantity);// 应付数量
@@ -111,11 +111,11 @@ public class AssistService {
 			
 
 			item.setPurchaseCost(e.getAssistCost());// 单价
-			Double totalAmout = e.getAssistCost().doubleValue() * quantity;
-			item.setPurchaseAmount(new BigDecimal(totalAmout));// 总额
-			Double tax = totalAmout * taxRate.doubleValue();
-			Double shulpay = tax + totalAmout;
-			item.setShouldPay(new BigDecimal(shulpay));// 应付金额
+			BigDecimal totalAmout = e.getAssistCost().multiply(quantity);
+			item.setPurchaseAmount(totalAmout);// 总额
+			BigDecimal tax = totalAmout.multiply(taxRate);
+			BigDecimal shulpay = tax.add(totalAmout);
+			item.setShouldPay(shulpay);// 应付金额
 
 			item.setOrderId(e.getOrderId());// 订单id
 			item.setPurchaseNo(e.getAssistNo());// 采购编号

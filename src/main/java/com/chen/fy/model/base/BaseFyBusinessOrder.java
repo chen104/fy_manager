@@ -121,12 +121,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("machining_require");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {
@@ -241,20 +241,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getStr("hang_status");
 	}
 
-	public void setHangQuantity(java.lang.Integer hangQuantity) {
+	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.lang.Integer getHangQuantity() {
-		return getInt("hang_quantity");
+	public java.math.BigDecimal getHangQuantity() {
+		return get("hang_quantity");
 	}
 
-	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
+	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
 		set("unhang_quantity", unhangQuantity);
 	}
 	
-	public java.lang.Integer getUnhangQuantity() {
-		return getInt("unhang_quantity");
+	public java.math.BigDecimal getUnhangQuantity() {
+		return get("unhang_quantity");
 	}
 
 	public void setCateTmp(java.lang.String cateTmp) {
@@ -417,20 +417,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("is_finish_purchase");
 	}
 
-	public void setStorageQuantity(java.lang.Integer storageQuantity) {
+	public void setStorageQuantity(java.math.BigDecimal storageQuantity) {
 		set("storage_quantity", storageQuantity);
 	}
 	
-	public java.lang.Integer getStorageQuantity() {
-		return getInt("storage_quantity");
+	public java.math.BigDecimal getStorageQuantity() {
+		return get("storage_quantity");
 	}
 
-	public void setOutQuantity(java.lang.Integer outQuantity) {
+	public void setOutQuantity(java.math.BigDecimal outQuantity) {
 		set("out_quantity", outQuantity);
 	}
 	
-	public java.lang.Integer getOutQuantity() {
-		return getInt("out_quantity");
+	public java.math.BigDecimal getOutQuantity() {
+		return get("out_quantity");
 	}
 
 	public void setCustomer(java.lang.Integer customer) {
@@ -441,12 +441,12 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return getInt("customer");
 	}
 
-	public void setHasInQuantity(java.lang.Integer hasInQuantity) {
+	public void setHasInQuantity(java.math.BigDecimal hasInQuantity) {
 		set("has_in_quantity", hasInQuantity);
 	}
 	
-	public java.lang.Integer getHasInQuantity() {
-		return getInt("has_in_quantity");
+	public java.math.BigDecimal getHasInQuantity() {
+		return get("has_in_quantity");
 	}
 
 	public void setHangAccount(java.math.BigDecimal hangAccount) {
@@ -457,20 +457,20 @@ public abstract class BaseFyBusinessOrder<M extends BaseFyBusinessOrder<M>> exte
 		return get("hang_account");
 	}
 
-	public void setWwQuantity(java.lang.Integer wwQuantity) {
+	public void setWwQuantity(java.math.BigDecimal wwQuantity) {
 		set("ww_quantity", wwQuantity);
 	}
 	
-	public java.lang.Integer getWwQuantity() {
-		return getInt("ww_quantity");
+	public java.math.BigDecimal getWwQuantity() {
+		return get("ww_quantity");
 	}
 
-	public void setWwUnquantity(java.lang.Integer wwUnquantity) {
+	public void setWwUnquantity(java.math.BigDecimal wwUnquantity) {
 		set("ww_unquantity", wwUnquantity);
 	}
 	
-	public java.lang.Integer getWwUnquantity() {
-		return getInt("ww_unquantity");
+	public java.math.BigDecimal getWwUnquantity() {
+		return get("ww_unquantity");
 	}
 
 	public void setWwHangAmount(java.lang.Integer wwHangAmount) {

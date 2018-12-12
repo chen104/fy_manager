@@ -9,6 +9,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.chen.fy.controller.BaseController;
+import com.chen.fy.directive.NumberFormatDirective;
 import com.chen.fy.directive.OrderColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessPay;
@@ -28,6 +29,7 @@ public class PayController extends BaseController {
 		engine.setToClassPathSourceFactory();
 		engine.addDirective("orderColor", OrderColorDirective.class);
 		engine.addDirective("taxRate", TaxRateDirective.class);
+		engine.addDirective("numberFormat", NumberFormatDirective.class);
 	}
 
 	public void findJsonPage() {
@@ -37,7 +39,6 @@ public class PayController extends BaseController {
 		if (key != null) {
 			key = key.trim();
 		}
-
 		setAttr("keyWord", key);
 		keepPara("condition");
 		String condition = getPara("condition");

@@ -1,6 +1,7 @@
 package com.chen.fy.controller.business.outhouse;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,18 +143,19 @@ public class OuthouseService {
 			record.set("parent_id", order_ids[i]);
 			FyBusinessOrder order = FyBusinessOrder.dao.findById(order_ids[i]);
 
-			Integer storagequantity = order.getStorageQuantity();// 获取库存
+			BigDecimal storagequantity = order.getStorageQuantity();// 获取库存
 			if (order_ids.length != 1) {
 				record.set("out_quantity", storagequantity);// 出库
-				Integer out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
-				out_quantity = out_quantity + order.getStorageQuantity();
+				BigDecimal out_quantity = order.getOutQuantity() == null ? new BigDecimal(0) : order.getOutQuantity();
+				out_quantity = out_quantity.add(order.getStorageQuantity());
 				order.setOutQuantity(out_quantity);// 出库数量
-				order.setStorageQuantity(0);// 出库完毕
+				order.setStorageQuantity(new BigDecimal(0));// 出库完毕
 			} else {
-				Integer old_out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
-				Integer out_quantity = model.getOutQuantity();
-				order.setOutQuantity(out_quantity + old_out_quantity);// 出库数量
-				order.setStorageQuantity(order.getStorageQuantity() - out_quantity);// 出库完毕
+				BigDecimal old_out_quantity = order.getOutQuantity() == null ? new BigDecimal(0)
+						: order.getOutQuantity();
+				BigDecimal out_quantity = model.getOutQuantity();
+				order.setOutQuantity(out_quantity.add(old_out_quantity));// 出库数量
+				order.setStorageQuantity(order.getStorageQuantity().subtract(out_quantity));// 出库完毕
 
 			}
 

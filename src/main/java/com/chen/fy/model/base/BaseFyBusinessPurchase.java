@@ -113,28 +113,28 @@ public abstract class BaseFyBusinessPurchase<M extends BaseFyBusinessPurchase<M>
 		return getStr("hang_status");
 	}
 
-	public void setUnhangQuantity(java.lang.Integer unhangQuantity) {
+	public void setUnhangQuantity(java.math.BigDecimal unhangQuantity) {
 		set("unhang_quantity", unhangQuantity);
 	}
 	
-	public java.lang.Integer getUnhangQuantity() {
-		return getInt("unhang_quantity");
+	public java.math.BigDecimal getUnhangQuantity() {
+		return get("unhang_quantity");
 	}
 
-	public void setHangQuantity(java.lang.Integer hangQuantity) {
+	public void setHangQuantity(java.math.BigDecimal hangQuantity) {
 		set("hang_quantity", hangQuantity);
 	}
 	
-	public java.lang.Integer getHangQuantity() {
-		return getInt("hang_quantity");
+	public java.math.BigDecimal getHangQuantity() {
+		return get("hang_quantity");
 	}
 
-	public void setPurchaseQuantity(java.lang.Integer purchaseQuantity) {
+	public void setPurchaseQuantity(java.math.BigDecimal purchaseQuantity) {
 		set("purchase_quantity", purchaseQuantity);
 	}
 	
-	public java.lang.Integer getPurchaseQuantity() {
-		return getInt("purchase_quantity");
+	public java.math.BigDecimal getPurchaseQuantity() {
+		return get("purchase_quantity");
 	}
 
 	public void setPurchaseTitle(java.lang.String purchaseTitle) {

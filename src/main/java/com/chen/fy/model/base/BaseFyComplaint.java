@@ -57,12 +57,12 @@ public abstract class BaseFyComplaint<M extends BaseFyComplaint<M>> extends Mode
 		return getStr("name");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setContent(java.lang.String content) {

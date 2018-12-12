@@ -130,7 +130,7 @@ public class FyPurchaseAuditService {
 
 			String purchase_quantity = excel.getCellVal(i, 5);// 采购数量
 			item.setPurchaseQuantity(
-					NumberUtils.isNumber(purchase_quantity) ? Integer.valueOf(purchase_quantity) : null);
+					NumberUtils.isNumber(purchase_quantity) ? new BigDecimal(purchase_quantity) : new BigDecimal(0));
 
 			String purchaseSingleWeight = excel.getCellVal(i, 7);// 单件
 			item.setPurchaseSingleWeight(

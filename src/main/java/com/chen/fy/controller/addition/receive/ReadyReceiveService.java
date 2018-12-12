@@ -1,8 +1,10 @@
 package com.chen.fy.controller.addition.receive;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -97,13 +99,16 @@ public class ReadyReceiveService {
 	}
 
 	/**
-	 * 补货数量。 要更新备货id
+	 * 补货数量。 需要检测补货数量
 	 * @param order_id 补货订单
 	 * @param quantity 补单数量
 	 * @return
 	 */
-	public Ret addQuantity(Integer order_id, Integer quantity) {
+	public Ret addQuantity(Integer order_id, String quantity) {
 		Ret ret = null;
+		if (!NumberUtils.isNumber(quantity)) {
+			return Ret.fail().set("msg", "补货数量必须是整数");
+		}
 		FyReadyAdd model = FyReadyAdd.dao.findFirst(" select * from fy_ready_add where  add_order_id = " + order_id);
 
 		if (model.getReadyOrderId() == null) {
@@ -111,13 +116,19 @@ public class ReadyReceiveService {
 			return ret;
 		}
 
-		Integer addquantiy = model.getAddQuantity();// 已补货数量
+		BigDecimal addquantiy = model.getAddQuantity();// 已补货数量
+		if (addquantiy == null) {
+			addquantiy = new BigDecimal(0);
+		}
 
 		FyBusinessOrder addmodel = FyBusinessOrder.dao.findById(order_id);
-		Integer allquantity = addmodel.getQuantity();
+		BigDecimal allquantity = addmodel.getQuantity();
+		if (allquantity == null) {
+			allquantity = new BigDecimal(0);
+		}
+		addquantiy = addquantiy.add(new BigDecimal(quantity));
 
-		addquantiy = (addquantiy + quantity);
-		if (addquantiy > allquantity) {
+		if (addquantiy.compareTo(allquantity) == 1) {
 			ret = Ret.fail("msg", "补货数量不能超过订单数");
 			return ret;
 		}
@@ -180,5 +191,10 @@ public class ReadyReceiveService {
 		} else {
 			return Ret.ok().set("msg", "重置失败，刷新之后再重置");
 		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(" test " + NumberUtils.isNumber("12.3"));
+		System.out.println(" " + new BigDecimal("12").compareTo(new BigDecimal("11")));
 	}
 }

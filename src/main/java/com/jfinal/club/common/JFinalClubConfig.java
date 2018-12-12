@@ -67,6 +67,7 @@ import com.chen.fy.controller.role.RoleAdminController;
 import com.chen.fy.directive.CommissionColorDirective;
 import com.chen.fy.directive.FyColPermDirective;
 import com.chen.fy.directive.FyPermissionDirective;
+import com.chen.fy.directive.NumberFormatDirective;
 import com.chen.fy.directive.OrderColorDirective;
 import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
@@ -107,7 +108,7 @@ import com.jfinal.template.source.ClassPathSourceFactory;
 public class JFinalClubConfig extends JFinalConfig {
 
 	// 先加载开发环境配置，再追加生产环境的少量配置覆盖掉开发环境配置 append("aliyun-pro.txt")
-	private static Prop p = PropKit.use("jfinal_club_config_dev.txt");// .append("aliyun-pro.txt");
+	private static Prop p = PropKit.use("dev-config.txt");// .append("aliyun-pro.txt");
 
 	private WallFilter wallFilter;
 
@@ -283,6 +284,7 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.addDirective("orderColor", OrderColorDirective.class);
 		me.addDirective("productColor", ProductColorDirective.class);
 		me.addDirective("commisionColor", CommissionColorDirective.class);
+		me.addDirective("numberFormat", NumberFormatDirective.class);
 
 		me.addDirective("now", NowDirective.class);
 

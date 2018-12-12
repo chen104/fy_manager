@@ -121,12 +121,12 @@ public abstract class BaseFyBusinessOrderDelete<M extends BaseFyBusinessOrderDel
 		return getStr("machining_require");
 	}
 
-	public void setQuantity(java.lang.Integer quantity) {
+	public void setQuantity(java.math.BigDecimal quantity) {
 		set("quantity", quantity);
 	}
 	
-	public java.lang.Integer getQuantity() {
-		return getInt("quantity");
+	public java.math.BigDecimal getQuantity() {
+		return get("quantity");
 	}
 
 	public void setUnit(java.lang.Integer unit) {

@@ -65,12 +65,12 @@ public abstract class BaseFyExceptionRecord<M extends BaseFyExceptionRecord<M>> 
 		return getInt("order_id");
 	}
 
-	public void setExceptionQuantity(java.lang.Integer exceptionQuantity) {
+	public void setExceptionQuantity(java.math.BigDecimal exceptionQuantity) {
 		set("exception_quantity", exceptionQuantity);
 	}
 	
-	public java.lang.Integer getExceptionQuantity() {
-		return getInt("exception_quantity");
+	public java.math.BigDecimal getExceptionQuantity() {
+		return get("exception_quantity");
 	}
 
 }
