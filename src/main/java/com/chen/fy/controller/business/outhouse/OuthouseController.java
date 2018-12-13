@@ -205,12 +205,10 @@ public class OuthouseController extends BaseController {
 			model.setUpdateTime(model.getCreateTime());
 			Ret ret = service.batchSave(order_id, model);
 			renderJson(ret);
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
-			renderJson(Ret.ok().set("msg", "生成  出库单 异常查看运行日志"));
+			renderJson(Ret.fail().set("msg", "生成  出库单 异常查看运行日志"));
 		}
 
 	}

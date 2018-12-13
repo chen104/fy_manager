@@ -97,36 +97,4 @@ public abstract class BaseFyCheckCollect<M extends BaseFyCheckCollect<M>> extend
 		return getStr("check_result");
 	}
 
-	public void setCreateTime(java.util.Date createTime) {
-		set("create_time", createTime);
-	}
-	
-	public java.util.Date getCreateTime() {
-		return get("create_time");
-	}
-
-	public void setCreateBy(java.lang.Integer createBy) {
-		set("create_by", createBy);
-	}
-	
-	public java.lang.Integer getCreateBy() {
-		return getInt("create_by");
-	}
-
-	public void setUpdateTime(java.util.Date updateTime) {
-		set("update_time", updateTime);
-	}
-	
-	public java.util.Date getUpdateTime() {
-		return get("update_time");
-	}
-
-	public void setUpdateBy(java.lang.Integer updateBy) {
-		set("update_by", updateBy);
-	}
-	
-	public java.lang.Integer getUpdateBy() {
-		return getInt("update_by");
-	}
-
 }
