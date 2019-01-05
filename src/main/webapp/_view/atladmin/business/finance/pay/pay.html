@@ -179,7 +179,7 @@
 			<div  class="box-body table-responsive no-padding text-center">
 				<div >
 					<div id ="div_head"  style="overflow-x:hidden; overflow-y:scroll;">
-						<table style="width: 3760px"class="text-center table-bordered">
+						<table style="width: 3860px"class="text-center table-bordered">
 							<tbody>
 								<tr>
 									<td  width="50" >序号</td>
@@ -199,6 +199,7 @@
 									<td width="100">检测结果</td>
 									<td width="300">厂商</td>
 									<td  width="100">订单编号</td>
+									<td  width="100">是否含税</td>
 									<td  width="100">委外数量</td>
 									<td  width="100">委外单价</td>
 									<td  width="100">委外金额</td>
@@ -220,7 +221,7 @@
 					</div>
 					<div id="div_table"   style="overflow: scroll;height: 600px;display: block; ">
 						<form action="/fy/admin/biz/finance/pay/downloadPay" method="post" target="_blank" id="download_pay" style="width: width: 3920px">
-							<table class=" table-bordered text-center"  style="width: 3760px">
+							<table class=" table-bordered text-center"  style="width: 3860px">
 								 
 								<tbody id="table">
 									#for(x : modelPage.getList())
@@ -246,6 +247,9 @@
 										<td width="300">#(x.supplier_name)</td>
 										
 										<td  width="100">#(x.purchase_no)</td>
+										
+										<td  width="100">#(x.is_has_tax)</td>
+										
 										<td width="100">#(x.quantity)  <!-- (x.purchase_quantity)  --></td>
 										<td width="100">#(x.purchase_cost)</td>
 										<td width="100">#(x.purchase_amount)</td>

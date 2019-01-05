@@ -166,12 +166,12 @@ public class FyPurchaseAuditService {
 		 * 删除已有的价格的单据,addstate是在执行单情况下，
 		 */
 		StringBuilder delete = new StringBuilder(
-				" delete from fy_business_purchase where  add_status = 0 AND work_order_no in  ");
+				" delete from fy_business_purchase where  add_status <> 3 AND work_order_no in  ");
 
 		SqlKit.joinIds(workorderno, delete);
 
 		int nul = Db.delete(delete.toString());
-		System.out.println(delete.toString() + " 删除 " + nul);
+		System.out.println(" 删除采购报价单 " + delete.toString() + " 删除 " + nul);
 
 		StringBuilder worksb = new StringBuilder();
 		SqlKit.joinIds(workorderno, worksb);
@@ -180,7 +180,7 @@ public class FyPurchaseAuditService {
 		 * addstatus 不唯一，已审核的和已采购，不可改变
 		 */
 		List<Record> work = Db
-				.find(" select work_order_no from  fy_business_purchase where  add_status <>  1 AND work_order_no in  "
+				.find(" select work_order_no from  fy_business_purchase where  add_status <>  3 AND work_order_no in  "
 				+ worksb.toString());
 		List<String> haswor = new ArrayList<String>();
 
@@ -189,18 +189,25 @@ public class FyPurchaseAuditService {
 		}
 
 		if (haswor.size() > 0) {
-			return Ret.fail().set("msg", "工作订单号重复 " + StringUtils.join(haswor, ","));
+			return Ret.fail().set("msg", "工作订单号已审核 重复 " + StringUtils.join(haswor, ","));
 		}
 
-
+		System.out.println(list);
+		for (Record e : list) {
+			System.out.println(e);
+		}
 		int[] re = Db.batchSave("fy_business_purchase", list, 20);
 		// 更新采购单 厂商id
 		Db.update(" update fy_business_purchase p INNER JOIN fy_base_supplier s on p.supplier_no = s.supplier_no\r\n"
 				+ "SET p.supplier_id = s.id\r\n" + " where p.supplier_id is null\r\n" + " ");
 
+		/**
+		 * 关联采购与订单
+		 */
 		Db.update("update fy_business_purchase p INNER JOIN\r\n"
 				+ "  fy_business_order o on o.work_order_no = p.work_order_no \r\n"
 				+ " set p.order_id = o.id where  p.order_id is null ");
+
 		int total = 0;
 		for (int i = 0; i < re.length; i++) {
 			total = total + re[i];

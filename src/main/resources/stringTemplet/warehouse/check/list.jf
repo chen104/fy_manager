@@ -1,21 +1,30 @@
 #set(n = (modelPage.pageNumber-1) * pageSize??0)
 #for(x : modelPage.getList())
 <tr>
-	<td width="50" >#(for.index+1)</td>
+	<td width="50" >#(for.index+1+n)</td>
+	<td width="50"> <input type="checkbox" name = "selectId" data-select='select'  value="#(x.inhouse_id)"  ></td>
 	<td width="60">#(x.cate_tmp)</td>  
 	<td width="60">#(x.plan_tmp)</td>
 	
 	<td width="100">#(x.execu_status)</td>
 	<td width="100">#(x.customer_no)</td>
 	<td width="100">#(x.work_order_no)</td>
+	
 	<td width="150">#(x.deliveryNo)</td>
 	<td width="150">#(x.map_no)  </td>
+	
 	<td width="200">#(x.commodity_name)</td>
 	
-	<td width="250">#(x.supplier_name)</td>
+	<td width="250">
+		#if(x.supplier_name)
+					#(x.supplier_name)
+				#else if("自产"==x.distribute_to)
+					发奕林
+		#end
+	</td>
 	
 	<td width="100">
-		#fypermession("check_inhouse")
+		#if(account.hasPermission("check_inhouse"))
 		<a data-action="inhouse" data-id="#(x.id)" href="/fy/admin/biz/whouse/check/waitCheck/editCheck?id=#(x.inhouse_id)"><i class="fa fa-star-half-o" title="检测">检测</i></a>
 	 	#end
 	</td>
@@ -29,7 +38,7 @@
 	
 	<td width="200">#(x.model_no)</td>
 	<td width="200">#(x.commodity_spec)</td>
-	<td width="100">#(x.technology)</td>
+	<td width="200">#(x.technology)</td>
 	<td width="100">#(x.machining_require)</td>
 	
 	<td width="100">#date(x.order_date,"yyyy-MM-dd")</td>

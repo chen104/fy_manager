@@ -22,6 +22,9 @@
 	<td width="300">#(x.supplier_name)</td>
 	
 	<td width="100">#(x.purchase_no)</td>
+	
+	<td  width="100">#(x.is_has_tax)</td>
+	
 	<td width="100">#(x.purchase_quantity)</td>
 	<td width="100">#(x.purchase_cost)</td>
 	<td width="100">#(x.purchase_amount)</td>

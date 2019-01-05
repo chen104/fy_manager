@@ -49,6 +49,7 @@ public class WaitCheckController extends BaseController {
 		HashedMap<String, Object> data = new HashedMap<String, Object>();
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
+		engine.addSharedObject("account", getLoginAccount());
 		String str = engine.getTemplate("stringTemplet/warehouse/check/list.jf").renderToString(data);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());

@@ -233,4 +233,12 @@ public abstract class BaseFyBusinessPay<M extends BaseFyBusinessPay<M>> extends 
 		return getInt("unpass_quantity");
 	}
 
+	public void setIsHasTax(java.lang.String isHasTax) {
+		set("is_has_tax", isHasTax);
+	}
+	
+	public java.lang.String getIsHasTax() {
+		return getStr("is_has_tax");
+	}
+
 }

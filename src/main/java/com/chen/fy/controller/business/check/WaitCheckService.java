@@ -210,6 +210,7 @@ public class WaitCheckService {
 			pay.setPurchaseNo(purchase.getPurchaseNo());// 采购编号
 			pay.setPurchaseAmount(purchase.getPurchaseAccount());// 采购总价
 			pay.setPurchaseDate(purchase.getPurchaseDate());// 采购时间
+			pay.setIsHasTax(purchase.getIsHasTax()); // 是否含税
 			if (pay.getPurchaseCost() == null) {
 				pay.setPurchaseCost(new BigDecimal(0));
 			}
