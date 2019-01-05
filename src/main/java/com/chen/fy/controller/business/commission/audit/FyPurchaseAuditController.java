@@ -1,5 +1,6 @@
 package com.chen.fy.controller.business.commission.audit;
 
+import java.math.BigDecimal;
 import java.sql.BatchUpdateException;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -40,6 +41,15 @@ public class FyPurchaseAuditController extends BaseController {
 
 		Page<FyBusinessPurchase> accountPage = modelService.paginate(getParaToInt("p", 1), getPageSize(), condition,
 				key);
+		Double total=0d;
+		if(accountPage!=null&&accountPage.getList().size()>0) {
+			for (FyBusinessPurchase e : accountPage.getList()) {
+				BigDecimal purchaseAcount = e.getPurchaseAccount();
+				Double item = purchaseAcount == null ? 0d : purchaseAcount.doubleValue();
+				total += item;
+			}
+		}
+		setAttr("purchaseAccount", total);
 		setAttr("modelPage", accountPage);
 		render("list.html");
 	}
@@ -57,6 +67,16 @@ public class FyPurchaseAuditController extends BaseController {
 		data.put("modelPage", modelPage);
 		data.put("pageSize", getPageSize());
 		String str = engine.getTemplate("stringTemplet/commission/audit/list.jf").renderToString(data);
+
+		Double total = 0d;
+		if (modelPage != null && modelPage.getList().size() > 0) {
+			for (FyBusinessPurchase e : modelPage.getList()) {
+				BigDecimal purchaseAcount = e.getPurchaseAccount();
+				Double item = purchaseAcount == null ? 0d : purchaseAcount.doubleValue();
+				total += item;
+			}
+		}
+		ret.set("purchaseAccount", total);
 		ret.set("data", str);
 		ret.set(Constant.pageIndex, modelPage.getPageNumber());
 		ret.set(Constant.pagePageSize, modelPage.getPageSize());

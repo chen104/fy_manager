@@ -54,6 +54,9 @@ public class OrderColorDirective extends Directive {
 				}
 				if (quantity.intValue() != outQuantiy.intValue()) {
 					Date deliverdate = model.getDeliveryDate();// 交货日期
+					if (deliverdate == null) {
+						return;
+					}
 					calender.setTime(deliverdate);
 					calender.add(Calendar.DATE, 1);// 当天不算拖期
 					Date tmp = calender.getTime();

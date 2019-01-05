@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import com.chen.fy.model.Account;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.OrderUploadLog;
-import com.jfinal.club.common.kit.ContextKit;
 import com.jfinal.club.common.kit.PIOExcelUtil;
 import com.jfinal.club.common.kit.SqlKit;
 import com.jfinal.kit.PathKit;
@@ -64,7 +63,7 @@ public class OrderService2 {
 				+ "out_view.v_out_quantity v_out_quantity,\r\n"
 				+ "out_view.v_transport_no v_transport_no,\r\n"
 				+ "out_view.v_transport_company v_transport_company, \n"
-				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,"
+				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,su.id supplier_id ,"
 				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
 		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  \n"
 				+ " LEFT JOIN fy_check_collect fc on o.id=fc.order_id \n"
@@ -202,7 +201,7 @@ public class OrderService2 {
 				+ " fc.check_result fc_check_result, \n" + " out_view.v_out_time v_out_time,\r\n"
 				+ "out_view.v_out_quantity v_out_quantity,\r\n" + "out_view.v_transport_no v_transport_no,\r\n"
 				+ "out_view.v_transport_company v_transport_company, \n"
-				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,"
+				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name,su.id supplier_id ,"
 				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
 		String from = " from  fy_business_order o left join fy_base_fyfile  f on o.draw = f.id  \n"
 				+ " LEFT JOIN fy_check_collect fc on o.id=fc.order_id \n"
@@ -566,13 +565,24 @@ public class OrderService2 {
 	 * @param file
 	 * @throws Exception 
 	 */
-	public Integer uploadOrder(File file) throws Exception {
+	public Ret uploadOrder(File file) throws Exception {
 
 		PIOExcelUtil excel = new PIOExcelUtil(file, 0);
 		// 类别 计划员 执行状态 紧急状态 订单日期 交货日期 工作订单号 送货单号 商品名称 商品规格 总图号 技术条件
 		// 加工要求 数量 单位 未税单价 金额 税率 税额 含税金额
 		List<Record> list = new ArrayList<Record>();
 		int rows = excel.getRowNum() + 1;
+		
+		Date date = excel.getDateValue(1, 15);// 订单日期
+		if (date == null) {
+			return Ret.fail().set("msg", "订单日期格式不对");
+		}
+
+		Date deliveryDate = excel.getDateValue(1, 16);// 交货日期
+		if (deliveryDate == null) {
+			return Ret.fail().set("msg", "交货日期格式不对");
+		}
+
 		for (int i = 1; i < rows; i++) {
 
 			FyBusinessOrder item = new FyBusinessOrder();
@@ -604,7 +614,7 @@ public class OrderService2 {
 				DeliveryId = DeliveryId.trim();
 				DeliveryId = StringUtils.chomp(DeliveryId);
 			}
-			System.out.println(DeliveryId);
+			// System.out.println(DeliveryId);
 			item.setDeliveryNo(DeliveryId);
 
 			String mapNo = excel.getCellVal(i, 6);// 图号 图纸
@@ -648,22 +658,24 @@ public class OrderService2 {
 			String account = excel.getCellVal(i, 18);// 金额
 			item.setAmount(NumberUtils.isNumber(account) ? new BigDecimal(account) : null);
 
-			String taxRate = excel.getCellVal(i, 19);// 税率
-			item.setTaxRate(NumberUtils.isNumber(taxRate) ? new BigDecimal(taxRate) : ContextKit.getTaxRate());
+			// String taxRate = excel.getCellVal(i, 19);// 税率
+			// item.setTaxRate(NumberUtils.isNumber(taxRate) ? new BigDecimal(taxRate) :
+			// ContextKit.getTaxRate());
+			//
+			// String taxAccount = excel.getCellVal(i, 20);// 税额
+			// boolean isnumber = NumberUtils.isNumber(taxAccount);
+			//
+			// item.setTaxAmount(isnumber ? new BigDecimal(taxAccount) : null);
+			//
+			// String totalAccount = excel.getCellVal(i, 21);// 含税金额
 
-			String taxAccount = excel.getCellVal(i, 20);// 税额
-			boolean isnumber = NumberUtils.isNumber(taxAccount);
+			// item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new
+			// BigDecimal(totalAccount) : null);
 
-			item.setTaxAmount(isnumber ? new BigDecimal(taxAccount) : null);
-
-			String totalAccount = excel.getCellVal(i, 21);// 含税金额
-
-			item.setTatolAmount(NumberUtils.isNumber(totalAccount) ? new BigDecimal(totalAccount) : null);
-
-			String sendAddress = excel.getCellVal(i, 22);// 发货地址
+			String sendAddress = excel.getCellVal(i, 19);// 发货地址
 			item.setSendAddress(sendAddress);
 
-			String is_finsh_product = excel.getCellVal(i, 23);// 是否成品
+			String is_finsh_product = excel.getCellVal(i, 20);// 是否成品
 			item.setIsFinshProduct(is_finsh_product);
 
 			item.setImportTime(new Date());
@@ -708,7 +720,7 @@ public class OrderService2 {
 
 		// Db.update("update fy_business_order set order_status = 40 where execu_status
 		// ='备货' AND order_status = 0 ");
-		return Integer.valueOf(sb.toString());
+		return Ret.ok("msg", "添加了" + Integer.valueOf(sb.toString()) + "记录");
 
 	}
 
@@ -728,8 +740,8 @@ public class OrderService2 {
 
 					@Override
 					public Object call(Connection conn) throws SQLException {
-						int in = conn.createStatement().executeUpdate(sql);
-						int dnum = conn.createStatement().executeUpdate(delete);
+						int in = Db.update(sql);
+						int dnum = Db.update(delete);
 						return in == dnum;
 					}
 				});

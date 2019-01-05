@@ -255,6 +255,15 @@ public class PIOExcelUtil {
 		return cellStyle;
 	}
 
+	public Cell getCell(int row, int col) {
+		Row rowl = sheet.getRow(row);
+		if (rowl == null) {
+			return null;
+		}
+		Cell cell = rowl.getCell(col);
+		return cell;
+	}
+
 	/**
 	 * 单元格格式:保留两位小数 目前只支持2003版本，2007版本未找到对应方法
 	 * <p>

@@ -217,8 +217,9 @@
 							</table>
 							</form>
 						</div>
-						<div>
-							<span hidden="">共加载 : <span id="rownumber">#(pageSize)</span>   </span>
+						<div class="text-center">
+			
+							<span  >金额合计: <span id="purchaseAccount">#(purchaseAccount)</span>   </span>
 						</div>
 					</div>
 					
@@ -295,9 +296,9 @@ $(function(){
 							   if (ret.state == "ok") {
 									$("#table").append(ret.data);
 									$("#currentPage").val(ret.pageNumber);
-									var rownumebr = $("#rownumber").text();
-									var row =  new Number(rownumebr) + ret.listSize;
-									$("#rownumber").text(row);
+									var purchaseAccount = $("#purchaseAccount").text();
+									var purchase =  new Number(purchaseAccount) + ret.purchaseAccount;
+									$("#purchaseAccount").text(purchase);
 									
 								//	var amount = $("#amount_tatol").text();
 									//var total =  new Number(amount) + ret.amount;

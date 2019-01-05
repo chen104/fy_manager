@@ -469,9 +469,9 @@
 								#end 
 								
 								#fyColPerm("order","supplier")
-								<td width="#(colMap.supplier)"> 
+								<td width="#(colMap.supplier)"> <!-- #(x.supplier_id) --> 
 									#if(x.supplier_name) 
-										#(x.supplier_name)
+										#(supplier.getName(x.supplier_id))
 									 #else if("自产" == x.distribute_to) 发奕林  
 									 #end 
 								</td><!-- 制造商-->

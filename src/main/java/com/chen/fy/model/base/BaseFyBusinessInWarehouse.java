@@ -145,4 +145,28 @@ public abstract class BaseFyBusinessInWarehouse<M extends BaseFyBusinessInWareho
 		return getStr("check_remark");
 	}
 
+	public void setCreateBy(java.lang.Integer createBy) {
+		set("create_by", createBy);
+	}
+	
+	public java.lang.Integer getCreateBy() {
+		return getInt("create_by");
+	}
+
+	public void setUpdateTime(java.util.Date updateTime) {
+		set("update_time", updateTime);
+	}
+	
+	public java.util.Date getUpdateTime() {
+		return get("update_time");
+	}
+
+	public void setUpdateBy(java.lang.Integer updateBy) {
+		set("update_by", updateBy);
+	}
+	
+	public java.lang.Integer getUpdateBy() {
+		return getInt("update_by");
+	}
+
 }

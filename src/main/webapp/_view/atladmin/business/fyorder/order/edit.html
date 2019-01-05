@@ -6,7 +6,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">订单修改</h3>
             </div>
-            <!-- /.box-header -->
+            <!-- /.box-header --> 
             <!-- form start -->
             <form class="form-horizontal" id="myForm" action="/fy/admin/biz/fyorder/order2/update" method="post">
 				<input type="hidden" name="model.id" value="#(model.id??)" />
@@ -117,6 +117,63 @@
 					</div>
 					
 					
+					
+					
+					<div class="row" >
+					
+					<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">商品规格</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="商品规格" autocomplete="off"
+									 value="#(model.commodity_spec??)" name="model.commodity_spec">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">型号</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="model_no" autocomplete="off"
+										value="#(model.model_no??)" name="model.model_no">
+								</div>
+							</div>
+						</div>
+				
+					</div>
+					
+					
+					
+					
+					<div class="row" >
+					<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">技术条件</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="技术条件" autocomplete="off"
+									 	value="#(model.technology??)" name="model.technology">
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">质量等级</label>
+					
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="质量等级" autocomplete="off"
+										value="#(model.machining_require??)" name="model.machining_require">
+								</div>
+							</div>
+						</div>
+				
+					</div>
+					
+					
 					<div class="row">
 						<div class="col-md-6">
 					
@@ -170,6 +227,7 @@
 					
               </div>
               
+              <!--  
               	<div class="row">
 						<div class="col-md-6">
 					
@@ -196,10 +254,7 @@
 						
               </div>
               
-              
-				<div class="row">
-				
-					<div class="col-md-6">
+          			<div class="col-md-6">
 					
 							<div class="form-group">
 								<label class="col-sm-3 control-label">含税金额</label>
@@ -210,6 +265,11 @@
 							</div>
 					</div>
 				
+              -->
+              
+				<div class="row">
+				
+				
 				
 						<div class="col-md-6">
 					
@@ -219,6 +279,17 @@
 									<input type="text" class="form-control" placeholder="执行状态"
 										value="#(model.execu_status??)" name="model.execu_status">
 								</div>
+							</div>
+
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+									<label class="col-sm-3 control-label">送货地址</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" placeholder="送货地址"
+											value="#(model.send_address??)" name="model.send_address">
+									</div>
 							</div>
 						</div>
 			</div>

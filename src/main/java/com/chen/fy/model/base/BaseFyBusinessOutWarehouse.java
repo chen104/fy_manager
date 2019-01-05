@@ -121,14 +121,6 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return getStr("out_remark");
 	}
 
-	public void setCreateBy(java.lang.Integer createBy) {
-		set("create_by", createBy);
-	}
-	
-	public java.lang.Integer getCreateBy() {
-		return getInt("create_by");
-	}
-
 	public void setCreateTime(java.util.Date createTime) {
 		set("create_time", createTime);
 	}
@@ -137,12 +129,12 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 		return get("create_time");
 	}
 
-	public void setUpdateBy(java.lang.Integer updateBy) {
-		set("update_by", updateBy);
+	public void setCreateBy(java.lang.Integer createBy) {
+		set("create_by", createBy);
 	}
 	
-	public java.lang.Integer getUpdateBy() {
-		return getInt("update_by");
+	public java.lang.Integer getCreateBy() {
+		return getInt("create_by");
 	}
 
 	public void setUpdateTime(java.util.Date updateTime) {
@@ -151,6 +143,14 @@ public abstract class BaseFyBusinessOutWarehouse<M extends BaseFyBusinessOutWare
 	
 	public java.util.Date getUpdateTime() {
 		return get("update_time");
+	}
+
+	public void setUpdateBy(java.lang.Integer updateBy) {
+		set("update_by", updateBy);
+	}
+	
+	public java.lang.Integer getUpdateBy() {
+		return getInt("update_by");
 	}
 
 }

@@ -286,6 +286,7 @@ public class JFinalClubConfig extends JFinalConfig {
 		me.addDirective("commisionColor", CommissionColorDirective.class);
 
 		me.addDirective("now", NowDirective.class);
+		me.addSharedObject("supplier", new SupplierNoKit());
 
 		// me.addSharedFunction("/_view/_admin/common/__admin_layout.html");
 		// me.addSharedFunction("/_view/_admin/common/_admin_paginate.html");

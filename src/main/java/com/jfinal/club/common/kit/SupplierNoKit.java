@@ -1,5 +1,6 @@
 package com.jfinal.club.common.kit;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 public class SupplierNoKit {
 
@@ -65,6 +67,34 @@ public class SupplierNoKit {
 			}).start();
 
 		}
+	}
+
+	/**
+	 * 初始化缓存
+	 */
+	public static HashMap<Integer, String> initSupplierCache() {
+		// Object keyName = CacheKit.get();
+		List<Record> list = Db.find("select id,name from fy_base_supplier");
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		for (Record e : list) {
+			map.put(e.getInt("id"), e.getStr("name"));
+		}
+		CacheKit.put("supplier", "key_name", map);
+		return map;
+	}
+
+	public static String getName(Integer id) {
+		Object keyName = CacheKit.get("supplier", "key_name");
+		if (keyName == null) {
+			keyName = initSupplierCache();
+		}
+		if(keyName instanceof HashMap) {
+			HashMap<Integer, String> hashmap = (HashMap<Integer, String>) keyName;
+			String name = hashmap.get(id);
+			return name;
+		}
+		return null;
+
 	}
 
 }

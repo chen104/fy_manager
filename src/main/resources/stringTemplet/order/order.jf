@@ -109,8 +109,9 @@
 	
 	#if(account.hasColPermission("order","supplier"))
 	<td width="#(colMap.supplier)">
+		<!-- #(x.supplier_id)-->
 		#if(x.supplier_name) 
-			#(x.supplier_name)
+			#(supplier.getName(x.supplier_id))
 		 #else if("自产" == x.distribute_to) 发奕林  
 		 #end 
 	</td><!-- 制造商-->
@@ -206,7 +207,7 @@
 	
 	#if(account.hasColPermission("order","order_update"))
 	<td class="jfa-operation-button" width="#(colMap.order_update)">
-	<a href="#" onclick="showModel(this)" data-id="#(x.id)"> 
+	<a href="/fy/admin/biz/fyorder/order2/edit?id=#(x.id)"   data-id="#(x.id)"> 
 		<i class="glyphicon glyphicon-pencil" title="修改"></i>
 	</a> 
 	</td>

@@ -16,6 +16,7 @@ import com.chen.fy.directive.ProductColorDirective;
 import com.chen.fy.directive.TaxRateDirective;
 import com.chen.fy.model.FyBusinessOrder;
 import com.jfinal.club.common.kit.Constant;
+import com.jfinal.club.common.kit.SupplierNoKit;
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -34,6 +35,7 @@ public class OrderController2 extends BaseController {
 		engine.addDirective("taxRate", TaxRateDirective.class);
 		engine.addDirective("productColor", ProductColorDirective.class);
 		engine.addDirective("commisionColor", CommissionColorDirective.class);
+		engine.addSharedObject("supplier", new SupplierNoKit());
 	}
 
 	public void index() {
@@ -156,18 +158,21 @@ public class OrderController2 extends BaseController {
 
 	public void uploadFile() {
 		UploadFile ufile = getFile();
-		int total = 0;
+		Ret ret = null;
+
 		if (ufile != null) {
 			try {
-				total = service.uploadOrder(ufile.getFile());
+				ret = service.uploadOrder(ufile.getFile());
 				ufile.getFile().delete();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+
+				renderJson(Ret.fail().set("msg", "查看日志"));
 			}
 		}
 
-		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
+		renderJson(ret);
 
 	}
 

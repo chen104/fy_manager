@@ -94,6 +94,7 @@ public class SupplierController extends BaseController {
 		} else {
 			ret = Ret.ok("msg", "新建失败");
 		}
+		SupplierNoKit.initSupplierCache();
 		renderJson(ret);
 	}
 
@@ -107,6 +108,7 @@ public class SupplierController extends BaseController {
 		} else {
 			ret = Ret.ok("msg", "删除失败");
 		}
+		SupplierNoKit.initSupplierCache();
 		renderJson(ret);
 	}
 
@@ -133,7 +135,7 @@ public class SupplierController extends BaseController {
 		} else {
 			ret = Ret.ok("msg", "修改 失败");
 		}
-
+		SupplierNoKit.initSupplierCache();
 		renderJson(ret);
 	}
 
@@ -237,6 +239,7 @@ public class SupplierController extends BaseController {
 			}
 		}
 		ufile.getFile().deleteOnExit();
+		SupplierNoKit.initSupplierCache();
 		renderJson(Ret.ok("msg", "添加了" + total + "记录"));
 	}
 
