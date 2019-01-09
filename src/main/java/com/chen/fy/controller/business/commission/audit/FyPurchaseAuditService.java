@@ -162,26 +162,15 @@ public class FyPurchaseAuditService {
 
 		}
 
-		/**
-		 * 删除已有的价格的单据,addstate是在执行单情况下，
-		 */
-		StringBuilder delete = new StringBuilder(
-				" delete from fy_business_purchase where  add_status <> 3 AND work_order_no in  ");
-
-		SqlKit.joinIds(workorderno, delete);
-
-		int nul = Db.delete(delete.toString());
-		System.out.println(" 删除采购报价单 " + delete.toString() + " 删除 " + nul);
-
 		StringBuilder worksb = new StringBuilder();
 		SqlKit.joinIds(workorderno, worksb);
 
 		/*
-		 * addstatus 不唯一，已审核的和已采购，不可改变
+		 * addstatus 不唯一，已审核的和已采购，不可改变 ，查找不等于0的采购也就是存已经流转的单据
 		 */
 		List<Record> work = Db
-				.find(" select work_order_no from  fy_business_purchase where  add_status <>  3 AND work_order_no in  "
-				+ worksb.toString());
+				.find(" select work_order_no from  fy_business_purchase where  add_status <>  0 AND work_order_no in  "
+						+ worksb.toString());
 		List<String> haswor = new ArrayList<String>();
 
 		for (Record e : work) {
@@ -191,6 +180,18 @@ public class FyPurchaseAuditService {
 		if (haswor.size() > 0) {
 			return Ret.fail().set("msg", "工作订单号已审核 重复 " + StringUtils.join(haswor, ","));
 		}
+
+		/**
+		 * 删除已有的价格的单据,addstate是在执行单情况下，add_status=0为委外执行表
+		 */
+		StringBuilder delete = new StringBuilder(
+				" delete from fy_business_purchase where  add_status = 0 AND work_order_no in  ");
+
+		SqlKit.joinIds(workorderno, delete);
+
+		int nul = Db.delete(delete.toString());
+		System.out.println(" 删除采购报价单 " + delete.toString() + " 删除 " + nul);
+
 
 		System.out.println(list);
 		for (Record e : list) {
@@ -307,6 +308,7 @@ public class FyPurchaseAuditService {
 
 	/**
 	 * 批量更新订单与采购审核单,设置订单 order_status =3 ,采购审核单 add_status=1
+	 * 生成审核单
 	 * @param orderids
 	 * @return
 	 */

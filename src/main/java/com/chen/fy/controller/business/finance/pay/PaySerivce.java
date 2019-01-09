@@ -184,38 +184,41 @@ public class PaySerivce {
 			String purchase_no = item.getStr("purchase_no");// 采购编号
 			excel.setCellVal(row, 14, purchase_no);
 
+			String is_has_tax = item.getStr("is_has_tax");// 是否含税
+			excel.setCellVal(row, 15, is_has_tax);
+
 			Integer purchase_quantity = item.getInt("purchase_quantity");// 采购数量
-			excel.setCellVal(row, 15, purchase_quantity);
+			excel.setCellVal(row, 16, purchase_quantity);
 
 			Double purchase_cost = item.getDouble("purchase_cost");// 单价
-			excel.setCellVal(row, 16, purchase_cost);
+			excel.setCellVal(row, 17, purchase_cost);
 
 			Double purchase_amount = item.getDouble("purchase_amount");// 采购总价
-			excel.setCellVal(row, 17, purchase_amount);
+			excel.setCellVal(row, 18, purchase_amount);
 
 			Date in_warehouse_time = item.getDate("in_warehouse_time");// 入库时间
-			excel.setCellVal(row, 18, in_warehouse_time, "yyyy-MM-dd");
+			excel.setCellVal(row, 19, in_warehouse_time, "yyyy-MM-dd");
 
 			String in_from = item.getStr("in_from");// 入库来源
-			excel.setCellVal(row, 19, in_from);
+			excel.setCellVal(row, 20, in_from);
 
 			Double pay_quantity = item.getDouble("pay_quantity");// 应付数量
-			excel.setCellVal(row, 20, pay_quantity);
+			excel.setCellVal(row, 21, pay_quantity);
 
 			Date check_time = item.getDate("check_time");// 入库时间
-			excel.setCellVal(row, 21, check_time, "yyyy-MM-dd");
+			excel.setCellVal(row, 22, check_time, "yyyy-MM-dd");
 
 			Double should_pay = item.getDouble("should_pay");// 应付金额
-			excel.setCellVal(row, 22, should_pay);
+			excel.setCellVal(row, 23, should_pay);
 
 			String remark = item.getStr("remark");// 采购编号
-			excel.setCellVal(row, 23, remark);
+			excel.setCellVal(row, 24, remark);
 
 			Date hang_date = item.getDate("hang_date");// 挂账日期
-			excel.setCellVal(row, 24, hang_date, "yyyy年MM月");
+			excel.setCellVal(row, 25, hang_date, "yyyy年MM月");
 
 			Date pay_date = item.getDate("pay_date");// 应付期间
-			excel.setCellVal(row, 25, pay_date, "yyyy年MM月");
+			excel.setCellVal(row, 26, pay_date, "yyyy年MM月");
 
 			row++;
 		}

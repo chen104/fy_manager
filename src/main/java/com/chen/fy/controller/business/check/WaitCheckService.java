@@ -184,6 +184,9 @@ public class WaitCheckService {
 			
 		}
 
+		/**
+		 * 委外单
+		 */
 		if (passQuantity > 0) {
 			final FyBusinessPay pay = new FyBusinessPay();
 			String findPurches = String.format(
@@ -228,24 +231,24 @@ public class WaitCheckService {
 			if (settlement_cycle == 1) {// 月结30天
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(pay.getHangDate());
-				int day = calendar.get(Calendar.DAY_OF_MONTH);
-				if (day > 25) {
-					calendar.add(Calendar.MONTH, 2);
-				} else {
+				// int day = calendar.get(Calendar.DAY_OF_MONTH);
+				// if (day > 25) {
+				// calendar.add(Calendar.MONTH, 2);
+				// } else {
 					calendar.add(Calendar.MONTH, 1);
-				}
+				// }
 				pay.setPayDate(calendar.getTime());
-			} else if (settlement_cycle == 2) {
+			} else if (settlement_cycle == 2) { // 月结60天 ，添加两个月
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(pay.getHangDate());
-				int day = calendar.get(Calendar.DAY_OF_MONTH);
-				if (day > 25) {
-					calendar.add(Calendar.MONTH, 3);
-				} else {
-					calendar.add(Calendar.MONTH, 2);
-				}
+				// int day = calendar.get(Calendar.DAY_OF_MONTH);
+				// if (day > 25) {
+				// calendar.add(Calendar.MONTH, 3);
+				// } else {
+				calendar.add(Calendar.MONTH, 2);
+				// }
 				pay.setPayDate(calendar.getTime());
-			} else if (settlement_cycle == 3) {
+			} else if (settlement_cycle == 3) {// 当月结款
 				pay.setPayDate(pay.getHangDate());
 			}
 
