@@ -155,7 +155,8 @@ public class OuthouseService {
 				Integer old_out_quantity = order.getOutQuantity() == null ? 0 : order.getOutQuantity();
 				Integer out_quantity = model.getOutQuantity();
 				order.setOutQuantity(out_quantity + old_out_quantity);// 出库数量
-				order.setStorageQuantity(order.getStorageQuantity() - out_quantity);// 出库完毕
+				Integer storage = order.getStorageQuantity() - out_quantity;
+				order.setStorageQuantity(storage);// 出库完毕
 
 			}
 

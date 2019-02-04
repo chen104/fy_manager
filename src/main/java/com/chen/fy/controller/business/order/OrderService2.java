@@ -78,7 +78,7 @@ public class OrderService2 {
 		if (StringUtils.isNotEmpty(date_start)) {
 			try {
 				Date startDate = DateUtils.parseDate(date_start, "yyyy-MM-dd");
-				startDate = DateUtils.addDays(startDate, -1);
+				// startDate = DateUtils.addDays(startDate, -1);
 				String startDateStr = DateFormatUtils.format(startDate, "yyyy-MM-dd");
 				if ("order_date".equals(continue_contition)) {
 					conditionSb.append(String.format(" AND  order_date > '%s'   ", startDateStr));

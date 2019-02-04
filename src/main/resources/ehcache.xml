@@ -58,6 +58,24 @@
            overflowToDisk="false"
             />
 
+
+<cache name="Permission"
+           maxEntriesLocalHeap="90000"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+            />
+            
+ <cache name="colPermission"
+           maxEntriesLocalHeap="90000"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+            />
+
+
 	<!-- allAccounts 所有账号缓存，用于其它 model join 到 nickName、avatar -->
 	<cache name="allAccounts"
 	       maxEntriesLocalHeap="90000"
