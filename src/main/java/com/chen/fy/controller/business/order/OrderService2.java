@@ -49,19 +49,18 @@ public class OrderService2 {
 	 * @param page
 	 * @param pageSize
 	 * @return
+	 * 
+	 * @update date : 2019-3-7 
 	 */
 	public Page<FyBusinessOrder> find(String condition, String keyWord, Integer page, Integer pageSize,
 			String continue_contition, String date_start, String date_end) {
 		Page<FyBusinessOrder> modelPage = null;
 		StringBuilder conditionSb = new StringBuilder();
 
-		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " 
-				+ "  fc.in_time fc_in_time ,\r\n"
+		String select = "select o.*,f.originalFileName filename,f.id fileId, \n " + "  fc.in_time fc_in_time ,\r\n"
 				+ "  fc.check_result fc_check_result, fc.check_time fc_check_time,\r\n"
-				+ " fc.check_result fc_check_result, \n"
-				+ " out_view.v_out_time v_out_time,\r\n" 
-				+ "out_view.v_out_quantity v_out_quantity,\r\n"
-				+ "out_view.v_transport_no v_transport_no,\r\n"
+				+ " fc.check_result fc_check_result, \n" + " out_view.v_out_time v_out_time,\r\n"
+				+ "out_view.v_out_quantity v_out_quantity,\r\n" + "out_view.v_transport_no v_transport_no,\r\n"
 				+ "out_view.v_transport_company v_transport_company, \n"
 				+ " ph.purchase_cost,ph.purchase_account ,su.name supplier_name ,su.id supplier_id ,"
 				+ " gp.gp_hang_quantity ,gp_hang_amount , gp_hang_date";
@@ -71,9 +70,11 @@ public class OrderService2 {
 				+ " LEFT JOIN uploadgetpay gp on gp.delivery_no = o.delivery_no \n "
 				+ "  LEFT JOIN fy_business_purchase ph on ph.order_id = o.id  \n"
 				+ " LEFT JOIN  fy_base_supplier su on ph.supplier_id = su.id " + "\n";
+
 		String where = " where 1=1 ";
 		String desc = " order by o.id desc";
-
+		// String from = " from fy_business_order o ";
+		String idsql = "select id   ";
 
 		if (StringUtils.isNotEmpty(date_start)) {
 			try {
@@ -93,6 +94,9 @@ public class OrderService2 {
 		if (StringUtils.isNotEmpty(date_end)) {
 
 			try {
+				/**
+				 * 因为是小一天，需要添加一天
+				 */
 				Date dateEnd = DateUtils.parseDate(date_end, "yyyy-MM-dd");
 				dateEnd = DateUtils.addDays(dateEnd, 1);
 				String startEndStr = DateFormatUtils.format(dateEnd, "yyyy-MM-dd");
@@ -126,15 +130,57 @@ public class OrderService2 {
 			conditionSb.append("'%").append(keyWord).append("%'");
 		}
 		if (conditionSb.length() > 0) {
+			// modelPage = FyBusinessOrder.dao.paginate(page, pageSize, idsql,
+			// from + where + conditionSb.toString());
+			// modelPage = new Page<FyBusinessOrder>(list, 1, list.size(), 1, list.size());
 			modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select,
 					from + where + conditionSb.toString() + desc);
-			// modelPage = new Page<FyBusinessOrder>(list, 1, list.size(), 1, list.size());
 		} else {
+			// modelPage = FyBusinessOrder.dao.paginate(page, pageSize, idsql, from +
+			// where);
 			modelPage = FyBusinessOrder.dao.paginate(page, pageSize, select, from + where + desc);
-
 		}
 
 		return modelPage;
+		// List<FyBusinessOrder> list = modelPage.getList();
+		// if (list.size() == 0) {
+		// return modelPage;
+		// }
+		//
+		// ArrayList<Integer> order_ids = new ArrayList<Integer>();
+		// for (FyBusinessOrder e : list) {
+		// order_ids.add(e.getId());
+		// }
+		//
+		// String selectOrder="select o.id id,
+		// cate_tmp,plan_tmp,execu_status,customer_no,o.work_order_no,delivery_no,\r\n"
+		// +
+		// "map_no,commodity_name,total_map_no,filename,f.id file_id,\r\n" +
+		// "ph.supplier_id,purchase_cost,purchase_account,\r\n" +
+		// "receive_time,plan_time,\r\n" +
+		// "inhouse_date,\r\n" + // #入库时间
+		// "has_in_quantity,\r\n" + // #入库数量
+		// "check_time fc_check_time,\r\n" + // #检测时间
+		// "send_address,is_finsh_product\r\n" +
+		// "FROM fy_business_order o\r\n" +
+		// "LEFT JOIN fy_base_fyfile f ON o.draw = f.id\r\n" +
+		// "LEFT JOIN fy_business_purchase ph ON ph.order_id = o.id\r\n" +
+		// "LEFT JOIN fy_check_collect fc ON o.id = fc.order_id\r\n" +
+		// "where o.id in ";
+		// StringBuilder orderId = new StringBuilder();
+		// SqlKit.joinIds(order_ids, orderId);
+		// selectOrder = selectOrder + orderId.toString();
+		// String outview = " select
+		// v_out_time,v_out_quantity,v_transport_company,v_transport_no,order_id from
+		// out_view where order_id in "
+		// + orderId.toString();
+		// String sql = " select * from (" + selectOrder + ") ot LEFT JOIN (" + outview
+		// + ") ov on ov.order_id = ot.id ORDER BY id DESC ";
+		// list = FyBusinessOrder.dao.find(sql);
+		// Page<FyBusinessOrder> newPage = new Page<>(list, modelPage.getPageNumber(),
+		// modelPage.getPageSize(),
+		// modelPage.getTotalPage(), modelPage.getTotalRow());
+		// return newPage;
 	}
 
 	public List<Record> findDownload(String start_date, String end_date, String condition, String keyword)

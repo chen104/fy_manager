@@ -16,6 +16,7 @@ package com.jfinal.club.common;
 
 import java.sql.Connection;
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
@@ -101,6 +102,9 @@ import com.jfinal.render.JsonRender;
 import com.jfinal.template.Engine;
 import com.jfinal.template.ext.directive.NowDirective;
 import com.jfinal.template.source.ClassPathSourceFactory;
+
+import net.dreamlu.event.EventPlugin;
+import net.dreamlu.event.EventThreadFactory;
 
 /**
  * JFinalClubConfig
@@ -328,7 +332,23 @@ public class JFinalClubConfig extends JFinalConfig {
 		Cron4jPlugin cp = new Cron4jPlugin();
 		cp.addTask("* 0 * * *", new DeleteFileTask());
 		me.add(cp);
+
+		// 初始化插件
+		EventPlugin eventPlugin = new EventPlugin();
+		// 设置为异步，默认同步，或者使用`threadPool(ExecutorService executorService)`自定义线程池。
+		eventPlugin.async();
+
+		// 设置扫描jar包，默认不扫描
+		eventPlugin.scanJar();
+		// 设置监听器默认包，多个包名使用;分割，默认全扫描
+		eventPlugin.scanPackage("net.dreamlu");
+		// bean工厂，默认为DefaultBeanFactory，可实现IBeanFactory自定义扩展
+		// 对于将@EventListener写在不含无参构造器的类需要使用`ObjenesisBeanFactory`
+		// eventPlugin.beanFactory(new DuangBeanFactory());
+		eventPlugin.threadPool(Executors.newCachedThreadPool(new EventThreadFactory()));
+
 		// me.add(new Cron4jPlugin(p));
+		me.add(eventPlugin);
 	}
 
 	public void configInterceptor(Interceptors me) {
