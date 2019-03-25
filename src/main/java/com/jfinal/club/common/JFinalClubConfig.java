@@ -25,8 +25,9 @@ import com.chen.fy.Interceptor.FyLoginSessionInterceptor;
 import com.chen.fy.Interceptor.MenuActiveInterceptor;
 import com.chen.fy.controller.AccountController;
 import com.chen.fy.controller.addition.ReadyController;
+//import com.chen.fy.controller.addition.ReadyController;
 import com.chen.fy.controller.addition.advisory.AdvisoryCostConllor;
-import com.chen.fy.controller.addition.readypurchase.ReadyPurchaseController;
+//import com.chen.fy.controller.addition.readypurchase.ReadyPurchaseController;
 import com.chen.fy.controller.addition.receive.ReadyReceiveController;
 import com.chen.fy.controller.base.CategoryController;
 import com.chen.fy.controller.base.CustomerController;
@@ -255,9 +256,9 @@ public class JFinalClubConfig extends JFinalConfig {
 				"/_view/atladmin/addition/readyReceive");
 
 		me.add("fy/admin/biz/assist", AssistController.class, "/_view/atladmin/business/produce/assist");
-
-		me.add("fy/admin/biz/addition/readyPurchase", ReadyPurchaseController.class,
-				"/_view/atladmin/addition/readypurchase");
+//
+//		me.add("fy/admin/biz/addition/readyPurchase", ReadyPurchaseController.class,
+//				"/_view/atladmin/addition/readypurchase");
 
 		// me.add("/fy/admin/biz/outWhouse", OutWarehouseContollor.class,
 		// "/_view/atladmin/business/outWarehouse");

@@ -8,9 +8,6 @@ import com.chen.fy.model.base.BaseFyBusinessReady;
 @SuppressWarnings("serial")
 public class FyBusinessReady extends BaseFyBusinessReady<FyBusinessReady> {
 
-	public final static FyBusinessReady dao = new FyBusinessReady().dao();
-
-	public String getCustomerName() {
-		return getStr("customer_name");
-	}
+	public static FyBusinessReady dao=new FyBusinessReady().dao();
+	
 }

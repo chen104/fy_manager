@@ -12,7 +12,7 @@ import com.chen.fy.model.FyBusinessGetpaybill;
 import com.chen.fy.model.FyBusinessOrder;
 import com.chen.fy.model.FyBusinessOutWarehouse;
 import com.chen.fy.model.FyBusinessPaybill;
-import com.chen.fy.model.FyBusinessSumPaybill;
+
 import com.jfinal.kit.Ret;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -196,17 +196,17 @@ public class FinanceController extends BaseController {
 	/**
 	 * 应付计算单
 	 */
-	public void sumpaybill() {
-		String key = getPara("keyWord");
-		Page<FyBusinessSumPaybill> modelPage = null;
-		setAttr("keyWord", key);
-
-		modelPage = FyBusinessSumPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
-				"from  fy_business_paybill order by id desc");
-
-		setAttr("modelPage", modelPage);
-		render("sumpay.html");
-	}
+//	public void sumpaybill() {
+//		String key = getPara("keyWord");
+//		Page<FyBusinessSumPaybill> modelPage = null;
+//		setAttr("keyWord", key);
+//
+//		modelPage = FyBusinessSumPaybill.dao.paginate(getParaToInt("p", 1), 10, "select * ",
+//				"from  fy_business_paybill order by id desc");
+//
+//		setAttr("modelPage", modelPage);
+//		render("sumpay.html");
+//	}
 
 	/**
 	 * 外协添加pay

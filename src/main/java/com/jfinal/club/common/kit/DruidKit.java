@@ -34,7 +34,7 @@ import com.jfinal.plugin.druid.IDruidStatViewAuth;
 public class DruidKit {
 
 	public static DruidStatViewHandler getDruidStatViewHandler() {
-		return new DruidStatViewHandler("/assets/druid", new IDruidStatViewAuth() {
+		return new DruidStatViewHandler("/fy/assets/druid", new IDruidStatViewAuth() {
 			public boolean isPermitted(HttpServletRequest request) {
 				// String sessionId = getCookie(request, LoginService.sessionIdName);
 				// if (sessionId != null) {
