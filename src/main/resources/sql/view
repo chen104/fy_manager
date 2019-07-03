@@ -1,4 +1,4 @@
-inhouse
+in_house
 select `fy_business_in_warehouse`.`order_id` AS `order_id`,sum(`fy_business_in_warehouse`.`pass_quantity`) AS `pass_quantity`,max(`fy_business_in_warehouse`.`in_time`) AS `in_time`,max(`fy_business_in_warehouse`.`check_time`) AS `in_check_time`,min(`fy_business_in_warehouse`.`check_result`) AS `in_check_result` from `fy_business_in_warehouse` group by `fy_business_in_warehouse`.`order_id`
 
 

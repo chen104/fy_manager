@@ -212,6 +212,16 @@
 	       timeToLiveSeconds="600"
 	       overflowToDisk="false"
 			/>
+			
+	<!-- 登录失败记录 -->
+	<cache name="loginFailAcount"
+	       maxEntriesLocalHeap="50"
+	       eternal="false"
+	       timeToIdleSeconds="86400"
+	       timeToLiveSeconds="86400"
+	       overflowToDisk="false"
+			/>
+
 
 
 <!--  以下是三个 sample cache，仅作配置参考 ============================================  -->
@@ -268,4 +278,7 @@
 	       diskExpiryThreadIntervalSeconds="1"
 	       memoryStoreEvictionPolicy="LFU">
 	</cache>
+	
+	
+	
 </ehcache>
